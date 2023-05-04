@@ -11,7 +11,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PromotionsController;
-use App\Http\Controllers\BannerImagesController;
+use App\Http\Controllers\CategoriesController;
 
   
 /*
@@ -36,5 +36,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
+    
+    Route::resource('categories', CategoriesController::class);
 });
 

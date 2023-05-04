@@ -8,7 +8,7 @@
                    <i class="bi bi-0-circle"></i>
                 </a>
                 <a href="#" class="brand-logo">                   
-                    <span>{{ config('app.name', 'MiniCommerce') }}</span>
+                    <span>{{ config('app.name', 'alibaba') }}</span>
                 </a>
             </header>
             <nav class="dashboard-nav-list">
@@ -24,6 +24,9 @@
                 </a>
                 <a href="{{ route('roles.index') }}" class="dashboard-nav-item"><i class="fa-solid fa-building-shield">              
                     </i> Roles & Permissions 
+                </a>
+                <a href="{{ route('categories.index') }}" class="dashboard-nav-item"><i class="fa-solid fa-building-shield">              
+                    </i> Categories 
                 </a>
                 <!-- <div class='dashboard-nav-dropdown'>
                     <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-photo-video"></i> Media </a>
