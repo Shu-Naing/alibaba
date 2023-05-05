@@ -26,7 +26,15 @@
   <tr>
     <td>{{ $cate->category_name }}</td>
     <td>{{ $cate->category_code }}</td>
-    <td>{{ $cate->descriptions }}</td>
+    <td>{{ $cate->description }}</td>
+    <td>
+      <a class="px-3" href="{{ route('categories.edit',$cate->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+      <i class="fa-regular fa-trash-can">
+      {!! Form::open(['method' => 'DELETE','route' => ['categories.destroy', $cate->id],'style'=>'display:inline']) !!}
+          {!! Form::submit('Delete', ['class' => 'border-0']) !!}
+      {!! Form::close() !!}
+      </i>
+    </td>
   </tr>
  @endforeach
 </table>

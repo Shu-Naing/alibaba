@@ -40,12 +40,14 @@ class CategoriesController extends Controller
             ->with('success','Category created successfully.');
     }
 
-    public function edit(Category $category)
+    public function edit($id)
     {
-        return view('categories.edit',compact('category'));
+        $cate = Categories::find($id);
+
+        return view('categories.edit',compact('cate'));
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Categories $category)
     {
         $request->validate([
             'category_code' => 'required|unique:categories,category_code,'.$category->id,
