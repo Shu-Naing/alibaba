@@ -31,7 +31,7 @@
       <a class="px-3" href="{{ route('categories.edit',$cate->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
       <i class="fa-regular fa-trash-can">
       {!! Form::open(['method' => 'DELETE','route' => ['categories.destroy', $cate->id],'style'=>'display:inline']) !!}
-          {!! Form::submit('Delete', ['class' => 'border-0']) !!}
+          {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
       {!! Form::close() !!}
       </i>
     </td>
