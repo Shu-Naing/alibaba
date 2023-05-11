@@ -1,83 +1,150 @@
 @extends('layouts.app')
-
 @section('content')
-    <div class='dashboard'>
-        <div class="dashboard-nav">
-            <header>
-                <a href="#!" class="menu-toggle">
-                   <i class="bi bi-0-circle"></i>
-                </a>
-                <a href="#" class="brand-logo">                   
-                    <span>{{ config('app.name', 'alibaba') }}</span>
-                </a>
-            </header>
-            <nav class="dashboard-nav-list">
-                <!-- <a href="#" class="dashboard-nav-item">
-                    <i class="fas fa-home"></i>                    
-                </a>
-                <a href="#" class="dashboard-nav-item active">
-                    <i class="fas fa-tachometer-alt"></i>
-                    dashboard
-                </a> -->
-                <a href="{{ route('users.index') }}" class="dashboard-nav-item"><i class="fa fa-users">                
-                    </i> Admin 
-                </a>
-                <a href="{{ route('roles.index') }}" class="dashboard-nav-item"><i class="fa-solid fa-building-shield">              
-                    </i> Roles & Permissions 
-                </a>
-                <a href="{{ route('categories.index') }}" class="dashboard-nav-item"><i class="fa-solid fa-building-shield">              
-                    </i> Categories 
-                </a>
-                <!-- <div class='dashboard-nav-dropdown'>
-                    <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-photo-video"></i> Media </a>
-                    <div class='dashboard-nav-dropdown-menu'><a href="#" class="dashboard-nav-dropdown-item">All</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">Recent</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">Images</a>
-                        <a href="#" class="dashboard-nav-dropdown-item">Video</a>
-                    </div>
-                </div>
-                <div class='dashboard-nav-dropdown'>
-                    <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-users"></i> Users </a>
-                        <div class='dashboard-nav-dropdown-menu'>
-                            <a href="#" class="dashboard-nav-dropdown-item">All</a>
-                            <a href="#" class="dashboard-nav-dropdown-item">Subscribed</a>
-                            <a href="#" class="dashboard-nav-dropdown-item">Non-subscribed</a>
-                            <a href="#" class="dashboard-nav-dropdown-item">Banned</a>
-                            <a href="#" class="dashboard-nav-dropdown-item">New</a>
-                        </div>
-                </div>
-                <div class='dashboard-nav-dropdown'>
-                    <a href="#!" class="dashboard-nav-item dashboard-nav-dropdown-toggle"><i class="fas fa-money-check-alt"></i> Payments </a>
-                        <div class='dashboard-nav-dropdown-menu'>
-                            <a href="#" class="dashboard-nav-dropdown-item">All</a>
-                            <a href="#" class="dashboard-nav-dropdown-item">Recent</a>
-                            <a href="#" class="dashboard-nav-dropdown-item"> Projections</a>
-                        </div>
-                </div> -->
-                <!-- <a href="#" class="dashboard-nav-item">
-                    <i class="fas fa-cogs"></i> Settings </a>
-                    <a href="#" class="dashboard-nav-item"><i class="fas fa-user"></i> Profile </a>
-                <div class="nav-item-divider"></div> -->
-
-                <a class="dashboard-nav-item" href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class ="fas fa-sign-out-alt"></i>{{ __('Logout') }}
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                    @csrf
-                </form>
-                </a>                
-            </nav>
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+    data-sidebar-position="fixed" data-header-position="fixed">
+    <!-- Sidebar Start -->
+    <aside class="left-sidebar">
+      <!-- Sidebar scroll-->
+      <div>
+        <div class="brand-logo d-flex align-items-center justify-content-between">
+          <a href="./index.html" class="text-nowrap logo-img">
+            <img src="../assets/images/logos/dark-logo.svg" width="180" alt="" />
+          </a>
+          <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+            <i class="ti ti-x fs-8"></i>
+          </div>
         </div>
-        <div class='dashboard-app'>
-            <header class='dashboard-toolbar'><a href="#!" class="menu-toggle"><i class="fas fa-bars"></i></a>
-                <div class="container d-flex align-items-center justify-content-center">
-                    @yield('cardtitle')
-                </div>
-            </header>
-            <div class='dashboard-content'>
-                @yield('cardbody')
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+          <ul id="sidebarnav">
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">Home</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./index.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">UI COMPONENTS</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-article"></i>
+                </span>
+                <span class="hide-menu">Buttons</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="{{ route('users.index') }}" aria-expanded="false">
+                <span>
+                  <i class="ti ti-alert-circle"></i>
+                </span>
+                <span class="hide-menu">Alerts</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-card.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-cards"></i>
+                </span>
+                <span class="hide-menu">Card</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-forms.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-file-description"></i>
+                </span>
+                <span class="hide-menu">Forms</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./ui-typography.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-typography"></i>
+                </span>
+                <span class="hide-menu">Typography</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">AUTH</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./authentication-login.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-login"></i>
+                </span>
+                <span class="hide-menu">Login</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./authentication-register.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-user-plus"></i>
+                </span>
+                <span class="hide-menu">Register</span>
+              </a>
+            </li>
+            <li class="nav-small-cap">
+              <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+              <span class="hide-menu">EXTRA</span>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./icon-tabler.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-mood-happy"></i>
+                </span>
+                <span class="hide-menu">Icons</span>
+              </a>
+            </li>
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
+                <span>
+                  <i class="ti ti-aperture"></i>
+                </span>
+                <span class="hide-menu">Sample Page</span>
+              </a>
+            </li>
+          </ul>
+          <div class="unlimited-access hide-menu bg-light-primary position-relative mb-7 mt-5 rounded">
+            <div class="d-flex">
+              <div class="unlimited-access-title me-3">
+                <h6 class="fw-semibold fs-4 mb-6 text-dark w-85">Upgrade to pro</h6>
+                <a href="https://adminmart.com/product/modernize-bootstrap-5-admin-template/" target="_blank" class="btn btn-primary fs-2 fw-semibold lh-sm">Buy Pro</a>
+              </div>
+              <div class="unlimited-access-img">
+                <img src="../assets/images/backgrounds/rocket.png" alt="" class="img-fluid">
+              </div>
             </div>
-        </div>
+          </div>
+        </nav>
+        <!-- End Sidebar navigation -->
+      </div>
+      <!-- End Sidebar scroll-->
+    </aside>
+    <!--  Sidebar End -->
+    <!--  Main wrapper -->
+    <div class="body-wrapper">
+      <!--  Header Start -->
+      <header class="app-header">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            @yield('cardtitle')
+        </nav>
+      </header>
+      <!--  Header End -->
+      <div class="container-fluid">
+        <!--  Row 1 -->
+        
+        @yield('cardbody')
+      </div>
     </div>
-@endsection
+  </div>
+endsection

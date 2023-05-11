@@ -1,4 +1,4 @@
-@extends('layouts.navbar')
+@extends('layouts.app')
 @section('cardtitle')
 <h4>User Management</h4>
 @endsection
