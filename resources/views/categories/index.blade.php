@@ -13,9 +13,14 @@
 </div>
 @endif
 
-
+<x-button-group :buttons="[
+    ['label' => 'Export to CSV', 'url' => '/button-1'],
+    ['label' => 'Export to Excel', 'url' => '/button-2'],
+    ['label' => 'Print', 'url' => '/button-3'],
+    ['label' => 'Export to PDF', 'url' => '/button-3'],
+]"/>
 <table class="table table-bordered">
- <tr>
+<tr>
    <th>Category</th>
    <th>Category Code</th>
    <th>Descriptions</th>

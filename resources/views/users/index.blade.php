@@ -15,6 +15,12 @@
 
 
 <table class="table table-bordered">
+<x-button-group :buttons="[
+    ['label' => 'Button 1', 'url' => '/button-1'],
+    ['label' => 'Button 2', 'url' => '/button-2'],
+    ['label' => 'Button 3', 'url' => '/button-3'],
+]"/>
+
  <tr>
    <th>Name</th>
    <th>Email</th>
