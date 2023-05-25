@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+:root {
+  --primary-color: #c22926;
+  --primary-transparent-10: rgb(194, 41, 38, 0.1);
+  --mute: #5a6a85;
+  --mute-light: #8292ad;
+  --blue-transparent-10: rgba(38, 72, 194, 0.1);
+}
+
+body {
+  font-family: "inter";
+}
+
+/* sidebar menu start */
+.nav-small-cap {
+  padding: 0;
+}
+
+li.nav-item.nav-small-cap a {
+  font-size: 14px;
+}
+
+li.nav-item.nav-small-cap a span {
+  font-size: 14px;
+  margin-left: 9px;
+}
+
+.sidebar-nav ul .sidebar-item .sidebar-link:hover {
+  background-color: var(--primary-transparent-10);
+  color: var(--primary-color);
+}
+
+.item.selected > .sidebar-link,
+.sidebar-nav ul .sidebar-item.selected > .sidebar-link.active,
+.sidebar-nav ul .sidebar-item > .sidebar-link.active {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.showHide {
+  font-size: 15px;
+  margin-left: 20px;
+}
+/* sidebar menu end */
+
+/* dashboard content start*/
+.app-header {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.app-header .navbar i {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.app-header .navbar .loginUser {
+  font-size: 16px;
+}
+
+.main-content {
+  padding-top: calc(70px + 15px);
+}
+
+.breadcrumbBox {
+  background: var(--blue-transparent-10);
+  padding: 38px;
+}
+
+.breadcrumb-item + .breadcrumb-item:before {
+  display: none;
+}
+
+.breadcrumb-item a {
+  color: var(--mute);
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  background: var(--mute);
+}
+
+/* sidebar scroll style */
+.scroll-sidebar::-webkit-scrollbar {
+  width: 0px;
+}
+
+.scroll-sidebar:hover::-webkit-scrollbar {
+  width: 0px;
+}
+
+/* Handle */
+.scroll-sidebar::-webkit-scrollbar-thumb {
+  background: var(--mute-light);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.scroll-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--mute);
+}
+/* dashboard content end*/

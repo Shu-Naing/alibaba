@@ -51,6 +51,156 @@
  @endforeach
 </table>
 
+<table id="example" class="display cell-border" style="width:100%">
+                <tr>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>age</th>
+                    <th>Phone</th>
+                    <th>Genter</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Aung Aung</td>
+                    <td>23</td>
+                    <td>0987654321</td>
+                    <td>Male</td>
+                </tr>
+            </table>
+
 
 {!! $data->render() !!}
 

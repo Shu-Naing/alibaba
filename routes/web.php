@@ -12,6 +12,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ListproductController;
+use App\Http\Controllers\InventoryController;
 
   
 /*
