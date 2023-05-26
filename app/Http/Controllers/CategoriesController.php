@@ -12,7 +12,10 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Categories::paginate(10);
+        // $categories = Categories::paginate(10);
+        $categories = Categories::with('outlet')->first();
+
+        return $categories; 
 
         return view('categories.index', ['categories' => $categories]);
 

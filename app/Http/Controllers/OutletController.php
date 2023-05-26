@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Outlets;
+use App\Models\Categories;
+use Illuminate\Support\Facades\DB;
 
 class OutletController extends Controller
 {
@@ -18,7 +20,11 @@ class OutletController extends Controller
         $breadcrumbs = [
               ['name' => 'Outlets List', 'url' => route('outlets.index')]
         ];
-        return view('outlets.index', compact('breadcrumbs'));
+        $outlets = Outlets::join('categories', 'categories.outlet_id', '=', 'outlets.id')
+            ->select('outlets.id', 'outlets.name', 'outlets.city', 'outlets.state', 'categories.category_name')
+            ->get();
+        // $outlets = Outlets::with('categories')->first();
+        return view('outlets.index', compact('breadcrumbs', 'outlets'));
     }
 
     /**
