@@ -2,10 +2,13 @@
 
 :root {
   --primary-color: #c22926;
+  --primary-dark: #921c1a;
   --primary-transparent-10: rgb(194, 41, 38, 0.1);
   --mute: #5a6a85;
   --mute-light: #8292ad;
   --blue-transparent-10: rgba(38, 72, 194, 0.1);
+  --blue: #2648c2;
+  --blue-dark: #1434a8;
 }
 
 body {
@@ -102,3 +105,30 @@ li.nav-item.nav-small-cap a span {
   background: var(--mute);
 }
 /* dashboard content end*/
+
+/* btton style start */
+.btn {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.btn-red {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-red:hover {
+  background-color: var(--primary-dark);
+  color: white;
+}
+
+.btn-blue {
+  background-color: var(--blue);
+  color: white;
+}
+
+.btn-blue:hover {
+  background-color: var(--blue-dark);
+  color: white;
+}
+/* btton style end */

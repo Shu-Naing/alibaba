@@ -98,7 +98,7 @@
                 id="submenu1"
                 data-bs-parent="#menu">
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link">
+                  <a href="{{ route('outlets.index') }}" class="nav-link sidebar-link">
                     <hr>
                     <span class="d-none d-sm-inline">List Outlets</span> 
                   </a>
