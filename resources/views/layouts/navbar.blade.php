@@ -59,7 +59,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('brands.index') }}" class="nav-link sidebar-link ">
                     <hr>
                     <span class="d-none d-sm-inline">Brands</span>
                   </a>
