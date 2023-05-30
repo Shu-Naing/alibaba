@@ -7,7 +7,7 @@
       <!-- Sidebar scroll-->
       <div>
         <div class="brand-logo d-flex align-items-center justify-content-between mt-3 mb-2s">
-          <a href="./index.html" class="text-nowrap logo-img">
+          <a href="/home" class="text-nowrap logo-img">
             <!-- <h1>Alibaba</h1> -->
             <img src="{{ asset('images/logo_1.png') }}" alt="">
           </a>
@@ -43,7 +43,7 @@
                 <span class="showHide">+</span>
               </a>
               <ul
-                class="collapse nav flex-column"
+                class="collapse nav flex-column submenuParent"
                 id="submenu2"
                 data-bs-parent="#menu">
                 <li class="w-100 sidebar-item">
@@ -94,29 +94,29 @@
                 <span class="showHide">+</span>
               </a>
               <ul
-                class="collapse nav flex-column"
+                class="collapse nav flex-column submenuParent"
                 id="submenu1"
                 data-bs-parent="#menu">
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('outlets.index') }}" class="nav-link sidebar-link">
+                  <a href="{{ route('outlets.index') }}" class="nav-link sidebar-link {{ Route::is('outlets.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">List Outlets</span> 
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('outlets.create') }}" class="nav-link sidebar-link {{ Route::is('outlets.create') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Create Outlet</span>
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link">
+                  <a href="{{ route('machine.create') }}" class="nav-link sidebar-link {{ Route::is('machine.create') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Create Machine</span> 
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('distribute-products.index') }}" class="nav-link sidebar-link {{ Route::is('distribute-products.index') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Distribute Product</span>
                   </a>

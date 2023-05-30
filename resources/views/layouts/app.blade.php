@@ -13,7 +13,7 @@
     <!-- Scripts -->
     <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     <script src="{{ mix('js/app.js') }}"></script>
-    <script src="{{ asset('js/navbar.js') }}" defer></script>
+    <!-- <script src="{{ asset('js/navbar.js') }}" defer></script> -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -36,11 +36,11 @@
   <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
   <script src="{{ asset('js/sidebarmenu.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
-  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../assets/js/app.min.js"></script>
   <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
   <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="../assets/js/dashboard.js"></script>
+  <script src="../assets/js/dashboard.js"></script> -->
 </body>
 </html>
  

@@ -1,0 +1,36 @@
+{
+  "countries": [
+    {
+      "id": 1,
+      "name": "Country 1"
+    },
+    {
+      "id": 2,
+      "name": "Country 2"
+    }
+  ],
+  "cities": [
+    {
+      "id": 1,
+      "name": "City 1",
+      "country_id": 1
+    },
+    {
+      "id": 2,
+      "name": "City 2",
+      "country_id": 1
+    }
+  ],
+  "states": [
+    {
+      "id": 1,
+      "name": "State 1",
+      "city_id": 1
+    },
+    {
+      "id": 2,
+      "name": "State 2",
+      "city_id": 1
+    }
+  ]
+}

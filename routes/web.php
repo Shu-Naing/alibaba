@@ -13,6 +13,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\OutletController;
+use App\Http\Controllers\MachineController;
+use App\Http\Controllers\SelectBoxController;
+use App\Http\Controllers\DistributeProductController;
 
   
 /*
@@ -40,5 +43,12 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::resource('categories', CategoriesController::class);
     Route::resource('outlets', OutletController::class);
+    Route::resource('machine', MachineController::class);
+    Route::resource('distribute-products', DistributeProductController::class);
+
+    Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
+    Route::get('/edit', [SelectBoxController::class, 'edit']);
+
+
 });
 

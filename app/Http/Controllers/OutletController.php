@@ -18,11 +18,13 @@ class OutletController extends Controller
     public function index()
     {
         $breadcrumbs = [
-              ['name' => 'Outlets List', 'url' => route('outlets.index')]
+              ['name' => 'Outlets', 'url' => route('outlets.index')],
+              ['name' => 'List Outlets']
         ];
-        $outlets = Outlets::join('categories', 'categories.outlet_id', '=', 'outlets.id')
-            ->select('outlets.id', 'outlets.name', 'outlets.city', 'outlets.state', 'categories.category_name')
-            ->get();
+        // $outlets = Outlets::join('categories', 'categories.outlet_id', '=', 'outlets.id')
+        //     ->select('outlets.id', 'outlets.name', 'outlets.city', 'outlets.state', 'categories.category_name')
+        //     ->get();
+        $outlets = Outlets::all();
         // $outlets = Outlets::with('categories')->first();
         return view('outlets.index', compact('breadcrumbs', 'outlets'));
     }
@@ -35,7 +37,8 @@ class OutletController extends Controller
     public function create()
     {
         $breadcrumbs = [
-              ['name' => 'Outlets Create', 'url' => route('outlets.create')]
+              ['name' => 'Outlets', 'url' => route('outlets.index')],
+              ['name' => 'Create Outlets']
         ];
         return view('outlets.create', compact('breadcrumbs'));
     }
@@ -94,7 +97,15 @@ class OutletController extends Controller
      */
     public function edit($id)
     {
-        //
+        $outlet = Outlets::findorFail($id);
+        $breadcrumbs = [
+              ['name' => 'Outlets Edit', 'url' => route('outlets.edit', $outlet->id)]
+        ];
+
+        $dummyDataPath = public_path('/dummy_data.json');
+        $dummyData = json_decode(file_get_contents($dummyDataPath));
+
+        return view('outlets.edit', compact('breadcrumbs', 'outlet', 'dummyData'));
     }
 
     /**
@@ -106,7 +117,28 @@ class OutletController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'outletId' => 'required',
+            'name' => 'required'
+        ]);
+
+        $outlet = Outlets::findorFail($id);
+        $outlet->outlet_id = $request->outletId;
+        $outlet->name = $request->name;
+        $outlet->city = $request->city;
+        $outlet->state = $request->state;
+        $outlet->country = $request->country;
+        $outlet->create_by = Auth::id();
+        $outlet->update_by = Auth::id();
+        $outlet->save();
+
+        if ($outlet->save()) {
+            // Successful save, redirect to a success page or return a success response
+            return redirect()->back()->with('success', 'Outlet Form Data Has Been updated');
+        } else {
+            // Failed to save, redirect back to the form view with input and errors
+            return redirect()->back()->with('error', 'Failed to update the record.');
+        }
     }
 
     /**
@@ -117,6 +149,21 @@ class OutletController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $outlet = Outlets::findOrFail($id);
+        // return $outlet;
+
+        // Toggle the status
+        $outlet->status = ($outlet->status == 1) ? 0 : 1;
+        $outlet->save();
+
+        if ($outlet->save()) {
+            // Successful save, redirect to a success page or return a success response
+            return redirect()->back()->with('success', 'Outlet Form Data Has Been updated');
+        } else {
+            // Failed to save, redirect back to the form view with input and errors
+            return redirect()->back()->with('error', 'Failed to update the record.');
+        }
+        
     }
+
 }

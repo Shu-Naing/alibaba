@@ -18,6 +18,7 @@ class Outlets extends Model
         'country',
         'created_by',
         'updated_by',
+        'status',
     ];
 
     public function categories() {
