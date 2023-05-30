@@ -16,6 +16,8 @@ use App\Http\Controllers\OutletController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\DistributeProductController;
+use App\Http\Controllers\BrandsController;
+use App\Http\Controllers\UnitsController;
 
   
 /*
@@ -42,6 +44,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UserController::class);
     
     Route::resource('categories', CategoriesController::class);
+    Route::resource('brands', BrandsController::class);
+    Route::resource('units', UnitsController::class);
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);

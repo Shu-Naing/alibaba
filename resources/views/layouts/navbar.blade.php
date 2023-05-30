@@ -47,7 +47,7 @@
                 id="submenu2"
                 data-bs-parent="#menu">
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link">
+                  <a href="{{ route('units.index') }}" class="nav-link sidebar-link">
                     <hr>
                     <span class="d-none d-sm-inline">Units</span> 
                   </a>
@@ -59,7 +59,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('brands.index') }}" class="nav-link sidebar-link ">
                     <hr>
                     <span class="d-none d-sm-inline">Brands</span>
                   </a>
