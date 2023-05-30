@@ -14,6 +14,7 @@ use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\BrandsController;
+use App\Http\Controllers\UnitsController;
 
   
 /*
@@ -41,6 +42,7 @@ Route::group(['middleware' => ['auth']], function() {
     
     Route::resource('categories', CategoriesController::class);
     Route::resource('brands', BrandsController::class);
+    Route::resource('units', UnitsController::class);
     Route::resource('outlets', OutletController::class);
 });
 

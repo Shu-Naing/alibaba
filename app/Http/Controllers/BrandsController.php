@@ -37,16 +37,32 @@ class BrandsController extends Controller
 
         return view('brands.edit',compact('brands'));
     }
-    public function update(Request $request, Categories $category)
+    public function update(Request $request,$id)
     {
         $request->validate([
-            'category_code' => 'required|unique:categories,category_code,'.$category->id,
-            'category_name' => 'required',
+            'brand_name' => 'required',
+            'note' => 'required',
         ]);
 
-        $category->update($request->all());
+        $input = $request->all();    
+        $inputs['updated_by'] = Auth::user()->id;
+        $brand = Brands::find($id);
+        $brand->update($input);
+    
+        // return redirect()->route('distributors.edit',compact('distributor'))
+        //                 ->with('success','Distributor updated successfully');
 
-        return redirect()->route('categories.index')
-            ->with('success','Category updated successfully');
+        return redirect()->route('brands.index')
+            ->with('success','Brand updated successfully');
+    }
+    public function destroy($id)
+    {    
+        $brands = Brands::find($id);
+        $brands->updated_by = $id = Auth::id();
+        $brands->status = 0;
+        $brands->save();
+
+        return redirect()->route('brands.index')
+                        ->with('success','Brands deleted successfully');
     }
 }

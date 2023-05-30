@@ -12,24 +12,26 @@
             </div>
         </div>
         <div class="d-flex mb-3 justify-content-end">
-            <a class="btn btn-blue" href="{{ route('brands.create') }}">Add +</a>
+            <a class="btn btn-blue" href="{{ route('units.create') }}">Add +</a>
         </div>
         <table id="table_id">
             <thead>
                 <tr>
-                    <th>Brand</th>
-                    <th>Note</th>
+                    <th>Name</th>
+                    <th>Short Name</th>
+                    <th>Allow Decimal</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($brands as $brand)
+                @foreach ($units as $unit)
                     <tr>
-                        <td>{{ $brand->brand_name }}</td>
-                        <td>{{ $brand->note }}</td>
+                        <td>{{ $unit->name }}</td>
+                        <td>{{ $unit->short_name }}</td>
+                        <td>{{ $unit->allow_decimal }}</td>
                         <td>
-                          <a class="px-3" href="{{ route('brands.edit',$brand->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                            {!! Form::open(['method' => 'DELETE', 'route' => ['brands.destroy', $brand->id], 'style' => 'display:inline']) !!}
+                          <a class="px-3" href="{{ route('units.edit',$unit->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                            {!! Form::open(['method' => 'DELETE', 'route' => ['units.destroy', $unit->id], 'style' => 'display:inline']) !!}
                                 {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
                             {!! Form::close() !!}
                           </i>
