@@ -22,9 +22,8 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-        <form class="px-3" action="{{ route('brands.update', $brands->id) }}" method="post" enctype="multipart/form-data">
+        {!! Form::model($brands, ['route' => ['brands.update', $brands->id], 'method' => 'put', 'enctype' => 'multipart/form-data', 'class' => 'px-3']) !!}
     @csrf
-    @method('PUT')
     <div class="row mb-3">
         <div class="col-md-12">
             <label for="brand_name" class="form-label">Name *</label>
@@ -42,10 +41,10 @@
         </div>
     </div>
     <div class="text-center">
-        <a class="btn btn-red" href="{{ URL::previous() }}">Cancel</a>
+        <a href="{{ URL::previous() }}" class="btn btn-red">Cancel</a>
         <button type="submit" class="btn btn-blue ms-2">Update</button>
     </div>
-</form>
+{!! Form::close() !!}
 
     </div>
 @endsection
