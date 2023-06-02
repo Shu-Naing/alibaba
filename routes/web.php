@@ -18,8 +18,9 @@ use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\DistributeProductController;
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\UnitsController;
+use App\Http\Controllers\SellingPriceGroupController;
+use App\Http\Controllers\ProductsController;
 
-  
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,12 +47,32 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('categories', CategoriesController::class);
     Route::resource('brands', BrandsController::class);
     Route::resource('units', UnitsController::class);
+    Route::resource('products', ProductsController::class);
+    Route::resource('sellingprice', SellingPriceGroupController::class);
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
 
     Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
     Route::get('/edit', [SelectBoxController::class, 'edit']);
+
+    Route::get('/sellingprice/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])
+    ->name('sellingprice.deactivate');
+
+    Route::get('/sellingprice/{id}/activate', [SellingPriceGroupController::class, 'activate'])
+    ->name('sellingprice.activate');
+
+    Route::put('sellingprice/{id}/toggle', [SellingPriceGroupController::class, 'toggle'])
+    ->name('sellingprice.toggle');
+
+    Route::post('/sellingprice/{id}/status', [SellingPriceGroupController::class, 'toggle'])->name('sellingprice.updateStatus');
+
+    Route::put('/sellingprice/{id}/sell', [SellingPriceGroupController::class, 'sell'])->name('sellingprice.sell');
+
+
+    Route::get('/courses/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])->name('courses.deactivate');
+    Route::get('/courses/{id}/activate', [SellingPriceGroupController::class, 'activate'])->name('courses.activate');
+
 
 
 });

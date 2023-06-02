@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SellingPriceGroup extends Model
+class Variations extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'descriptions',
-        'created_by',
+        'variation_select',
+        'purchase_price',
+        'points',
         'updated_by’',
-        'status'
+        'tickets',
+        'kyat',
+        'variation_image'
     ];
 }

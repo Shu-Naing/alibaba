@@ -22,20 +22,20 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-{!! Form::model($brands, ['route' => ['brands.update', $brands->id], 'method' => 'put', 'enctype' => 'multipart/form-data', 'class' => 'px-3']) !!}
+{!! Form::model($sellingprice, ['route' => ['sellingprice.update', $sellingprice->id], 'method' => 'put', 'enctype' => 'multipart/form-data', 'class' => 'px-3']) !!}
         @csrf
         <div class="row mb-3">
             <div class="col-md-12">
-                <label for="brand_name" class="form-label">Name *</label>
-                <input type="text" class="form-control @error('brand_name') is-invalid @enderror" name="brand_name" id="brand_name" aria-describedby="emailHelp" value="{{ old('brand_name', $brands->name) }}">
-                @error('brand_name')
+                <label for="name" class="form-label">Name *</label>
+                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" aria-describedby="emailHelp" value="{{ old('name', $sellingprice->name) }}">
+                @error('name')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="col-md-12">
-                <label for="note" class="form-label">Short Description *</label>
-                <textarea class="form-control @error('note') is-invalid @enderror" name="note" id="note" style="height: 200px;">{{ old('note', $brands->note) }}</textarea>
-                @error('note')
+                <label for="descriptions" class="form-label">Short Description *</label>
+                <textarea class="form-control @error('descriptions') is-invalid @enderror" name="descriptions" id="descriptions" style="height: 200px;">{{ old('descriptions', $sellingprice->descriptions) }}</textarea>
+                @error('descriptions')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>

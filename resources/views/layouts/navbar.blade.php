@@ -71,7 +71,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('products.index') }}" class="nav-link sidebar-link ">
                     <hr>
                     <span class="d-none d-sm-inline">Add Product</span>
                   </a>
@@ -122,7 +122,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link">
+                  <a href="{{ route('sellingprice.index') }}" class="nav-link sidebar-link">
                     <hr>
                     <span class="d-none d-sm-inline">Selling Price Group</span> 
                   </a>
