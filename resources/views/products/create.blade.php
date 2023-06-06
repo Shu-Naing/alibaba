@@ -118,11 +118,10 @@
             <div class="d-flex align-items-center">
                 <p class="form-label mx-2">Add Variants</p>
                 <i class="bi bi-plus-square text-success fs-6 me-1" id="add-variation"></i>
-                <i class="bi bi-dash-square text-danger fs-6" id="remove-variation"></i>
             </div>
 
             <div class="row" id="variations-group">
-                <div class="col-lg-12 mt-2 variation">
+                <div class="col-lg-12 mt-2 variation" id="variation_0">
                     <div class="card p-3">
                         <div class="row">
                             <div class="col-lg-3">
@@ -168,19 +167,19 @@
 
     </div>
 <script>
-    $(document).ready(function() {
-   
-   
 
+    function removeVariation(variation_no) {
+        $('#variation_' + variation_no).remove();
+    }
+
+
+    $(document).ready(function() {
 
     $("#add-variation").off('click').on('click', function() {
     var variationCount = $('.variation').length;
-
-    
-   
-
-    var variationTemplate = `<div class="col-lg-12 mt-2 variation">
+    var variationTemplate = `<div class="col-lg-12 mt-2 variation" id="variation_${variationCount}">
                                 <div class="card p-3">
+                                    <i class="bi bi-dash-square text-danger fs-6 text-end" id="remove-variation" onclick="removeVariation(${variationCount})"></i>
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <label for="select" class="form-label">Select</label>
@@ -218,17 +217,12 @@
 
 });
 
-    $('#remove-variation').click(function() {
-        var variation_count = $('.variation').length;
-        if(variation_count > 1){
-            var variation = $('.variation').last().remove();
-        }else{
-            alert('minimum one variant');
-        }
-        
-        console.log(variation_count);
-    });
+   
+
+   
 });
+
+
 
 
 </script>
