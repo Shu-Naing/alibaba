@@ -5,17 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Variations extends Model
+class Variation extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'product_id',
         'variation_select',
-        'purchase_price',
+        'variation_value',
+        'purchased_price',
         'points',
-        'updated_by’',
         'tickets',
         'kyat',
-        'variation_image'
+        'variation_image',
+        'created_by',
+        'updated_by'
+       
     ];
 }

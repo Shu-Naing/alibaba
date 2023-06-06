@@ -15,15 +15,19 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')
+                  ->references('id')->on('products')->onDelete('cascade');
             $table->string('variation_select');
-            $table->string('purchase_price');
+            $table->string('variation_value');
+            $table->string('purchased_price');
             $table->string('points');
             $table->string('tickets');
             $table->string('kyat');
-            $table->string('variation_image')->nullable();
-            $table->timestamps();
+            $table->json('variation_image');
             $table->unsignedBigInteger('created_by')->nullable();
-            $table->unsignedBigInteger('updated_by')->nullable();  
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
         });
     }
 

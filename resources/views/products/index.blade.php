@@ -11,8 +11,24 @@
             <div>
             </div>
         </div>
-        <div class="d-flex mb-3 justify-content-end">
-            <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card p-3">
+                    <div class="row">
+                        <div class="col-lg-4 col-sm-12">
+                            <input type="file" class="form-control">
+                        </div>
+                        <div class="col-lg-4 col-sm-12">
+                            <button class="btn btn-primary">Submit</button>
+                            <button class="btn btn-success">Download Template</button>
+                        </div>
+                        <div class="col-lg-4 col-sm-12 d-flex mb-3 justify-content-end">
+                            <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Display the list of products -->
 <h1>Products</h1>

@@ -2,80 +2,96 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Products;
-use App\Models\Variations;
 use Auth;
+use App\Models\Units;
+use App\Models\Brands;
+use App\Models\Product;
+use App\Models\Variation;
+use App\Models\Categories;
+use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
     public function index()
     {
-        $products = Products::all();
+        $products = Product::all();
         return view('products.index', compact('products'));
     }
 
     public function create()
     {
-        return view('products.create');
+
+        $brands = Brands::all();
+        $categories = Categories::all();
+        $units = Units::all();
+        return view('products.create',compact('brands','categories','units'));
     }
 
     public function store(Request $request)
     {
+    //    return $request->variations[0]['variation_select'];
         // Validate the form data
-        $validatedData = $request->validate([
-            'item_code' => 'required',
-            'product_id' => 'required',
-            'company_name' => 'required',
-            'product_name' => 'required',
-            'country' => 'required',
-            'unit' => 'required',
-            'brand' => 'required',
+        // $validatedData = $request->validate([
+        //     'item_code' => 'required',
+        //     'company_name' => 'required',
+        //     'product_name' => 'required',
+        //     'sku' =?
+        //     'country' => 'required',
+        //     'unit' => 'required',
+        //     'brand' => 'required',
            
-            // Add validation rules for other fields
-            // ...
-        ]);
+        // ]);
 
         // Create a new product instance
-        $product = new Products;
-        $product->item_code = $validatedData['item_code'];
-        $product->product_id = $validatedData['product_id'];
-        $product->company_name = $validatedData['company_name'];
-        $product->product_name = $validatedData['product_name'];
-        $product->country = $validatedData['country'];
-        $product->unit = $validatedData['unit'];
-        $product->brand = $validatedData['brand'];
-        // Set other product attributes
-
-        // Save the product to the database
+        $product = new Product;
+        $product->item_code = $request->item_code;
+        $product->company_name = $request->company_name;
+        $product->product_name = $request->product_name;
+        $product->sku = $request->sku;
+        $product->country = $request->country;
+        $product->unit_id = $request->unit_id;
+        $product->brand_id = $request->brand_id;
+        $product->category_id = $request->category_id;
+        $product->received_date = $request->received_date;
+        $product->quantity = $request->quantity;
+        $product->received_qty = $request->received_qty;
+        $product->expired_date = $request->expired_date;
+        $product->description = $request->description;
+        $product->created_by = Auth::user()->id;
+        if (isset($request->image)) {
+            $imagePath = $request->image->store('products', 'public'); // Store the image
+            $product->image = $imagePath;
+           
+        }
         $product->save();
 
-        // Handle variations
-        $variations = $request->input('variation_select');
-        $purchasePrices = $request->input('purchase_price');
-        $points = $request->input('points');
-        $tickets = $request->input('tickets');
-        $kyat = $request->input('kyat');
-        // $variationImages = $request->file('variation_image');
+        $variations = $request->variations;
 
-        // Iterate over the variations and save them to the database
-        for ($i = 0; $i < count($variations); $i++) {
-            $variation = new Variations;
-            $variation->variation_select = $variations[$i];
-            $variation->purchase_price = $purchasePrices[$i];
-            $variation->points = $points[$i];
-            $variation->tickets = $tickets[$i];
-            $variation->kyat = $kyat[$i];
 
-            // Handle variation image upload and storage
-            // if ($variationImages[$i]) {
-            //     $imagePath = $variationImages[$i]->store('variation_images', 'public');
-            //     $variation->image = $imagePath;
-            // }
+        foreach($variations as $variation_data){
+            $variation = new Variation;
+            $variation->product_id = $product->id;
+            $variation->variation_select = $variation_data['variation_select'];
+            $variation->variation_value = $variation_data['variation_value'];
+            $variation->purchased_price = $variation_data['purchased_price'];
+            $variation->points = $variation_data['points'];
+            $variation->tickets = $variation_data['tickets'];
+            $variation->kyat = $variation_data['kyat'];
+            $variation->created_by = Auth::user()->id;
+
+            if (isset($variation_data['variation_image'])) {
+                $imagePaths = [];
+                foreach ($variation_data['variation_image'] as $variation_image) {
+                    $imagePath = $variation_image->store('variations', 'public'); // Store the image
+                    $imagePaths[] =  $imagePath;
+                }
+                $variation->variation_image = json_encode($imagePaths);
+            }
 
             $variation->save();
         }
-        return redirect()->route('products.create')->with('succes','Brands create successfully');
+    
+        return redirect()->route('products.create')->with('success','Product create successfully');
 
     }
 
