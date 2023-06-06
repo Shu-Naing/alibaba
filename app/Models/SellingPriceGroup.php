@@ -11,7 +11,7 @@ class SellingPriceGroup extends Model
 
     protected $fillable = [
         'name',
-        'description',
+        'descriptions',
         'created_by',
         'updated_by’',
         'status'

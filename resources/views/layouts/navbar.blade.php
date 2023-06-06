@@ -65,13 +65,13 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('products.index') }}" class="nav-link sidebar-link ">
                     <hr>
                     <span class="d-none d-sm-inline">List Product</span>
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link ">
+                  <a href="{{ route('products.create') }}" class="nav-link sidebar-link ">
                     <hr>
                     <span class="d-none d-sm-inline">Add Product</span>
                   </a>
@@ -122,7 +122,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="#" class="nav-link sidebar-link">
+                  <a href="{{ route('sellingprice.index') }}" class="nav-link sidebar-link">
                     <hr>
                     <span class="d-none d-sm-inline">Selling Price Group</span> 
                   </a>
@@ -133,6 +133,12 @@
               <a href="#" class="nav-link px-0 align-middle">
                 <i class="fs-4 bi bi-cart-check"></i>
                 <span class="d-none d-sm-inline">Purchase</span></a
+              >
+            </li>
+            <li class="nav-item nav-small-cap">
+              <a href="#" class="nav-link px-0 align-middle">
+                <i class="fs-4 bi bi-receipt"></i>
+                <span class="d-none d-sm-inline">Pos</span></a
               >
             </li>
             <li class="nav-item nav-small-cap">

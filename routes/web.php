@@ -21,8 +21,9 @@ use App\Http\Controllers\UnitsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\DistributeController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\SellingPriceGroupController;
+use App\Http\Controllers\ProductsController;
 
-  
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +50,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('categories', CategoriesController::class);
     Route::resource('brands', BrandsController::class);
     Route::resource('units', UnitsController::class);
+    Route::resource('products', ProductsController::class);
+    Route::resource('sellingprice', SellingPriceGroupController::class);
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
@@ -61,6 +64,24 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
     Route::get('/get-product-lists',[ProductController::class,'get_product_lists']);
+    Route::get('/sellingprice/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])
+    ->name('sellingprice.deactivate');
+
+    Route::get('/sellingprice/{id}/activate', [SellingPriceGroupController::class, 'activate'])
+    ->name('sellingprice.activate');
+
+    Route::put('sellingprice/{id}/toggle', [SellingPriceGroupController::class, 'toggle'])
+    ->name('sellingprice.toggle');
+
+    Route::post('/sellingprice/{id}/status', [SellingPriceGroupController::class, 'toggle'])->name('sellingprice.updateStatus');
+
+    Route::put('/sellingprice/{id}/sell', [SellingPriceGroupController::class, 'sell'])->name('sellingprice.sell');
+
+
+    Route::get('/courses/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])->name('courses.deactivate');
+    Route::get('/courses/{id}/activate', [SellingPriceGroupController::class, 'activate'])->name('courses.activate');
+
+
 
     Route::get('/update-product-qty/{id}', [ProductController::class, 'update_product_qty']);
     Route::get('/delete-dis-product/{id}', [ProductController::class,'delete_dis_product']);
