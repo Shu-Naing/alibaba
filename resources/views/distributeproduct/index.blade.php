@@ -79,10 +79,15 @@
 
         <h5 class="fw-bold mb-4">Add Products</h5>
         <div class="input-group rounded w-25 mb-3">
-            <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <form>
+                <input type="text" id="searchInput" placeholder="Search...">
+                <div id="searchResults"></div>
+            </form>
+
+            <!-- <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
             <span class="input-group-text border-0" id="search-addon">
                 <i class="bi bi-search"></i>
-            </span>
+            </span> -->
         </div>
 
         <div>
@@ -97,22 +102,86 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="text-align: left;">
+                        <td class="align-middle" style="text-align: left;">
                             POKEMON KORORIN FRIENDS PLUSH - PLUSLE . MINUN . TURTWIG . RIOLU - (Size:M-2) BP17923P-1
                         </td>
-                        <td> 6Pcs + -</td>
-                        <td>9,708</td>
-                        <td>58,248</td>
-                        <td>Delete</td>
+                        <!-- <td class="align-middle"> 6Pcs + -</td> -->
+                        <td class="align-middle"> 
+                                <div class="qty-box border rounded">
+                                    <div class="row gx-0">
+                                        <div class="col">
+                                            <div class="border p-2"><input type="text" class="number" value="0"></div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseValue(this, 100)" value="Increase Value">+</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="decreaseValue(this, 100)" value="Decrease Value">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        <td class="align-middle">9,708</td>
+                        <td class="align-middle">58,248</td>
+                        <td class="align-middle">Delete</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table table-bordered text-center shadow rounded">
+                <thead>
+                    <tr>
+                    <th scope="col" style="width: 30%;">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Purchased Price</th>
+                    <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="align-middle" style="text-align: left;">
+                            POKEMON KORORIN FRIENDS PLUSH - PLUSLE . MINUN . TURTWIG . RIOLU - (Size:M-2) BP17923P-1
+                        </td>
+                        <!-- <td class="align-middle"> 6Pcs + -</td> -->
+                        <td class="align-middle"> 
+                            <div class="qty-box border rounded">
+                                <div class="row gx-0">
+                                    <div class="col">
+                                        <div class="border p-2"><input type="text" class="number" min="0" value="0"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseValue(this, 200)" value="Increase Value">+</div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="decreaseValue(this, 200)" value="Decrease Value">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="align-middle">9,708</td>
+                        <td class="align-middle">58,248</td>
+                        <td class="align-middle">Delete</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="text-center">
+        <div class="row justify-content-end my-5">
+            <div class="col-md-4">
+                <label for="remark" class="d-block mb-2">Remark</label>
+                <textarea name="remark" id="" cols="40" rows="4"></textarea>
+            </div>
+            <div class="col-md-4 align-items-center d-flex">
+                <h4 class="fw-bolder">Total Amount: <span class="ms-3 inline-block text-blue">108,936</span></h4> 
+            </div>
+        </div>
+
+        <div class="text-center my-5">
             <a class="btn btn-red" href="{{ url()->previous() }}">Cancel</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
             <button type="submit" class="btn btn-blue ms-2">Save</button>
         </div>
     </div>
+    
+
 @endsection

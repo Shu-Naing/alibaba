@@ -1,8 +1,8 @@
 <?php
-    // return [
-    //     'ridertypes' => [
-    //         INHOUSE => 'IN-HOUSE',
-    //         OUTSOURCE => 'OUT-SOURCE'
-    //     ]        
-    // ];
+    return [
+        'ds_status' => [
+            DS_PENDING => 'pending',
+            DS_APPROVE => 'approve'
+        ]    
+    ];
 ?>

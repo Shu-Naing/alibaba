@@ -116,7 +116,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('distribute-products.index') }}" class="nav-link sidebar-link {{ Route::is('distribute-products.index') ? 'active' : '' }}">
+                  <a href="{{ route('distribute.create') }}" class="nav-link sidebar-link {{ Route::is('distribute.create') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Distribute Product</span>
                   </a>

@@ -29,20 +29,14 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('riders.index',function($view){      
             $view->with('ridertypes',config('constants.ridertypes'));
         });
-        view()->composer('riders.create',function($view){      
-            $view->with('ridertypes',config('constants.ridertypes'));
-        });
-        view()->composer('riders.show',function($view){      
-            $view->with('ridertypes',config('constants.ridertypes'));
-        });
-        view()->composer('riders.view',function($view){      
-            $view->with('ridertypes',config('constants.ridertypes'));
-        });
-        view()->composer('riders.edit',function($view){      
-            $view->with('ridertypes',config('constants.ridertypes'));
-        });
         view()->composer('components.detail-card',function($view){      
             $view->with('ridertypes',config('constants.ridertypes'));
+        });
+        view()->composer('distribute.create',function($view){      
+            $view->with('ds_status',config('constants.ds_status'));
+        });
+        view()->composer('distribute.edit',function($view){      
+            $view->with('ds_status',config('constants.ds_status'));
         });
     }
 }

@@ -15,6 +15,10 @@ body {
   font-family: "inter";
 }
 
+.text-blue {
+  color: var(--blue);
+}
+
 /* sidebar menu start */
 .nav-small-cap {
   padding: 0;
@@ -86,8 +90,11 @@ li.nav-item.nav-small-cap a span {
 }
 
 /* sidebar scroll style */
+/* .autocomplete-items::-webkit-scrollbar {
+  width: 10px;
+} */
 .scroll-sidebar::-webkit-scrollbar {
-  width: 0px;
+  width: 10px;
 }
 
 .scroll-sidebar:hover::-webkit-scrollbar {
@@ -132,3 +139,89 @@ li.nav-item.nav-small-cap a span {
   color: white;
 }
 /* btton style end */
+
+/* quanity increase decrease start */
+.value-button:hover {
+  cursor: pointer;
+}
+
+.value-button {
+  /* display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding: 11px;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none; */
+  user-select: none;
+}
+
+input.number {
+  text-align: center;
+  border: none;
+  margin: 0px;
+  width: 40px;
+  /* height: 40px; */
+}
+/* quanity increase decrease end */
+
+/* product */
+.add_var > * {
+  width: 23%;
+}
+
+/* .autocomplete-items {
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  z-index: 1;
+}
+
+.autocomplete-items .autocomplete-data {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.autocomplete-items .autocomplete-data:hover {
+  background-color: #ddd;
+} */
+
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: relative;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #c22926;
+  color: white;
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important;
+  color: #ffffff;
+}

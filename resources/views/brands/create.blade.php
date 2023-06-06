@@ -23,28 +23,28 @@
             </div>
         @endif
         {!! Form::open(['route' => 'brands.store', 'method' => 'post', 'enctype' => 'multipart/form-data', 'class' => 'px-3']) !!}
-    @csrf
-    <div class="row mb-3">
-        <div class="col-md-12">
-            <label for="brand_name" class="form-label">Name *</label>
-            <input type="text" class="form-control @error('brand_name') is-invalid @enderror" name="brand_name" id="brand_name" aria-describedby="emailHelp">
-            @error('brand_name')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-        <div class="col-md-12">
-            <label for="note" class="form-label">Short Description *</label>
-            <textarea class="form-control @error('note') is-invalid @enderror" name="note" id="note" style="height: 200px;"></textarea>
-            @error('note')
-                <span class="text-danger">{{ $message }}</span>
-            @enderror
-        </div>
-    </div>
-    <div class="text-center">
-        <a href="{{ URL::previous() }}" class="btn btn-red">Cancel</a>
-        <button type="submit" class="btn btn-blue ms-2">Save</button>
-    </div>
-{!! Form::close() !!}
+            @csrf
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="brand_name" class="form-label">Name *</label>
+                    <input type="text" class="form-control @error('brand_name') is-invalid @enderror" name="brand_name" id="brand_name" aria-describedby="emailHelp">
+                    @error('brand_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-12">
+                    <label for="note" class="form-label">Short Description *</label>
+                    <textarea class="form-control @error('note') is-invalid @enderror" name="note" id="note" style="height: 200px;"></textarea>
+                    @error('note')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{{ URL::previous() }}" class="btn btn-red">Cancel</a>
+                <button type="submit" class="btn btn-blue ms-2">Save</button>
+            </div>
+        {!! Form::close() !!}
 
     </div>
 @endsection

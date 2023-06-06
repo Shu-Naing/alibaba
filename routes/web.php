@@ -18,6 +18,9 @@ use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\DistributeProductController;
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\UnitsController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\DistributeController;
+use App\Http\Controllers\TestController;
 
   
 /*
@@ -49,10 +52,19 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
+    Route::resource('distribute', DistributeController::class);
+    // Route::resource('distribute/{id}', DistributeController::class);
+    Route::get('product', [ProductController::class, 'index'])->name('product');
 
     Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
+    Route::get('/get-product-lists',[ProductController::class,'get_product_lists']);
 
+    Route::get('/update-product-qty/{id}', [ProductController::class, 'update_product_qty']);
+    Route::get('/delete-dis-product/{id}', [ProductController::class,'delete_dis_product']);
+
+    // Route::get('test', [TestController::class,'index'])->name('test.search');
 });
 

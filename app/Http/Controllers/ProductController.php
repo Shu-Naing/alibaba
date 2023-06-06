@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Outlets;
-use App\Models\Brands;
+use App\Models\Variants;
+use App\Models\DistributeProducts;
 
-class DistributeProductController extends Controller
+
+class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +18,9 @@ class DistributeProductController extends Controller
     {
         $breadcrumbs = [
               ['name' => 'Outlets', 'url' => route('outlets.index')],
-              ['name' => 'Distribute Products']
+              ['name' => 'List Outlets']
         ];
-        $outlets = Outlets::all();
-
-        return view('distributeproduct.index', compact('breadcrumbs', 'outlets'));
+        return view('products.name', compact('breadcrumbs'));
     }
 
     /**
@@ -90,14 +89,38 @@ class DistributeProductController extends Controller
         //
     }
 
-     public function search(Request $request)
-    {
-        $keyword = $request->input('keyword');
-        
-        $brands = Brands::where('brand_name', 'like', '%'.$keyword.'%')
-                            ->orWhere('note', 'like', '%'.$keyword.'%')
-                            ->get();
-        
-        return view('distributeproduct.index', compact('brands'));
+    public function get_product_lists(){
+        $product = Variants::select("variants.id", "products.product_name")->join("products", "variants.product_id", "=", "products.id")->get();
+
+        $product_arr = array();
+
+        foreach($product as $row){ 
+            $product_arr[$row->id] = $row->product_name;           
+        }
+        return $product_arr;
     }
+
+    public function update_product_qty(Request $request, $id) {
+        
+        $DistributeProducts = DistributeProducts::find($id); 
+
+        $input = [];
+        $input['quantity'] = $request->qty;
+        $input['subtotal'] = $request->qty * $DistributeProducts->purchased_price;
+
+        return $DistributeProducts->update($input);
+    }
+
+     public function delete_dis_product($id) {
+        // return $id;
+        $DistributeProducts = DistributeProducts::find($id); 
+        if ($DistributeProducts) {
+            $result = $DistributeProducts->delete();
+            return $result;
+        } else {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        $result = $DistributeProducts->delete();
+    }
+
 }
