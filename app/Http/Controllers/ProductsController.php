@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Variation;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Models\DistributeProducts;
 
 class ProductsController extends Controller
 {
@@ -93,6 +94,40 @@ class ProductsController extends Controller
     
         return redirect()->route('products.create')->with('success','Product create successfully');
 
+    }
+
+    public function get_product_lists(){
+        $product = Variation::select("variations.id", "products.product_name")->join("products", "variations.product_id", "=", "products.id")->get();
+
+        $product_arr = array();
+
+        foreach($product as $row){ 
+            $product_arr[$row->id] = $row->product_name;           
+        }
+        return $product_arr;
+    }
+
+    public function update_product_qty(Request $request, $id) {
+        
+        $DistributeProducts = DistributeProducts::find($id); 
+
+        $input = [];
+        $input['quantity'] = $request->qty;
+        $input['subtotal'] = $request->qty * $DistributeProducts->purchased_price;
+
+        return $DistributeProducts->update($input);
+    }
+
+     public function delete_dis_product($id) {
+        // return $id;
+        $DistributeProducts = DistributeProducts::find($id); 
+        if ($DistributeProducts) {
+            $result = $DistributeProducts->delete();
+            return $result;
+        } else {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        $result = $DistributeProducts->delete();
     }
 
 }

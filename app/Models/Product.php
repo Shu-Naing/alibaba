@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Variation;
 
 class Product extends Model
 {
@@ -29,4 +30,8 @@ class Product extends Model
         'updated_by'
        
     ];
+
+    public function variations() {
+        return $this->hasMany(Variation::class,'id');
+    }
 }

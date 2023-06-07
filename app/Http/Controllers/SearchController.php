@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Products;
-use App\Models\Variants;
+use App\Models\Variation;
 use App\Models\DistributeProducts;
 use Auth;
 
@@ -15,21 +15,21 @@ class SearchController extends Controller
         $html = '';
         $distributedId = $request->input('distributed_id');
         $variantId = $request->input('variant_id');
-        $variant_product = Variants::find($variantId);
+        $variant_product = Variation::find($variantId);
 
         $input = [];
         $input['distribute_id'] = $distributedId;
         $input['variant_id'] = $variantId;
         $input['quantity'] = 1;
-        $input['purchased_price'] = $variant_product->purchase_price;
-        $input['subtotal'] = $variant_product->purchase_price;
+        $input['purchased_price'] = $variant_product->purchased_price;
+        $input['subtotal'] = $variant_product->purchased_price;
         $input['remark'] = '';
         $input['created_by'] = Auth::user()->id;
 
         DistributeProducts::create($input);
 
-        $distribute_product = DistributeProducts::select('distribute_products.*','products.product_name')->join("variants", "variants.id", "=", "distribute_products.variant_id")
-                                ->join("products", "products.id", "=", "variants.product_id")->where("distribute_id", $distributedId)->get();
+        $distribute_product = DistributeProducts::select('distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "distribute_products.variant_id")
+                                ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $distributedId)->get();
 
         $total = 0;
         $subtotal = 0;

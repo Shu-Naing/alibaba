@@ -64,8 +64,8 @@ class OutletController extends Controller
         $outlet->city = $request->city;
         $outlet->state = $request->state;
         $outlet->country = $request->country;
-        $outlet->create_by = Auth::id();
-        $outlet->update_by = Auth::id();
+        $outlet->created_by = Auth::id();
+        // $outlet->update_by = Auth::id();
         $outlet->save();
 
         if ($outlet->save()) {
@@ -128,8 +128,8 @@ class OutletController extends Controller
         $outlet->city = $request->city;
         $outlet->state = $request->state;
         $outlet->country = $request->country;
-        $outlet->create_by = Auth::id();
-        $outlet->update_by = Auth::id();
+        // $outlet->created_by = Auth::id();
+        $outlet->updated_by = Auth::id();
         $outlet->save();
 
         if ($outlet->save()) {

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
+// use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\OrderController;
@@ -58,12 +58,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::resource('distribute', DistributeController::class);
     // Route::resource('distribute/{id}', DistributeController::class);
-    Route::get('product', [ProductController::class, 'index'])->name('product');
+    // Route::get('product', [ProductController::class, 'index'])->name('product');
 
     Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
-    Route::get('/get-product-lists',[ProductController::class,'get_product_lists']);
+    Route::get('/get-product-lists',[ProductsController::class,'get_product_lists']);
     Route::get('/sellingprice/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])
     ->name('sellingprice.deactivate');
 
@@ -83,8 +83,8 @@ Route::group(['middleware' => ['auth']], function() {
 
 
 
-    Route::get('/update-product-qty/{id}', [ProductController::class, 'update_product_qty']);
-    Route::get('/delete-dis-product/{id}', [ProductController::class,'delete_dis_product']);
+    Route::get('/update-product-qty/{id}', [ProductsController::class, 'update_product_qty']);
+    Route::get('/delete-dis-product/{id}', [ProductsController::class,'delete_dis_product']);
 
     // Route::get('test', [TestController::class,'index'])->name('test.search');
 });

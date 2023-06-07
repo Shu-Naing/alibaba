@@ -18,8 +18,16 @@ class Variation extends Model
         'tickets',
         'kyat',
         'variation_image',
+        'size',
+        'receive_quantity',
         'created_by',
-        'updated_by'
-       
+        'updated_by'       
     ];
+
+    
+       
+
+    public function product() {
+        return $this->belongTo(Product::class,'product_id');
+    }
 }

@@ -25,6 +25,8 @@ return new class extends Migration
             $table->string('tickets');
             $table->string('kyat');
             $table->json('variation_image');
+            $table->string('size');
+            $table->integer('receive_quantity');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

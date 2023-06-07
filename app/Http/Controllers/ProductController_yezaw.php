@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Variants;
+use App\Models\Variantion;
 use App\Models\DistributeProducts;
 
 
