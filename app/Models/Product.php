@@ -10,12 +10,8 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'item_code',
         'product_name',
-        'image',
         'sku',
-        'quantity',
-        'received_qty',
         'description',
         'brand_id',
         'category_id',
@@ -29,4 +25,9 @@ class Product extends Model
         'updated_by'
        
     ];
+
+    public function variations()
+    {
+        return $this->hasMany(Variation::class);
+    }
 }
