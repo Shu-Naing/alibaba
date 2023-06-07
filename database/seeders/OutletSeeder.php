@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Outlets;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class OutletSeeder extends Seeder
 {
@@ -16,12 +17,14 @@ class OutletSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('outlets')->insert([
-            'outlet_id' => Str::random(10),
-            'name' => Str::random(10),
-            'city' => Str::random(10),
-            'state' => Str::random(10),
-            'country' => Str::random(10)
+
+        Outlets::create([
+            'outlet_id' => 1000000,
+            'name' => 'Main Outlet',
+            'city' => 'Yangon',
+            'state' => 'Yangon',
+            'country' => 'Myanmar',
+            'created_by' => 1,
         ]);
     }
 }
