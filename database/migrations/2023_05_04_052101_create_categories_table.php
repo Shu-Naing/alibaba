@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('create_by');
-            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
         });
     }
 

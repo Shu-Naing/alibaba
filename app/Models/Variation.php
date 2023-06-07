@@ -11,23 +11,23 @@ class Variation extends Model
 
     protected $fillable = [
         'product_id',
-        'variation_select',
-        'variation_value',
+        'select',
+        'value',
+        'item_code',
+        'received_qty',
+        'alert_qty',
         'purchased_price',
         'points',
         'tickets',
         'kyat',
-        'variation_image',
-        'size',
-        'receive_quantity',
+        'image',
         'created_by',
         'updated_by'       
     ];
 
-    
-       
 
-    public function product() {
-        return $this->belongTo(Product::class,'product_id');
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

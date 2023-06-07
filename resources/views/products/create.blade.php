@@ -31,24 +31,26 @@
                     <div class="card p-3">
                         <div class="row">
                             <div class="col-lg-4">
-                                <label for="item_code" class="form-label">Item Code</label>
-                                <input type="text" class="form-control" name="item_code">
-                            </div>
-                            <div class="col-lg-4">
-                                <label for="company_name" class="form-label">Company Name</label>
-                                <input type="text" class="form-control" name="company_name">
-                            </div>
-                            <div class="col-lg-4 my-2">
                                 <label for="product_name" class="form-label">Product Name *</label>
                                 <input type="text" class="form-control" name="product_name">
                             </div>
-                            <div class="col-lg-4 my-2">
-                                <label for="sku" class="form-label">SKU *</label>
-                                <input type="text" class="form-control" name="sku">
+                            <div class="col-lg-4">
+                                <label for="category" class="form-label">Category</label>
+                                <select class="form-select" name="category_id">
+                                    <option selected>Choose Category</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-lg-4 my-2">
-                                <label for="country" class="form-label">Country</label>
-                                <input type="text" class="form-control" name="country">
+                            <div class="col-lg-4">
+                                <label for="brand" class="form-label">Brand</label>
+                                <select class="form-select" name="brand_id">
+                                    <option selected>Choose Brand</option>
+                                    @foreach ($brands as $brand)
+                                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col-lg-4 my-2">
                                 <label for="unit" class="form-label">Unit *</label>
@@ -60,28 +62,22 @@
                                 </select>       
                             </div>
                             <div class="col-lg-4 my-2">
-                                <label for="brand" class="form-label">Brand</label>
-                                <select class="form-select" name="brand_id">
-                                    <option selected>Choose Brand</option>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="company_name" class="form-label">Company Name</label>
+                                <input type="text" class="form-control" name="company_name">
                             </div>
                             <div class="col-lg-4 my-2">
-                                <label for="category" class="form-label">Category</label>
-                                <select class="form-select" name="category_id">
-                                    <option selected>Choose Category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" class="form-control" name="country">
+                            </div>
+                            <div class="col-lg-4 my-2">
+                                <label for="sku" class="form-label">SKU *</label>
+                                <input type="text" class="form-control" name="sku">
                             </div>
                             <div class="col-lg-4 my-2">
                                 <label for="received_date" class="form-label">Received Date</label>
                                 <input type="date" class="form-control" name="received_date">
                             </div>
-                            <div class="col-lg-2 my-2">
+                            {{-- <div class="col-lg-2 my-2">
                                 <label for="alert_quantity" class="form-label">Alert Quantity</label>
                                 <input type="text" class="form-control" name="quantity">
                             </div>
@@ -90,19 +86,19 @@
                                     Manage Stock
                                     </label>
                                 <input class="form-check-input" type="checkbox" value="" id="manage_stock" name="manage_stock"> 
-                            </div>
-                            <div class="col-lg-4 my-2">
+                            </div> --}}
+                            {{-- <div class="col-lg-4 my-2">
                                 <label for="received_qty" class="form-label">Received Qty</label>
                                 <input type="text" class="form-control" name="received_qty">
-                            </div>
+                            </div> --}}
                             <div class="col-lg-4 my-2">
                                 <label for="expired_date" class="form-label">Expired Date</label>
                                 <input type="date" class="form-control" name="expired_date">
                             </div>
-                            <div class="col-lg-4 my-2">
+                            {{-- <div class="col-lg-4 my-2">
                                 <label for="image" class="form-label">Product Image</label>
                                 <input type="file" class="form-control" name="image">
-                            </div>
+                            </div> --}}
                         </div>
                         <div class="row my-2">
                             <div class="col-lg-12">
@@ -126,17 +122,25 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>
-                                <input type="text" class="form-control" name="variations[0][variation_select]">
+                                <input type="text" class="form-control" name="variations[0][select]">
                             </div>
                             <div class="col-lg-3">
                                 <label for="value" class="form-label">Value</label>
-                                <input type="text" class="form-control" name="variations[0][variation_value]">
+                                <input type="text" class="form-control" name="variations[0][value]">
                             </div>
                             <div class="col-lg-3">
-                                <label for="purchased_price" class="form-label">Purchased Price</label>
-                                <input type="text" class="form-control" name="variations[0][purchased_price]">
+                                <label for="received_qty" class="form-label">Received Qty</label>
+                                <input type="text" class="form-control" name="variations[0][received_qty]">
                             </div>
                             <div class="col-lg-3">
+                                <label for="alert_quantity" class="form-label">Alert Quantity</label>
+                                <input type="text" class="form-control" name="variations[0][alert_qty]">
+                            </div>
+                            <div class="col-lg-3 my-3">
+                                <label for="item_code" class="form-label">Item Code</label>
+                                <input type="text" class="form-control" name="variations[0][item_code]">
+                            </div>
+                            <div class="col-lg-3 my-3">
                                 <label for="points" class="form-label">Points</label>
                                 <input type="text" class="form-control" name="variations[0][points]">
                             </div>
@@ -148,10 +152,18 @@
                                 <label for="kyat" class="form-label">Kyat</label>
                                 <input type="text" class="form-control" name="variations[0][kyat]">
                             </div>
-                            <div class="col-lg-4 my-3">
-                                <label for="product_img" class="form-label">Product Image</label>
-                                <input type="file" class="form-control" name="variations[0][variation_image][]" multiple>
+                            <div class="col-lg-3">
+                                <label for="purchased_price" class="form-label">Purchased Price</label>
+                                <input type="text" class="form-control" name="variations[0][purchased_price]">
                             </div>
+                            <div class="col-lg-4">
+                                <label for="product_img" class="form-label">Product Image</label>
+                                <input type="file" class="form-control" name="variations[0][image]">
+                            </div>
+                            {{-- <div class="col-lg-4">
+                                <label for="product_img" class="form-label">Product Image</label>
+                                <input type="file" class="form-control" name="variations[0][image][]" multiple>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -178,40 +190,51 @@
     $("#add-variation").off('click').on('click', function() {
     var variationCount = $('.variation').length;
     var variationTemplate = `<div class="col-lg-12 mt-2 variation" id="variation_${variationCount}">
-                                <div class="card p-3">
-                                    <i class="bi bi-dash-square text-danger fs-6 text-end" id="remove-variation" onclick="removeVariation(${variationCount})"></i>
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <label for="select" class="form-label">Select</label>
-                                            <input type="text" class="form-control" name="variations[${variationCount}][variation_select]">
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label for="value" class="form-label">Value</label>
-                                            <input type="text" class="form-control" name="variations[${variationCount}][variation_value]">
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label for="purchased_price" class="form-label">Purchased Price</label>
-                                            <input type="text" class="form-control" name="variations[${variationCount}][purchased_price]">
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <label for="points" class="form-label">Points</label>
-                                            <input type="text" class="form-control" name="variations[${variationCount}][points]">
-                                        </div>
-                                        <div class="col-lg-3 my-3">
-                                            <label for="tickets" class="form-label">Tickets</label>
-                                            <input type="text" class="form-control" name="variations[${variationCount}][tickets]">
-                                        </div>
-                                        <div class="col-lg-3 my-3">
-                                            <label for="kyat" class="form-label">Kyat</label>
-                                            <input type="text" class="form-control" name="variations[${variationCount}][kyat]">
-                                        </div>
-                                        <div class="col-lg-4 my-3">
-                                            <label for="product_img" class="form-label">Product Image</label>
-                                            <input type="file" class="form-control" name="variations[${variationCount}][variation_image][]" multiple>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
+                    <div class="card p-3">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <label for="select" class="form-label">Select</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][select]">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="value" class="form-label">Value</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][value]">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="received_qty" class="form-label">Received Qty</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][received_qty]">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="alert_quantity" class="form-label">Alert Quantity</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][alert_qty]">
+                            </div>
+                            <div class="col-lg-3 my-3">
+                                <label for="item_code" class="form-label">Item Code</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][item_code]">
+                            </div>
+                            <div class="col-lg-3 my-3">
+                                <label for="points" class="form-label">Points</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][points]">
+                            </div>
+                            <div class="col-lg-3 my-3">
+                                <label for="tickets" class="form-label">Tickets</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][tickets]">
+                            </div>
+                            <div class="col-lg-3 my-3">
+                                <label for="kyat" class="form-label">Kyat</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][kyat]">
+                            </div>
+                            <div class="col-lg-3">
+                                <label for="purchased_price" class="form-label">Purchased Price</label>
+                                <input type="text" class="form-control" name="variations[${variationCount}][purchased_price]">
+                            </div>
+                            <div class="col-lg-4">
+                                <label for="product_img" class="form-label">Product Image</label>
+                                <input type="file" class="form-control" name="variations[${variationCount}][image]">
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
 
                 $(".variation:last").after(variationTemplate);
 

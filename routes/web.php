@@ -2,27 +2,28 @@
   
 use Illuminate\Support\Facades\Route;
   
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
-// use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\PromotionsController;
-use App\Http\Controllers\CategoriesController;
-use App\Http\Controllers\OutletController;
-use App\Http\Controllers\MachineController;
-use App\Http\Controllers\SelectBoxController;
-use App\Http\Controllers\DistributeProductController;
-use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\UnitsController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\DistributeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\SellingPriceGroupController;
+use App\Http\Controllers\BrandsController;
+use App\Http\Controllers\OutletController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\MachineController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\SelectBoxController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\PromotionsController;
+use App\Http\Controllers\DistributeProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('distribute', DistributeController::class);
     // Route::resource('distribute/{id}', DistributeController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product');
+
+
+    //Pos Route Start
+    Route::get('pos',[PosController::class,'index'])->name('pos.index');
+    Route::get('product-data/{variation_id}',[PosController::class,'getProductData'])->name('productdata.get');
+    Route::post('pos-item/add',[PosController::class,'addItemPos'])->name('positem.add');
 
     Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
     Route::get('/edit', [SelectBoxController::class, 'edit']);

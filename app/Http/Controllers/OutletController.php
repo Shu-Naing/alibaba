@@ -53,7 +53,10 @@ class OutletController extends Controller
     {
         $this->validate($request, [
             'outletId' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
         ]);
 
         // return $request->name;
@@ -119,7 +122,10 @@ class OutletController extends Controller
     {
         $this->validate($request, [
             'outletId' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
         ]);
 
         $outlet = Outlets::findorFail($id);
