@@ -2,7 +2,11 @@
 
 // const { start } = require("@popperjs/core");
 
-$("#table_id").DataTable();
+
+$('#table_id').DataTable({
+  lengthChange: false // Disable "Show entries"
+
+});
 
 $(document).ready(function () {
   let submenu = document.querySelectorAll(".submenuParent");
