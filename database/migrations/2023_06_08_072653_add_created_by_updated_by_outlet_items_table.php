@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('temps', function (Blueprint $table) {
-            $table->id();
-            $table->
-            $table->timestamps();
+        Schema::table('outlet_items', function (Blueprint $table) {
+            $table->unsignedBigInteger('created_by')->after('quantity');
+            $table->unsignedBigInteger('updated_by')->nullable()->after('created_by');
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temps');
+        //
     }
 };
