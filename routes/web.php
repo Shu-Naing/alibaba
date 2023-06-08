@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('sellingprice', SellingPriceGroupController::class);
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
-    // Route::resource('distribute-products', DistributeProductController::class);
+    Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
 
