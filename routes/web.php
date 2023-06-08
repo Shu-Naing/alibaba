@@ -24,6 +24,7 @@ use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\DistributeProductController;
+use App\Http\Controllers\OutletStockOverviewController;
 
 /*
 |--------------------------------------------------------------------------

@@ -7,6 +7,7 @@ use App\models\Outlets;
 use App\models\distributes;
 use App\models\DistributeProducts;
 use App\models\Variation;
+use App\models\OutletItem;
 use Validator;
 use Auth;
 
@@ -105,12 +106,15 @@ class DistributeController extends Controller
     public function update(Request $request, $id)
     {
         // return $request;
-        $input = $request->all();    
+        $input = $request->all();
         $inputs['updated_by'] = Auth::user()->id;
         $distribute = distributes::find($id);
         $distribute->update($input);
+<<<<<<< HEAD
         
         
+=======
+>>>>>>> 3b2807618f725cfb6178a09dd5b5d4256125f4d4
 
         //select distribute product with distribute id
         // $distribute_products = array();
@@ -118,6 +122,7 @@ class DistributeController extends Controller
         // return $distribute_products;
         foreach($distribute_products as $row){
             $input = [];
+<<<<<<< HEAD
             $input['outlet_id'] = $row->outlet_id;
             $input['variation_id'] = $row->variant_id;
             $input['quantity'] = $row->quantity;
@@ -129,6 +134,21 @@ class DistributeController extends Controller
             
             //update outlet_items_tbl with main outlet id 
             $mainOutlet = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variant_id', $row->variant_id)->first();
+=======
+            $input['outlet_id'] = $request->to_outlet;
+            $input['variation_id'] = $row->variant_id;
+            $input['quantity'] = $row->quantity;
+            $input['created_by'] = Auth::user()->id;
+
+            //create $input with outlet_itmes_tbl columns
+            OutletItem::create($input);
+            //get main inventory qty  with variant_id and main outlet id
+            $main_inv_qty = OutletItem::select('quantity')->where('outlet_id', MAIN_INV_ID)->where('variation_id', $row->variant_id)->first();
+            $qty = $main_inv_qty->quantity - $row->quantity;
+            
+            //update outlet_items_tbl with main outlet id 
+            $mainOutlet = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id', $row->variant_id)->first();
+>>>>>>> 3b2807618f725cfb6178a09dd5b5d4256125f4d4
             $input = [];
             $input['quantity'] = $qty;
             $mainOutlet->update($input);  
