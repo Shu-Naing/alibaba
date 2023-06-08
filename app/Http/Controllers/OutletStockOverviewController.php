@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Outlets;
 use App\Models\Machines;
+use App\Models\OutletStockOverview;
 
 class OutletStockOverviewController extends Controller
 {
@@ -17,7 +18,8 @@ class OutletStockOverviewController extends Controller
     {
         $outlets = Outlets::all();
         $machines = Machines::all();
-        return view('outletstockoverview.index', compact('outlets', 'machines'));
+        $outletstocks = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')->get();
+        return view('outletstockoverview.index', compact('outlets', 'machines', 'outletstocks'));
     }
 
     /**
