@@ -23,6 +23,7 @@ use App\Http\Controllers\DistributeController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\SellingPriceGroupController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\OutletStockOverviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +56,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
-    Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::resource('distribute', DistributeController::class);
+    Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
+
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
     // Route::resource('distribute/{id}', DistributeController::class);
     Route::get('product', [ProductController::class, 'index'])->name('product');
 

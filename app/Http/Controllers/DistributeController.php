@@ -106,10 +106,35 @@ class DistributeController extends Controller
         // return $request;
         $input = $request->all();    
         $inputs['updated_by'] = Auth::user()->id;
-        $brand = distributes::find($id);
-        $brand->update($input);
+        $distribute = distributes::find($id);
+        $distribute->update($input);
+        
+        
+
+        //select distribute product with distribute id
+        // $distribute_products = array();
+        $distribute_products = DistributeProducts::where('distribute_id', $id)->get();
+        // return $distribute_products;
+        foreach($distribute_products as $row){
+            $input = [];
+            $input['outlet_id'] = $row->outlet_id;
+            $input['variation_id'] = $row->variant_id;
+            $input['quantity'] = $row->quantity;
+            //create $input with outlet_itmes_tbl columns
+            OutletItemsModel::create($input);
+            //get main inventory qty  with variant_id and main outlet id
+            $main_inv_qty = OutletItem::select('quantity')->where('outlet_id', MAIN_INV_ID)->where('variant_id', $row->variant_id)->first();
+            $qty = $main_inv_qty->quantity - $row->quantity;
+            
+            //update outlet_items_tbl with main outlet id 
+            $mainOutlet = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variant_id', $row->variant_id)->first();
+            $input = [];
+            $input['quantity'] = $qty;
+            $mainOutlet->update($input);  
+
+        }
         return redirect()->back()
-            ->with('success','Brand updated successfully');
+            ->with('success','Distribute updated successfully');
     }
 
     /**

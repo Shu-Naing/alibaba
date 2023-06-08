@@ -4,6 +4,7 @@
     use App\Models\distributes;
     define('DS_PENDING', '1');
     define('DS_APPROVE', '2');
+    define('MAIN_INV_ID', '1');
     
 
     function getOutlets(){
@@ -17,5 +18,6 @@
         }
         return $Outlets_arr;
     }
+
 
 ?>

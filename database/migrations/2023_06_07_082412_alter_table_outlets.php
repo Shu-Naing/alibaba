@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('product_name')->after('photo_path');
+        Schema::table('outlets', function (Blueprint $table) {
+            $table->string('outlet_id')->change();            
         });
     }
 
@@ -25,8 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->string('product_name');
-        });
+        //
     }
 };
