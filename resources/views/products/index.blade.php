@@ -32,25 +32,45 @@
         </div>
         <!-- Display the list of products -->
 <h1>Products</h1>
-<table>
+<table id="table_id">
     <thead>
         <tr>
+            <th>ID</th>
             <th>Item Code</th>
-            <th>Product ID</th>
-            <th>Company Name</th>
+            <th>Image</th>
             <th>Product Name</th>
-            <!-- Add more table headers for other fields -->
+            <th>Points</th>
+            <th>Tickets</th>
+            <th>Kyat</th>
+            <th>Received Qty</th>
+            <th>Received Date</th>
+            <th>Company Name</th>
+            <th>Country</th>
+            <th>Category</th>
+            <th>Unit</th>
         </tr>
     </thead>
     <tbody>
-        @foreach($products as $product)
+        @foreach ($products as $product)
         <tr>
-            
-            <!-- Add more table cells for other fields -->
+            <td>{{ $product->id }}</td>
+            <td>{{ $product->item_code }}</td>
+            <td>{{ $product->image }}</td>
+            <td>{{ $product->product->product_name }}</td>
+            <td>{{ $product->points }}</td>
+            <td>{{ $product->tickets }}</td>
+            <td>{{ $product->kyat }}</td>
+            <td>{{ $product->received_qty }}</td>
+            <td>{{ $product->product->received_date }}</td>
+            <td>{{ $product->product->company_name }}</td>
+            <td>{{ $product->product->country }}</td>
+            <td>{{ $product->product->category->category_name }}</td>
+            <td>{{ $product->product->unit->name }}</td>
         </tr>
         @endforeach
     </tbody>
 </table>
+
 
     </div>
     <style>
