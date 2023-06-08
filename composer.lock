@@ -911,8 +911,6 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
-<<<<<<< HEAD
-=======
         },
         {
             "name": "ezyang/htmlpurifier",
@@ -974,7 +972,6 @@
                 "source": "https://github.com/ezyang/htmlpurifier/tree/v4.16.0"
             },
             "time": "2022-09-18T07:06:19+00:00"
->>>>>>> 3b2807618f725cfb6178a09dd5b5d4256125f4d4
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -2883,17 +2880,6 @@
             "time": "2023-02-06T13:44:46+00:00"
         },
         {
-<<<<<<< HEAD
-            "name": "nesbot/carbon",
-            "version": "2.67.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "c1001b3bc75039b07f38a79db5237c4c529e04c8"
-            },
-            "dist": {
-                "type": "zip",
-=======
             "name": "myclabs/php-enum",
             "version": "1.8.4",
             "source": {
@@ -2966,7 +2952,6 @@
             },
             "dist": {
                 "type": "zip",
->>>>>>> 3b2807618f725cfb6178a09dd5b5d4256125f4d4
                 "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/c1001b3bc75039b07f38a79db5237c4c529e04c8",
                 "reference": "c1001b3bc75039b07f38a79db5237c4c529e04c8",
                 "shasum": ""
@@ -7167,7 +7152,6 @@
         },
         {
             "name": "mockery/mockery",
-<<<<<<< HEAD
             "version": "1.6.2",
             "source": {
                 "type": "git",
@@ -7178,18 +7162,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/mockery/mockery/zipball/13a7fa2642c76c58fa2806ef7f565344c817a191",
                 "reference": "13a7fa2642c76c58fa2806ef7f565344c817a191",
-=======
-            "version": "1.6.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/mockery/mockery.git",
-                "reference": "a8dd186f07ea667c1e3abd2176bfab0ab161ea94"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/a8dd186f07ea667c1e3abd2176bfab0ab161ea94",
-                "reference": "a8dd186f07ea667c1e3abd2176bfab0ab161ea94",
->>>>>>> 3b2807618f725cfb6178a09dd5b5d4256125f4d4
                 "shasum": ""
             },
             "require": {
@@ -7252,15 +7224,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mockery/mockery/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/mockery/mockery/tree/1.6.2"
             },
             "time": "2023-06-07T09:07:52+00:00"
-=======
-                "source": "https://github.com/mockery/mockery/tree/1.6.1"
-            },
-            "time": "2023-06-05T13:59:03+00:00"
->>>>>>> 3b2807618f725cfb6178a09dd5b5d4256125f4d4
         },
         {
             "name": "myclabs/deep-copy",
