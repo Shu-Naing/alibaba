@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('allow_decimal', 11, 2)->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by')->default(null);
+            $table->unsignedBigInteger('updated_by')->nullable();
         });
     }
 

@@ -14,14 +14,28 @@ return new class extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->integer('item_code');
-            $table->string('photo_path')->nullable();
-            $table->integer('category_id');
-            $table->integer('unit_id');
-            $table->integer('brand_id');
-            $table->timestamps();
+            $table->id();
+            $table->string('product_name');
+            $table->string('sku');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('brand_id');
+            $table->foreign('brand_id')
+                  ->references('id')->on('brands')->onDelete('cascade');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')
+                  ->references('id')->on('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('unit_id');
+            $table->foreign('unit_id') 
+                  ->references('id')->on('units')->onDelete('cascade');
+            $table->string('company_name');
+            $table->string('country');
+            $table->date('received_date');
+            $table->date('expired_date');
+            $table->boolean('status')->default(true);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
+             
         });
     }
 

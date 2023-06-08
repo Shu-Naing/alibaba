@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('brands', function (Blueprint $table) {
-            $table->charset = 'utf8mb4';
-            $table->collation = 'utf8mb4_unicode_ci';
+        Schema::create('pos', function (Blueprint $table) {
             $table->id();
-            $table->string('brand_name');
-            $table->text('note')->nullable();
-            $table->integer('status')->default(1);
-            $table->timestamps();
+            $table->string('invoice_no');
+            $table->integer('total');
+            $table->enum('payment_type',['point','ticket','cash']);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('pos');
     }
 };

@@ -51,8 +51,8 @@ class MachineController extends Controller
         $machine = new Machines();
         $machine->outlet_id = $request->outlet;
         $machine->name = $request->name;
-        $machine->create_by = Auth::id();
-        $machine->update_by = Auth::id();
+        $machine->created_by = Auth::id();
+        // $machine->updated_by = Auth::id();
         $machine->save();
 
         if ($machine->save()) {

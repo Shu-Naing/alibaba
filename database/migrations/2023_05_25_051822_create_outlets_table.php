@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('state');
             $table->string('country');
             $table->timestamps();
-            $table->unsignedBigInteger('create_by');
-            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
         });
     }
 

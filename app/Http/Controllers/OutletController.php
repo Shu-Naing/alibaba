@@ -53,7 +53,10 @@ class OutletController extends Controller
     {
         $this->validate($request, [
             'outletId' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
         ]);
 
         // return $request->name;
@@ -64,8 +67,8 @@ class OutletController extends Controller
         $outlet->city = $request->city;
         $outlet->state = $request->state;
         $outlet->country = $request->country;
-        $outlet->create_by = Auth::id();
-        $outlet->update_by = Auth::id();
+        $outlet->created_by = Auth::id();
+        // $outlet->update_by = Auth::id();
         $outlet->save();
 
         if ($outlet->save()) {
@@ -119,7 +122,10 @@ class OutletController extends Controller
     {
         $this->validate($request, [
             'outletId' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'country' => 'required',
         ]);
 
         $outlet = Outlets::findorFail($id);
@@ -128,8 +134,8 @@ class OutletController extends Controller
         $outlet->city = $request->city;
         $outlet->state = $request->state;
         $outlet->country = $request->country;
-        $outlet->create_by = Auth::id();
-        $outlet->update_by = Auth::id();
+        // $outlet->created_by = Auth::id();
+        $outlet->updated_by = Auth::id();
         $outlet->save();
 
         if ($outlet->save()) {

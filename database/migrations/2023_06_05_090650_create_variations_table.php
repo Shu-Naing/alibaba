@@ -18,14 +18,18 @@ return new class extends Migration
             $table->unsignedBigInteger('product_id');
             $table->foreign('product_id')
                   ->references('id')->on('products')->onDelete('cascade');
-            $table->string('variation_select');
-            $table->string('variation_value');
+            $table->string('select');
+            $table->string('value');
+            $table->string('item_code');
+            $table->integer('received_qty');
+            $table->integer('alert_qty');
             $table->string('purchased_price');
             $table->string('points');
             $table->string('tickets');
             $table->string('kyat');
-            $table->json('variation_image');
-            $table->unsignedBigInteger('created_by')->nullable();
+            $table->string('image');
+            $table->boolean('status')->default(true);
+            $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });

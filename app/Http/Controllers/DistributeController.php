@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\models\Outlets;
 use App\models\distributes;
 use App\models\DistributeProducts;
+use App\models\Variation;
 use Validator;
 use Auth;
 
@@ -89,8 +90,8 @@ class DistributeController extends Controller
     {
         $outlets = getOutlets();
         $distribute = distributes::findorFail($id);
-        $distribute_products = DistributeProducts::select("distribute_products.*", "products.product_name")->join("variants", "variants.id", "=", "distribute_products.variant_id")
-                                ->join("products", "products.id", "=", "variants.product_id")->where("distribute_id", $id)->get();
+        $distribute_products = DistributeProducts::select("distribute_products.*", "products.product_name")->join("variations", "variations.id", "=", "distribute_products.variant_id")
+                                ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $id)->get();
         return view('distribute.edit', compact('distribute','outlets', 'distribute_products'));
     }
 
