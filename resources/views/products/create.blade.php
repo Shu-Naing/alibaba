@@ -113,8 +113,10 @@
 
             <div class="d-flex align-items-center">
                 <p class="form-label mx-2">Add Variants</p>
-                <i class="bi bi-plus-square text-success fs-6 me-1" id="add-variation"></i>
+                <i class="bi bi-plus-square-fill fs-6 me-1" id="add-variation" style="color: #B3382F;"></i>
             </div>
+
+
 
             <div class="row" id="variations-group">
                 <div class="col-lg-12 mt-2 variation" id="variation_0">
@@ -122,7 +124,10 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>
-                                <input type="text" class="form-control" name="variations[0][select]">
+                                <select class="form-control" name="variations[0][select]">
+                                    <option value="size">size</option>
+                                    <!-- Add more options as needed -->
+                                </select>
                             </div>
                             <div class="col-lg-3">
                                 <label for="value" class="form-label">Value</label>
@@ -167,14 +172,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
 
-            <div class="row">
-                <div class="col-lg-12 d-flex justify-content-center">
-                    <button class="btn btn-danger mx-2">Cancel</button>
-                    <button class="btn btn-primary mx-2" type="submit">Save</button>
-                </div>
-            </div>  
+            <div class="text-center">
+                <a href="{{ URL::current() }}" class="btn btn-red">Cancel</a>
+                <button type="submit" class="btn btn-blue ms-2">Save</button>
+            </div>
         </form>
 
     </div>

@@ -10,7 +10,7 @@ class BrandsController extends Controller
 {
     public function index()
     {
-        $brands = Brands::all();
+        $brands = Brands::where('status', 1)->get();
 
         return view('brands.index', compact('brands'));
     }

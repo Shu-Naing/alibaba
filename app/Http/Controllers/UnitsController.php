@@ -10,7 +10,7 @@ class UnitsController extends Controller
 {
     public function index()
     {
-        $units = units::all();
+        $units = Units::where('status', 1)->get();
 
         return view('units.index', compact('units'));
     }
