@@ -8,9 +8,7 @@
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">  
             <h4 class="fw-bolder mb-3">Outlet Edit</h4>
-            <div>
-                @include('breadcrumbs')
-            </div>
+            <div></div>
         </div>
         @if(Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -28,52 +26,30 @@
             @method('PATCH')
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="outletId" class="form-label">Outlet ID *</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="outletId" id="outletId" value="{{ old('outlet_id', $outlet->outlet_id ) }}" aria-describedby="outletIdHelp">
-                    @error('name')
-                        <span class="text-danger ">{{ $message }}</span>
-                    @enderror
+                    {!! Form::label('outletId', 'Outlet ID *', array('class' => 'form-label')) !!}
+                    {!! Form::text('outletId', $outlet->outlet_id, array('class' => 'form-control', 'id'=>'outletId')) !!}
                 </div>
                 <div class="col-md-6">
-                    <label for="name" class="form-label">Name *</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('outlet_name', $outlet->name) }}">
-                    @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    {!! Form::label('name', 'Name *', array('class' => 'form-label')) !!}
+                    {!! Form::text('name', $outlet->name, array('class' => 'form-control', 'id'=>'name')) !!}
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="city" class="form-label">City</label>
-                    <select class="form-select" name="city" id="city-select" aria-label="cityHelp">
-                        <option></option>
-                        <!-- <option value="1">Yangon</option>
-                        <option value="2">Mandalay</option>
-                        <option value="3">Naypyidaw</option> -->
-                    </select>
-                    <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                <div class="col-md-4">
+                    {!! Form::label('country', 'Country', array('class' => 'form-label')) !!}
+                    {!! Form::select('country', $countries, $outlet->country, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'contry')) !!}
                 </div>
-                <div class="col-md-6">
-                    <label for="state" class="form-label">State</label>
-                    <select class="form-select" name="state" id="state-select" aria-label="stateHelp">
-                        <option></option>
-                        <!-- <option value="1">Insein</option>
-                        <option value="2">Shwepyithar</option>
-                        <option value="3">hlaing</option> -->
-                    </select>
-                    <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                <div class="col-md-4">
+                    {!! Form::label('city', 'City', array('class' => 'form-label')) !!}
+                    {!! Form::select('city', $cities, $outlet->city, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'city-select', 'aria-label'=>'Default select example')) !!}
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="country" class="form-label">Country</label>
-                <select class="form-select" name="country" id="country-select" aria-label="countryHelp">
-                   <option value="">Select Country</option>
-                </select>
-                <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                <div class="col-md-4">
+                    {!! Form::label('state', 'State', array('class' => 'form-label')) !!}
+                    {!! Form::select('state', $states, $outlet->state, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'state-select', 'aria-label'=>'Default select example')) !!}
+                </div>
             </div>
             <div class="text-center">
                 <a class="btn btn-red" href="{{ route('outlets.index') }}">Cancel</a>
-                <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
                 <button type="submit" class="btn btn-blue ms-2">Update</button>
             </div>
         </form>

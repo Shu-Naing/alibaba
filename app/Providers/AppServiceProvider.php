@@ -38,5 +38,14 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('distribute.edit',function($view){      
             $view->with('ds_status',config('constants.ds_status'));
         });
+        view()->composer('outlets.*',function($view){      
+            $view->with('countries',config('constants.countries'));
+        });
+        view()->composer('outlets.*',function($view){      
+            $view->with('cities',config('constants.cities'));
+        });
+        view()->composer('outlets.*',function($view){      
+            $view->with('states',config('constants.states'));
+        });
     }
 }
