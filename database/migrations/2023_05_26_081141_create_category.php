@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('category_name');
             $table->string('category_code')->unique();
             $table->text('description')->nullable();
+            $table->boolean('status')->default(1);
             $table->timestamps();
             $table->unsignedBigInteger('create_by');
             $table->unsignedBigInteger('updated_by')->nullable();
@@ -33,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('category');
     }
 };

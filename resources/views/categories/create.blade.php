@@ -33,7 +33,7 @@
                     @enderror
                 </div>
                 <div class="col-md-12">
-                    <label for="category_code" class="form-label">Category Name *</label>
+                    <label for="category_code" class="form-label">Category Code *</label>
                     <input type="text" class="form-control @error('category_code') is-invalid @enderror" name="category_code" id="category_code" aria-describedby="emailHelp">
                     @error('category_code')
                         <span class="text-danger">{{ $message }}</span>
