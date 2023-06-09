@@ -1,47 +1,57 @@
 @extends('layouts.navbar')
 @section('cardtitle')
-<h4>Categories</h4>
+<i class="bi bi-person-fill"></i>
+<span class="loginUser">Welcome, <?php $userName = Auth::user(); echo $userName->username ?></span>
 @endsection
 
 @section('cardbody')
-
-@if (count($errors) > 0)
-  <div class="alert alert-danger">
-    <strong>Whoops!</strong> There were some problems with your input.<br><br>
-    <ul>
-       @foreach ($errors->all() as $error)
-         <li>{{ $error }}</li>
-       @endforeach
-    </ul>
-  </div>
-@endif
-
-
-
-{!! Form::open(array('route' => 'categories.store','method'=>'POST', 'enctype' => 'multipart/form-data')) !!}
-<div class="row">
-    <div class="col-xs-6 col-sm-6 col-md-6">
-        <div class="form-group">
-            <strong>Category Name:</strong>
-            {!! Form::text('category_name', null, array('placeholder' => 'Category Name','class' => 'form-control')) !!}
+    <div class="container-fluid main-content">
+        <div class="breadcrumbBox rounded mb-4">  
+            <h4 class="fw-bolder mb-3">Create brand</h4>
+            <div>
+            </div>
         </div>
+        @if(Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if(Session::has('error'))
+            <div>
+                {{ Session::get('error') }}
+            </div>
+        @endif
+        {!! Form::open(array('route' => 'categories.store','method'=>'POST', 'enctype' => 'multipart/form-data')) !!}
+            @csrf
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    <label for="category_name" class="form-label">Category Name *</label>
+                    <input type="text" class="form-control @error('category_name') is-invalid @enderror" name="category_name" id="category_name" aria-describedby="emailHelp">
+                    @error('category_name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-12">
+                    <label for="category_code" class="form-label">Category Name *</label>
+                    <input type="text" class="form-control @error('category_code') is-invalid @enderror" name="category_code" id="category_code" aria-describedby="emailHelp">
+                    @error('category_code')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="col-md-12">
+                    <label for="description" class="form-label">Description *</label>
+                    <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description" style="height: 200px;"></textarea>
+                    @error('description')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+            <div class="text-center">
+                <a href="{{ URL::previous() }}" class="btn btn-red">Cancel</a>
+                <button type="submit" class="btn btn-blue ms-2">Save</button>
+            </div>
+        {!! Form::close() !!}
+
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6">
-        <div class="form-group">
-            <strong>Category Code:</strong>
-            {!! Form::text('category_code', null, array('placeholder' => 'Category Code','class' => 'form-control')) !!}
-        </div>
-    </div>
-    <div class="col-xs-6 col-sm-6 col-md-6">
-        <div class="form-group">
-            <strong>Descriptions:</strong>
-            {!! Form::textarea('description', null, array('placeholder' => 'Description', 'class' => 'form-control', 'size' => '50x5')) !!}
-        </div>
-    </div>      
-    <div class="col-xs-12 col-sm-12 col-md-12 py-4">
-        <a class="btn btn-primary" href="{{ route('categories.index') }}"> Back</a>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</div>
-{!! Form::close() !!}
 @endsection

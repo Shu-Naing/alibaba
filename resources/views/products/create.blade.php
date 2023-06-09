@@ -113,8 +113,12 @@
 
             <div class="d-flex align-items-center">
                 <p class="form-label mx-2">Add Variants</p>
+
                 <i class="bi bi-plus-square-fill fs-6 me-1" id="add-variation" style="color:var(--primary-color);"></i>
+
             </div>
+
+
 
             <div class="row" id="variations-group">
                 <div class="col-lg-12 mt-2 variation" id="variation_0">
@@ -122,10 +126,12 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>
+
                                 {{-- <input type="text" class="form-control" name="variations[0][select]"> --}}
                                 <select class="form-select" name="variations[0][select]">
                                     <option selected>Choose Select</option>
                                     <option value="size">Size</option>
+
                                 </select>
                             </div>
                             <div class="col-lg-3">
@@ -171,7 +177,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
+
 
             <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
@@ -179,6 +186,8 @@
                     <button class="btn btn-blue mx-2" type="submit">Save</button>
                 </div>
             </div>  
+
+       
         </form>
 
     </div>

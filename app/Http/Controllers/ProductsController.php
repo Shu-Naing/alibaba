@@ -19,7 +19,28 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Variation::select(
+            'variations.id',
+            'variations.item_code',
+            'variations.image',
+            'products.product_name',
+            'variations.points',
+            'variations.tickets',
+            'variations.kyat',
+            'variations.tickets',
+            'products.received_date',
+            'products.company_name',
+            'products.country',
+            'variations.received_qty',
+            'categories.category_name',
+            'units.name'
+        )
+            ->join('products', 'products.id', '=', 'variations.product_id')
+            ->join('brands', 'products.brand_id', '=', 'brands.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->join('units', 'products.unit_id', '=', 'units.id')
+            ->get();
+    
         return view('products.index', compact('products'));
     }
 

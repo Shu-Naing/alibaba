@@ -24,6 +24,7 @@ use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\DistributeProductController;
+use App\Http\Controllers\OutletStockOverviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,8 +57,10 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('outlets', OutletController::class);
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
-    Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::resource('distribute', DistributeController::class);
+    Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
+
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
     // Route::resource('distribute/{id}', DistributeController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product');
 

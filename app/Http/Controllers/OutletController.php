@@ -140,10 +140,10 @@ class OutletController extends Controller
 
         if ($outlet->save()) {
             // Successful save, redirect to a success page or return a success response
-            return redirect()->back()->with('success', 'Outlet Form Data Has Been updated');
+            return redirect('outlets')->with('success', 'Outlet Form Data Has Been updated');
         } else {
             // Failed to save, redirect back to the form view with input and errors
-            return redirect()->back()->with('error', 'Failed to update the record.');
+            return redirect('outlets')->with('error', 'Failed to update the record.');
         }
     }
 

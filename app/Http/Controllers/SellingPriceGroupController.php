@@ -10,7 +10,8 @@ class SellingPriceGroupController extends Controller
 {
     public function index()
     {
-        $sellingprice = SellingPriceGroup::all();
+
+        $sellingprice = SellingPriceGroup::whereIn('status', [1, 2])->get();
 
         return view('sellingprice.index', compact('sellingprice'));
     }

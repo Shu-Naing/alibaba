@@ -13,10 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('temps', function (Blueprint $table) {
-            $table->id();
-            $table->
-            $table->timestamps();
+        Schema::table('outlets', function (Blueprint $table) {
+            $table->string('outlet_id')->change();            
         });
     }
 
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temps');
+        //
     }
 };
