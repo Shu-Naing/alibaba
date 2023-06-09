@@ -7,7 +7,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">  
-            <h4 class="fw-bolder mb-3">Create Outlet</h4>
+            <h4 class="fw-bolder mb-3">Create Machine</h4>
             <div>
                 @include('breadcrumbs')
             </div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <a class="btn btn-red" href="{{ url()->previous() }}">Cancel</a>
+                <a class="btn btn-red" href="{{ route('machine.create') }}">Cancel</a>
                 <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
                 <button type="submit" class="btn btn-blue ms-2">Save</button>
             </div>

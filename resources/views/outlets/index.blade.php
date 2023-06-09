@@ -7,7 +7,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">  
-            <h4 class="fw-bolder mb-3">List Product</h4>
+            <h4 class="fw-bolder mb-3">List Outlets</h4>
             <div>
                 @include('breadcrumbs')
             </div>
@@ -41,9 +41,9 @@
                 @foreach ($outlets as $outlet)
                     <tr>
                         <td>{{ $outlet->id }}</td>
-                        <td>{{ $outlet->name }}</td>
-                        <td>{{ $outlet->city }}</td>
-                        <td>{{ $outlet->state }}</td>
+                        <td>{{ $outlet->name }}</td>                      
+                        <td>{{ $cities[$outlet->city] }}</td>                        
+                        <td>{{ $states[$outlet->state] }}</td>
                         <!-- <td>{{ $outlet->category_name }}</td> -->
                         <td class="d-flex gap-5">
                             <a class="text-decoration-underline" href="{{ route('outlets.edit', ['outlet' => $outlet->id] ) }}">Edit</a>
@@ -58,9 +58,7 @@
                                         deactive
                                     @endif 
                                 </button>
-                            </form>
-                            
-                            
+                            </form>                            
                         </td>
                     </tr>
                 @endforeach

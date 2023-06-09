@@ -23,65 +23,42 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-        <form class="px-3" action="{{ route('outlets.store') }}" method="post">
+        {!! Form::open(array('route' => 'outlets.store','method'=>'POST', 'class' => 'px-3')) !!}
             @csrf
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="outletId" class="form-label">Outlet ID *</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="outletId" id="outletId" aria-describedby="emailHelp">
-                    @error('name')
-                        <span class="text-danger ">{{ $message }}</span>
-                    @enderror
+                    {!! Form::label('outletId', 'Outlet ID *', array('class' => 'form-label')) !!}
+                    {!! Form::text('outletId', null, array('class' => 'form-control', 'id'=>'outletId')) !!}
                 </div>
                 <div class="col-md-6">
-                    <label for="name" class="form-label">Name *</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name">
-                    @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    {!! Form::label('name', 'Name *', array('class' => 'form-label')) !!}
+                    <!-- <label for="name" class="form-label">Name *</label> -->
+                    {!! Form::text('name', null, array('class' => 'form-control', 'id'=>'name')) !!}
+                    <!-- <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name"> -->
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <label for="city" class="form-label">City</label>
-                    <select class="form-select" name="city" id="city-select" aria-label="Default select example">
-                        <option selected></option>
-                        <!-- <option value="1">Yangon</option>
-                        <option value="2">Mandalay</option>
-                        <option value="3">Naypyidaw</option> -->
-                    </select>
-                    <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                <div class="col-md-4">
+                    {!! Form::label('country', 'Country', array('class' => 'form-label')) !!}
+                    {!! Form::select('country', $countries, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'contry')) !!}
                 </div>
-                <div class="col-md-6">
-                    <label for="state" class="form-label">State</label>
-                    <select class="form-select" name="state" id="state-select" aria-label="Default select example">
-                        <option selected></option>
-                        <!-- <option value="1">Insein</option>
-                        <option value="2">Shwepyithar</option>
-                        <option value="3">hlaing</option> -->
-                    </select>
-                    <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                <div class="col-md-4">
+                    {!! Form::label('city', 'City', array('class' => 'form-label')) !!}
+                    {!! Form::select('city', $cities, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'city-select', 'aria-label'=>'Default select example')) !!}
                 </div>
-            </div>
-            <div class="mb-3">
-                <label for="country" class="form-label">Country</label>
-                <select class="form-select" name="country" id="country-select" aria-label="Default select example">
-                    <option selected></option>
-                    <!-- <option value="1">Myanmar</option>
-                    <option value="2">USA</option>
-                    <option value="3">Japan</option> -->
-                </select>
-                <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                <div class="col-md-4">
+                    {!! Form::label('state', 'State', array('class' => 'form-label')) !!}
+                    {!! Form::select('state', $states, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'state-select', 'aria-label'=>'Default select example')) !!}
+                </div>
             </div>
             <div class="text-center">
                 <a class="btn btn-red" href="{{ route('outlets.index') }}">Cancel</a>
-                <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
                 <button type="submit" class="btn btn-blue ms-2">Save</button>
             </div>
-        </form>
+        {!! Form::close() !!}
     </div>
 
-    <script>
+    <!-- <script>
         // Fetch the JSON data file
         fetch('/dummy_data.json')
             .then(response => response.json())
@@ -131,6 +108,6 @@
                 });
             });
         });
-    </script>
+    </script> -->
         
 @endsection
