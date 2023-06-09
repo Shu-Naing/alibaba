@@ -1,51 +1,45 @@
 @extends('layouts.navbar')
 @section('cardtitle')
-  <h4>Categories</h4>
+<i class="bi bi-person-fill"></i>
+<span class="loginUser">Welcome, <?php $userName = Auth::user(); echo $userName->username ?></span>
 @endsection
 
 @section('cardbody')
-<x-create-btn label="Create New Categories" route="categories"/>
-
-
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-  <p>{{ $message }}</p>
-</div>
-@endif
-
-<x-button-group :buttons="[
-    ['label' => 'Export to CSV', 'url' => '/button-1'],
-    ['label' => 'Export to Excel', 'url' => '/button-2'],
-    ['label' => 'Print', 'url' => '/button-3'],
-    ['label' => 'Export to PDF', 'url' => '/button-3'],
-]"/>
-<table class="table table-bordered">
-<tr>
-   <th>Category</th>
-   <th>Category Code</th>
-   <th>Descriptions</th>
-   <!-- <th width="280px">Action</th> -->
-   <th>Action</th>
- </tr>
- @foreach ($categories as $key => $cate)
-  <tr>
-    <td>{{ $cate->category_name }}</td>
-    <td>{{ $cate->category_code }}</td>
-    <td>{{ $cate->description }}</td>
-    <td>
-      <a class="px-3" href="{{ route('categories.edit',$cate->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-      <i class="fa-regular fa-trash-can">
-      {!! Form::open(['method' => 'DELETE','route' => ['categories.destroy', $cate->id],'style'=>'display:inline']) !!}
-          {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
-      {!! Form::close() !!}
-      </i>
-    </td>
-  </tr>
- @endforeach
-</table>
-
-
-
-{!! $categories->render() !!}
-
+    <div class="container-fluid main-content">
+        <div class="breadcrumbBox rounded mb-4">  
+            <h4 class="fw-bolder mb-3">List Product</h4>
+            <div>
+            </div>
+        </div>
+        <div class="d-flex mb-3 justify-content-end">
+            <a class="btn btn-blue" href="{{ route('categories.create') }}">Add +</a>
+        </div>
+        <table id="table_id">
+            <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Category Code</th>
+                  <th>Descriptions</th>
+                  <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($categories as $cate)
+                    <tr>
+                    <td>{{ $cate->category_name }}</td>
+                    <td>{{ $cate->category_code }}</td>
+                    <td>{{ $cate->description }}</td>
+                    <td>
+                      <a class="px-3" href="{{ route('categories.edit',$cate->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                      <i class="fa-regular fa-trash-can">
+                      {!! Form::open(['method' => 'DELETE','route' => ['categories.destroy', $cate->id],'style'=>'display:inline']) !!}
+                          {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
+                      {!! Form::close() !!}
+                      </i>
+                    </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 @endsection
