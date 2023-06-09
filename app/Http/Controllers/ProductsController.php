@@ -9,7 +9,10 @@ use App\Models\Product;
 use App\Models\Variation;
 use App\Models\Categories;
 use Illuminate\Http\Request;
+use App\Exports\ProductsExport;
 use App\Models\DistributeProducts;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
@@ -116,6 +119,21 @@ class ProductsController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
         $result = $DistributeProducts->delete();
+    }
+
+
+    public function show(){
+
+        $p = new ProductsExport;
+        return $p->registerEvents();
+        return $p->collection();
+        $products = Variation::with('product.brand','product.category','product.unit')->get();
+        return view('products.show',compact('products'));
+    }
+
+    public function exportProduct(){
+        $data = Variation::all();
+        return Excel::download(new ProductsExport($data), 'products.xlsx');
     }
 
 }

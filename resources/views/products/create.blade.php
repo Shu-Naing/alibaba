@@ -113,7 +113,7 @@
 
             <div class="d-flex align-items-center">
                 <p class="form-label mx-2">Add Variants</p>
-                <i class="bi bi-plus-square text-success fs-6 me-1" id="add-variation"></i>
+                <i class="bi bi-plus-square-fill fs-6 me-1" id="add-variation" style="color:var(--primary-color);"></i>
             </div>
 
             <div class="row" id="variations-group">
@@ -122,7 +122,11 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>
-                                <input type="text" class="form-control" name="variations[0][select]">
+                                {{-- <input type="text" class="form-control" name="variations[0][select]"> --}}
+                                <select class="form-select" name="variations[0][select]">
+                                    <option selected>Choose Select</option>
+                                    <option value="size">Size</option>
+                                </select>
                             </div>
                             <div class="col-lg-3">
                                 <label for="value" class="form-label">Value</label>
@@ -171,8 +175,8 @@
 
             <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
-                    <button class="btn btn-danger mx-2">Cancel</button>
-                    <button class="btn btn-primary mx-2" type="submit">Save</button>
+                    <a href="{{ route('products.create') }}" class="btn btn-red mx-2">Cancel</a>
+                    <button class="btn btn-blue mx-2" type="submit">Save</button>
                 </div>
             </div>  
         </form>
@@ -191,6 +195,9 @@
     var variationCount = $('.variation').length;
     var variationTemplate = `<div class="col-lg-12 mt-2 variation" id="variation_${variationCount}">
                     <div class="card p-3">
+                        
+                                <i class="bi bi-dash-square-fill fs-6 me-1 text-end" onclick="removeVariation(${variationCount})" style="color:blue;"></i>
+                       
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>

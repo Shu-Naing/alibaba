@@ -62,6 +62,9 @@ Route::group(['middleware' => ['auth']], function() {
     // Route::get('product', [ProductController::class, 'index'])->name('product');
 
 
+    //proudcts excel-export
+    Route::get('products-export',[ProductsController::class, 'exportProduct'])->name('product.export');
+
     //Pos Route Start
     Route::get('pos',[PosController::class,'index'])->name('pos.index');
     Route::get('product-data/{variation_id}',[PosController::class,'getProductData'])->name('productdata.get');
