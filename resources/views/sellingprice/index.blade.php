@@ -16,7 +16,7 @@
         </div>
         <table id="table_id">
             <thead>
-                <tr>
+                <tr class="col">
                     <th>Name</th>
                     <th>Description</th>
                     <th>Action</th>
@@ -27,18 +27,18 @@
                     <tr>
                         <td>{{ $sell->name }}</td>
                         <td>{{ $sell->descriptions }}</td>
-                        <td>
-                          <a class="px-3" href="{{ route('sellingprice.edit',$sell->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                            <!-- Assuming $sellingprice is the object representing the sellingprice in your view -->
-                              
-                                @if ($sell->status == 1)
-                                    <a href="{{ route('sellingprice.deactivate', ['id' => $sell->id]) }}" class="btng red">Deactivate</a>
-                                @else
-                                    <a href="{{ route('sellingprice.activate', ['id' => $sell->id]) }}" class="btng green">Activate</a>
-                                @endif
-                            {!! Form::open(['method' => 'DELETE', 'route' => ['sellingprice.destroy', $sell->id], 'style' => 'display:inline']) !!}
-                                {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
-                            {!! Form::close() !!}
+                        <td class="d-flex gap-5">
+                            <a class="text-decoration-underline" href="{{ route('sellingprice.edit',$sell->id) }}">Edit</a>
+                            @if ($sell->status == 1)
+                                <a href="{{ route('sellingprice.deactivate', ['id' => $sell->id]) }}" class="text-decoration-underline text-danger">Deactivate</a>
+                            @else
+                                <a href="{{ route('sellingprice.activate', ['id' => $sell->id]) }}" class="text-decoration-underline text-success">Activate</a>
+                            @endif
+                            {!! Form::open(['method' => 'DELETE', 'route' => ['sellingprice.destroy', $sell->id]]) !!}
+                                {!! Form::submit('Delete', ['class' => 'text-danger text-decoration-underline btn btn-link p-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
+                            {!! Form::close() !!}                              
+                                
+                            
                           </i>
                         </td>
                     </tr>
