@@ -12,10 +12,7 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        // $categories = Categories::paginate(10);
-        $categories = Categories::with('outlet')->first();
-
-        return $categories; 
+        $categories = Categories::where('status', 1)->get();
 
         return view('categories.index', ['categories' => $categories]);
 
@@ -63,9 +60,12 @@ class CategoriesController extends Controller
             ->with('success','Category updated successfully');
     }
 
-    public function destroy(Categories $category)
-    {
-        $category->delete();
+    public function destroy($id)
+    {    
+        $category = Categories::find($id);
+        $category->updated_by = $id = Auth::id();
+        $category->status = 0;
+        $category->save();
 
         return redirect()->route('categories.index')
             ->with('success','Category deleted successfully');
