@@ -26,6 +26,7 @@
                         <div class="col-lg-4 col-sm-12 d-flex mb-3 justify-content-end">
                             <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
                         </div>
+                        {{-- <a href="{{ route('product.export') }}">Export</a> --}}
                     </div>
                 </div>
             </div>
