@@ -62,7 +62,7 @@
         <tr>
             <td>{{ $no++ }}</td>
             <td>{{ $product->item_code }}</td>
-            <td><img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->product_name }}" class="w-25"></td>
+            <td><img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->product_name }}"></td>
             <td>{{ $product->product_name }}</td>
             <td>{{ $product->points }}</td>
             <td>{{ $product->tickets }}</td>

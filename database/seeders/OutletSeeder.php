@@ -21,9 +21,9 @@ class OutletSeeder extends Seeder
         Outlets::create([
             'outlet_id' => 1000000,
             'name' => 'Main Outlet',
-            'city' => 'Yangon',
-            'state' => 'Yangon',
-            'country' => 'Myanmar',
+            'city' => '1',
+            'state' => '1',
+            'country' => '1',
             'created_by' => 1,
         ]);
     }

@@ -65,11 +65,12 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('products.index') }}" class="nav-link sidebar-link {{ Route::is('products.index') ? 'active' : ''  }}">
+                  <a href="{{ route('products.index') }}" class="nav-link sidebar-link {{ Route::is('products.index') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">List Product</span>
                   </a>
                 </li>
+                
                 <li class="w-100 sidebar-item">
                   <a href="{{ route('products.create') }}" class="nav-link sidebar-link {{ Route::is('products.create') ? 'active' : ''  }}">
                     <hr>
@@ -122,7 +123,7 @@
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('sellingprice.index') }}" class="nav-link sidebar-link">
+                  <a href="{{ route('sellingprice.index') }}" class="nav-link sidebar-link {{ Route::is('sellingprice.index') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Selling Price Group</span>   
                   </a>
