@@ -77,28 +77,12 @@
                                 <label for="received_date" class="form-label">Received Date</label>
                                 <input type="date" class="form-control" name="received_date">
                             </div>
-                            {{-- <div class="col-lg-2 my-2">
-                                <label for="alert_quantity" class="form-label">Alert Quantity</label>
-                                <input type="text" class="form-control" name="quantity">
-                            </div>
-                            <div class="col-lg-2 my-2 d-flex align-items-center">
-                                <label class="form-check-label me-2" for="manage_stock">
-                                    Manage Stock
-                                    </label>
-                                <input class="form-check-input" type="checkbox" value="" id="manage_stock" name="manage_stock"> 
-                            </div> --}}
-                            {{-- <div class="col-lg-4 my-2">
-                                <label for="received_qty" class="form-label">Received Qty</label>
-                                <input type="text" class="form-control" name="received_qty">
-                            </div> --}}
+                         
                             <div class="col-lg-4 my-2">
                                 <label for="expired_date" class="form-label">Expired Date</label>
                                 <input type="date" class="form-control" name="expired_date">
                             </div>
-                            {{-- <div class="col-lg-4 my-2">
-                                <label for="image" class="form-label">Product Image</label>
-                                <input type="file" class="form-control" name="image">
-                            </div> --}}
+                           
                         </div>
                         <div class="row my-2">
                             <div class="col-lg-12">
@@ -126,12 +110,9 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>
-
-                                {{-- <input type="text" class="form-control" name="variations[0][select]"> --}}
                                 <select class="form-select" name="variations[0][select]">
                                     <option selected>Choose Select</option>
                                     <option value="size">Size</option>
-
                                 </select>
                             </div>
                             <div class="col-lg-3">
@@ -170,19 +151,14 @@
                                 <label for="product_img" class="form-label">Product Image</label>
                                 <input type="file" class="form-control" name="variations[0][image]">
                             </div>
-                            {{-- <div class="col-lg-4">
-                                <label for="product_img" class="form-label">Product Image</label>
-                                <input type="file" class="form-control" name="variations[0][image][]" multiple>
-                            </div> --}}
+                           
                         </div>
                     </div>
                 </div>
             </div> 
-
-
             <div class="row">
                 <div class="col-lg-12 d-flex justify-content-center">
-                    <a href="{{ route('products.create') }}" class="btn btn-red mx-2">Cancel</a>
+                    <a href="{{ URL::current() }}" class="btn btn-red mx-2">Cancel</a>
                     <button class="btn btn-blue mx-2" type="submit">Save</button>
                 </div>
             </div>  
@@ -210,7 +186,10 @@
                         <div class="row">
                             <div class="col-lg-3">
                                 <label for="select" class="form-label">Select</label>
-                                <input type="text" class="form-control" name="variations[${variationCount}][select]">
+                                <select class="form-select" name="variations[${variationCount}][select]">
+                                    <option selected>Choose Select</option>
+                                    <option value="size">Size</option>
+                                </select>
                             </div>
                             <div class="col-lg-3">
                                 <label for="value" class="form-label">Value</label>

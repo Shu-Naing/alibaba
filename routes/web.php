@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth']], function() {
 
 
     //proudcts excel-export
+    Route::get('products-list',[ProductsController::class, 'listProduct'])->name('products.list');
     Route::get('products-export',[ProductsController::class, 'exportProduct'])->name('product.export');
 
     //Pos Route Start

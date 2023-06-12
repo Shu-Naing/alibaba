@@ -23,16 +23,17 @@
                             <button class="btn btn-primary">Submit</button>
                             <button class="btn btn-success">Download Template</button>
                         </div>
-                        <div class="col-lg-4 col-sm-12 d-flex mb-3 justify-content-end">
+                        <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
+                            <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
+                            <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a>
                             <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
                         </div>
-                        {{-- <a href="{{ route('product.export') }}">Export</a> --}}
                     </div>
                 </div>
             </div>
         </div>
         <!-- Display the list of products -->
-<h1>Products</h1>
+{{-- <h1>Products</h1> --}}
 <table id="table_id">
     <thead>
         <tr>
@@ -44,29 +45,36 @@
             <th>Tickets</th>
             <th>Kyat</th>
             <th>Received Qty</th>
-            <th>Received Date</th>
             <th>Company Name</th>
             <th>Country</th>
             <th>Category</th>
+            <th>Brand</th>
             <th>Unit</th>
+            <th>Received Date</th>
+            <th>Expired Date</th>
         </tr>
     </thead>
     <tbody>
+        @php 
+            $no = 1;
+        @endphp
         @foreach ($products as $product)
         <tr>
-            <td>{{ $product->id }}</td>
+            <td>{{ $no++ }}</td>
             <td>{{ $product->item_code }}</td>
-            <td>{{ $product->image }}</td>
+            <td><img src="{{asset('storage/'. $product->image) }}" alt="{{ $product->product_name }}"></td>
             <td>{{ $product->product->product_name }}</td>
             <td>{{ $product->points }}</td>
             <td>{{ $product->tickets }}</td>
             <td>{{ $product->kyat }}</td>
-            <td>{{ $product->received_qty }}</td>
-            <td>{{ $product->product->received_date }}</td>
+            <td>{{ $product->outlet_item->quantity }}</td>
             <td>{{ $product->product->company_name }}</td>
             <td>{{ $product->product->country }}</td>
             <td>{{ $product->product->category->category_name }}</td>
+            <td>{{ $product->product->brand->brand_name }}</td>
             <td>{{ $product->product->unit->name }}</td>
+            <td>{{ $product->product->received_date }}</td>
+            <td>{{ $product->product->expired_date }}</td>
         </tr>
         @endforeach
     </tbody>
@@ -96,5 +104,20 @@
         .red {
             background-color: red;
         }
+
+        th,td{
+            white-space: nowrap;
+        }
+
+        table img{
+            width: 60px;
+            height:60px;
+        }
+        .dataTables_filter {
+            text-align: left !important;
+            float: left !important;
+            margin: 10px 10px ;
+        }
+ 
     </style>
 @endsection
