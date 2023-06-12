@@ -14,7 +14,6 @@ class Variation extends Model
         'select',
         'value',
         'item_code',
-        'received_qty',
         'alert_qty',
         'purchased_price',
         'points',
@@ -29,5 +28,10 @@ class Variation extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function outlet_item()
+    {
+        return $this->hasOne(OutletItem::class);
     }
 }

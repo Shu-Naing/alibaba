@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Units;
 use App\Models\Brands;
+use App\Models\Outlets;
 use App\Models\Product;
 use App\Models\Variation;
 use App\Models\Categories;
+use App\Models\OutletItem;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Models\DistributeProducts;
@@ -19,27 +21,10 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        $products = Variation::select(
-            'variations.id',
-            'variations.item_code',
-            'variations.image',
-            'products.product_name',
-            'variations.points',
-            'variations.tickets',
-            'variations.kyat',
-            'variations.tickets',
-            'products.received_date',
-            'products.company_name',
-            'products.country',
-            'variations.received_qty',
-            'categories.category_name',
-            'units.name'
-        )
-            ->join('products', 'products.id', '=', 'variations.product_id')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->join('units', 'products.unit_id', '=', 'units.id')
-            ->get();
+
+        $products = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
+
+            // return $products;
     
         return view('products.index', compact('products'));
     }
@@ -55,6 +40,7 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
+    //    return $request;
         $validator = Validator::make($request->all(), [
             "product_name" => "required",
             "category_id" => "required",
@@ -90,7 +76,6 @@ class ProductsController extends Controller
             $variation->product_id = $product->id;
             $variation->select = $variation_data['select'];
             $variation->value = $variation_data['value'];
-            $variation->received_qty = $variation_data['received_qty'];
             $variation->alert_qty = $variation_data['alert_qty'];
             $variation->item_code = $variation_data['item_code'];
             $variation->purchased_price = $variation_data['purchased_price'];
@@ -102,7 +87,16 @@ class ProductsController extends Controller
             $variation->image = $imagePath;
             $variation->created_by = Auth::user()->id;
             $variation->save();
+            
+            $outlet_items = new OutletItem;
+            $outlet_items->outlet_id = 1;
+            $outlet_items->variation_id = $variation->id;
+            $outlet_items->quantity = $variation_data['received_qty'];
+            $outlet_items->created_by = Auth::user()->id;
+            $outlet_items->save();
         }
+
+       
     
         return redirect()->route('products.create')->with('success','Product create successfully');
 
@@ -143,17 +137,14 @@ class ProductsController extends Controller
     }
 
 
-    public function show(){
-
-        $p = new ProductsExport;
-        return $p->registerEvents();
-        return $p->collection();
+    public function listProduct(){
+        
         $products = Variation::with('product.brand','product.category','product.unit')->get();
-        return view('products.show',compact('products'));
+        return view('products.list',compact('products'));
     }
 
     public function exportProduct(){
-        $data = Variation::all();
+        $data = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
         return Excel::download(new ProductsExport($data), 'products.xlsx');
     }
 

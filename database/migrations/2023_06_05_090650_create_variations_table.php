@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('select');
             $table->string('value');
             $table->string('item_code');
-            $table->integer('received_qty');
             $table->integer('alert_qty');
             $table->string('purchased_price');
             $table->string('points');

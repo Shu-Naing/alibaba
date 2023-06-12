@@ -11,7 +11,7 @@
             <div>
             </div>
         </div>
-        <div class="row d-print-none">
+        {{-- <div class="row d-print-none">
             <div class="col-lg-12">
                 <div class="card p-3">
                     <div class="row">
@@ -29,6 +29,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div> --}}
+        <div class="row d-print-none my-2">
+            <div class="col-lg-12">
+                <button onclick="window.print()" class="btn btn-red me-2">Export to Excel</button> 
+                <a class="btn btn-blue" href="{{ route('products.index') }}">Back</a>
             </div>
         </div>
         
@@ -88,7 +94,10 @@
         border: 1px solid;
         white-space: nowrap;
         padding: 10px;
+        text-align: center;
     }
+
+
     
 </style>
     
