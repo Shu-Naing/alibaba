@@ -3,78 +3,101 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Events\AfterSheet;
-use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithDrawings;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
-use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ProductsExport implements FromCollection, WithHeadings,WithMapping,WithDrawings,ShouldAutoSize
-{
-    protected $data;
 
-    public function __construct($data)
-    {
-        $this->data = $data;
+class ProductsExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize, WithEvents {
+    function __construct($data){
+        $this->products = $data;
     }
-
-    public function collection()
-    {
-        return collect($this->data);
-    }
-
-    public function map($data): array
-    {
-        return [
-            $data->id,
-            $data->item_code,
-            // Modify the path below based on the actual location of your images
-            // asset('storage/' . $data->image),
-            $this->drawings()
-            // $data->image
-        ];
-    }
-
     public function headings(): array
     {
         return [
-            'ID',
-            'Item_code',
+            'Item Code',
             'Image',
+            'Product Name',
+            'Points',
+            'Tickets',
+            'Kyat',
+            'Received Qty',
+            'Company Name',
+            'Country',
+            'Category',
+            'Brand',
+            'Unit',
+            'Received Date',
+            'Expired Date'
         ];
     }
 
- 
-   
-
-    public function drawings()
+    public function map($product): array
     {
+        return [
+             $product->item_code,
+             '',
+             $product->product->product_name,
+             $product->points,
+             $product->tickets,
+             $product->kyat,
+             $product->outlet_item->quantity,
+             $product->product->company_name,
+             $product->product->country,
+             $product->product->category->category_name,
+             $product->product->brand->brand_name,
+             $product->product->unit->name,
+             $product->product->received_date,
+             $product->product->expired_date,
+        ];
+    }
+    
+
+    public function collection()
+    {
+        return $this->products;
         
-        $drawings = [];
-        foreach($this->data as $key=>$product)
-        {
-            $drawing = new Drawing();
-            $drawing->setPath(public_path('storage/'.$product->image));
-            $drawing->setHeight(40);
-            $drawing->setWidth(50);
-            $drawing->setCoordinates('C'.($key+1));
-            $drawings [] = ($drawing);
-        }
-        return $drawings;
     }
 
-    // public function registerEvents(): array
-    // {
-    //     return [
-    //         AfterSheet::class    => function(AfterSheet $event) {
-    //             $event->sheet->getDelegate()->getRowDimension('1')->setRowHeight(40);
-    //             $event->sheet->getDelegate()->getColumnDimension('A')->setWidth(50);
-     
-    //         },
-    //     ];
-    // }
+    public function setImage($workSheet) {
+        $this->collection()->each(function($product,$index) use($workSheet) {
+            $drawing = new Drawing();
+            $drawing->setName($product->item_code);
+            $drawing->setDescription($product->item_code);
+            $drawing->setPath(public_path('storage/'.$product->image));
+            $drawing->setHeight(60);
+            $index+=2;
+            $drawing->setCoordinates("B$index");
+            $drawing->setWorksheet($workSheet);
+            // Get the cell range
+            $cellRange = "B$index";
+
+            // Set the image inside the cell and center it
+            $workSheet->setSelectedCells($cellRange);
+            $workSheet->getStyle($cellRange)
+                ->getAlignment()
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER)
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER);
+            });
+    }
+
+    public function registerEvents():array {
+        return [
+            AfterSheet::class => function (AfterSheet $event) {
+                $event->sheet->getDefaultRowDimension()->setRowHeight(60);
+                $workSheet = $event->sheet->getDelegate();
+
+                $workSheet->getStyle($workSheet->calculateWorksheetDimension())
+                ->getAlignment()
+                ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+                ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+                $this->setImage($workSheet);
+            },
+        ];
+    }
+   
 }
