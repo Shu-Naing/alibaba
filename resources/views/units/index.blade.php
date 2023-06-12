@@ -30,9 +30,9 @@
                         <td>{{ $unit->short_name }}</td>
                         <td>{{ $unit->allow_decimal }}</td>
                         <td>
-                          <a class="px-3" href="{{ route('units.edit',$unit->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                          <a class="text-decoration-underline px-3" href="{{ route('units.edit',$unit->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                             {!! Form::open(['method' => 'DELETE', 'route' => ['units.destroy', $unit->id], 'style' => 'display:inline']) !!}
-                                {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
+                                {!! Form::submit('Delete', ['class' => 'text-danger text-decoration-underline btn btn-link p-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
                             {!! Form::close() !!}
                           </i>
                         </td>

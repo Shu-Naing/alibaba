@@ -62,19 +62,17 @@
         <tr>
             <td>{{ $no++ }}</td>
             <td>{{ $product->item_code }}</td>
-            <td><img src="{{asset('storage/'. $product->image) }}" alt="{{ $product->product_name }}"></td>
-            <td>{{ $product->product->product_name }}</td>
+            <td><img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->product_name }}" class="w-25"></td>
+            <td>{{ $product->product_name }}</td>
             <td>{{ $product->points }}</td>
             <td>{{ $product->tickets }}</td>
             <td>{{ $product->kyat }}</td>
-            <td>{{ $product->outlet_item->quantity }}</td>
-            <td>{{ $product->product->company_name }}</td>
-            <td>{{ $product->product->country }}</td>
-            <td>{{ $product->product->category->category_name }}</td>
-            <td>{{ $product->product->brand->brand_name }}</td>
-            <td>{{ $product->product->unit->name }}</td>
-            <td>{{ $product->product->received_date }}</td>
-            <td>{{ $product->product->expired_date }}</td>
+            <td>{{ $product->received_qty }}</td>
+            <td>{{ $product->received_date }}</td>
+            <td>{{ $product->company_name }}</td>
+            <td>{{ $product->country }}</td>
+            <td>{{ $product->category_name }}</td>
+            <td>{{ $product->name }}</td>
         </tr>
         @endforeach
     </tbody>

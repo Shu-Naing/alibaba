@@ -7,7 +7,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">  
-            <h4 class="fw-bolder mb-3">List Product</h4>
+            <h4 class="fw-bolder mb-3">List Brands</h4>
             <div>
             </div>
         </div>
@@ -28,9 +28,9 @@
                         <td>{{ $brand->brand_name }}</td>
                         <td>{{ $brand->note }}</td>
                         <td>
-                          <a class="px-3" href="{{ route('brands.edit',$brand->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                          <a class="text-decoration-underline px-3" href="{{ route('brands.edit',$brand->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                             {!! Form::open(['method' => 'DELETE', 'route' => ['brands.destroy', $brand->id], 'style' => 'display:inline']) !!}
-                                {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
+                                {!! Form::submit('Delete', ['class' => 'text-danger text-decoration-underline btn btn-link p-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
                             {!! Form::close() !!}
                           </i>
                         </td>

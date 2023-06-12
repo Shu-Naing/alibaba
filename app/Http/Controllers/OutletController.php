@@ -59,7 +59,7 @@ class OutletController extends Controller
             'country' => 'required',
         ]);
 
-        // return $request->name;
+        // return $request;
 
         $outlet = new Outlets();
         $outlet->outlet_id = $request->outletId;
