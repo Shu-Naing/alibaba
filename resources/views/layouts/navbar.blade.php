@@ -47,31 +47,31 @@
                 id="submenu2"
                 data-bs-parent="#menu">
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('units.index') }}" class="nav-link sidebar-link">
+                  <a href="{{ route('units.index') }}" class="nav-link sidebar-link {{ Route::is('units.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Units</span> 
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('categories.index') }}" class="nav-link sidebar-link ">
+                  <a href="{{ route('categories.index') }}" class="nav-link sidebar-link {{ Route::is('categories.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Categories</span>
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('brands.index') }}" class="nav-link sidebar-link ">
+                  <a href="{{ route('brands.index') }}" class="nav-link sidebar-link {{ Route::is('brands.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Brands</span>
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('products.index') }}" class="nav-link sidebar-link ">
+                  <a href="{{ route('products.index') }}" class="nav-link sidebar-link {{ Route::is('products.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">List Product</span>
                   </a>
                 </li>
                 <li class="w-100 sidebar-item">
-                  <a href="{{ route('products.create') }}" class="nav-link sidebar-link ">
+                  <a href="{{ route('products.create') }}" class="nav-link sidebar-link {{ Route::is('products.create') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Add Product</span>
                   </a>

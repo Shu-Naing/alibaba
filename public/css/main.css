@@ -15,6 +15,11 @@ body {
   font-family: "inter";
 }
 
+img {
+  width: 100%;
+  height: auto;
+}
+
 .text-blue {
   color: var(--blue);
 }
@@ -224,4 +229,9 @@ input.number {
 .autocomplete-active {
   background-color: DodgerBlue !important;
   color: #ffffff;
+}
+
+/* datatable */
+.dataTables_wrapper {
+  overflow-x: auto;
 }

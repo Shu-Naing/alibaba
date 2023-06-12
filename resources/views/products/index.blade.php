@@ -56,17 +56,17 @@
         <tr>
             <td>{{ $product->id }}</td>
             <td>{{ $product->item_code }}</td>
-            <td>{{ $product->image }}</td>
-            <td>{{ $product->product->product_name }}</td>
+            <td><img src="{{ asset('storage/'.$product->image) }}" alt="" class="w-25"></td>
+            <td>{{ $product->product_name }}</td>
             <td>{{ $product->points }}</td>
             <td>{{ $product->tickets }}</td>
             <td>{{ $product->kyat }}</td>
             <td>{{ $product->received_qty }}</td>
-            <td>{{ $product->product->received_date }}</td>
-            <td>{{ $product->product->company_name }}</td>
-            <td>{{ $product->product->country }}</td>
-            <td>{{ $product->product->category->category_name }}</td>
-            <td>{{ $product->product->unit->name }}</td>
+            <td>{{ $product->received_date }}</td>
+            <td>{{ $product->company_name }}</td>
+            <td>{{ $product->country }}</td>
+            <td>{{ $product->category_name }}</td>
+            <td>{{ $product->name }}</td>
         </tr>
         @endforeach
     </tbody>

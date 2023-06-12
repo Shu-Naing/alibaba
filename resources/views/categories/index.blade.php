@@ -7,7 +7,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">  
-            <h4 class="fw-bolder mb-3">List Product</h4>
+            <h4 class="fw-bolder mb-3">List Category</h4>
             <div>
             </div>
         </div>
@@ -26,17 +26,15 @@
             <tbody>
                 @foreach ($categories as $cate)
                     <tr>
-                    <td>{{ $cate->category_name }}</td>
-                    <td>{{ $cate->category_code }}</td>
-                    <td>{{ $cate->description }}</td>
-                    <td>
-                      <a class="px-3" href="{{ route('categories.edit',$cate->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                      <i class="fa-regular fa-trash-can">
-                      {!! Form::open(['method' => 'DELETE','route' => ['categories.destroy', $cate->id],'style'=>'display:inline']) !!}
-                          {!! Form::submit('Delete', ['class' => 'border-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
-                      {!! Form::close() !!}
-                      </i>
-                    </td>
+                        <td>{{ $cate->category_name }}</td>
+                        <td>{{ $cate->category_code }}</td>
+                        <td>{{ $cate->description }}</td>
+                        <td>
+                            <a class="text-decoration-underline px-3" href="{{ route('categories.edit',$cate->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                            {!! Form::open(['method' => 'DELETE','route' => ['categories.destroy', $cate->id],'style'=>'display:inline']) !!}
+                                {!! Form::submit('Delete', ['class' => 'text-danger text-decoration-underline btn btn-link p-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
+                            {!! Form::close() !!}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

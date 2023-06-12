@@ -53,9 +53,9 @@
                                 @method('DELETE') <!-- Change this to the desired HTTP method -->
                                 <button type="submit" class="text-muted text-decoration-underline btn btn-link p-0">
                                     @if ($outlet->status == 1)
-                                        active
+                                        <span class="text-decoration-underline text-success">Activate</span>
                                     @else
-                                        deactive
+                                        <span class="text-decoration-underline text-danger">Deactivate</span>
                                     @endif 
                                 </button>
                             </form>                            
