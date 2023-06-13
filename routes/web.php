@@ -1,7 +1,6 @@
 <?php
   
-use Illuminate\Support\Facades\Route;
-  
+use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -45,7 +44,7 @@ Auth::routes();
   
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     
