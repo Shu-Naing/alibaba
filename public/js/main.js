@@ -2,10 +2,8 @@
 
 // const { start } = require("@popperjs/core");
 
-
 $('#table_id').DataTable({
   lengthChange: false // Disable "Show entries"
-
 });
 
 $(document).ready(function () {
@@ -17,9 +15,7 @@ $(document).ready(function () {
     if (submenuLi.length > 0) {
       element.classList.add("show");
     }
-    // console.log(submenuLi.length);
   });
-  // console.log(submenu);
 
   $(".number").focusout(function () {
     let disPdID = $(this).attr("data-id");

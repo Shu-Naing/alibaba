@@ -22,9 +22,15 @@
               </a>
             </li>
             <li class="nav-item nav-small-cap">
-              <a href="#" class="nav-link align-middle px-0">
-                <i class="fs-4 bi bi-person"></i>
-                <span class="d-none d-sm-inline">User</span>
+              <a href="{{ route('users.index') }}" class="nav-link align-middle px-0 {{ Route::is('users.index') ? 'active' : ''  }}">
+                <i class="bi bi-people"></i>
+                <span class="d-none d-sm-inline">Users</span>
+              </a>
+            </li>
+            <li class="nav-item nav-small-cap">
+              <a href="{{ route('roles.index') }}" class="nav-link align-middle px-0 {{ Route::is('roles.index') ? 'active' : ''  }}">
+              <i class="bi bi-person-lock"></i>
+                <span class="d-none d-sm-inline">Roles & Permissions</span>
               </a>
             </li>
             <li class="nav-item nav-small-cap">
