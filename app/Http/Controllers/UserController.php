@@ -2,13 +2,14 @@
     
 namespace App\Http\Controllers;
     
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
+use App\Models\User;
+use App\Models\Outlets;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
     
 class UserController extends Controller
 {
@@ -32,7 +33,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::pluck('name','name')->all();
-        return view('users.create',compact('roles'));
+        $outlets = Outlets::where('status',1)->get();
+        return view('users.create',compact('roles','outlets'));
     }
     
     /**
@@ -80,11 +82,12 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = User::with('outlet')->find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
+        $outlets = Outlets::where('status',1)->get();
     
-        return view('users.edit',compact('user','roles','userRole'));
+        return view('users.edit',compact('user','roles','userRole','outlets'));
     }
     
     /**

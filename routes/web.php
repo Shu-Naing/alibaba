@@ -70,8 +70,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     //Pos Route Start
     Route::get('pos',[PosController::class,'index'])->name('pos.index');
-    Route::get('product-data/{variation_id}',[PosController::class,'getProductData'])->name('productdata.get');
     Route::post('pos-item/add',[PosController::class,'addItemPos'])->name('positem.add');
+    Route::delete('pos-item/remove',[PosController::class,'removeItemPos'])->name('positem.remove');
 
     Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
     Route::get('/edit', [SelectBoxController::class, 'edit']);

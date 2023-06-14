@@ -1,22 +1,23 @@
-@extends('layouts.navbar')
+@extends('layouts.app')
 @section('cardtitle')
-<i class="bi bi-person-fill"></i>
-<span class="loginUser">Welcome, <?php $userName = Auth::user(); echo $userName->username ?></span>
+    <i class="bi bi-person-fill"></i>
+    <span class="loginUser">Welcome, <?php $userName = Auth::user();
+    echo $userName->username; ?></span>
 @endsection
 
 @section('cardbody')
     <div class="container-fluid main-content">
-        <div class="breadcrumbBox rounded mb-4">  
+        <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">Create Outlet</h4>
             <div></div>
         </div>
-        @if(Session::has('success'))
+        @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ Session::get('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        @if(Session::has('error'))
+        @if (Session::has('error'))
             <div>
                 {{ Session::get('error') }}
             </div>
@@ -28,8 +29,8 @@
                     <label for="outlet" class="form-label">Outlet</label>
                     <select class="form-select" name="outlet" id="outlet" aria-label="Default select example">
                         <option selected></option>
-                        @if($outlets)
-                            @foreach ($outlets as $outlet) 
+                        @if ($outlets)
+                            @foreach ($outlets as $outlet)
                                 <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
                             @endforeach
                         @endif
@@ -40,8 +41,8 @@
                     <label for="machine" class="form-label">Location (Store or Machine)</label>
                     <select class="form-select" name="machine" id="machine" aria-label="Default select example">
                         <option selected></option>
-                        @if($machines)
-                            @foreach ($machines as $machine) 
+                        @if ($machines)
+                            @foreach ($machines as $machine)
                                 <option value="{{ $machine->id }}">{{ $machine->name }}</option>
                             @endforeach
                         @endif
@@ -73,7 +74,7 @@
                         <td>{{ $outletstock->issued_qty }}</td>
                         <td>{{ $outletstock->name }}</td>
                         <td>N/A</td>
-                        <td>{{ ($outletstock->opening_qty + $outletstock->received_qty) - $outletstock->issued_qty }}</td>
+                        <td>{{ $outletstock->opening_qty + $outletstock->received_qty - $outletstock->issued_qty }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -81,4 +82,3 @@
         <div class="" style="margin-bottom: 200px;"></div>
     </div>
 @endsection
- 
