@@ -18,11 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('pos_id');
             $table->foreign('pos_id')
                   ->references('id')->on('pos')->onDelete('cascade');
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')
-                ->references('id')->on('products')->onDelete('cascade');
+            $table->unsignedBigInteger('variation_id');
+            $table->foreign('variation_id')
+                ->references('id')->on('variations')->onDelete('cascade');
             $table->integer('quantity');
-            $table->integer('product_value');
+            $table->integer('variation_value');
             $table->timestamps();
         });
     }

@@ -11,6 +11,7 @@ class Temp extends Model
     protected $fillable = [
         'variation_id',
         'quantity',
+        'variation_value',
         'created_by',
         'updated_by',
     ];
