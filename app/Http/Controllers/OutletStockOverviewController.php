@@ -16,8 +16,8 @@ class OutletStockOverviewController extends Controller
      */
     public function index()
     {
-        $outlets = Outlets::all();
-        $machines = Machines::all();
+        $outlets = getOutlets();
+        $machines = getMachines();
         $outletstocks = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')->get();
         return view('outletstockoverview.index', compact('outlets', 'machines', 'outletstocks'));
     }

@@ -36,6 +36,7 @@ li.nav-item.nav-small-cap a {
 li.nav-item.nav-small-cap a span {
   font-size: 14px;
   margin-left: 9px;
+  margin-right: 9px;
 }
 
 .sidebar-nav ul .sidebar-item .sidebar-link:hover {

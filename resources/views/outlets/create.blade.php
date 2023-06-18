@@ -28,13 +28,11 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     {!! Form::label('outletId', 'Outlet ID *', array('class' => 'form-label')) !!}
-                    {!! Form::text('outletId', null, array('class' => 'form-control', 'id'=>'outletId')) !!}
+                    {!! Form::text('outlet_id', null, array('class' => 'form-control', 'id'=>'outletId')) !!}
                 </div>
                 <div class="col-md-6">
                     {!! Form::label('name', 'Name *', array('class' => 'form-label')) !!}
-                    <!-- <label for="name" class="form-label">Name *</label> -->
                     {!! Form::text('name', null, array('class' => 'form-control', 'id'=>'name')) !!}
-                    <!-- <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name"> -->
                 </div>
             </div>
             <div class="row mb-3">

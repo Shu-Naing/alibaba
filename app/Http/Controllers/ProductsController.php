@@ -13,6 +13,7 @@ use App\Models\OutletItem;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Models\DistributeProducts;
+use App\Models\OutletDistributeProduct;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -102,8 +103,15 @@ class ProductsController extends Controller
 
     }
 
-    public function get_product_lists(){
-        $product = Variation::select("variations.id", "products.product_name")->join("products", "variations.product_id", "=", "products.id")->get();
+        public function get_product_lists(Request $request){
+            // return $request;
+        $fromOutletId = $request->fromOutletId;
+        $product = Variation::select("variations.id", "products.product_name")
+                    ->join("products", "variations.product_id", "=", "products.id")
+                    ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                    ->where("outlet_items.outlet_id", "=", $fromOutletId)
+                    ->where("outlet_items.quantity", ">", 0)
+                    ->get();
 
         $product_arr = array();
 
@@ -134,6 +142,47 @@ class ProductsController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
         $result = $DistributeProducts->delete();
+    }
+
+    public function get_outletdistir_product_lists(Request $request) {
+       $fromOutletId = $request->fromOutletId;
+        $product = Variation::select("variations.id", "products.product_name")
+                    ->join("products", "variations.product_id", "=", "products.id")
+                    ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                    ->where("outlet_items.outlet_id", "=", $fromOutletId)
+                    ->where("outlet_items.quantity", ">", 0)
+                    ->get();
+        // return $product;
+
+        $product_arr = array();
+
+        foreach($product as $row){ 
+            $product_arr[$row->id] = $row->product_name;           
+        }
+        return $product_arr;
+    }
+
+    public function update_outdis_product_qty(Request $request, $id) {
+        
+        $OutletDistributeProducts = OutletDistributeProduct::find($id); 
+
+        $input = [];
+        $input['quantity'] = $request->qty;
+        $input['subtotal'] = $request->qty * $OutletDistributeProducts->purchased_price;
+
+        return $OutletDistributeProducts->update($input);
+    }
+
+     public function delete_outletdistirbute_product($id) {
+        // return $id;
+        $OutletDistributeProduct = OutletDistributeProduct::find($id); 
+        if ($OutletDistributeProduct) {
+            $result = $OutletDistributeProduct->delete();
+            return $result;
+        } else {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+        $result = $OutletDistributeProduct->delete();
     }
 
 

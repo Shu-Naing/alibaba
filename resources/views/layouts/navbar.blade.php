@@ -46,35 +46,40 @@
                 class="collapse nav flex-column submenuParent"
                 id="submenu2"
                 data-bs-parent="#menu">
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('units.index') }}" class="nav-link sidebar-link {{ Route::is('units.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Units</span> 
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('categories.index') }}" class="nav-link sidebar-link {{ Route::is('categories.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Categories</span>
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('brands.index') }}" class="nav-link sidebar-link {{ Route::is('brands.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Brands</span>
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('products.index') }}" class="nav-link sidebar-link {{ Route::is('products.index') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">List Product</span>
                   </a>
                 </li>
-                
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('products.create') }}" class="nav-link sidebar-link {{ Route::is('products.create') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">Add Product</span>
+                  </a>
+                </li>
+                <li class="sidebar-item">
+                  <a href="{{ route('outlet-stock-overview.index') }}" class="nav-link sidebar-link {{ Route::is('outlet-stock-overview.index') ? 'active' : ''  }}">
+                    <hr>
+                    <span class="d-none d-sm-inline">Outlet Stock Overview</span>
                   </a>
                 </li>
                 <!-- <li class="w-100 sidebar-item">
@@ -98,31 +103,31 @@
                 class="collapse nav flex-column submenuParent"
                 id="submenu1"
                 data-bs-parent="#menu">
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('outlets.index') }}" class="nav-link sidebar-link {{ Route::is('outlets.index') ? 'active' : ''  }}">
                     <hr>
                     <span class="d-none d-sm-inline">List Outlets</span> 
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('outlets.create') }}" class="nav-link sidebar-link {{ Route::is('outlets.create') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Create Outlet</span>
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('machine.create') }}" class="nav-link sidebar-link {{ Route::is('machine.create') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Create Machine</span> 
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('distribute.create') }}" class="nav-link sidebar-link {{ Route::is('distribute.create') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Distribute Product</span>
                   </a>
                 </li>
-                <li class="w-100 sidebar-item">
+                <li class="sidebar-item">
                   <a href="{{ route('sellingprice.index') }}" class="nav-link sidebar-link {{ Route::is('sellingprice.index') ? 'active' : '' }}">
                     <hr>
                     <span class="d-none d-sm-inline">Selling Price Group</span>   

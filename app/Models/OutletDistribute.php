@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OutletStockOverview extends Model
+class OutletDistribute extends Model
 {
     use HasFactory;
     public $fillable = [
         'date',
-        'opening_qty',
-        'receive_qty',
-        'issued_qty',
-        'outlet_id',
-        'machine_id',
-        'item_code',
+        'reference_No',
+        'status',
+        'from_outlet',
+        'to_machine',
+        'remark',
+        'counter_machine',
         'created_by',
-        'updated_by',
+        'updated_by'
     ];
-    
 }

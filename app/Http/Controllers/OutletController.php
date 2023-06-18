@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Outlets;
 use App\Models\Categories;
+use App\Models\Counter;
 use Illuminate\Support\Facades\DB;
 
 class OutletController extends Controller
@@ -52,7 +53,7 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'outletId' => 'required',
+            'outlet_id' => 'required',
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -61,24 +62,28 @@ class OutletController extends Controller
 
         // return $request;
 
-        $outlet = new Outlets();
-        $outlet->outlet_id = $request->outletId;
-        $outlet->name = $request->name;
-        $outlet->city = $request->city;
-        $outlet->state = $request->state;
-        $outlet->country = $request->country;
-        $outlet->created_by = Auth::id();
+        // $outlet = new Outlets();
+        // $outlet->outlet_id = $request->outlet_id;
+        // $outlet->name = $request->name;
+        // $outlet->city = $request->city;
+        // $outlet->state = $request->state;
+        // $outlet->country = $request->country;
+        // $outlet->created_by = Auth::id();
         // $outlet->update_by = Auth::id();
-        $outlet->save();
+        // $outlet->save();
+        $inputs = $request->all();
+        $inputs['created_by'] = Auth::user()->id;
+        $outletofid = Outlets::create($inputs);
+        // return $outletofid;
+        // return $outletofid->outlet_id;
 
-        if ($outlet->save()) {
-            // Successful save, redirect to a success page or return a success response
-            return redirect()->back()->with('success', 'Outlet Form Data Has Been inserted');
-        } else {
-            // Failed to save, redirect back to the form view with input and errors
-            return redirect()->back()->with('error', 'Failed to save the record.');
-        }
-        
+        $input = [];
+        $input['outlet_id'] = $outletofid->outlet_id;
+        $input['name'] = $outletofid->name.'_counter';
+        $input['created_by'] = Auth::user()->id;
+        Counter::create($input);
+
+        return redirect()->back()->with('success', 'Outlet Form Data Has Been inserted');
     }
 
     /**

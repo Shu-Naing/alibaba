@@ -2,10 +2,8 @@
 
 // const { start } = require("@popperjs/core");
 
-
-$('#table_id').DataTable({
-  lengthChange: false // Disable "Show entries"
-
+$("#table_id").DataTable({
+  lengthChange: false, // Disable "Show entries"
 });
 
 $(document).ready(function () {
@@ -34,6 +32,29 @@ $(document).ready(function () {
       },
     });
   });
+
+  $(document).on("change", ".counterMachine", function () {
+    if ($(this).val() === "1") {
+      $(".counter").attr("disabled", false);
+      $(".machine").attr("disabled", true);
+    } else if ($(this).val() === "2") {
+      $(".counter").attr("disabled", true);
+      $(".machine").attr("disabled", false);
+    }
+  });
+
+  // outletstockoverview
+  $(document).on("change", ".outlet", function () {
+    // console.log("hello");
+    let outlet_id = $(this).val();
+    console.log(outlet_id);
+  });
+
+  if ($(".counterMachine").find(":selected").val() == 1) {
+    $(".counter").attr("disabled", false);
+  } else if ($(".counterMachine").find(":selected").val() == 2) {
+    $(".machine").attr("disabled", false);
+  }
 });
 
 // product start
@@ -120,7 +141,7 @@ function removeField(group) {
 //   }
 // }
 
-// start
+// start distribute product
 function increaseValue(button, disPdID) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
@@ -161,10 +182,63 @@ function decreaseValue(button, disPdID) {
   // ajax
 }
 
+function increaseOutletdisValue(button, disPdID) {
+  var input = button.parentNode.parentNode.querySelector(".number");
+  var value = parseInt(input.value, 10);
+  input.value = isNaN(value) ? 0 : value + 1;
+  console.log("incre", disPdID);
+
+  console.log("input.value", input.value);
+
+  $.ajax({
+    url: "/update-outdis-product-qty/" + disPdID,
+    type: "GET",
+    data: {
+      qty: input.value,
+    },
+    success: function (response) {
+      location.reload();
+    },
+  });
+}
+
+function decreaseOutletdisValue(button, disPdID) {
+  var input = button.parentNode.parentNode.querySelector(".number");
+  var value = parseInt(input.value, 10);
+  input.value = isNaN(value) || value < 1 ? 0 : value - 1;
+  console.log("decre", disPdID);
+
+  $.ajax({
+    url: "/update-outdis-product-qty/" + disPdID,
+    type: "GET",
+    data: {
+      qty: input.value,
+    },
+    success: function (response) {
+      location.reload();
+    },
+  });
+
+  // ajax
+}
+
+// for distribute product
 function deleteDisValue(disPdID) {
-  console.log(disPdID);
+  // console.log(disPdID);
   $.ajax({
     url: "/delete-dis-product/" + disPdID,
+    type: "GET",
+    success: function (response) {
+      location.reload();
+    },
+  });
+}
+
+// for outletdistribute product
+function deleteOutDisValue(disPdID) {
+  // console.log(disPdID);
+  $.ajax({
+    url: "/delete-outdis-product/" + disPdID,
     type: "GET",
     success: function (response) {
       location.reload();

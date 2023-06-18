@@ -5,12 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Machines extends Model
+class OutletDistributeProduct extends Model
 {
     use HasFactory;
     public $fillable = [
-        'outlet_id',
-        'name',
+        'id',
+        'outlet_distribute_id',
+        'variant_id',
+        'quantity',
+        'purchased_price',
+        'subtotal',
+        'remark',
         'created_by',
         'updated_by'
     ];
