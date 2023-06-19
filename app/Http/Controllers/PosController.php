@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Session;
 class PosController extends Controller
 {
     public function index(Request $request){
+
+        $pos_id = $request->session()->get('pos-id');
         $user_outlet_id = Auth::user()->outlet->id;
         $search_key = $request->get('key');
         if($request->has('filter') && $request->has('key')){
@@ -66,20 +68,16 @@ class PosController extends Controller
             }
          }else{
             Session::forget('pos-success');
+            Session::forget('pos-id');
             $outlet_items = OutletItem::with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
          }
         
-        //  return $outlet_items;
-       
-
-        // $outlet_items = OutletItem::with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
-        
         $user_id = Auth::user()->id;
         $temps = Temp::with('variation','variation.product')->where('created_by',$user_id)->get();
-        $pos_items = PosItem::whereHas('pos', function ($query) use ($user_id) {
-            $query->where('created_by',$user_id);
+        $pos_items = PosItem::whereHas('pos', function ($query) use ($user_id,$pos_id) {
+            $query->where('created_by',$user_id)->where('id',$pos_id);
         })->with('variation','pos')->get();
-        // return $pos_items;
+ 
         
        
         return view('pos.index',compact('outlet_items','temps','pos_items'));
@@ -123,6 +121,7 @@ class PosController extends Controller
 
         // return $request;
         $user_id = Auth::user()->id;
+        $outlet_id = Auth::user()->outlet->id;
         $temps = Temp::where('created_by',$user_id)->get();
 
         // return $temp;
@@ -141,12 +140,15 @@ class PosController extends Controller
             $pos_item->quantity = $temp->quantity;
             $pos_item->variation_value = $temp->variation_value;
             $pos_item->save();
+
+            OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$temp->variation_id)->decrement('quantity', $temp->quantity);
         }
 
         Temp::where('created_by',$user_id)->delete();
         
         // Session::forget('pos-success');
         session()->put('pos-success',true);
+        session()->put('pos-id',$pos->id);
         return response()->json(['message' => 'Pos added successfully']);
     }
 

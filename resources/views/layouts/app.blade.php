@@ -31,7 +31,7 @@
         @include('layouts.sidebar')
 
         <div class="body-wrapper">
-            <header class="app-header">
+            <header class="app-header d-print-none">
                 <nav class="navbar navbar-expand-lg navbar-light justify-content-end">
                     @yield('cardtitle')
                     {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
