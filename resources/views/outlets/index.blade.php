@@ -1,24 +1,25 @@
-@extends('layouts.navbar')
+@extends('layouts.app')
 @section('cardtitle')
-<i class="bi bi-person-fill"></i>
-<span class="loginUser">Welcome, <?php $userName = Auth::user(); echo $userName->username ?></span>
+    <i class="bi bi-person-fill"></i>
+    <span class="loginUser">Welcome, <?php $userName = Auth::user();
+    echo $userName->username; ?></span>
 @endsection
 
 @section('cardbody')
     <div class="container-fluid main-content">
-        <div class="breadcrumbBox rounded mb-4">  
+        <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">List Outlets</h4>
             <div>
                 @include('breadcrumbs')
             </div>
         </div>
-         @if(Session::has('success'))
+        @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ Session::get('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        @if(Session::has('error'))
+        @if (Session::has('error'))
             <div>
                 {{ Session::get('error') }}
             </div>
@@ -41,24 +42,26 @@
                 @foreach ($outlets as $outlet)
                     <tr>
                         <td>{{ $outlet->id }}</td>
-                        <td>{{ $outlet->name }}</td>                      
-                        <td>{{ $cities[$outlet->city] }}</td>                        
+                        <td>{{ $outlet->name }}</td>
+                        <td>{{ $cities[$outlet->city] }}</td>
                         <td>{{ $states[$outlet->state] }}</td>
                         <!-- <td>{{ $outlet->category_name }}</td> -->
                         <td class="d-flex gap-5">
-                            <a class="text-decoration-underline" href="{{ route('outlets.edit', ['outlet' => $outlet->id] ) }}">Edit</a>
+                            <a class="text-decoration-underline"
+                                href="{{ route('outlets.edit', ['outlet' => $outlet->id]) }}">Edit</a>
                             <a class="text-decoration-underline" href="">Settings</a>
                             <form action="{{ route('outlets.destroy', $outlet->id) }}" method="POST">
                                 @csrf
-                                @method('DELETE') <!-- Change this to the desired HTTP method -->
+                                @method('DELETE')
+                                <!-- Change this to the desired HTTP method -->
                                 <button type="submit" class="text-muted text-decoration-underline btn btn-link p-0">
                                     @if ($outlet->status == 1)
                                         <span class="text-decoration-underline text-success">Activate</span>
                                     @else
                                         <span class="text-decoration-underline text-danger">Deactivate</span>
-                                    @endif 
+                                    @endif
                                 </button>
-                            </form>                            
+                            </form>
                         </td>
                     </tr>
                 @endforeach

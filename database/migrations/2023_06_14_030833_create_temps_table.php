@@ -13,16 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pos_items', function (Blueprint $table) {
+        Schema::create('temps', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pos_id');
-            $table->foreign('pos_id')
-                  ->references('id')->on('pos')->onDelete('cascade');
             $table->unsignedBigInteger('variation_id');
             $table->foreign('variation_id')
-                ->references('id')->on('variations')->onDelete('cascade');
+                  ->references('id')->on('variations')->onDelete('cascade');
             $table->integer('quantity');
             $table->integer('variation_value');
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pos_items');
+        Schema::dropIfExists('temps');
     }
 };

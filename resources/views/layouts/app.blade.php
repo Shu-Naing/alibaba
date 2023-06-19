@@ -4,16 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'MiniCommerce') }}</title>
 
-    <!-- Scripts -->
-    <!-- <script src="{{ asset('js/app.js') }}" defer></script> -->
     <script src="{{ mix('js/app.js') }}"></script>
-    <!-- <script src="{{ asset('js/navbar.js') }}" defer></script> -->
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -26,22 +20,38 @@
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
 
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
-    <!-- <link rel="stylesheet" href="../assets/css/styles.min.css" /> -->
+
+    @yield('links')
+    @yield('styles')
 </head>
 
 <body>
-  <!--  Body Wrapper -->
-  @yield('content')
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-  <script src="{{ asset('js/sidebarmenu.js') }}"></script>
-  <script src="{{ asset('js/main.js') }}"></script>
-  <script src="{{ asset('js/auto-complete.js') }}"></script>
-  <!-- <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../assets/js/app.min.js"></script>
-  <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-  <script src="../assets/js/dashboard.js"></script> -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        @include('layouts.sidebar')
+
+        <div class="body-wrapper">
+            <header class="app-header">
+                <nav class="navbar navbar-expand-lg navbar-light justify-content-end">
+                    @yield('cardtitle')
+                    {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
+                    <button type="submit">Logout</button>
+                    {!! Form::close() !!}
+                </nav>
+            </header>
+            <div>
+                @yield('cardbody')
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    <script src="{{ asset('js/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/auto-complete.js') }}"></script>
+
+
+    @yield('scripts')
 </body>
+
 </html>
- 

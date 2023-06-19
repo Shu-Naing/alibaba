@@ -1,12 +1,13 @@
-@extends('layouts.navbar')
+@extends('layouts.app')
 @section('cardtitle')
-<i class="bi bi-person-fill"></i>
-<span class="loginUser">Welcome, <?php $userName = Auth::user(); echo $userName->username ?></span>
+    <i class="bi bi-person-fill"></i>
+    <span class="loginUser">Welcome, <?php $userName = Auth::user();
+    echo $userName->username; ?></span>
 @endsection
 
 @section('cardbody')
     <div class="container-fluid main-content">
-        <div class="breadcrumbBox rounded mb-4">  
+        <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">List Selling Price Group</h4>
             <div>
             </div>
@@ -28,18 +29,23 @@
                         <td>{{ $sell->name }}</td>
                         <td>{{ $sell->descriptions }}</td>
                         <td class="d-flex gap-5">
-                            <a class="text-decoration-underline" href="{{ route('sellingprice.edit',$sell->id) }}">Edit</a>
+                            <a class="text-decoration-underline" href="{{ route('sellingprice.edit', $sell->id) }}">Edit</a>
                             @if ($sell->status == 1)
-                                <a href="{{ route('sellingprice.deactivate', ['id' => $sell->id]) }}" class="text-decoration-underline text-danger">Deactivate</a>
+                                <a href="{{ route('sellingprice.deactivate', ['id' => $sell->id]) }}"
+                                    class="text-decoration-underline text-danger">Deactivate</a>
                             @else
-                                <a href="{{ route('sellingprice.activate', ['id' => $sell->id]) }}" class="text-decoration-underline text-success">Activate</a>
+                                <a href="{{ route('sellingprice.activate', ['id' => $sell->id]) }}"
+                                    class="text-decoration-underline text-success">Activate</a>
                             @endif
                             {!! Form::open(['method' => 'DELETE', 'route' => ['sellingprice.destroy', $sell->id]]) !!}
-                                {!! Form::submit('Delete', ['class' => 'text-danger text-decoration-underline btn btn-link p-0', 'style' => 'font-family: Arial, sans-serif; font-size: 14px;']) !!}
-                            {!! Form::close() !!}                              
-                                
-                            
-                          </i>
+                            {!! Form::submit('Delete', [
+                                'class' => 'text-danger text-decoration-underline btn btn-link p-0',
+                                'style' => 'font-family: Arial, sans-serif; font-size: 14px;',
+                            ]) !!}
+                            {!! Form::close() !!}
+
+
+                            </i>
                         </td>
                     </tr>
                 @endforeach

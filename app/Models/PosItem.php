@@ -10,9 +10,19 @@ class PosItem extends Model
     use HasFactory;
     protected $fillable = [
         'pos_id',
-        'product_id',
+        'variation_id',
         'quantity',
-        'product_value',
+        'variation_value',
        
     ];
+
+    public function variation()
+    {
+        return $this->hasOne(Variation::class,'id','variation_id');
+    }
+
+    public function pos()
+    {
+        return $this->belongsTo(Pos::class,'pos_id','id');
+    }
 }
