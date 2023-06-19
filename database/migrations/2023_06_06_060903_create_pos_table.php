@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('invoice_no');
             $table->integer('total');
-            $table->enum('payment_type',['point','ticket','cash']);
+            $table->enum('payment_type',['point','ticket','kyat']);
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

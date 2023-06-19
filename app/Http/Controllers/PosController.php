@@ -23,21 +23,27 @@ class PosController extends Controller
         if($request->has('filter') && $request->has('key')){
             if($request->get('filter') === 'kyat'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
-                    $query->whereNotNull('kyat')->where('item_code', 'like', '%' . $search_key . '%');
+                    $query->whereNotNull('kyat')
+                    ->where('kyat','!=', 0 )
+                    ->where('item_code', 'like', '%' . $search_key . '%');
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'point'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
-                    $query->whereNotNull('points')->where('item_code', 'like', '%' . $search_key . '%');
+                    $query->whereNotNull('points')
+                    ->where('points','!=', 0 )
+                    ->where('item_code', 'like', '%' . $search_key . '%');
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'ticket'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
-                    $query->whereNotNull('tickets')->where('item_code', 'like', '%' . $search_key . '%');
+                    $query->whereNotNull('tickets')
+                    ->where('tickets','!=', 0 )
+                    ->where('item_code', 'like', '%' . $search_key . '%');
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
@@ -46,21 +52,21 @@ class PosController extends Controller
          }elseif($request->has('filter') && !$request->has('key')){
             if($request->get('filter') === 'kyat'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) {
-                    $query->whereNotNull('kyat');
+                    $query->whereNotNull('kyat')->where('kyat','!=', 0 );
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'point'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) {
-                    $query->whereNotNull('points');
+                    $query->whereNotNull('points')->where('points','!=', 0 );
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'ticket'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) {
-                    $query->whereNotNull('tickets');
+                    $query->whereNotNull('tickets')->where('tickets','!=', 0 );
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)

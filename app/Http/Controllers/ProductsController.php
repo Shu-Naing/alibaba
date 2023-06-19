@@ -56,6 +56,12 @@ class ProductsController extends Controller
 
         ]);
 
+        if ($validator->fails()) {
+            return redirect()->route('products.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
         // Create a new product instance
         $product = new Product;
         $product->product_name = $request->product_name;

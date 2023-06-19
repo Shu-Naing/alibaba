@@ -46,7 +46,7 @@
                         <div class="card p-3">
                             <div class="form-outline">
                                 <input type="search" class="form-control" placeholder="Search Product" aria-label="Search"
-                                    id="searchInput" name="key" @if (!request()->has('filter')) disabled @endif />
+                                    id="searchInput" name="key" @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif />
                             </div>
                         </div>
                     </div>
@@ -62,16 +62,16 @@
                                 <small class="fw-bolder">[{{ $outlet_item->variation->item_code }}]</small>
                                 <small class="fw-bolder">{{ $outlet_item->variation->select }} :
                                     {{ $outlet_item->variation->value }}</small>
-                                @if ($outlet_item->variation->kyat != null)
+                                @if ($outlet_item->variation->kyat != null || $outlet_item->variation->kyat != 0)
                                     <small class="fw-bolder">Kyat :
                                         {{ $outlet_item->variation->kyat }}</small>
                                 @endif
 
                                 <small class="fw-bolder">
-                                    @if ($outlet_item->variation->points != null)
+                                    @if ($outlet_item->variation->points != null || $outlet_item->variation->points != 0)
                                         Point : {{ $outlet_item->variation->points }}
                                     @endif
-                                    @if ($outlet_item->variation->tickets != null)
+                                    @if ($outlet_item->variation->tickets != null || $outlet_item->variation->tickets != 0)
                                         ,Ticket :
                                         {{ $outlet_item->variation->tickets }}
                                     @endif
@@ -121,8 +121,15 @@
                                             <span
                                                 class="fw-bolder d-block">{{ $temp->variation->product->product_name }}</span>
                                             <small class="fw-bold d-block">[{{ $temp->variation->item_code }}]</small>
-                                            <small class="fw-bold">Point : {{ $temp->variation->points }},Ticket :
-                                                {{ $temp->variation->tickets }}</small>
+                                            @if (request()->get('filter') === 'kyat')
+                                                <small class="fw-bold">Kyat : {{ $temp->variation->kyat }}</small>
+                                            @elseif(request()->get('filter') === 'point')
+                                                <small class="fw-bold">Point : {{ $temp->variation->points }}</small>
+                                            @elseif(request()->get('filter') === 'ticket')
+                                                <small class="fw-bold">Ticket : {{ $temp->variation->tickets }}</small>
+                                            @endif
+                                            {{-- <small class="fw-bold">Point : {{ $temp->variation->points }},Ticket :
+                                                {{ $temp->variation->tickets }}</small> --}}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
@@ -322,7 +329,7 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        location.href = location.href;
+                        location.href = '{{ route('pos.index') }}';
                         console.log(response);
                     },
                     error: function(xhr, status, error) {
