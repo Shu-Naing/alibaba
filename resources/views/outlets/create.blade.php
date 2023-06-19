@@ -24,12 +24,24 @@
                 {{ Session::get('error') }}
             </div>
         @endif
+
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         {!! Form::open(['route' => 'outlets.store', 'method' => 'POST', 'class' => 'px-3']) !!}
         @csrf
         <div class="row mb-3">
             <div class="col-md-6">
                 {!! Form::label('outletId', 'Outlet ID *', ['class' => 'form-label']) !!}
-                {!! Form::text('outletId', null, ['class' => 'form-control', 'id' => 'outletId']) !!}
+                {!! Form::text('outlet_id', null, ['class' => 'form-control', 'id' => 'outletId']) !!}
             </div>
             <div class="col-md-6">
                 {!! Form::label('name', 'Name *', ['class' => 'form-label']) !!}

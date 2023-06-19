@@ -76,13 +76,19 @@
         </div>
 
 
-        <h5 class="fw-bold mb-4">Add Products</h5>
-        <div class="input-group rounded w-25 mb-3">
-            <div>
-                <!-- <div class="" id="distributedId"></div> -->
-                <input type="hidden" id="distributedId" value="{{ $distribute->id }}">
-                <input type="text" class="form-control" id="searchInput" placeholder="Search...">
-                <div id="searchResults"></div>
+            <h5 class="fw-bold mb-4">Add Products</h5>
+            <div class="input-group rounded w-25 mb-3">
+                <div>
+                    <!-- <div class="" id="distributedId"></div> -->
+                    <input type="hidden" id="distributedId" value="{{ $distribute->id }}">
+                    <input type="text" class="form-control" id="searchInput" data-id="{{ $distribute->from_outlet }}" placeholder="Search...">
+                    <div id="searchResults"></div>
+                </div>
+
+                <!-- <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <span class="input-group-text border-0" id="search-addon">
+                    <i class="bi bi-search"></i>
+                </span> -->
             </div>
 
             <!-- <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
