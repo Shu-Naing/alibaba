@@ -100,6 +100,13 @@
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
+                            <a href="{{ route('machine.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('machine.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">List Machine</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
                             <a href="{{ route('machine.create') }}"
                                 class="nav-link sidebar-link {{ Route::is('machine.create') ? 'active' : '' }}">
                                 <hr>

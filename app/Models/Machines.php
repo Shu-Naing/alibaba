@@ -14,4 +14,10 @@ class Machines extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function outlet()
+    {
+        return $this->belongsTo(Outlets::class);
+    }
+
 }
