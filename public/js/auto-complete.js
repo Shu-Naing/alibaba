@@ -272,41 +272,95 @@ function autocomplete(inp, arr, callback) {
 var product = [];
 
 if (document.getElementById("searchInput")) {
-  $.get("/get-product-lists", function (data, status) {
-    // console.log(data);
-    if (status == "success") {
-      let productArr = [];
-      product = Object.keys(data).map((key) => {
-        productArr.push({
-          id: key,
-          title: data[key],
+  var fromOutletId = $("#searchInput").data("id");
+  console.log(fromOutletId);
+  $.get(
+    "/get-product-lists",
+    { fromOutletId: fromOutletId },
+    function (data, status) {
+      // console.log(data);
+      if (status == "success") {
+        let productArr = [];
+        product = Object.keys(data).map((key) => {
+          productArr.push({
+            id: key,
+            title: data[key],
+          });
         });
-      });
 
-      var distributedId = $("#distributedId").val();
-      function resultGet(res, id) {
-        $.ajax({
-          url: "/search",
-          type: "GET",
-          data: {
-            distributed_id: distributedId,
-            variant_id: id,
-          },
-          success: function (response) {
-            console.log(response.purchased_price);
-            let res = JSON.parse(response);
-            $("#show_dsProduct").html(res.html);
-            $("#total").html(res.total);
-          },
-        });
+        var distributedId = $("#distributedId").val();
+        function resultGet(res, id) {
+          $.ajax({
+            url: "/search",
+            type: "GET",
+            data: {
+              distributed_id: distributedId,
+              variant_id: id,
+            },
+            success: function (response) {
+              console.log(response.purchased_price);
+              let res = JSON.parse(response);
+              $("#show_dsProduct").html(res.html);
+              $("#total").html(res.total);
+            },
+          });
+        }
+        autocomplete(
+          document.getElementById("searchInput"),
+          productArr,
+          resultGet
+        );
+      } else {
+        console.log(status);
       }
-      autocomplete(
-        document.getElementById("searchInput"),
-        productArr,
-        resultGet
-      );
-    } else {
-      console.log(status);
     }
-  });
+  );
+}
+
+if (document.getElementById("outletdistir_searchInput")) {
+  var fromOutletId = $("#outletdistir_searchInput").data("id");
+  $.get(
+    "/get-outletdistir-product-lists",
+    { fromOutletId: fromOutletId },
+    function (data, status) {
+      // console.log(data);
+      if (status == "success") {
+        let productArr = [];
+        product = Object.keys(data).map((key) => {
+          productArr.push({
+            id: key,
+            title: data[key],
+          });
+        });
+
+        // console.log(productArr);
+        var outletdistribute_id = $("#outletdistribute_id").val();
+        // console.log(outletdistribute_id, "hello");
+        function resultGet(res, id) {
+          $.ajax({
+            url: "/search-outlet-distributes",
+            type: "GET",
+            data: {
+              outlet_distributed_id: outletdistribute_id,
+              variant_id: id,
+            },
+            success: function (response) {
+              // console.log(response);
+              // console.log(response.purchased_price);
+              let res = JSON.parse(response);
+              $("#show_dsProduct").html(res.html);
+              $("#total").html(res.total);
+            },
+          });
+        }
+        autocomplete(
+          document.getElementById("outletdistir_searchInput"),
+          productArr,
+          resultGet
+        );
+      } else {
+        console.log(status);
+      }
+    }
+  );
 }

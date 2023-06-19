@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Machines extends Model
+class CounterVariant extends Model
 {
     use HasFactory;
     public $fillable = [
-        'outlet_id',
-        'name',
+        'id',
+        'counter_id',
+        'variant_id',
+        'quantity',
         'created_by',
         'updated_by'
     ];

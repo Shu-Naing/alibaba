@@ -4,6 +4,10 @@
             DS_PENDING => 'pending',
             DS_APPROVE => 'approve'
         ],
+        'counter_machine' => [
+            OD_COUNTER => 'Counter',
+            OD_MACHINE => 'Machine'
+        ],
         'countries' => [
             '1' => 'Myanmar',
             '2' => 'China',

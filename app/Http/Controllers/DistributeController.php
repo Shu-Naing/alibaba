@@ -49,7 +49,7 @@ class DistributeController extends Controller
     {
         $this->validate($request, [
             'date' => 'required',
-            'reference_No' => 'required',
+            'reference_No' => 'required|unique:distributes',
             'status' => 'required',
             'from_outlet' =>'required',
             'to_outlet' =>'required',
@@ -116,6 +116,7 @@ class DistributeController extends Controller
         $distribute_products = DistributeProducts::where('distribute_id', $id)->get();
         // return $distribute_products;
         foreach($distribute_products as $row){
+            // return $row;
             $input = [];
             $input['outlet_id'] = $request->to_outlet;
             $input['variation_id'] = $row->variant_id;
@@ -125,7 +126,10 @@ class DistributeController extends Controller
             //create $input with outlet_itmes_tbl columns
             OutletItem::create($input);
             //get main inventory qty  with variant_id and main outlet id
-            $main_inv_qty = OutletItem::select('quantity')->where('outlet_id', MAIN_INV_ID)->where('variation_id', $row->variant_id)->first();
+            $main_inv_qty = OutletItem::select('quantity')
+                ->where('outlet_id', MAIN_INV_ID)
+                ->where('variation_id', $row->variant_id)->first();
+            
             $qty = $main_inv_qty->quantity - $row->quantity;
             
             //update outlet_items_tbl with main outlet id 

@@ -22,34 +22,21 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-        <form class="p-4 rounded border shadow-sm mb-5" action="{{ route('machine.store') }}" method="post">
+        {!! Form::open(array('route' => 'machine.store','method'=>'POST', 'class' => 'p-4 rounded border shadow-sm mb-5')) !!}
+        <!-- <form class="p-4 rounded border shadow-sm mb-5" action="{{ route('machine.store') }}" method="post"> -->
             @csrf
             <div class="row mb-3 col-6">
                 <div class="col-md-6">
-                    <label for="outlet" class="form-label">Outlet</label>
-                    <select class="form-select" name="outlet" id="outlet" aria-label="Default select example">
-                        <option selected></option>
-                        @if ($outlets)
-                            @foreach ($outlets as $outlet)
-                                <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                    <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                    {!! Form::label('outlet', 'Outlet', array('class' => 'form-label')) !!}
+                    {!! Form::select('outlet', $outlets, null, array('placeholder' => 'Choose', 'class' => 'form-select outlet','id'=>'outlet')) !!}
                 </div>
                 <div class="col-md-6">
-                    <label for="machine" class="form-label">Location (Store or Machine)</label>
-                    <select class="form-select" name="machine" id="machine" aria-label="Default select example">
-                        <option selected></option>
-                        @if ($machines)
-                            @foreach ($machines as $machine)
-                                <option value="{{ $machine->id }}">{{ $machine->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
+                    {!! Form::label('machine', 'Location (Store or Machine)', array('class' => 'form-label')) !!}
+                    {!! Form::select('machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-select machine','id'=>'machine')) !!}
                 </div>
             </div>
-        </form>
+        <!-- </form> -->
+        {!! Form::close() !!}
 
         <table id="table_id">
             <thead>

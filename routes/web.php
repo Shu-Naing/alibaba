@@ -24,6 +24,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\DistributeProductController;
 use App\Http\Controllers\OutletStockOverviewController;
+use App\Http\Controllers\OutletDistributeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,8 +59,13 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
+    Route::get('/outletdistribute/{id}/create', [OutletDistributeController::class, 'create'])->name('outletdistribute.create');
+    Route::post('/outletdistribute', [OutletDistributeController::class, 'store'])->name('outletdistribute.store');
+    Route::get('/outletdistribute/{id}/{from_outlet}/edit', [OutletDistributeController::class, 'edit'])->name('outletdistribute.edit');
+    Route::patch('/outletdistribute/{id}', [OutletDistributeController::class, 'update'])->name('outletdistribute.update');
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
+    Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
     // Route::resource('distribute/{id}', DistributeController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product');
 
@@ -80,6 +86,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
     Route::get('/get-product-lists',[ProductsController::class,'get_product_lists']);
+    Route::get('/get-outletdistir-product-lists',[ProductsController::class,'get_outletdistir_product_lists']);
+
     Route::get('/sellingprice/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])
     ->name('sellingprice.deactivate');
 
@@ -100,7 +108,9 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
 
     Route::get('/update-product-qty/{id}', [ProductsController::class, 'update_product_qty']);
+    Route::get('/update-outdis-product-qty/{id}', [ProductsController::class, 'update_outdis_product_qty']);
     Route::get('/delete-dis-product/{id}', [ProductsController::class,'delete_dis_product']);
+    Route::get('/delete-outdis-product/{id}', [ProductsController::class,'delete_outletdistirbute_product']);
 
     // Route::get('test', [TestController::class,'index'])->name('test.search');
 });

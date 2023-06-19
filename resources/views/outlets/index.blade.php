@@ -50,6 +50,7 @@
                             <a class="text-decoration-underline"
                                 href="{{ route('outlets.edit', ['outlet' => $outlet->id]) }}">Edit</a>
                             <a class="text-decoration-underline" href="">Settings</a>
+                            <a class="text-decoration-underline" href="{{ route('outletdistribute.create', $outlet->id ) }}">Distribute</a>
                             <form action="{{ route('outlets.destroy', $outlet->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
