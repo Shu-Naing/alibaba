@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('variations', function (Blueprint $table) {
-            $table->integer('received_qty')->nullable()->change();
-            
+            $table->integer('points')->nullable()->change();
+            $table->integer('tickets')->nullable()->change();
+            $table->integer('kyat')->nullable()->change();
         });
     }
 
@@ -26,6 +27,8 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('variations', function (Blueprint $table) {
+            //
+        });
     }
 };

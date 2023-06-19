@@ -1,7 +1,6 @@
 <?php
   
-use Illuminate\Support\Facades\Route;
-  
+use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
@@ -46,7 +45,7 @@ Auth::routes();
   
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     
@@ -77,7 +76,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     //Pos Route Start
     Route::get('pos',[PosController::class,'index'])->name('pos.index');
+    Route::post('pos/add',[PosController::class,'addPos'])->name('pos.add');
+    Route::get('pos/product/search',[PosController::class,'searchPosProduct'])->name('pos.product.search');
     Route::post('pos-item/add',[PosController::class,'addItemPos'])->name('positem.add');
+    Route::post('pos-item/update',[PosController::class,'updateItemPos'])->name('positem.update');
+    Route::delete('pos-item/remove',[PosController::class,'removeItemPos'])->name('positem.remove');
 
     Route::get('/select-box-data', [SelectBoxController::class, 'getData']);
     Route::get('/edit', [SelectBoxController::class, 'edit']);

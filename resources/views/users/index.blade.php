@@ -1,207 +1,67 @@
-@extends('layouts.navbar')
+@extends('layouts.app')
 @section('cardtitle')
-  <h4>Users Management</h4>
+    <i class="bi bi-person-fill"></i>
+    <span class="loginUser">Welcome, <?php $userName = Auth::user();
+    echo $userName->username; ?></span>
 @endsection
-
 @section('cardbody')
-<x-create-btn label="Create New User" route="users"/>
-
-
-@if ($message = Session::get('success'))
-<div class="alert alert-success">
-  <p>{{ $message }}</p>
-</div>
-@endif
-
-
-<table class="table table-bordered">
-<x-button-group :buttons="[
-    ['label' => 'Button 1', 'url' => '/button-1'],
-    ['label' => 'Button 2', 'url' => '/button-2'],
-    ['label' => 'Button 3', 'url' => '/button-3'],
-]"/>
-
- <tr>
-   <th>Name</th>
-   <th>Email</th>
-   <th>Roles</th>
-   <th width="280px">Action</th>
- </tr>
- @foreach ($data as $key => $user)
-  <tr>
-    <td>{{ $user->name }}</td>
-    <td>{{ $user->email }}</td>
-    <td>
-      @if(!empty($user->getRoleNames()))
-        @foreach($user->getRoleNames() as $v)
-           <label class="badge badge-success bg-warning text-dark">{{ $v }}</label>
-        @endforeach
-      @endif
-    </td>
-    <td>
-       <a href="{{ route('users.show',$user->id) }}"><i class="fa-regular fa-eye"></i> Show</a>
-       <a class="px-3" href="{{ route('users.edit',$user->id) }}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-<!--        
-       <i class="fa-regular fa-trash-can"></i>
-       {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
-            {!! Form::submit('Delete', ['class' => 'border-0']) !!}
-        {!! Form::close() !!} -->
-    </td>
-  </tr>
- @endforeach
-</table>
-
-<table id="example" class="display cell-border" style="width:100%">
+    <div class="container-fluid main-content">
+        <div class="breadcrumbBox rounded mb-4">
+            <h4 class="fw-bolder mb-3">List User</h4>
+            <div>
+            </div>
+        </div>
+        @if (count($errors) > 0)
+            <div class="alert alert-danger">
+                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @if ($message = Session::get('success'))
+            <div class="alert alert-success">
+                <p>{{ $message }}</p>
+            </div>
+        @endif
+        <div class="d-flex mb-3 justify-content-end">
+            <a class="btn btn-blue" href="{{ route('users.create') }}">Add +</a>
+        </div>
+        <table id="table_id">
+            <thead>
                 <tr>
                     <th>No</th>
                     <th>Name</th>
-                    <th>age</th>
-                    <th>Phone</th>
-                    <th>Genter</th>
+                    <th>Role</th>
+                    <th width="280px">Action</th>
                 </tr>
+            </thead>
+            @foreach ($data as $key => $user)
                 <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>
+                        @if (!empty($user->getRoleNames()))
+                            @foreach ($user->getRoleNames() as $v)
+                                <label class="badge bg-warning text-dark">{{ $v }}</label>
+                            @endforeach
+                        @endif
+                    </td>
+                    <td>
+                        <!-- <a href="{{ route('users.show', $user->id) }}"><i class="fa-regular fa-eye"></i> Show</a> -->
+                        <a class="px-3" href="{{ route('users.edit', $user->id) }}"><i
+                                class="fa-solid fa-pen-to-square"></i> Edit</a>
+                        <!--
+                            <i class="fa-regular fa-trash-can"></i>
+                            {!! Form::open(['method' => 'DELETE', 'route' => ['users.destroy', $user->id], 'style' => 'display:inline']) !!}
+                                    {!! Form::submit('Delete', ['class' => 'border-0']) !!}
+                                {!! Form::close() !!} -->
+                    </td>
                 </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Aung Aung</td>
-                    <td>23</td>
-                    <td>0987654321</td>
-                    <td>Male</td>
-                </tr>
-            </table>
-
-
-{!! $data->render() !!}
-
+            @endforeach
+        </table>
+    </div>
+    </div>
 @endsection
