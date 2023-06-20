@@ -124,5 +124,6 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/delete-outdis-product/{id}', [ProductsController::class,'delete_outletdistirbute_product']);
 
     // Route::get('test', [TestController::class,'index'])->name('test.search');
+    Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
 });
 
