@@ -22,7 +22,7 @@ class BrandsController extends Controller
 
     public function store(Request $request){
         $this->validate($request,[
-            'brand_name' => 'required',
+            'brand_name' => 'required|unique:brands',
             'note' => 'required'
         ]);
         $inputs = $request->all();

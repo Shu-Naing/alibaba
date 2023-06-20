@@ -33,23 +33,21 @@
 
 @section('cardbody')
     <div class="container-fluid main-content">
-        <div class="breadcrumbBox rounded mb-4">
+        <div class="breadcrumbBox rounded mb-4 d-print-none">
             <h4 class="fw-bolder mb-3">Pos</h4>
             <div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-7 d-print-none">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card p-3">
-                            {{-- <form id="searchForm" action="{{ route('pos.index') }}" method="GET"> --}}
                             <div class="form-outline">
                                 <input type="search" class="form-control" placeholder="Search Product" aria-label="Search"
-                                    id="searchInput" name="key" @if (!request()->has('filter')) disabled @endif />
+                                    id="searchInput" name="key" @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif />
                             </div>
-                            {{-- </form> --}}
                         </div>
                     </div>
                 </div>
@@ -64,33 +62,37 @@
                                 <small class="fw-bolder">[{{ $outlet_item->variation->item_code }}]</small>
                                 <small class="fw-bolder">{{ $outlet_item->variation->select }} :
                                     {{ $outlet_item->variation->value }}</small>
-                                @if ($outlet_item->variation->kyat != null)
+                                @if ($outlet_item->variation->kyat != null || $outlet_item->variation->kyat != 0)
                                     <small class="fw-bolder">Kyat :
                                         {{ $outlet_item->variation->kyat }}</small>
                                 @endif
 
                                 <small class="fw-bolder">
-                                    @if ($outlet_item->variation->points != null)
+                                    @if ($outlet_item->variation->points != null || $outlet_item->variation->points != 0)
                                         Point : {{ $outlet_item->variation->points }}
                                     @endif
-                                    @if ($outlet_item->variation->tickets != null)
+                                    @if ($outlet_item->variation->tickets != null || $outlet_item->variation->tickets != 0)
                                         ,Ticket :
                                         {{ $outlet_item->variation->tickets }}
                                     @endif
                                 </small>
-                                <button class="btn btn-red btn-sm mt-2 add-pos-btn"
-                                    data-variation-id="{{ $outlet_item->variation->id }}"
-                                    @if (request()->get('filter') === 'point') data-variation-value="{{ $outlet_item->variation->points }}" @endif
-                                    @if (request()->get('filter') === 'ticket') data-variation-value="{{ $outlet_item->variation->tickets }}" @endif
-                                    @if (request()->get('filter') === 'kyat') data-variation-value="{{ $outlet_item->variation->kyat }}" @endif
-                                    @if (!request()->has('filter') || $outlet_item->quantity == 0 || session()->has('pos-success')) disabled @endif>Added</button>
+                                @if ($outlet_item->quantity == 0)
+                                    <button class="btn btn-red btn-sm mt-2" disabled>Out Of Stock</button>
+                                @else
+                                    <button class="btn btn-red btn-sm mt-2 add-pos-btn"
+                                        data-variation-id="{{ $outlet_item->variation->id }}"
+                                        @if (request()->get('filter') === 'point') data-variation-value="{{ $outlet_item->variation->points }}" @endif
+                                        @if (request()->get('filter') === 'ticket') data-variation-value="{{ $outlet_item->variation->tickets }}" @endif
+                                        @if (request()->get('filter') === 'kyat') data-variation-value="{{ $outlet_item->variation->kyat }}" @endif
+                                        @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif>Added</button>
+                                @endif
                             </div>
                         </div>
                     @endforeach
                 </div>
             </div>
             <div class="col-lg-5">
-                <div class="card border @if (session()->has('pos-success')) d-none @endif">
+                <div class="card border @if (session()->has('pos-success')) d-none @endif d-print-none">
                     <div class="card-header fw-bolder d-flex justify-content-between align-items-center">
                         <div>New Invoice</div>{{ session('payment_type') }}
                         <select id="productFilter" class="form-select w-50" aria-label="Default select example"
@@ -119,15 +121,26 @@
                                             <span
                                                 class="fw-bolder d-block">{{ $temp->variation->product->product_name }}</span>
                                             <small class="fw-bold d-block">[{{ $temp->variation->item_code }}]</small>
-                                            <small class="fw-bold">Point : {{ $temp->variation->points }},Ticket :
-                                                {{ $temp->variation->tickets }}</small>
+                                            @if (request()->get('filter') === 'kyat')
+                                                <small class="fw-bold">Kyat : {{ $temp->variation->kyat }}</small>
+                                            @elseif(request()->get('filter') === 'point')
+                                                <small class="fw-bold">Point : {{ $temp->variation->points }}</small>
+                                            @elseif(request()->get('filter') === 'ticket')
+                                                <small class="fw-bold">Ticket : {{ $temp->variation->tickets }}</small>
+                                            @endif
+                                            {{-- <small class="fw-bold">Point : {{ $temp->variation->points }},Ticket :
+                                                {{ $temp->variation->tickets }}</small> --}}
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <input type="number" class="form-control qty" value="{{ $temp->quantity }}"
-                                            data-temp-id="{{ $temp->id }}">
+                                            data-temp-id="{{ $temp->id }}"
+                                            data-outlet-item-stock="{{ oultet_stock($temp->variation->id, Auth::user()->outlet->id) }}"
+                                            min="1"
+                                            max="{{ oultet_stock($temp->variation->id, Auth::user()->outlet->id) }}">
+
                                     </div>
-                                    <div class="col-md-2 text-center">
+                                    <div class="col-md-1 text-center">
                                         <i class="bi bi-trash text-primary fs-6 remove-pos-btn"
                                             data-temp-id="{{ $temp->id }}"></i>
                                     </div>
@@ -171,9 +184,6 @@
                 </div>
 
                 {{-- Invoice --}}
-                @if (session()->has('pos-success'))
-                    {{ session()->get('pos-success') }}
-                @endif
                 @if (count($pos_items) != 0)
                     <div class="card border py-3 @if (!session()->has('pos-success')) d-none @endif">
                         <h2 class="text-center fw-bolder m-0 p-0">Alibaba</h2>
@@ -210,9 +220,9 @@
                         </table>
                     </div>
                     @if (session()->has('pos-success'))
-                        <div class="row d-flex">
+                        <div class="row d-flex d-print-none">
                             <div class="col-md-6">
-                                <a href="" class="btn btn-red w-100">Print</a>
+                                <button onclick="window.print()" class="btn btn-red w-100">Print</button>
                             </div>
                             <div class="col-md-6">
                                 <a href="{{ route('pos.index') }}" class="btn btn-primary w-100">Back To Pos</a>
@@ -275,6 +285,10 @@
             $('.qty').on('change', function() {
                 var qty = $(this).val();
                 var temp_id = $(this).data('temp-id');
+                var outlet_item_stock = $(this).data('outlet-item-stock');
+                if (qty > outlet_item_stock) {
+                    qty = outlet_item_stock;
+                }
 
                 $.ajaxSetup({
                     headers: {
@@ -315,7 +329,7 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(response) {
-                        location.href = location.href;
+                        location.href = '{{ route('pos.index') }}';
                         console.log(response);
                     },
                     error: function(xhr, status, error) {

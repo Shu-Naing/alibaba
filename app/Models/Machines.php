@@ -15,6 +15,11 @@ class Machines extends Model
         'updated_by'
     ];
 
+    public function outlet()
+    {
+        return $this->belongsTo(Outlets::class);
+    }
+
     public function machine_variants()
     {
         return $this->hasMany(MachineVariant::class, 'machine_id', 'id');

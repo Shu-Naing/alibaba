@@ -23,7 +23,7 @@ class UnitsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:units',
             'short_name' => 'required',
             'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
         ]);

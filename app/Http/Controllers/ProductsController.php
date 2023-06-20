@@ -13,8 +13,9 @@ use App\Models\OutletItem;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Models\DistributeProducts;
-use App\Models\OutletDistributeProduct;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductsSampleExport;
+use App\Models\OutletDistributeProduct;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -43,18 +44,24 @@ class ProductsController extends Controller
     {
     //    return $request;
         $validator = Validator::make($request->all(), [
-            "product_name" => "required",
+            "product_name" => "required|unique:products",
             "category_id" => "required",
             "brand_id" => "required",
             "unit_id" => "required",
             "company_name" => "required",
             "country" => "required",
-            "sku" => "required",
+            "sku" => "required|unique:products",
             "received_date" => "required",
             "expired_date" => "required",
             "description" => "required",
 
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('products.create')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
 
         // Create a new product instance
         $product = new Product;
@@ -195,6 +202,10 @@ class ProductsController extends Controller
     public function exportProduct(){
         $data = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
         return Excel::download(new ProductsExport($data), 'products.xlsx');
+    }
+
+    public function exportSampleProduct(){
+        return Excel::download(new ProductsSampleExport(), 'products.xlsx');
     }
 
 }

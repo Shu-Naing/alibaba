@@ -22,7 +22,7 @@
                         </div>
                         <div class="col-lg-4 col-sm-12">
                             <button class="btn btn-primary">Submit</button>
-                            <button class="btn btn-success">Download Template</button>
+                            <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a>
                         </div>
                         <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
                             <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
