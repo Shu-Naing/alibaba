@@ -123,27 +123,46 @@
                     </ul>
                 </li>
                 <li class="nav-item nav-small-cap">
-                    <a href="#" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi bi-cart-check"></i>
-                        <span class="d-none d-sm-inline">Purchase</span></a>
-                </li>
-                <li class="nav-item nav-small-cap">
                     <a href="{{ route('pos.index') }}" class="nav-link px-0 align-middle">
                         <i class="fs-4 bi bi-receipt"></i>
                         <span class="d-none d-sm-inline">Pos</span></a>
                 </li>
-                <li class="nav-item nav-small-cap">
-                    <a href="#" class="nav-link px-0 align-middle">
-                        <i class="fs-4 bi bi-cash-coin"></i>
-                        <span class="d-none d-sm-inline">Sell</span>
-                    </a>
-                </li>
-                <li class="nav-item nav-small-cap">
+                <!-- <li class="nav-item nav-small-cap">
                     <a href="#" class="nav-link px-0 align-middle">
                         <i class="fs-4 bi bi-file-earmark-medical"></i>
                         <span class="d-none d-sm-inline">Reports</span>
                     </a>
+                </li> -->
+                <li class="nav-item nav-small-cap">
+                    <a href="#reportmenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle dropdownli">
+                        <i class="fs-4 bi bi-file-earmark-medical"></i>
+                        <span class="d-none d-sm-inline">Reports</span>
+                        <span class="showHide">+</span>
+                    </a>
+                    <ul class="collapse nav flex-column submenuParent" id="reportmenu1" data-bs-parent="#menu">
+                        <li class="w-100 sidebar-item">
+                            <a href="#"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">Outlet Reports</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="#"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">Product Reports</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
+                <li class="nav-item nav-small-cap">
+                    {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
+                        <i class="fs-4 bi bi-box-arrow-right"></i>
+                        <button type="submit" class="nav-link btn btn-link fw-bolder px-0 align-middle d-inline-block">Logout</button>
+                    {!! Form::close() !!}
+                </li>
+                
             </ul>
         </nav>
     </div>

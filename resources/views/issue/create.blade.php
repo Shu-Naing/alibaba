@@ -7,7 +7,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">  
-            <h4 class="fw-bolder mb-3">Outlet Distribute</h4>
+            <h4 class="fw-bolder mb-3">Outlet Issue</h4>
         </div>
          @if(Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,7 +26,7 @@
             </ul>
         </div>
         @endif
-        {!! Form::open(array('route' => 'outletdistribute.store', 'method' => 'post', 'class' => 'p-4 rounded border shadow-sm mb-5', 'id' => 'outletdistribute')) !!}
+        {!! Form::open(array('route' => 'issue.store', 'method' => 'post', 'class' => 'p-4 rounded border shadow-sm mb-5', 'id' => 'outletissue')) !!}
             @csrf
             <div class="row mb-3 g-3">
                 <div class="col-md-4">
@@ -47,16 +47,12 @@
                     {!! Form::select('from_outlet_select',$outlets, $id, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'fromOutlet', 'disabled' => 'disabled')) !!}
                 </div>
                 <div class="col-md-4">
-                    {!! Form::label('counterMachine', 'To (Counter / Machine)', array('class' => 'form-label')) !!}
-                    {!! Form::select('counterMachine', $counter_machine, null, array('placeholder' => 'Choose', 'class' => 'form-control counterMachine','id'=>'counterMachine')) !!}
+                    {!! Form::label('to_machine', 'From Machine', array('class' => 'form-label')) !!}
+                    {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'to_machine')) !!}
                 </div>
-                <div class="col-md-2">
-                    {!! Form::label('counter', 'Counter', array('class' => 'form-label')) !!}
-                    {!! Form::select('to_counter', $counter, null, array('placeholder' => 'Choose', 'class' => 'form-control counter','id'=>'counter', 'disabled')) !!}
-                </div>
-                <div class="col-md-2">
-                    {!! Form::label('machine', 'Machine', array('class' => 'form-label')) !!}
-                    {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control machine','id'=>'machine', 'disabled')) !!}
+                <div class="col-md-4">
+                    {!! Form::label('store_customer', 'To (Customer / Store)', array('class' => 'form-label')) !!}
+                    {!! Form::select('store_customer', $branch, null, array('placeholder' => 'Choose', 'class' => 'form-control store_customer','id'=>'store_customer')) !!}
                 </div>
             </div>
         {!! Form::close() !!}
@@ -64,7 +60,7 @@
         <div class="text-center my-5">
             <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
-            <button type="submit" form="outletdistribute" class="btn btn-blue ms-2">Next</button>
+            <button type="submit" form="outletissue" class="btn btn-blue ms-2">Next</button>
         </div>
     </div>
     
