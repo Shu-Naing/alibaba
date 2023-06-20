@@ -8,6 +8,10 @@
             OD_COUNTER => 'Counter',
             OD_MACHINE => 'Machine'
         ],
+        'branch' => [
+            IS_CUSTOMER => 'Customer',
+            IS_STORE => 'Store'
+        ],
         'countries' => [
             '1' => 'Myanmar',
             '2' => 'China',

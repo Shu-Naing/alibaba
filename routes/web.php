@@ -25,6 +25,7 @@ use App\Http\Controllers\PromotionsController;
 use App\Http\Controllers\DistributeProductController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\OutletDistributeController;
+use App\Http\Controllers\IssueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,13 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
+    // Route::resource('issue-products', IssueProductController::class);
+
+    Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
+    Route::post('/issue', [IssueController::class, 'store'])->name('issue.store');
+    Route::get('/issue/{id}/{from_outlet}/edit', [IssueController::class, 'edit'])->name('issue.edit');
+    Route::patch('/issue/{id}', [IssueController::class, 'update'])->name('issue.update');
+
     Route::get('/outletdistribute/{id}/create', [OutletDistributeController::class, 'create'])->name('outletdistribute.create');
     Route::post('/outletdistribute', [OutletDistributeController::class, 'store'])->name('outletdistribute.store');
     Route::get('/outletdistribute/{id}/{from_outlet}/edit', [OutletDistributeController::class, 'edit'])->name('outletdistribute.edit');
@@ -66,6 +74,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
+    Route::get('/search-outlet-issue', [SearchController::class, 'search_outlet_issue'])->name('search-outlet-issue');
     // Route::resource('distribute/{id}', DistributeController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product');
 

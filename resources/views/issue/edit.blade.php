@@ -30,7 +30,7 @@
         </div>
         @endif
 
-        {!! Form::model($outletdistributes, ['method' => 'PATCH','class' => '', 'id' => 'outletdistributes','route' => ['outletdistribute.update', $outletdistributes->id]]) !!}
+        {!! Form::model($outletdistributes, ['method' => 'PATCH','class' => '', 'id' => 'outletissue','route' => ['issue.update', $outletdistributes->id]]) !!}
             @csrf
             <div class="p-4 rounded border shadow-sm mb-5">
                 <div class="row mb-3 g-3">
@@ -52,25 +52,21 @@
                         {!! Form::select('from_outlet_select',$outlets, $outletdistributes->from_outlet, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'fromOutlet', 'disabled' => 'disabled')) !!}
                     </div>
                     <div class="col-md-4">
-                        {!! Form::label('counterMachine', 'To (Counter / Machine)', array('class' => 'form-label')) !!}
-                        {!! Form::select('counterMachine', $counter_machine, $outletdistributes->counter_machine, array('placeholder' => 'Choose', 'class' => 'form-control counterMachine','id'=>'counterMachine')) !!}
+                        {!! Form::label('to_machine', 'From Machine', array('class' => 'form-label')) !!}
+                        {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'to_machine')) !!}
                     </div>
-                    <div class="col-md-2">
-                        {!! Form::label('counter', 'Counter', array('class' => 'form-label')) !!}
-                        {!! Form::select('toCounterMachine', $counter, ($outletdistributes->counter_machine === 1) ? $outletdistributes->to_machine : null, array('placeholder' => 'Choose', 'class' => 'form-control counter','id'=>'counter', 'disabled' => ($outletdistributes->counter_machine === 2) ? 'disabled' : false)) !!}
+                    <div class="col-md-4">
+                        {!! Form::label('store_customer', 'To (Customer / Store)', array('class' => 'form-label')) !!}
+                        {!! Form::select('store_customer', $branch, null, array('placeholder' => 'Choose', 'class' => 'form-control store_customer','id'=>'store_customer')) !!}
                     </div>
-                    <div class="col-md-2">
-                        {!! Form::label('machine', 'Machine', array('class' => 'form-label')) !!}
-                        {!! Form::select('toCounterMachine', $machines, ($outletdistributes->counter_machine === 2) ? $outletdistributes->to_machine : null, array('placeholder' => 'Choose', 'class' => 'form-control machine','id'=>'machine', 'disabled' => ($outletdistributes->counter_machine === 1) ? 'disabled' : false)) !!}
-                    </div>
+                    
                 </div>
             </div>
-
             <h5 class="fw-bold mb-4">Add Products</h5>
             <div class="input-group rounded w-25 mb-3">
                 <div>
-                    <input type="hidden" id="outletdistribute_id" value="{{ $outletdistributes->id }}">
-                    <input type="text" class="form-control" id="outletdistir_searchInput" data-id="{{ $outletdistributes->from_outlet }}" placeholder="Search...">
+                    <input type="hidden" id="outletdistributed_id" value="{{ $outletdistributes->id }}">
+                    <input type="text" class="form-control" id="outletissue_searchInput" data-id="{{ $outletdistributes->from_outlet }}" placeholder="Search...">
                     <div id="searchResults"></div>
                 </div>
             </div>
@@ -96,12 +92,12 @@
                                 <td class="align-middle" style="text-align: left;">
                                     {{$product->product_name}}
                                 </td>
-                                
+                                <!-- <td class="align-middle"> 6Pcs + -</td> -->
                                 <td class="align-middle"> 
                                     <div class="qty-box border rounded">
                                         <div class="row gx-0">
                                             <div class="col">
-                                                <div class="border p-2"><input type="number" class="number" min="1" max="{{outlet_stock($product->variant_id,$outletdistributes->from_outlet)}}" value="{{$product->quantity}}" data-id="{{$product->id}}"></div>
+                                                <div class="border p-2"><input type="number" class="number" min="1" value="{{$product->quantity}}" data-id="{{$product->id}}"></div>
                                             </div>
                                             <div class="col">
                                                 <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseOutletdisValue(this, {{$product->id}})" value="Increase Value">+</div>
@@ -136,7 +132,7 @@
             <div class="text-center my-5">
                 <!-- <a class="btn btn-red" href="{{ url()->previous() }}">Back</a> -->
                 <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
-                <button type="submit" form="outletdistributes" class="btn btn-blue ms-2">Save</button>
+                <button type="submit" form="outletissue" class="btn btn-blue ms-2">Save</button>
             </div>
         {!! Form::close() !!}
 
