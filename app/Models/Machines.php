@@ -20,4 +20,8 @@ class Machines extends Model
         return $this->belongsTo(Outlets::class);
     }
 
+    public function machine_variants()
+    {
+        return $this->hasMany(MachineVariant::class, 'machine_id', 'id');
+    }
 }

@@ -364,3 +364,52 @@ if (document.getElementById("outletdistir_searchInput")) {
     }
   );
 }
+
+if (document.getElementById("outletissue_searchInput")) {
+  var fromOutletId = $("#outletissue_searchInput").data("id");
+  $.get(
+    "/get-outletdistir-product-lists",
+    { fromOutletId: fromOutletId },
+    function (data, status) {
+      // console.log(data);
+      if (status == "success") {
+        let productArr = [];
+        product = Object.keys(data).map((key) => {
+          productArr.push({
+            id: key,
+            title: data[key],
+          });
+        });
+
+        // console.log(productArr);
+        var outletdistributed_id = $("#outletdistributed_id").val();
+        // console.log(outletdistribute_id, "hello");
+        function resultGet(res, id) {
+          $.ajax({
+            url: "/search-outlet-issue",
+            type: "GET",
+            data: {
+              outlet_distributed_id: outletdistributed_id,
+              variant_id: id,
+              from_outlet: fromOutletId,
+            },
+            success: function (response) {
+              // console.log(response);
+              // console.log(response.purchased_price);
+              let res = JSON.parse(response);
+              $("#show_dsProduct").html(res.html);
+              $("#total").html(res.total);
+            },
+          });
+        }
+        autocomplete(
+          document.getElementById("outletissue_searchInput"),
+          productArr,
+          resultGet
+        );
+      } else {
+        console.log(status);
+      }
+    }
+  );
+}

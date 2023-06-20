@@ -34,9 +34,6 @@
             <header class="app-header d-print-none">
                 <nav class="navbar navbar-expand-lg navbar-light justify-content-end">
                     @yield('cardtitle')
-                    {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
-                    <button type="submit">Logout</button>
-                    {!! Form::close() !!}
                 </nav>
             </header>
             <div>
