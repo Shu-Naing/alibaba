@@ -6,7 +6,6 @@ use App\Models\OutletItem;
     use App\Models\Machines;
     use App\Models\distributes;
     use App\Models\Counter;    
-    use App\Models\OutletItem; 
 
     define('DS_PENDING', '1');
     define('DS_APPROVE', '2');
@@ -28,13 +27,7 @@ use App\Models\OutletItem;
         return $Outlets_arr;
     }
 
-    if(!function_exists('oultet_stock')){
-        function oultet_stock($variation_id,$outlet_id){
-            
-           $outet_item_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id',$outlet_id)->value('quantity');
-            return $outet_item_stock;
-        }
-    }
+   
 
     // function getMachines(){
         
@@ -53,46 +46,17 @@ use App\Models\OutletItem;
         $counter_arr = [];
         $response = [];
         $counter = Counter::where('outlet_id', $id)->first();
-        if($counter) {
-            $counter_arr[$counter->id] = $counter->name;
-        }
+        $counter_arr[$counter->id] = $counter->name;
         
         $machines = Machines::where('outlet_id', $id)->get();
-        if($machines) {
-            foreach ($machines as $row) {
-                $machine_arr[$row->id] = $row->name;
-            }
+        foreach ($machines as $row) {
+            $machine_arr[$row->id] = $row->name;
         }
 
         $response['counter'] = $counter_arr;
         $response['machine'] = $machine_arr;
 
         return $response;
-    }
-
-    function getIssuedMachinesWithOutletID($id){
-        $machine_arr = [];       
-        
-        $machines = Machines::has('machine_variants')
-            ->whereHas('machine_variants', function ($query) {
-                $query->where('quantity', '>', 0);
-            })
-            ->where('outlet_id',$id)
-            ->get();
-        
-        if($machines) {
-            foreach ($machines as $row) {
-                $machine_arr[$row->id] = $row->name;
-            }
-        }
-
-        return $machine_arr;
-    }
-
-    function outlet_stock($variation_id = null,$outlet_id =null){
-        $outet_item_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id',$outlet_id)->value('quantity');
-
-        return $outet_item_stock;
     }
 
     // function getMachinesWithOutletID($id){
@@ -126,6 +90,5 @@ use App\Models\OutletItem;
     //     return $machine_arr;
     // }
 
-  
 
 ?>
