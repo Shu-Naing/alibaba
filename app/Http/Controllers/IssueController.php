@@ -30,7 +30,7 @@ class IssueController extends Controller
     public function create($id)
     {
         $outlets = getOutlets();
-        $machines = getIssuedMachinesWithOutletID($from_outlet);
+        $machines = getIssuedMachinesWithOutletID($id);
         return view('issue.create', compact('outlets', 'id', 'machines'));
     }
 

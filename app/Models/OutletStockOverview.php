@@ -16,6 +16,7 @@ class OutletStockOverview extends Model
         'outlet_id',
         'machine_id',
         'item_code',
+        'balance',
         'created_by',
         'updated_by',
     ];

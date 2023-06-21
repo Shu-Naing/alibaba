@@ -59,7 +59,6 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
-    Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     // Route::resource('issue-products', IssueProductController::class);
 
     Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
@@ -72,9 +71,16 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/outletdistribute/{id}/{from_outlet}/edit', [OutletDistributeController::class, 'edit'])->name('outletdistribute.edit');
     Route::patch('/outletdistribute/{id}', [OutletDistributeController::class, 'update'])->name('outletdistribute.update');
 
+    Route::get('/outletstockoverview/{id}/create', [OutletStockOverviewController::class, 'create'])->name('outletstockoverview.create');
+    Route::get('/outletstockoverview/{id}/edit', [OutletStockOverviewController::class, 'edit'])->name('outletstockoverview.edit');
+    Route::post('/outletstockoverview', [OutletStockOverviewController::class, 'store'])->name('outletstockoverview.store');
+    Route::patch('/outletstockoverview/{id}/update', [OutletStockOverviewController::class, 'update'])->name('outletstockoverview.update');
+    Route::get('/outlet-machine-item', [OutletStockOverviewController::class, 'getOutletMachineItem'])->name('outletmachineitem');
+
     Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
     Route::get('/search-outlet-issue', [SearchController::class, 'search_outlet_issue'])->name('search-outlet-issue');
+    
     // Route::resource('distribute/{id}', DistributeController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product');
 
@@ -125,5 +131,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     // Route::get('test', [TestController::class,'index'])->name('test.search');
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
+    Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
+    Route::get('report/outletstockoverview',[ReportController::class,'outletstockoverviewReport'])->name('report.outletstockoverview');
 });
 

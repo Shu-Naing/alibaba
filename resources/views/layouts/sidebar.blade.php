@@ -148,7 +148,7 @@
                     </a>
                     <ul class="collapse nav flex-column submenuParent" id="reportmenu1" data-bs-parent="#menu">
                         <li class="w-100 sidebar-item">
-                            <a href="#"
+                            <a href="{{ route('report.machine')}}"
                                 class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Reports</span>
@@ -159,6 +159,13 @@
                                 class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Product Reports</span>
+                            </a>
+                        </li>
+                         <li class="w-100 sidebar-item">
+                            <a href="{{ route('report.outletstockoverview')}}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
                             </a>
                         </li>
                     </ul>

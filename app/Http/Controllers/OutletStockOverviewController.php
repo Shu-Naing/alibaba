@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Outlets;
 use App\Models\Machines;
 use App\Models\OutletStockOverview;
+use App\Models\Variation;
+use App\Models\MachineVariant;
+use Auth;
 
 class OutletStockOverviewController extends Controller
 {
@@ -17,7 +20,7 @@ class OutletStockOverviewController extends Controller
     public function index()
     {
         $outlets = getOutlets();
-        $machines = getMachines();
+        $machines = getMachinesWithOutletID();
         $outletstocks = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')->get();
         return view('outletstockoverview.index', compact('outlets', 'machines', 'outletstocks'));
     }
@@ -27,9 +30,14 @@ class OutletStockOverviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($id)
     {
-        //
+        $outlets = getOutlets();
+        $machines = getMachinesWithOutletID($id);
+        // $item_codes = Machines::with('machine_variants.variants')->where('outlet_id', $id)->where('machine_id', )->get();
+        
+                // return $item_codes1;
+        return view('outletstockoverview.create', compact('outlets', 'machines', 'id'));
     }
 
     /**
@@ -40,7 +48,16 @@ class OutletStockOverviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[ 
+            'date' => 'required',            
+            'outlet_id' => 'required',
+            'machine_id' => 'required',
+        ]);
+        $input = [];
+        $input = $request->all();
+        $input['created_by'] = Auth::user()->id;
+        $outletstockeoverview = OutletStockOverview::create($input); 
+        return redirect()->route('outletstockoverview.edit',$outletstockeoverview->id);
     }
 
     /**
@@ -51,7 +68,7 @@ class OutletStockOverviewController extends Controller
      */
     public function show($id)
     {
-        return "hello";
+        
     }
 
     /**
@@ -62,7 +79,12 @@ class OutletStockOverviewController extends Controller
      */
     public function edit($id)
     {
-        //
+        //$id is outletstockoverview id        
+        $overview = OutletStockOverview::find($id);
+        $outlets = getOutlets();
+        $machines = getMachinesWithOutletID($overview->outlet_id);
+        $item_codes = getOutletMachineItem($overview->machine_id);
+        return view('outletstockoverview.edit',compact('overview','outlets','machines','item_codes'));
     }
 
     /**
@@ -74,7 +96,11 @@ class OutletStockOverviewController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        $input['created_by'] = auth()->user()->id;
+        $outletstocksoverview = OutletStockOverview::find($id);
+        $outletstocksoverview->update($input);        
+        return redirect()->route('outletstockoverview.create', $request->outlet_id);
     }
 
     /**
@@ -87,4 +113,6 @@ class OutletStockOverviewController extends Controller
     {
         //
     }
+
+    
 }

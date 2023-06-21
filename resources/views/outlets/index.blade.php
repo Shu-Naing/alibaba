@@ -52,7 +52,8 @@
                             <a class="text-decoration-underline" href="">Settings</a>
                             <div class="d-flex">
                                 <a class="text-decoration-underline" href="{{ route('outletdistribute.create', $outlet->id ) }}">Receive</a>/ 
-                                <a class="text-decoration-underline" href="{{ route('issue.create', $outlet->id ) }}">Issue</a>
+                                <a class="text-decoration-underline" href="{{ route('issue.create', $outlet->id ) }}">Issue</a>/
+                                <a class="text-decoration-underline text-nowrap" href="{{ route('outletstockoverview.create', $outlet->id ) }}">Opening Qty</a>
                             </div>
                             <form action="{{ route('outlets.destroy', $outlet->id) }}" method="POST">
                                 @csrf
