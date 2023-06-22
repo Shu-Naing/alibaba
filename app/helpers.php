@@ -1,6 +1,7 @@
 <?php 
 
 use App\Models\OutletItem;
+use App\Models\MachineVariant;
 
     use App\Models\Outlets;
     use App\Models\Machines;
@@ -88,6 +89,48 @@ use App\Models\OutletItem;
     //     }
 
     //     return $machine_arr;
+    // }
+
+    if(!function_exists('outlet_stock')){
+        function outlet_stock($variation_id,$outlet_id = 1){
+            
+           $outet_item_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id',$outlet_id)->value('quantity');
+            return $outet_item_stock;
+        }
+    }
+
+    if(!function_exists('machine_stock')){
+        function machine_stock($variation_id,$machine_id){
+            
+           $machine_item_stock = MachineVariant::where('variant_id',$variation_id)->where('machine_id',$machine_id)->value('quantity');
+            return $machine_item_stock;
+        }
+    }
+
+    if(!function_exists('total_store_stock')){
+        function total_store_stock($variation_id){
+           $total_store_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id','!=',1)->sum('quantity');
+            return $total_store_stock;
+        }
+    }
+
+    if(!function_exists('total_machine_stock')){
+        function total_machine_stock($variation_id){
+           $total_store_stock = MachineVariant::where('variant_id',$variation_id)->sum('quantity');
+            return $total_store_stock;
+        }
+    }
+
+
+    // function outlet_variation_total_price($variation_id){
+    //     $total = OutletItem::where('variation_id',$variation_id)->sum('')
+    // }
+
+    // if(!function_exists('grand_total_price')){
+    //     function grand_total_price($variation_id){
+    //        $grand_total_price = MachineVariant::with('variants')->get();
+    //         return $grand_total_price;
+    //     }
     // }
 
 

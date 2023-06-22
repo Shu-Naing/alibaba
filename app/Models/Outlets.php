@@ -24,4 +24,8 @@ class Outlets extends Model
     public function categories() {
         return $this->hasMany(Categories::class,'category_id');
     }
+
+    public function machines() {
+        return $this->hasMany(Machines::class,'outlet_id','id');
+    }
 }
