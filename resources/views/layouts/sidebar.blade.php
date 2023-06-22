@@ -161,6 +161,20 @@
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>
                         </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletstockhistory.index') }}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">Outlet Stock History</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('distribute.index') }}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">List Distribute Product</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item nav-small-cap">

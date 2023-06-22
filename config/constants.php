@@ -27,5 +27,9 @@
             '2' => 'Myaynigone',
             '3' => 'Ahlone',
         ],
+        'types' => [
+            RECIEVE_TYPE => 'Recieved',
+            ISSUE_TYPE => 'Issued'
+        ]
     ];
 ?>

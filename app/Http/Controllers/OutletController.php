@@ -78,7 +78,7 @@ class OutletController extends Controller
         // return $outletofid->outlet_id;
 
         $input = [];
-        $input['outlet_id'] = $outletofid->outlet_id;
+        $input['outlet_id'] = $outletofid->id;
         $input['name'] = $outletofid->name.'_counter';
         $input['created_by'] = Auth::user()->id;
         Counter::create($input);
