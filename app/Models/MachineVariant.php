@@ -16,4 +16,8 @@ class MachineVariant extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function variants() {
+        return $this->hasMany(Variation::class,'id','variant_id');
+    }
 }

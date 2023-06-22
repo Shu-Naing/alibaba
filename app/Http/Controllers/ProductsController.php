@@ -199,10 +199,10 @@ class ProductsController extends Controller
         return view('products.list',compact('products'));
     }
 
-    public function exportProduct(){
-        $data = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
-        return Excel::download(new ProductsExport($data), 'products.xlsx');
-    }
+    // public function exportProduct(){
+    //     $data = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
+    //     return Excel::download(new ProductsExport($data), 'products.xlsx');
+    // }
 
     public function exportSampleProduct(){
         return Excel::download(new ProductsSampleExport(), 'products.xlsx');

@@ -1,4 +1,4 @@
-<aside class="left-sidebar">
+<aside class="left-sidebar d-print-none">
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between mt-3 mb-2s">
             <a href="/home" class="text-nowrap logo-img">
@@ -148,15 +148,13 @@
                     </a>
                     <ul class="collapse nav flex-column submenuParent" id="reportmenu1" data-bs-parent="#menu">
                         <li class="w-100 sidebar-item">
-                            <a href="#"
-                                class="nav-link sidebar-link">
+                            <a href="#" class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Reports</span>
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
-                            <a href="#"
-                                class="nav-link sidebar-link">
+                            <a href="#" class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>
@@ -179,11 +177,12 @@
                 </li>
                 <li class="nav-item nav-small-cap">
                     {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
-                        <i class="fs-4 bi bi-box-arrow-right"></i>
-                        <button type="submit" class="nav-link btn btn-link fw-bolder px-0 align-middle d-inline-block">Logout</button>
+                    <i class="fs-4 bi bi-box-arrow-right"></i>
+                    <button type="submit"
+                        class="nav-link btn btn-link fw-bolder px-0 align-middle d-inline-block">Logout</button>
                     {!! Form::close() !!}
                 </li>
-                
+
             </ul>
         </nav>
     </div>

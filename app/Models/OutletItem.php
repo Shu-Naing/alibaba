@@ -20,4 +20,9 @@ class OutletItem extends Model
     {
         return $this->hasOne(Variation::class,'id','variation_id');
     }
+
+    public function outlet()
+    {
+        return $this->belongsTo(Outlets::class,'outlet_id','id');
+    }
 }
