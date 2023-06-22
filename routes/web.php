@@ -81,7 +81,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     //proudcts excel-export
     Route::get('products-list',[ProductsController::class, 'listProduct'])->name('products.list');
-    Route::get('products-export',[ProductsController::class, 'exportProduct'])->name('product.export');
+    
     Route::get('products-sample-export',[ProductsController::class, 'exportSampleProduct'])->name('product.sample-export');
     Route::get('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
 
@@ -125,5 +125,6 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     // Route::get('test', [TestController::class,'index'])->name('test.search');
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
+    Route::get('products-export',[ReportController::class, 'exportProduct'])->name('product.export');
 });
 

@@ -30,8 +30,8 @@ class Variation extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function outlet_item()
+    public function outlet_items()
     {
-        return $this->hasOne(OutletItem::class);
+        return $this->hasMany(OutletItem::class);
     }
 }
