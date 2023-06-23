@@ -12,6 +12,7 @@ use App\Models\Categories;
 use App\Models\OutletItem;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
+use Illuminate\Validation\Rule;
 use App\Models\DistributeProducts;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsSampleExport;
@@ -24,7 +25,8 @@ class ProductsController extends Controller
     public function index()
     {
 
-        $products = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
+        // $products = Variation::with('product','product.brand','product.category','product.unit')->get();
+        $products = Product::with('brand','category','unit')->get();
 
             // return $products;
     
@@ -108,6 +110,99 @@ class ProductsController extends Controller
     
         return redirect()->route('products.create')->with('success','Product create successfully');
 
+    }
+
+    public function edit($product_id){
+
+        // return $product_id;
+        $brands = Brands::all();
+        $categories = Categories::all();
+        $units = Units::all();
+        $product = Product::with('brand','category','unit')->find($product_id);
+        $variations = Variation::whereHas('product',function ($query) use ($product_id){
+            $query->where('product_id',$product_id);
+        })->get();
+        
+        // return $product;
+        return view('products.edit',compact('product','variations','brands','categories','units'));
+    }
+
+
+    public function update(Request $request,$product_id){
+        
+        $validator = Validator::make($request->all(), [
+            "product_name" => [
+                'required',
+                Rule::unique('products')->ignore($product_id),
+            ],
+            "category_id" => "required",
+            "brand_id" => "required",
+            "unit_id" => "required",
+            "company_name" => "required",
+            "country" => "required",
+            "sku" => [
+                'required',
+                Rule::unique('products')->ignore($product_id),
+            ],
+            "received_date" => "required",
+            "expired_date" => "required",
+            "description" => "required",
+
+        ]);
+    
+        if ($validator->fails()) {
+            return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        Product::find($product_id)->update([
+
+            'product_name' => $request->product_name,
+            'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
+            'unit_id' => $request->unit_id,
+            'company_name' => $request->company_name,
+            'country' => $request->country,
+            'sku' => $request->sku,
+            'received_date' => $request->received_date,
+            'expired_date' => $request->expired_date,
+            'description' => $request->description,
+
+        ]);
+
+
+        $variations = $request->variations; 
+
+        // return $request->variations[0]['image'];
+
+        foreach($variations as $variation) {
+
+            
+
+            $variationData = [
+                'product_id' => $product_id,
+                'select' => $variation['select'] ,
+                'value' => $variation['value'] ,
+                'points' => $variation['points'] , 
+                'tickets' => $variation['tickets'],
+                'kyat'=> $variation['kyat'], 
+                'alert_qty' => $variation['alert_qty'],
+                'purchased_price' => $variation['purchased_price'],
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ];
+
+            if (isset($variation['image'])) {
+                $variation_image = $variation['image'];
+                $imagePath = $variation_image->store('variations', 'public'); 
+                $variationData['image'] = $imagePath;
+            }
+        
+            Variation::updateOrCreate(['item_code' => $variation['item_code']], $variationData);
+
+        }
+
+        return back()->with('success','Product update successfully');
     }
 
         public function get_product_lists(Request $request){

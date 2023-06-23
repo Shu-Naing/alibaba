@@ -122,16 +122,6 @@ use App\Models\MachineVariant;
     }
 
 
-    // function outlet_variation_total_price($variation_id){
-    //     $total = OutletItem::where('variation_id',$variation_id)->sum('')
-    // }
-
-    // if(!function_exists('grand_total_price')){
-    //     function grand_total_price($variation_id){
-    //        $grand_total_price = MachineVariant::with('variants')->get();
-    //         return $grand_total_price;
-    //     }
-    // }
 
 
 ?>
