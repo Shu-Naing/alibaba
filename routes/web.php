@@ -118,8 +118,6 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/courses/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])->name('courses.deactivate');
     Route::get('/courses/{id}/activate', [SellingPriceGroupController::class, 'activate'])->name('courses.activate');
 
-
-
     Route::get('/update-product-qty/{id}', [ProductsController::class, 'update_product_qty']);
     Route::get('/update-outdis-product-qty/{id}', [ProductsController::class, 'update_outdis_product_qty']);
     Route::get('/delete-dis-product/{id}', [ProductsController::class,'delete_dis_product']);

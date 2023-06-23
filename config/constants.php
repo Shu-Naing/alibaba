@@ -30,6 +30,6 @@
         'types' => [
             RECIEVE_TYPE => 'Recieved',
             ISSUE_TYPE => 'Issued'
-        ]
+        ],
     ];
 ?>
