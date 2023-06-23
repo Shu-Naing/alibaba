@@ -68,7 +68,7 @@
                         <td>{{ $product->points }}</td>
                         <td>{{ $product->tickets }}</td>
                         <td>{{ $product->kyat }}</td>
-                        <td>{{ $product->outlet_item->quantity }}</td>
+                        <td>{{ isset($product->outlet_item->quantity ) ?? $product->outlet_item->quantity}}</td>
                         <td>{{ $product->product->company_name }}</td>
                         <td>{{ $product->product->country }}</td>
                         <td>{{ $product->product->category->category_name }}</td>

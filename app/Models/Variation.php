@@ -34,4 +34,9 @@ class Variation extends Model
     {
         return $this->hasMany(OutletItem::class);
     }
+
+    public function machine_variant()
+    {
+    return $this->belongsTo(MachineVariant::class, 'variant_id', 'id');
+    }
 }

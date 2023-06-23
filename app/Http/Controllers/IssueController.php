@@ -8,6 +8,9 @@ use App\Models\OutletDistributeProduct;
 use App\Models\MachineVariant;
 use App\Models\OutletStockHistory;
 use App\Models\Machines;
+use App\Models\OutletItem;
+use App\Models\Variation;
+use App\Models\OutletStockOverview;
 use Auth;
 
 class IssueController extends Controller
@@ -30,7 +33,7 @@ class IssueController extends Controller
     public function create($id)
     {
         $outlets = getOutlets();
-        $machines = getIssuedMachinesWithOutletID($from_outlet);
+        $machines = getIssuedMachinesWithOutletID($id);
         return view('issue.create', compact('outlets', 'id', 'machines'));
     }
 
@@ -137,6 +140,10 @@ class IssueController extends Controller
                 $input['created_by'] = Auth::user()->id;
                 OutletStockHistory::create($input);
 
+                //update issued qty in outletstock overview tbl
+
+
+
             }
             return redirect()->route('issue.create', ['id' => $outletdistribute->from_outlet])
                 ->with('success','issue updated successfully');
@@ -150,10 +157,12 @@ class IssueController extends Controller
 
             //     //create $input with outlet_itmes_tbl columns
             //     OutletItem::create($input);
-                $machine_inv_qty = MachineVariant::select('quantity')
-                    ->where('machine_id', $request->to_machine)
-                    ->where('variant_id', $row->variant_id)->first();
-                
+            // return $request->to_machine;
+                $machine_inv_qty = MachineVariant::select('*')
+                        ->where('machine_id', $request->to_machine)
+                        ->where('variant_id', $row->variant_id) 
+                    ->first();
+                // return $machine_inv_qty."hello";
                 $machineqty = $machine_inv_qty->quantity - $row->quantity;
             
                 $outlet_inv_qty = OutletItem::select('quantity')
@@ -183,6 +192,17 @@ class IssueController extends Controller
                 $input['remark'] = $row->remark;
                 $input['created_by'] = Auth::user()->id;
                 OutletStockHistory::create($input);
+
+                $variant = Variation::find($row->variant_id);
+                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
+                $input = [];
+                $input['issued_qty'] = $outletstockoverview->issued_qty + $row->quantity;
+                $input['balance'] = ($outletstockoverview->opening_qty + $outletstockoverview->receive_qty) - $outletstockoverview['issued_qty'];
+                $input['updated_by'] = Auth::user()->id; 
+
+                if($outletstockoverview){                                       
+                    $outletstockoverview->update($input);
+                } 
 
             }
             return redirect()->route('issue.create', ['id' => $outletdistribute->from_outlet])
