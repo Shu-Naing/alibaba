@@ -19,4 +19,9 @@ class OutletDistributeProduct extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function outlet_distribute()
+    {
+        return $this->belongto(OutletDistribute::class);
+    }
 }

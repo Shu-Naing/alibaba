@@ -1,4 +1,4 @@
-<aside class="left-sidebar">
+<aside class="left-sidebar d-print-none">
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between mt-3 mb-2s">
             <a href="/home" class="text-nowrap logo-img">
@@ -155,8 +155,7 @@
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
-                            <a href="#"
-                                class="nav-link sidebar-link">
+                            <a href="#" class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>
@@ -175,15 +174,30 @@
                                 <span class="d-none d-sm-inline text-wrap">List Outlet Distribute Prodcut</span>
                             </a>
                         </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletstockhistory.index') }}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">Outlet Stock History</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('distribute.index') }}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">List Distribute Product</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item nav-small-cap">
                     {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
-                        <i class="fs-4 bi bi-box-arrow-right"></i>
-                        <button type="submit" class="nav-link btn btn-link fw-bolder px-0 align-middle d-inline-block">Logout</button>
+                    <i class="fs-4 bi bi-box-arrow-right"></i>
+                    <button type="submit"
+                        class="nav-link btn btn-link fw-bolder px-0 align-middle d-inline-block">Logout</button>
                     {!! Form::close() !!}
                 </li>
-                
+
             </ul>
         </nav>
     </div>

@@ -237,3 +237,53 @@ input.number {
 .dataTables_wrapper {
   overflow-x: auto;
 }
+.product-img{
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.sticky-col{
+  position: sticky;
+  right: 0;
+  z-index: 2;
+}
+
+.sticky-col-one{
+  position: sticky;
+  right: 105px;
+  z-index: 2;
+}
+
+.sticky-td{  
+  background-color: rgb(245, 241, 241) !important;  
+}
+
+.sticky-div::-webkit-scrollbar {
+  width: 5px !important;   
+  height: 1px !important;            /* width of the entire scrollbar */
+}
+
+.sticky-div::-webkit-scrollbar-track {
+  background: lightgray;        /* color of the tracking area */
+}
+
+.sticky-div::-webkit-scrollbar-thumb {
+  background-color: black;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: lightgray;  /* creates padding around scroll thumb */
+}
+.sticky-col-id{
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+.sticky-col-code{
+  position: sticky;
+  left: 51px;
+  z-index: 2;
+}
+
+.sticky-col-first{
+  background: #fff !important;
+}

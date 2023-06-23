@@ -21,4 +21,8 @@ class OutletStockHistory extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function variants() {
+        return $this->hasOne(Variation::class, 'id', 'variant_id' );
+    }
 }
