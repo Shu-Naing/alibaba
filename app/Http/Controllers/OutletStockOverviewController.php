@@ -83,7 +83,7 @@ class OutletStockOverviewController extends Controller
         $overview = OutletStockOverview::find($id);
         $outlets = getOutlets();
         $machines = getMachinesWithOutletID($overview->outlet_id);
-        $item_codes = getOutletMachineItem($overview->machine_id);
+        $item_codes = getOutletItem($overview->outlet_id);
         return view('outletstockoverview.edit',compact('overview','outlets','machines','item_codes'));
     }
 

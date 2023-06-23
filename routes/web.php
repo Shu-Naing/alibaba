@@ -133,5 +133,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
     Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
     Route::get('report/outletstockoverview',[ReportController::class,'outletstockoverviewReport'])->name('report.outletstockoverview');
+    Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
+    Route::get('report/outletdistributeproduct/{id}',[OutletDistributeController::class,'show'])->name('outletdistribute.show');
 });
 

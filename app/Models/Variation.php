@@ -37,6 +37,6 @@ class Variation extends Model
 
     public function machine_variant()
     {
-        return $this->belongsTo(MachineVariant::class, 'variant_id', 'id');
+    return $this->belongsTo(MachineVariant::class, 'variant_id', 'id');
     }
 }

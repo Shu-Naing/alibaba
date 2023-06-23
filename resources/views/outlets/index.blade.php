@@ -30,7 +30,7 @@
         <table id="table_id">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>No</th>
                     <th>Name</th>
                     <th>City</th>
                     <th>State</th>
@@ -39,9 +39,12 @@
                 </tr>
             </thead>
             <tbody>
+                @php
+                    $i = 0;
+                @endphp
                 @foreach ($outlets as $outlet)
                     <tr>
-                        <td>{{ $outlet->id }}</td>
+                        <td>{{ ++$i }}</td>
                         <td>{{ $outlet->name }}</td>
                         <td>{{ $cities[$outlet->city] }}</td>
                         <td>{{ $states[$outlet->state] }}</td>

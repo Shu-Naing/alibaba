@@ -28,17 +28,17 @@
         return $Outlets_arr;
     }
 
-    // function getMachines(){
+    function getMachines(){
         
-    //     $Machines = Machines::get();
+        $Machines = Machines::all();
 
-    //     $Machines_arr = array();
+        $Machines_arr = array();
 
-    //     foreach($Machines as $row){
-    //         $Machines_arr[$row->id] = $row->name;
-    //     }
-    //     return $Machines_arr;
-    // }
+        foreach($Machines as $row){
+            $Machines_arr[$row->id] = $row->name;
+        }
+        return $Machines_arr;
+    }
 
     function getMachinesWithOutletID($id){
         $machine_arr = [];
@@ -89,19 +89,19 @@
         return $outet_item_stock;
     }
 
-    function getOutletMachineItem($machine_id){
+    function getOutletItem($outlet_id){
         $item_codes = [];
 
-        $items = MachineVariant::select('variations.id','variations.item_code')
-        ->join('variations','variations.id','=','machine_variants.variant_id')
-        ->where('machine_variants.machine_id',$machine_id)
-        ->get();        
+        $items = OutletItem::select('variations.id','variations.item_code')
+        ->join('variations','variations.id','=','outlet_items.variation_id')
+        ->where('outlet_items.outlet_id',$outlet_id)
+        ->get();
 
         if($items){
             foreach($items as $row){
                 $item_codes[$row->item_code] = $row->item_code;
             } 
-        }             
+        }           
 
         return $item_codes;
     }

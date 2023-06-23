@@ -168,6 +168,13 @@
                                 <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
                             </a>
                         </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletdistribute.index')}}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">List Outlet Distribute Prodcut</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item nav-small-cap">
