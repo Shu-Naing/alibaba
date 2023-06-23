@@ -19,4 +19,13 @@ class DistributeProducts extends Model
         'created_by',
         'updated_by'
     ];
+
+    // public function distributes()
+    // {
+    //     return $this->belongto(distributes::class,'distribute_id');
+    // }
+
+    // public function variants(){
+    //     return $this->hasOne(Variation::class,'id');
+    // }
 }

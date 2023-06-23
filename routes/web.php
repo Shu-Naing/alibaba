@@ -1,5 +1,4 @@
 <?php
-  
 use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\HomeController;
@@ -26,6 +25,7 @@ use App\Http\Controllers\DistributeProductController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\OutletDistributeController;
 use App\Http\Controllers\IssueController;
+use App\Http\Controllers\OutletStockHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +60,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
+    Route::resource('outletstockhistory', OutletStockHistoryController::class);
     // Route::resource('issue-products', IssueProductController::class);
 
     Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
@@ -67,6 +68,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/issue/{id}/{from_outlet}/edit', [IssueController::class, 'edit'])->name('issue.edit');
     Route::patch('/issue/{id}', [IssueController::class, 'update'])->name('issue.update');
 
+    Route::get('/outletdistribute', [OutletDistributeController::class, 'index'])->name('outletdistribute.index');
     Route::get('/outletdistribute/{id}/create', [OutletDistributeController::class, 'create'])->name('outletdistribute.create');
     Route::post('/outletdistribute', [OutletDistributeController::class, 'store'])->name('outletdistribute.store');
     Route::get('/outletdistribute/{id}/{from_outlet}/edit', [OutletDistributeController::class, 'edit'])->name('outletdistribute.edit');
@@ -115,8 +117,6 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('/courses/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])->name('courses.deactivate');
     Route::get('/courses/{id}/activate', [SellingPriceGroupController::class, 'activate'])->name('courses.activate');
-
-
 
     Route::get('/update-product-qty/{id}', [ProductsController::class, 'update_product_qty']);
     Route::get('/update-outdis-product-qty/{id}', [ProductsController::class, 'update_outdis_product_qty']);

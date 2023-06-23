@@ -23,7 +23,9 @@ class OutletDistributeController extends Controller
      */
     public function index()
     {
-        return "hello";
+        $outlet_distributes = OutletDistribute::with('outlet_distribute_products')->get();
+
+        return $outlet_distributes;
     }
 
     /**

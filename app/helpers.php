@@ -15,6 +15,9 @@ use App\Models\MachineVariant;
     define('OD_MACHINE', '2');
     define('IS_CUSTOMER', '1');
     define('IS_STORE', '2');
+    define('RECIEVE_TYPE', 'R');
+    define('ISSUE_TYPE', 'I');
+    
 
     function getOutlets(){
         

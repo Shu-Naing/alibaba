@@ -20,7 +20,14 @@ class DistributeController extends Controller
      */
     public function index()
     {
-        return "hello";
+        $breadcrumbs = [
+                ['name' => 'Reports', 'url' => route('distribute.index')],
+                ['name' => 'List Distribute Product']
+        ];
+        $outlets = getOutlets();
+
+        $distributes = distributes::all();
+        return view('distribute.index',compact('breadcrumbs','distributes','outlets'));
     }
 
     /**
@@ -78,7 +85,23 @@ class DistributeController extends Controller
      */
     public function show($id)
     {
-        //
+        $distribute = [];
+        $breadcrumbs = [
+            ['name' => 'Reports', 'url' => route('distribute.index')],
+            ['name' => 'Detail Distribute Products']
+        ];
+        $outlets = getOutlets();
+        $distribute_data = distributes::find($id);
+        $distribute_products = distributes::select('distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','variations.value')
+        ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
+        ->join('variations','variations.id','=','distribute_products.variant_id')
+        ->where('distributes.id',$id)
+        ->get();
+
+        $distribute['distribute'] = $distribute_data;
+        $distribute['distribute_products'] = $distribute_products;
+
+        return view('distribute.show',compact('distribute','breadcrumbs','outlets'));
     }
 
     /**
