@@ -135,9 +135,9 @@
                                     <div class="col-md-3">
                                         <input type="number" class="form-control qty" value="{{ $temp->quantity }}"
                                             data-temp-id="{{ $temp->id }}"
-                                            data-outlet-item-stock="{{ oultet_stock($temp->variation->id, Auth::user()->outlet->id) }}"
+                                            data-outlet-item-stock="{{ outlet_stock($temp->variation->id, Auth::user()->outlet->id) }}"
                                             min="1"
-                                            max="{{ oultet_stock($temp->variation->id, Auth::user()->outlet->id) }}">
+                                            max="{{ outlet_stock($temp->variation->id, Auth::user()->outlet->id) }}">
 
                                     </div>
                                     <div class="col-md-1 text-center">
