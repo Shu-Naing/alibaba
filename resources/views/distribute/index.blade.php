@@ -31,18 +31,18 @@
                         <th scope="col">Date</th>
                         <th scope="col">Ref:</th>
                         <th scope="col">From Outlet</th>
-                        <th scope="col">To Machine</th>
+                        <th scope="col">To Outlet</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($outletDistributes as $distribute)
+                    @foreach($distributes as $distribute)
                         <tr>
                             <td>{{$distribute->date}}</td>
                             <td>{{$distribute->reference_No}}</td>
                             <td>{{$outlets[$distribute->from_outlet]}}</td>
-                            <td>{{$machines[$distribute->to_machine]}}</td>
-                            <td><a href="{{ route('outletdistribute.show',$distribute->id) }}">View</a></td>
+                            <td>{{$outlets[$distribute->to_outlet]}}</td>
+                            <td><a href="{{ route('distribute.show',$distribute->id) }}">View</a></td>
                         </tr>
                     @endforeach                    
                 </tbody>

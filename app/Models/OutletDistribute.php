@@ -20,4 +20,9 @@ class OutletDistribute extends Model
         'created_by',
         'updated_by'
     ];
+
+    public function outlet_distribute_products()
+    {
+        return $this->hasMany(OutletDistributeProduct::class);
+    }
 }

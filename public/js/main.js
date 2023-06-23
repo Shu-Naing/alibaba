@@ -244,6 +244,59 @@ function deleteOutDisValue(disPdID) {
   });
 }
 
+$("#machine").on("change", function () {
+  var machineId = $(this).val();
+  // console.log(machineId);
+  // Make an AJAX request to retrieve the item code data
+  $.ajax({
+    url: "outlet-machine-item", // Replace with the appropriate Laravel route
+    method: "GET",
+    data: {
+      machineId: machineId,
+    },
+    success: function (response) {
+      var itemCodeSelect = $("#item_code");
+      itemCodeSelect.empty(); // Clear existing options
+
+      if (response.itemCodes && response.itemCodes.length > 0) {
+        $.each(response.itemCodes, function (index, itemCode) {
+          itemCodeSelect.append(
+            $("<option>", {
+              value: itemCode,
+              text: itemCode,
+            })
+          );
+        });
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+    },
+  });
+});
+
+// function addOpeiningItemCode() {
+//   var item_code = $("#item_code").find(":selected").val();
+
+//   console.log("addOpeiningItemCode", item_codes);
+//   $.ajax({
+//     url: "/search-item-code",
+//     type: "GET",
+//     data: {
+//       item_code: item_code,
+//     },
+//     success: function (response) {
+//       let result = "";
+//       // response.forEach((data) => {
+//       //   result += `<div><a href='edit/${data.id}'>${data.product_name}</a></div>`;
+//       // });
+//       console.log(response);
+//       $("#opening_items_div").html(response);
+//       // $("#searchResults").append(result);
+//     },
+//   });
+// }
+
 // $(".number").focusout(() => {
 //   console.log("val", $(this).val());
 // });
@@ -264,7 +317,7 @@ function deleteOutDisValue(disPdID) {
 //   // console.log(distributedId);
 //   if (keyword.length >= 3) {
 //     // Perform the search only if keyword length is at least 3 characters
-//     $.ajax({
+// $.ajax({
 //       url: "/search",
 //       type: "GET",
 //       data: {
@@ -280,6 +333,6 @@ function deleteOutDisValue(disPdID) {
 //         $("#show_dsProduct").html(response);
 //         // $("#searchResults").append(result);
 //       },
-//     });
+//  });
 //   }
 // });

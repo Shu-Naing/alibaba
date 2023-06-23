@@ -25,7 +25,7 @@ class OutletController extends Controller
         // $outlets = Outlets::join('categories', 'categories.outlet_id', '=', 'outlets.id')
         //     ->select('outlets.id', 'outlets.name', 'outlets.city', 'outlets.state', 'categories.category_name')
         //     ->get();
-        $outlets = Outlets::all();
+        $outlets = Outlets::where('id','>',1)->get();
         // $outlets = Outlets::with('categories')->first();
         return view('outlets.index', compact('breadcrumbs', 'outlets'));
     }
@@ -78,7 +78,7 @@ class OutletController extends Controller
         // return $outletofid->outlet_id;
 
         $input = [];
-        $input['outlet_id'] = $outletofid->outlet_id;
+        $input['outlet_id'] = $outletofid->id;
         $input['name'] = $outletofid->name.'_counter';
         $input['created_by'] = Auth::user()->id;
         Counter::create($input);

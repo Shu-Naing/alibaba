@@ -17,7 +17,13 @@ class MachineVariant extends Model
         'updated_by'
     ];
 
-    public function variants() {
-        return $this->hasMany(Variation::class,'id','variant_id');
+    public function variants()
+    {
+        return $this->hasMany(Variation::class, 'id', 'variant_id');
+    }
+
+    public function machine()
+    {
+        return $this->belongsTo(Machines::class, 'id', 'machine_id');
     }
 }
