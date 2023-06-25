@@ -273,12 +273,12 @@ class OutletDistributeController extends Controller
 
                 $variant = Variation::find($row->variant_id);
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
-                $input = [];
-                $input['receive_qty'] = $outletstockoverview->receive_qty + $row->quantity;
-                $input['balance'] = ($outletstockoverview->opening_qty + $input['receive_qty']) - $outletstockoverview->issued_qty;
-                $input['updated_by'] = Auth::user()->id; 
 
-                if($outletstockoverview){                                       
+                if($outletstockoverview){  
+                    $input = [];
+                    $input['receive_qty'] = $outletstockoverview->receive_qty + $row->quantity;
+                    $input['balance'] = ($outletstockoverview->opening_qty + $input['receive_qty']) - $outletstockoverview->issued_qty;
+                    $input['updated_by'] = Auth::user()->id;                                      
                     $outletstockoverview->update($input);
                 }          
 

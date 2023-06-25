@@ -225,10 +225,7 @@ function autocomplete(inp, arr, callback) {
     currentFocus = -1;
     a = document.createElement("DIV");
     a.setAttribute("id", this.id + "autocomplete-list");
-    a.setAttribute(
-      "class",
-      "autocomplete-items border position-absolute w-100"
-    );
+    a.setAttribute("class", "autocomplete-items border position-absolute w-75");
     this.parentNode.appendChild(a);
 
     var count = 0; // Keep track of displayed suggestions
