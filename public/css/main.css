@@ -40,16 +40,33 @@ li.nav-item.nav-small-cap a span {
   margin-right: 9px;
 }
 
-.sidebar-nav ul .sidebar-item .sidebar-link:hover {
+.sidebar-nav ul .sidebar-item .sidebar-link:hover,
+.sidebar-link:hover {
   background-color: var(--primary-transparent-10);
   color: var(--primary-color);
+  border-radius: 7px;
 }
 
 .item.selected > .sidebar-link,
 .sidebar-nav ul .sidebar-item.selected > .sidebar-link.active,
-.sidebar-nav ul .sidebar-item > .sidebar-link.active {
+.sidebar-nav ul .sidebar-item > .sidebar-link.active,
+.sidebar-link.active {
   background-color: var(--primary-color);
   color: #fff;
+  border-radius: 7px;
+}
+
+.sidebar-link,
+.logout-sidebar {
+  padding: 12px 10px;
+}
+
+.nav-small-cap {
+  margin-top: 0px !important;
+}
+
+.left-sidebar .scroll-sidebar {
+  padding: 0 20px !important;
 }
 
 .showHide {
