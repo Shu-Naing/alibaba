@@ -55,6 +55,7 @@ class IssueController extends Controller
         ]);
         // return $request->store_customer;
         $input = $request->all();
+        $input['type'] = ISSUE_TYPE;
         $input['created_by'] = Auth::user()->id;
         $outletdistribute = OutletDistribute::create($input);
         return redirect()->route('issue.edit', ['id' => $outletdistribute->id,'from_outlet'=>$outletdistribute->from_outlet]);
@@ -84,8 +85,14 @@ class IssueController extends Controller
         $outletdistributes = OutletDistribute::findorFail($id);
         $outlet_distribute_products = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
                                 ->join("products", "products.id", "=", "variations.product_id")->where("outlet_distribute_id", $id)->get();
+
+        $outletitems = OutletItem::select('quantity', 'variation_id')->where('outlet_id', $from_outlet)->get();
+        $variant_qty = [];
+        foreach ($outletitems as $outletitem) {
+            $variant_qty[$outletitem->variation_id] = $outletitem->quantity;
+        }
         
-        return view('issue.edit', compact('outletdistributes', 'outlets', 'machines', 'outlet_distribute_products'));
+        return view('issue.edit', compact('outletdistributes', 'outlets', 'machines', 'outlet_distribute_products', 'variant_qty'));
     }
 
     /**
@@ -132,6 +139,7 @@ class IssueController extends Controller
                 $input = [];
                 $input['outlet_id'] = $request->from_outlet;
                 $input['machine_id'] = $request->to_machine;
+                $input['type'] = ISSUE_TYPE;
                 $input['quantity'] = $row->quantity;
                 $input['variant_id'] = $row->variant_id;
                 $input['branch'] = $request->store_customer;
@@ -185,6 +193,7 @@ class IssueController extends Controller
                 $input = [];
                 $input['outlet_id'] = $request->from_outlet;
                 $input['machine_id'] = $request->to_machine;
+                $input['type'] = ISSUE_TYPE;
                 $input['quantity'] = $row->quantity;
                 $input['variant_id'] = $row->variant_id;
                 $input['branch'] = $request->store_customer;

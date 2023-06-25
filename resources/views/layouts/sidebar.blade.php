@@ -121,6 +121,13 @@
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
+                            <a href="{{ route('distribute.index') }}"
+                                class="nav-link sidebar-link">
+                                <hr>
+                                <span class="d-none d-sm-inline">List Distribute Product</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
                             <a href="{{ route('sellingprice.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('sellingprice.index') ? 'active' : '' }}">
                                 <hr>
@@ -147,13 +154,13 @@
                         <span class="showHide">+</span>
                     </a>
                     <ul class="collapse nav flex-column submenuParent" id="reportmenu1" data-bs-parent="#menu">
-                        <li class="w-100 sidebar-item">
+                        <!-- <li class="w-100 sidebar-item">
                             <a href="{{ route('report.machine')}}"
                                 class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Reports</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="w-100 sidebar-item">
                             <a href="#" class="nav-link sidebar-link">
                                 <hr>
@@ -179,13 +186,6 @@
                                 class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
-                            </a>
-                        </li>
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('distribute.index') }}"
-                                class="nav-link sidebar-link">
-                                <hr>
-                                <span class="d-none d-sm-inline">List Distribute Product</span>
                             </a>
                         </li>
                     </ul>

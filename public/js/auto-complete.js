@@ -296,12 +296,14 @@ if (document.getElementById("searchInput")) {
             data: {
               distributed_id: distributedId,
               variant_id: id,
+              from_outlet: fromOutletId,
             },
             success: function (response) {
-              console.log(response.purchased_price);
-              let res = JSON.parse(response);
-              $("#show_dsProduct").html(res.html);
-              $("#total").html(res.total);
+              location.reload();
+              // console.log(response);
+              // let res = JSON.parse(response);
+              // $("#show_dsProduct").html(res.html);
+              // $("#total").html(res.total);
             },
           });
         }
@@ -343,13 +345,15 @@ if (document.getElementById("outletdistir_searchInput")) {
             data: {
               outlet_distributed_id: outletdistribute_id,
               variant_id: id,
+              from_outlet: fromOutletId,
             },
             success: function (response) {
+              location.reload();
               // console.log(response);
               // console.log(response.purchased_price);
-              let res = JSON.parse(response);
-              $("#show_dsProduct").html(res.html);
-              $("#total").html(res.total);
+              // let res = JSON.parse(response);
+              // $("#show_dsProduct").html(res.html);
+              // $("#total").html(res.total);
             },
           });
         }
@@ -394,11 +398,12 @@ if (document.getElementById("outletissue_searchInput")) {
               from_outlet: fromOutletId,
             },
             success: function (response) {
+              location.reload();
               // console.log(response);
               // console.log(response.purchased_price);
-              let res = JSON.parse(response);
-              $("#show_dsProduct").html(res.html);
-              $("#total").html(res.total);
+              // let res = JSON.parse(response);
+              // $("#show_dsProduct").html(res.html);
+              // $("#total").html(res.total);
             },
           });
         }
