@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
     Route::post('/issue', [IssueController::class, 'store'])->name('issue.store');
-    Route::get('/issue/{id}/{from_outlet}/edit', [IssueController::class, 'edit'])->name('issue.edit');
+    Route::get('/issue/{id}/{from_outlet}/{to_machine}/edit', [IssueController::class, 'edit'])->name('issue.edit');
     Route::patch('/issue/{id}', [IssueController::class, 'update'])->name('issue.update');
 
     Route::get('/outletdistribute', [OutletDistributeController::class, 'index'])->name('outletdistribute.index');
@@ -113,6 +113,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('/get-product-lists',[ProductsController::class,'get_product_lists']);
     Route::get('/get-outletdistir-product-lists',[ProductsController::class,'get_outletdistir_product_lists']);
+    Route::get('/get-outletdistir-issue-lists',[ProductsController::class,'get_outletdistir_issue_lists']);
 
     Route::get('/sellingprice/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])
     ->name('sellingprice.deactivate');

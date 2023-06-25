@@ -346,7 +346,7 @@ if (document.getElementById("outletdistir_searchInput")) {
             },
             success: function (response) {
               location.reload();
-              // console.log(response);
+              // console.log('response',response);
               // console.log(response.purchased_price);
               // let res = JSON.parse(response);
               // $("#show_dsProduct").html(res.html);
@@ -367,10 +367,10 @@ if (document.getElementById("outletdistir_searchInput")) {
 }
 
 if (document.getElementById("outletissue_searchInput")) {
-  var fromOutletId = $("#outletissue_searchInput").data("id");
+  var to_machine = $("#outletissue_searchInput").data("id");
   $.get(
-    "/get-outletdistir-product-lists",
-    { fromOutletId: fromOutletId },
+    "/get-outletdistir-issue-lists",
+    { to_machine: to_machine },
     function (data, status) {
       // console.log(data);
       if (status == "success") {

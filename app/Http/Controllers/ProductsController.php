@@ -276,6 +276,24 @@ class ProductsController extends Controller
         return $product_arr;
     }
 
+    public function get_outletdistir_issue_lists(Request $request) {
+        $to_machine = $request->to_machine;
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+                     ->join("products", "variations.product_id", "=", "products.id")
+                     ->join("machine_variants", "machine_variants.variant_id", "=", "variations.id")
+                     ->where("machine_variants.machine_id", "=", $to_machine)
+                     ->where("machine_variants.quantity", ">", 0)
+                     ->get();
+         // return $product;
+ 
+         $product_arr = array();
+ 
+         foreach($product as $row){ 
+             $product_arr[$row->id] = $row->item_code .' ('.$row->product_name.')';           
+         }
+         return $product_arr;
+     }
+
     public function update_outdis_product_qty(Request $request, $outlet_distribute_id, $variant_id) {
         
         $OutletDistributeProducts = OutletDistributeProduct::where('id',$outlet_distribute_id)->where('variant_id',$variant_id)->first();

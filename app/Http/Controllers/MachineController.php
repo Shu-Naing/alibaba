@@ -31,7 +31,7 @@ class MachineController extends Controller
               ['name' => 'Outlets', 'url' => route('outlets.index')],
               ['name' => 'Create Machine']
         ];
-        $outlets = Outlets::all();
+        $outlets = Outlets::where('id','<>',MAIN_INV_ID)->get();
         // return $outlets;
         return view('machine.create', compact('breadcrumbs', 'outlets'));
     }
