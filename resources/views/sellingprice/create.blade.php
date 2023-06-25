@@ -31,7 +31,7 @@
         ]) !!}
         @csrf
         <div class="row mb-3">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 {!! Form::label('name', 'Name *', ['class' => 'form-label']) !!}
                 {!! Form::text('name', null, ['class' => 'form-control mb-3', 'id' => 'name']) !!}
                 @error('name')

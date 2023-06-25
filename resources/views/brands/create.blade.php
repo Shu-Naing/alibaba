@@ -31,11 +31,11 @@
         ]) !!}
         @csrf
         <div class="row mb-3">
-            <div class="col-md-12">
+            <div class="col-md-4 col-sm-4">
                 {!! Form::label('brand_name', 'Name *', ['class' => 'form-label']) !!}
                 {!! Form::text('brand_name', null, ['class' => 'form-control mb-3', 'id' => 'brand_name']) !!}
             </div>
-            <div class="col-md-12">
+            <div class="col-md-12 col-sm-12">
                 {!! Form::label('note', 'Short Description *', ['class' => 'form-label']) !!}
                 {!! Form::textarea('note', null, ['class' => 'form-control', 'id' => 'note', 'cols' => '40', 'rows' => '4']) !!}
             </div>

@@ -58,7 +58,7 @@ class IssueController extends Controller
         $input['type'] = ISSUE_TYPE;
         $input['created_by'] = Auth::user()->id;
         $outletdistribute = OutletDistribute::create($input);
-        return redirect()->route('issue.edit', ['id' => $outletdistribute->id,'from_outlet'=>$outletdistribute->from_outlet]);
+        return redirect()->route('issue.edit', ['id' => $outletdistribute->id,'from_outlet'=>$outletdistribute->from_outlet, 'to_machine' =>$outletdistribute->to_machine]);
     }
 
     /**
@@ -78,20 +78,19 @@ class IssueController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id,$from_outlet)
+    public function edit($id,$from_outlet,$to_machine)
     {
         $outlets = getOutlets();
         $machines = getIssuedMachinesWithOutletID($from_outlet);
         $outletdistributes = OutletDistribute::findorFail($id);
         $outlet_distribute_products = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
                                 ->join("products", "products.id", "=", "variations.product_id")->where("outlet_distribute_id", $id)->get();
-
-        $outletitems = OutletItem::select('quantity', 'variation_id')->where('outlet_id', $from_outlet)->get();
+        //check variant quantity with from machine id 
+        $machine_variants = MachineVariant::select('quantity', 'variant_id')->where('machine_id', $to_machine)->get();
         $variant_qty = [];
-        foreach ($outletitems as $outletitem) {
-            $variant_qty[$outletitem->variation_id] = $outletitem->quantity;
-        }
-        
+        foreach ($machine_variants as $machinevariant) {
+            $variant_qty[$machinevariant->variant_id] = $machinevariant->quantity;
+        }        
         return view('issue.edit', compact('outletdistributes', 'outlets', 'machines', 'outlet_distribute_products', 'variant_qty'));
     }
 
@@ -147,11 +146,6 @@ class IssueController extends Controller
                 $input['remark'] = $row->remark;
                 $input['created_by'] = Auth::user()->id;
                 OutletStockHistory::create($input);
-
-                //update issued qty in outletstock overview tbl
-
-
-
             }
             return redirect()->route('issue.create', ['id' => $outletdistribute->from_outlet])
                 ->with('success','issue updated successfully');
@@ -200,19 +194,16 @@ class IssueController extends Controller
                 $input['date'] = now();
                 $input['remark'] = $row->remark;
                 $input['created_by'] = Auth::user()->id;
-                OutletStockHistory::create($input);
-
-                $variant = Variation::find($row->variant_id);
-                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
+                OutletStockHistory::create($input);                
+            }
+            $variant = Variation::find($row->variant_id);
+            $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
+            if($outletstockoverview){                                       
                 $input = [];
                 $input['issued_qty'] = $outletstockoverview->issued_qty + $row->quantity;
                 $input['balance'] = ($outletstockoverview->opening_qty + $outletstockoverview->receive_qty) - $outletstockoverview['issued_qty'];
                 $input['updated_by'] = Auth::user()->id; 
-
-                if($outletstockoverview){                                       
-                    $outletstockoverview->update($input);
-                } 
-
+                $outletstockoverview->update($input);
             }
             return redirect()->route('issue.create', ['id' => $outletdistribute->from_outlet])
                 ->with('success','issue updated successfully');

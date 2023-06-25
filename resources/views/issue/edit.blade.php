@@ -66,7 +66,7 @@
             <div class="input-group rounded w-25 mb-3">
                 <div>
                     <input type="hidden" id="outletdistributed_id" value="{{ $outletdistributes->id }}">
-                    <input type="text" class="form-control" id="outletissue_searchInput" data-id="{{ $outletdistributes->from_outlet }}" placeholder="Search...">
+                    <input type="text" class="form-control" id="outletissue_searchInput" data-id="{{ $outletdistributes->to_machine }}" placeholder="Search...">
                     <div id="searchResults"></div>
                 </div>
             </div>

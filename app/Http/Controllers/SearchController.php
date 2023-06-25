@@ -33,13 +33,24 @@ class SearchController extends Controller
         $input = [];
         $input['distribute_id'] = $distributedId;
         $input['variant_id'] = $variantId;
-        $input['quantity'] = 1;
         $input['purchased_price'] = $variant_product->purchased_price;
         $input['subtotal'] = $variant_product->purchased_price;
         $input['remark'] = '';
         $input['created_by'] = Auth::user()->id;
-
-        DistributeProducts::create($input);
+        
+        #don't allow to add same product in search product ( recieve/issue/distribute)
+        #if added same item, just increse quantity
+        $distributeproduct = DistributeProducts::select('quantity')
+        ->where('distribute_id',$distributedId)
+        ->where('variant_id',$variantId)
+        ->first();
+        if($distributeproduct){
+            $input['quantity'] = $distributeproduct->quantity + 1;
+            $distributeproduct->update($input);
+        }else{
+            $input['quantity'] = 1;
+            DistributeProducts::create($input);
+        }
 
         // $distribute_product = DistributeProducts::select('distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "distribute_products.variant_id")
         //                         ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $distributedId)->get();
@@ -91,9 +102,6 @@ class SearchController extends Controller
         //         </table>';
         //     }
         // }
-
-        
-
         // $response = array();
         // $response['total'] = $total;
         // $response['html'] = $html;
@@ -132,14 +140,27 @@ class SearchController extends Controller
         $input = [];
         $input['outlet_distribute_id'] = $distributedId;
         $input['variant_id'] = $variantId;
-        $input['quantity'] = 1;
         $input['purchased_price'] = $variant_product->purchased_price;
         $input['subtotal'] = $variant_product->purchased_price;
         $input['remark'] = '';
         $input['created_by'] = Auth::user()->id;
 
-        OutletDistributeProduct::create($input);
-
+        #don't allow to add same product in search product ( recieve/issue/distribute)
+        #if added same product , just increse quantiy 
+        $outletdistributeproduct = OutletDistributeProduct::where('outlet_distribute_id',$distributedId)
+        ->where('variant_id',$variantId)
+        ->first();        
+        if($outletdistributeproduct){
+            if($outletdistributeproduct->quantity + 1 > $variant_qty){
+                $input['quantity'] = $outletdistributeproduct->quantity;
+            }else{
+                $input['quantity'] = $outletdistributeproduct->quantity + 1;
+            }            
+            $outletdistributeproduct->update($input);
+        }else{
+            $input['quantity'] = 1;
+            OutletDistributeProduct::create($input);
+        }
         // $outlet_distribute_product = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
         //                         ->join("products", "products.id", "=", "variations.product_id")->where("outlet_distribute_id", $distributedId)->get();
         // return $outlet_distribute_product;
@@ -207,17 +228,24 @@ class SearchController extends Controller
         $variant_qty = 0;
         $distributedId = $request->outlet_distributed_id;
         $variantId = $request->variant_id;
-        $fromOutletId = $request->from_outlet;
+        # $fromOutletId = $request->from_outlet;
+        # for issue , we have to check with quantity of to_machine, cause variant is issued from machine
+        $to_machine = $request->to_machine;
+        
         $variant_product = Variation::find($variantId);
         // return $distributedId;    
 
-        $outletItem = OutletItem::select('quantity')
-        ->where('outlet_id', $fromOutletId)
-        ->where('variation_id', $variantId)
+        // $outletItem = OutletItem::select('quantity')
+        // ->where('outlet_id', $fromOutletId)
+        // ->where('variation_id', $variantId)
+        // ->first();
+        #get machine variant quantity
+        $machineVariant = MachineVariant::where('machine_id',$to_machine)
+        ->where('variant_id',$variantId)
         ->first();
 
-        if($outletItem) {
-            $variant_qty = $outletItem->quantity;
+        if($machineVariant) {
+            $variant_qty = $machineVariant->quantity;
         }
 
         $input = [];
@@ -229,8 +257,23 @@ class SearchController extends Controller
         $input['remark'] = '';
         $input['created_by'] = Auth::user()->id;
 
-        OutletDistributeProduct::create($input);
-
+        #don't allow to add same product in search product ( recieve/issue/distribute)
+        #if added same product , just increse quantiy 
+        $outletdistributeproduct = OutletDistributeProduct::select('quantity')
+        ->where('outlet_distribute_id',$distributedId)
+        ->where('variant_id',$variantId)
+        ->first();
+        if($outletdistributeproduct){
+            if($outletdistributeproduct->quantity + 1 > $variant_qty){
+                $input['quantity'] = $outletdistributeproduct->quantity;
+            }else{
+                $input['quantity'] = $outletdistributeproduct->quantity + 1;
+            }            
+            $outletdistributeproduct->update($input);
+        }else{
+            $input['quantity'] = 1;
+            OutletDistributeProduct::create($input);
+        }
         // $outlet_distribute_product = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
         //                         ->join("products", "products.id", "=", "variations.product_id")->where("outlet_distribute_id", $distributedId)->get();
         // return $outlet_distribute_product;

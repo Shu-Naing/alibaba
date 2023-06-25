@@ -27,12 +27,12 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Machine Name</th>
                     <th>Item Code</th>
                     <th>Opening Qty</th>
                     <th>Received Qty</th>
                     <th>Issued Qty</th>
                     <th>Balance Qty</th>
-                    <th>Machine Name</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,12 +42,12 @@
                 @foreach ($outletstockoverviews as $outletstockoverview)
                     <tr>
                         <td>{{ ++$i }}</td>
+                        <td>{{ $outletstockoverview->name }}</td>
                         <td>{{ $outletstockoverview->item_code }}</td>
                         <td>{{ $outletstockoverview->opening_qty }}</td>
                         <td>{{ $outletstockoverview->receive_qty }}</td>
                         <td>{{ $outletstockoverview->issued_qty }}</td>
                         <td>{{ $outletstockoverview->opening_qty + $outletstockoverview->receive_qty - $outletstockoverview->issued_qty }}</td>
-                        <td>{{ $outletstockoverview->name }}</td>
                     </tr>
                 @endforeach
             </tbody>

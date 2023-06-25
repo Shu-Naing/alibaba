@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('status')->default(1);
             $table->string('from_outlet');
             $table->string('to_machine');
-            $table->integer('counter_machine');
+            $table->integer('counter_machine')->nullable();
             $table->text('remark')->nullable();
             $table->timestamps();
             $table->unsignedBigInteger('created_by');

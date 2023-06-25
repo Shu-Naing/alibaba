@@ -15,24 +15,24 @@
                 </li>
                 <li class="nav-item nav-small-cap">
                     <a href="{{ route('users.index') }}"
-                        class="nav-link align-middle px-0 {{ Route::is('users.index') ? 'active' : '' }}">
+                        class="nav-link align-middle px-0 {{ Route::is('users.*') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span class="d-none d-sm-inline">Users</span>
                     </a>
                 </li>
                 <li class="nav-item nav-small-cap">
                     <a href="{{ route('roles.index') }}"
-                        class="nav-link align-middle px-0 {{ Route::is('roles.index') ? 'active' : '' }}">
+                        class="nav-link align-middle px-0 {{ Route::is('roles.*') ? 'active' : '' }}">
                         <i class="bi bi-person-lock"></i>
                         <span class="d-none d-sm-inline">Roles & Permissions</span>
                     </a>
                 </li>
-                <li class="nav-item nav-small-cap">
+                <!-- <li class="nav-item nav-small-cap">
                     <a href="#" class="nav-link align-middle px-0">
                         <i class="fs-4 bi bi-person-lines-fill"></i>
                         <span class="d-none d-sm-inline">Contacts</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item nav-small-cap">
                     <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle dropdownli">
                         <i class="fs-4 bi bi-box2"></i>
@@ -63,7 +63,7 @@
                         </li>
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('products.index') }}"
-                                class="nav-link sidebar-link {{ Route::is('products.index') ? 'active' : '' }}">
+                                class="nav-link sidebar-link {{ Route::is('products.index') || Route::is('products.edit') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">List Product</span>
                             </a>
@@ -84,19 +84,28 @@
                         <span class="d-none d-sm-inline">Outlets</span>
                         <span class="showHide">+</span>
                     </a>
+                    
                     <ul class="collapse nav flex-column submenuParent" id="submenu1" data-bs-parent="#menu">
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('outlets.index') }}"
-                                class="nav-link sidebar-link {{ Route::is('outlets.index') ? 'active' : '' }}">
-                                <hr>
-                                <span class="d-none d-sm-inline">List Outlets</span>
-                            </a>
-                        </li>
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outlets.create') }}"
                                 class="nav-link sidebar-link {{ Route::is('outlets.create') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Create Outlet</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outlets.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('outlets.index') || Route::is('outletstockoverview.*') || Route::is('outletdistribute.create') || Route::is('outletdistribute.edit') || Route::is('issue.*') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">List Outlets</span>
+                            </a>
+                        </li>
+                       
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('machine.create') }}"
+                                class="nav-link sidebar-link {{ Route::is('machine.create') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">Create Machine</span>
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
@@ -106,25 +115,26 @@
                                 <span class="d-none d-sm-inline">List Machine</span>
                             </a>
                         </li>
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('machine.create') }}"
-                                class="nav-link sidebar-link {{ Route::is('machine.create') ? 'active' : '' }}">
-                                <hr>
-                                <span class="d-none d-sm-inline">Create Machine</span>
-                            </a>
-                        </li>
+                        
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('distribute.create') }}"
-                                class="nav-link sidebar-link {{ Route::is('distribute.create') ? 'active' : '' }}">
+                                class="nav-link sidebar-link {{ Route::is('distribute.create') || Route::is('distribute.edit') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Distribute Product</span>
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('distribute.index') }}"
-                                class="nav-link sidebar-link">
+                            class="nav-link sidebar-link {{ Route::is('distribute.index') || Route::is('distribute.show') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">List Distribute Product</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletdistribute.index')}}"
+                            class="nav-link sidebar-link {{ Route::is('outletdistribute.index') || Route::is('outletdistribute.show') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">List Outlet Distribute Prodcut</span>
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
@@ -136,11 +146,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item nav-small-cap">
+                <!-- <li class="nav-item nav-small-cap">
                     <a href="{{ route('pos.index') }}" class="nav-link px-0 align-middle">
                         <i class="fs-4 bi bi-receipt"></i>
                         <span class="d-none d-sm-inline">Pos</span></a>
-                </li>
+                </li> -->
                 <!-- <li class="nav-item nav-small-cap">
                     <a href="#" class="nav-link px-0 align-middle">
                         <i class="fs-4 bi bi-file-earmark-medical"></i>
@@ -167,25 +177,18 @@
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>
                         </li>
-                         <li class="w-100 sidebar-item">
-                            <a href="{{ route('report.outletstockoverview')}}"
-                                class="nav-link sidebar-link">
-                                <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
-                            </a>
-                        </li>
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('outletdistribute.index')}}"
-                                class="nav-link sidebar-link">
-                                <hr>
-                                <span class="d-none d-sm-inline text-wrap">List Outlet Distribute Prodcut</span>
-                            </a>
-                        </li>
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outletstockhistory.index') }}"
-                                class="nav-link sidebar-link">
+                            class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
+                            </a>
+                        </li>
+                         <li class="w-100 sidebar-item">
+                            <a href="{{ route('report.outletstockoverview')}}"
+                            class="nav-link sidebar-link {{ Route::is('report.outletstockoverview') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
                             </a>
                         </li>
                     </ul>
