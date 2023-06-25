@@ -146,13 +146,12 @@
                         </li>
                     </ul>
                 </li>
-
-                <li class="nav-item nav-small-cap">
+                <!-- <li class="nav-item nav-small-cap">
                     <a href="{{ route('pos.index') }}" 
                         class="nav-link sidebar-link align-middle {{ Route::is('pos.index') ? 'active' : '' }}">
                         <i class="fs-4 bi bi-receipt"></i>
                         <span class="d-none d-sm-inline">Pos</span></a>
-                </li>
+                </li> -->
                 <!-- <li class="nav-item nav-small-cap">
                     <a href="#" class="nav-link px-0 align-middle">
                         <i class="fs-4 bi bi-file-earmark-medical"></i>
@@ -186,18 +185,18 @@
                                 <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
                             </a>
                         </li>
-                        <li class="w-100 sidebar-item">
+                        <!-- <li class="w-100 sidebar-item">
                             <a href="{{ route('outletdistribute.index')}}"
                                 class="nav-link sidebar-link {{ Route::is('outletdistribute.index') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
                             </a>
-                        </li>
+                        </li> -->
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outletstockhistory.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock History</span>
                             </a>
                         </li>
                     </ul>
