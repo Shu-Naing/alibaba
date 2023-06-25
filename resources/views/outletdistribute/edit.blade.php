@@ -86,6 +86,7 @@
                         <thead>
                             <tr>
                             <th scope="col" style="width: 30%;">Product Name</th>
+                            <th scope="col">Item Code</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Purchased Price</th>
                             <th scope="col">Subtotal</th>
@@ -96,18 +97,22 @@
                                 <td class="align-middle" style="text-align: left;">
                                     {{$product->product_name}}
                                 </td>
+
+                                <td class="align-middle" style="text-align: left;">
+                                    {{$product->item_code}}
+                                </td>
                                 
                                 <td class="align-middle"> 
                                     <div class="qty-box border rounded">
                                         <div class="row gx-0">
                                             <div class="col">
-                                                <div class="border p-2"><input type="number" class="number" min="1" max="{{outlet_stock($product->variant_id,$outletdistributes->from_outlet)}}" value="{{$product->quantity}}" data-id="{{$product->id}}"></div>
+                                                <div class="border p-2"><input type="number" class="number outlet-number-box" min="1" max="{{outlet_stock($product->variant_id,$outletdistributes->from_outlet)}}" value="{{$product->quantity}}" data-id="[{{ $product->id }}, {{ $product->variant_id }}, {{$variant_qty[$product->variant_id]}}]"></div>
                                             </div>
                                             <div class="col">
-                                                <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseOutletdisValue(this, {{$product->id}})" value="Increase Value">+</div>
+                                                <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseOutletdisValue(this,{{$product->id}}, {{$product->variant_id}}, {{$variant_qty[$product->variant_id]}})" value="Increase Value">+</div>
                                             </div>
                                             <div class="col">
-                                                <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="decreaseOutletdisValue(this, {{$product->id}})" value="Decrease Value">-</div>
+                                                <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="decreaseOutletdisValue(this,{{$product->id}}, {{$product->variant_id}})" value="Decrease Value">-</div>
                                             </div>
                                         </div>
                                     </div>

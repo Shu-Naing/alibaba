@@ -30,9 +30,10 @@
         data-sidebar-position="fixed" data-header-position="fixed">
         @include('layouts.sidebar')
 
-        <div class="body-wrapper">
+        <div class="body-wrapper body-box">
             <header class="app-header d-print-none">
                 <nav class="navbar navbar-expand-lg navbar-light justify-content-end">
+                    <i class="bi bi-list hamburger me-auto"></i>
                     @yield('cardtitle')
                 </nav>
             </header>

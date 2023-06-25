@@ -8,7 +8,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">Create brand</h4>
+            <h4 class="fw-bolder mb-3">Create Category</h4>
             <div>
             </div>
         </div>

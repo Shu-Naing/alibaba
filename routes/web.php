@@ -39,7 +39,11 @@ use App\Http\Controllers\OutletStockHistoryController;
 */
   
 Route::get('/', function () {
-    return view('auth.login');
+    if(Auth::user() != null) {
+        return redirect()->route('home');
+    }else {
+        return view('auth.login');
+    }
 });
   
 Auth::routes();
@@ -62,6 +66,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     Route::resource('outletstockhistory', OutletStockHistoryController::class);
     // Route::resource('issue-products', IssueProductController::class);
+
+    Route::get('distribute/{id}/{from_outlet}/edit', [DistributeController::class, 'edit'])->name('distribute.edit');
 
     Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
     Route::post('/issue', [IssueController::class, 'store'])->name('issue.store');
@@ -125,8 +131,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/courses/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])->name('courses.deactivate');
     Route::get('/courses/{id}/activate', [SellingPriceGroupController::class, 'activate'])->name('courses.activate');
 
-    Route::get('/update-product-qty/{id}', [ProductsController::class, 'update_product_qty']);
-    Route::get('/update-outdis-product-qty/{id}', [ProductsController::class, 'update_outdis_product_qty']);
+    Route::get('/update-product-qty/{distribute_product_id}/{variant_id}', [ProductsController::class, 'update_product_qty']);
+    Route::get('/update-outdis-product-qty/{outlet_distribute_id}/{variant_id}', [ProductsController::class, 'update_outdis_product_qty']);
     Route::get('/delete-dis-product/{id}', [ProductsController::class,'delete_dis_product']);
     Route::get('/delete-outdis-product/{id}', [ProductsController::class,'delete_outletdistirbute_product']);
 
@@ -134,7 +140,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
     Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
     Route::get('report/outletstockoverview',[ReportController::class,'outletstockoverviewReport'])->name('report.outletstockoverview');
-    Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
+    // Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
     Route::get('report/outletdistributeproduct/{id}',[OutletDistributeController::class,'show'])->name('outletdistribute.show');
     Route::get('products-export',[ReportController::class, 'exportProduct'])->name('product.export');
 });

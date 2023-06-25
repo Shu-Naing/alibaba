@@ -74,7 +74,7 @@ class DistributeController extends Controller
         $distributeId = $distribute->id;
         
         // return redirect('distribute.edit')->view(, compact('distribute','outlets'));
-        return redirect()->route('distribute.edit', ['distribute' => $distributeId]);
+        return redirect()->route('distribute.edit', ['id' => $distributeId, 'from_outlet'=>$distribute->from_outlet]);
     }
 
     /**
@@ -110,13 +110,19 @@ class DistributeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,$from_outlet)
     {
         $outlets = getOutlets();
         $distribute = distributes::findorFail($id);
-        $distribute_products = DistributeProducts::select("distribute_products.*", "products.product_name")->join("variations", "variations.id", "=", "distribute_products.variant_id")
+        $distribute_products = DistributeProducts::select("distribute_products.*", "products.product_name", "variations.item_code")->join("variations", "variations.id", "=", "distribute_products.variant_id")
                                 ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $id)->get();
-        return view('distribute.edit', compact('distribute','outlets', 'distribute_products'));
+
+        $outletitems = OutletItem::select('quantity', 'variation_id')->where('outlet_id', $from_outlet)->get();
+        $variant_qty = [];
+        foreach ($outletitems as $outletitem) {
+            $variant_qty[$outletitem->variation_id] = $outletitem->quantity;
+        }
+        return view('distribute.edit', compact('distribute','outlets', 'distribute_products', 'variant_qty'));
     }
 
     /**
@@ -143,11 +149,18 @@ class DistributeController extends Controller
             $input = [];
             $input['outlet_id'] = $request->to_outlet;
             $input['variation_id'] = $row->variant_id;
-            $input['quantity'] = $row->quantity;
             $input['created_by'] = Auth::user()->id;
 
+            $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $row->variant_id)->first();
+            if($outletitem) {
+                $input['quantity'] = $row->quantity + $outletitem->quantity;
+                $outletitem->update($input);
+            }else {
+                $input['quantity'] = $row->quantity;
+                OutletItem::create($input);
+            }
             //create $input with outlet_itmes_tbl columns
-            OutletItem::create($input);
+            
             //get main inventory qty  with variant_id and main outlet id
             $main_inv_qty = OutletItem::select('quantity')
                 ->where('outlet_id', MAIN_INV_ID)
@@ -162,7 +175,7 @@ class DistributeController extends Controller
             $mainOutlet->update($input);  
 
         }
-        return redirect()->back()
+        return redirect()->route('distribute.create')
             ->with('success','Distribute updated successfully');
     }
 

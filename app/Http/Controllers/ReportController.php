@@ -33,6 +33,7 @@ class ReportController extends Controller
 
     public function outletstockoverviewReport() {
         $outletstockoverviews = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')
+                                ->whereNotNull('item_code')
                                 ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
                                 ->get();
         return view('reports.outletstockoverview', compact('outletstockoverviews'));
