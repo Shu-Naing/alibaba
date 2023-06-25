@@ -135,7 +135,6 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/update-outdis-product-qty/{outlet_distribute_id}/{variant_id}', [ProductsController::class, 'update_outdis_product_qty']);
     Route::get('/delete-dis-product/{id}', [ProductsController::class,'delete_dis_product']);
     Route::get('/delete-outdis-product/{id}', [ProductsController::class,'delete_outletdistirbute_product']);
-
     // Route::get('test', [TestController::class,'index'])->name('test.search');
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
     Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
