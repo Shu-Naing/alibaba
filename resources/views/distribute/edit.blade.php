@@ -154,8 +154,8 @@
             @endforeach
         </div>
 
-        <div class="row justify-content-end my-5">
-            <div class="col-md-4">
+        <div class="d-flex gap-4 px-4 justify-content-end my-5">
+            <div class="">
                 <!-- <label for="remark" class="d-block mb-2">Remark</label>
                         <textarea name="remark" id="" cols="40" rows="4"></textarea> -->
                 {!! Form::label('remark', 'Remark', ['class' => 'form-label']) !!}
@@ -166,7 +166,7 @@
                     'rows' => '4',
                 ]) !!}
             </div>
-            <div class="col-md-4 align-items-center d-flex">
+            <div class="align-items-center d-flex">
                 <h4 class="fw-bolder">Total Amount: <span id="total"
                         class="ms-3 inline-block text-blue">{{ $total }}</span></h4>
             </div>

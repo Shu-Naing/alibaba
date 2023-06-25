@@ -8,33 +8,33 @@
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
                 <li class="nav-item nav-small-cap">
-                    <a href="#" class="nav-link align-middle px-0">
+                    <a href="#" class="nav-link sidebar-link align-middle">
                         <i class="fs-4 bi-speedometer2"></i>
                         <span class="d-none d-sm-inline">Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item nav-small-cap">
                     <a href="{{ route('users.index') }}"
-                        class="nav-link align-middle px-0 {{ Route::is('users.*') ? 'active' : '' }}">
+                        class="nav-link sidebar-link align-middle {{ Route::is('users.index') ? 'active' : '' }}">
                         <i class="bi bi-people"></i>
                         <span class="d-none d-sm-inline">Users</span>
                     </a>
                 </li>
                 <li class="nav-item nav-small-cap">
                     <a href="{{ route('roles.index') }}"
-                        class="nav-link align-middle px-0 {{ Route::is('roles.*') ? 'active' : '' }}">
+                        class="nav-link sidebar-link align-middle {{ Route::is('roles.index') ? 'active' : '' }}">
                         <i class="bi bi-person-lock"></i>
                         <span class="d-none d-sm-inline">Roles & Permissions</span>
                     </a>
                 </li>
-                <!-- <li class="nav-item nav-small-cap">
-                    <a href="#" class="nav-link align-middle px-0">
+                <li class="nav-item nav-small-cap">
+                    <a href="#" class="nav-link sidebar-link align-middle">
                         <i class="fs-4 bi bi-person-lines-fill"></i>
                         <span class="d-none d-sm-inline">Contacts</span>
                     </a>
-                </li> -->
+                </li>
                 <li class="nav-item nav-small-cap">
-                    <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle dropdownli">
+                    <a href="#submenu2" data-bs-toggle="collapse" class="nav-link sidebar-link align-middle dropdownli">
                         <i class="fs-4 bi bi-box2"></i>
                         <span class="d-none d-sm-inline">Inventory</span>
                         <span class="showHide">+</span>
@@ -79,7 +79,7 @@
                     </ul>
                 </li>
                 <li class="nav-item nav-small-cap">
-                    <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle dropdownli">
+                    <a href="#submenu1" data-bs-toggle="collapse" class="nav-link sidebar-link align-middle dropdownli">
                         <i class="fs-4 bi bi-shop"></i>
                         <span class="d-none d-sm-inline">Outlets</span>
                         <span class="showHide">+</span>
@@ -146,11 +146,13 @@
                         </li>
                     </ul>
                 </li>
-                <!-- <li class="nav-item nav-small-cap">
-                    <a href="{{ route('pos.index') }}" class="nav-link px-0 align-middle">
+
+                <li class="nav-item nav-small-cap">
+                    <a href="{{ route('pos.index') }}" 
+                        class="nav-link sidebar-link align-middle {{ Route::is('pos.index') ? 'active' : '' }}">
                         <i class="fs-4 bi bi-receipt"></i>
                         <span class="d-none d-sm-inline">Pos</span></a>
-                </li> -->
+                </li>
                 <!-- <li class="nav-item nav-small-cap">
                     <a href="#" class="nav-link px-0 align-middle">
                         <i class="fs-4 bi bi-file-earmark-medical"></i>
@@ -158,7 +160,7 @@
                     </a>
                 </li> -->
                 <li class="nav-item nav-small-cap">
-                    <a href="#reportmenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle dropdownli">
+                    <a href="#reportmenu1" data-bs-toggle="collapse" class="nav-link sidebar-link align-middle dropdownli">
                         <i class="fs-4 bi bi-file-earmark-medical"></i>
                         <span class="d-none d-sm-inline">Reports</span>
                         <span class="showHide">+</span>
@@ -177,30 +179,36 @@
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>
                         </li>
+                         <li class="w-100 sidebar-item">
+                            <a href="{{ route('report.outletstockoverview')}}"
+                                class="nav-link sidebar-link {{ Route::is('report.outletstockoverview') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
+                            </a>
+                        </li>
                         <li class="w-100 sidebar-item">
-                            <a href="{{ route('outletstockhistory.index') }}"
-                            class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
+                            <a href="{{ route('outletdistribute.index')}}"
+                                class="nav-link sidebar-link {{ Route::is('outletdistribute.index') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
                             </a>
                         </li>
-                         <li class="w-100 sidebar-item">
-                            <a href="{{ route('report.outletstockoverview')}}"
-                            class="nav-link sidebar-link {{ Route::is('report.outletstockoverview') ? 'active' : '' }}">
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletstockhistory.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item nav-small-cap">
+                <li class="nav-item nav-small-cap logout-sidebar">
                     {!! Form::open(['url' => 'logout', 'method' => 'POST']) !!}
                     <i class="fs-4 bi bi-box-arrow-right"></i>
                     <button type="submit"
                         class="nav-link btn btn-link fw-bolder px-0 align-middle d-inline-block">Logout</button>
                     {!! Form::close() !!}
                 </li>
-
             </ul>
         </nav>
     </div>

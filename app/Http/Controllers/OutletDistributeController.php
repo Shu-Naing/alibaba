@@ -281,7 +281,7 @@ class OutletDistributeController extends Controller
                     $input = [];
                     $input['receive_qty'] = $outletstockoverview->receive_qty + $row->quantity;
                     $input['balance'] = ($outletstockoverview->opening_qty + $input['receive_qty']) - $outletstockoverview->issued_qty;
-                    $input['updated_by'] = Auth::user()->id;                                   
+                    $input['updated_by'] = Auth::user()->id;
                     $outletstockoverview->update($input);
                 }
             }
