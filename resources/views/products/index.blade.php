@@ -60,20 +60,25 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-3">
-                    <div class="row">
-                        <div class="col-lg-4 col-sm-12">
-                            <input type="file" class="form-control">
-                        </div>
-                        <div class="col-lg-4 col-sm-12">
-                            <button class="btn btn-primary">Submit</button>
-                            <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a>
-                        </div>
-                        <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
-                            {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
+                    <form action="{{ route('product.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+
+                            <div class="col-lg-4 col-sm-12">
+                                <input type="file" class="form-control" name="file">
+                            </div>
+                            <div class="col-lg-4 col-sm-12">
+                                <button class="btn btn-primary">Submit</button>
+                                <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a>
+                            </div>
+
+                            <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
+                                {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
                             <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
-                            <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
+                                <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

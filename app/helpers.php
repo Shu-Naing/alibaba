@@ -82,13 +82,13 @@
         return $machine_arr;
     }
 
-    function outlet_stock($variation_id = null,$outlet_id =null){
-        $outet_item_stock = OutletItem::where('variation_id',$variation_id)
-        ->where('outlet_id',$outlet_id)
-        ->value('quantity');
+    // function outlet_stock($variation_id = null,$outlet_id =null){
+    //     $outet_item_stock = OutletItem::where('variation_id',$variation_id)
+    //     ->where('outlet_id',$outlet_id)
+    //     ->value('quantity');
 
-        return $outet_item_stock;
-    }
+    //     return $outet_item_stock;
+    // }
 
     function getOutletItem($outlet_id){
         $item_codes = [];

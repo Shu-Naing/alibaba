@@ -119,12 +119,11 @@
                             {!! Form::select('variations[0][select]', ['size' => 'Size'], null, [
                                 'placeholder' => 'Choose Select',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3">
                             <label for="value" class="form-label">Value</label>
-                            {!! Form::text('variations[0][value]', null, ['placeholder' => 'Value', 'class' => 'form-control', 'required']) !!}
+                            {!! Form::text('variations[0][value]', null, ['placeholder' => 'Value', 'class' => 'form-control']) !!}
 
                         </div>
                         <div class="col-lg-3">
@@ -132,7 +131,6 @@
                             {!! Form::text('variations[0][received_qty]', null, [
                                 'placeholder' => 'Received Quantity',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3">
@@ -140,7 +138,6 @@
                             {!! Form::text('variations[0][alert_qty]', null, [
                                 'placeholder' => 'Alert Quantity',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -148,7 +145,6 @@
                             {!! Form::text('variations[0][item_code]', null, [
                                 'placeholder' => 'Item Code',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -156,7 +152,6 @@
                             {!! Form::text('variations[0][points]', null, [
                                 'placeholder' => 'Points',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -164,7 +159,6 @@
                             {!! Form::text('variations[0][tickets]', null, [
                                 'placeholder' => 'Tickets',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -172,7 +166,6 @@
                             {!! Form::text('variations[0][kyat]', null, [
                                 'placeholder' => 'Kyat',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3">
@@ -180,12 +173,11 @@
                             {!! Form::text('variations[0][purchased_price]', null, [
                                 'placeholder' => 'Purchased Price',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-4">
                             <label for="product_img" class="form-label">Product Image</label>
-                            <input type="file" class="form-control" name="variations[0][image]" required>
+                            <input type="file" class="form-control" name="variations[0][image]">
                         </div>
 
                     </div>
@@ -224,7 +216,6 @@
                             {!! Form::select('variations[${variationCount}][select]', ['size' => 'Size'], null, [
                                 'placeholder' => 'Choose Select',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3">
@@ -232,7 +223,6 @@
                             {!! Form::text('variations[${variationCount}][value]', null, [
                                 'placeholder' => 'Value',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
 
                         </div>
@@ -241,7 +231,6 @@
                             {!! Form::text('variations[${variationCount}][received_qty]', null, [
                                 'placeholder' => 'Received Quantity',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3">
@@ -249,7 +238,6 @@
                             {!! Form::text('variations[${variationCount}][alert_qty]', null, [
                                 'placeholder' => 'Alert Quantity',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -257,7 +245,6 @@
                             {!! Form::text('variations[${variationCount}][item_code]', null, [
                                 'placeholder' => 'Item Code',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -265,7 +252,6 @@
                             {!! Form::text('variations[${variationCount}][points]', null, [
                                 'placeholder' => 'Points',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -273,7 +259,6 @@
                             {!! Form::text('variations[${variationCount}][tickets]', null, [
                                 'placeholder' => 'Tickets',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3 my-3">
@@ -281,7 +266,6 @@
                             {!! Form::text('variations[${variationCount}][kyat]', null, [
                                 'placeholder' => 'Kyat',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-3">
@@ -289,7 +273,6 @@
                             {!! Form::text('variations[${variationCount}][purchased_price]', null, [
                                 'placeholder' => 'Purchased Price',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </div>
                         <div class="col-lg-4">

@@ -92,7 +92,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('products-list',[ProductsController::class, 'listProduct'])->name('products.list');
     
     Route::get('products-sample-export',[ProductsController::class, 'exportSampleProduct'])->name('product.sample-export');
-    Route::get('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
+    Route::post('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
 
     //Pos Route Start
     Route::get('pos',[PosController::class,'index'])->name('pos.index');
@@ -134,7 +134,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
     Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
     Route::get('report/outletstockoverview',[ReportController::class,'outletstockoverviewReport'])->name('report.outletstockoverview');
-    Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
+    // Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
     Route::get('report/outletdistributeproduct/{id}',[OutletDistributeController::class,'show'])->name('outletdistribute.show');
     Route::get('products-export',[ReportController::class, 'exportProduct'])->name('product.export');
 });

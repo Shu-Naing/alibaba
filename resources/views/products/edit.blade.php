@@ -153,6 +153,7 @@
                     <th>Ticket</th>
                     <th>Kyat</th>
                     <th>Alert Qty</th>
+                    <th>Received Qty</th>
                     <th>Purchased Price</th>
                     <th>
                         <i class="fs-6 bi bi-plus-square-fill" id="add-variation"></i>
@@ -184,7 +185,8 @@
                                 name="variations[{{ $index }}][image]">
                         </td>
                         <td>
-                            {!! Form::select('variations[' . $index . '][select]', ['size' => 'Size'], $variation->select, [
+
+                            {!! Form::select('variations[' . $index . '][select]', ['Size' => 'Size'], $variation->select, [
                                 'placeholder' => 'Choose Select',
                                 'class' => 'form-control',
                                 'disabled',
@@ -218,6 +220,11 @@
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][alert_qty]', $variation->alert_qty, [
+                                'class' => 'form-control',
+                            ]) !!}
+                        </td>
+                        <td>
+                            {!! Form::text('variations[' . $index . '][received_qty]', outlet_stock($variation->id), [
                                 'class' => 'form-control',
                             ]) !!}
                         </td>
@@ -290,47 +297,45 @@
                         <td>
                             {!! Form::text('variations[${variationCount}][item_code]', null, [
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </td>
                         <td>
                             <img class="imagePreview" src="{{ asset('assets/images/file-upload-icon.png') }}" alt="Old Image">
-                            <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]" required>
+                            <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]">
                         </td>
                         <td>
                             {!! Form::select('variations[${variationCount}][select]', ['size' => 'Size'], null, [
                                 'placeholder' => 'Choose Select',
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][value]', null, [
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][points]', null, [
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][tickets]', null, [
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}</td>
                         <td>
                             {!! Form::text('variations[${variationCount}][kyat]', null, [
                                 'class' => 'form-control',
-                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][alert_qty]', null, [
                                 'class' => 'form-control',
-                                'required',
+                            ]) !!}
+                        </td>
+                        <td>
+                            {!! Form::text('variations[${variationCount}][received_qty]', null, [
+                                'class' => 'form-control',
                             ]) !!}
                         </td>
                         <td>
