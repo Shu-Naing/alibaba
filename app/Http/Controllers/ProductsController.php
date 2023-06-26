@@ -12,6 +12,7 @@ use App\Models\Categories;
 use App\Models\OutletItem;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
+use App\Imports\ProductsImport;
 use Illuminate\Validation\Rule;
 use App\Models\DistributeProducts;
 use Maatwebsite\Excel\Facades\Excel;
@@ -54,7 +55,18 @@ class ProductsController extends Controller
             "sku" => "required|unique:products",
             "received_date" => "required",
             "expired_date" => "required",
-            // "description" => "required",
+            "description" => "required",
+            'variations' => 'required|array',
+            'variations.*.select' => 'required',
+            'variations.*.value' => 'required',
+            'variations.*.received_qty' => 'required',
+            'variations.*.alert_qty' => 'required',
+            'variations.*.item_code' => 'required|unique:variations',
+            'variations.*.points' => 'required',
+            'variations.*.image' => 'required',
+            'variations.*.tickets' => 'required',
+            'variations.*.kyat' => 'required',
+            'variations.*.purchased_price' => 'required',
 
         ]);
 
@@ -145,7 +157,24 @@ class ProductsController extends Controller
             ],
             "received_date" => "required",
             "expired_date" => "required",
-            "description" => "required",
+            'variations' => 'required|array',
+            'variations.*.select' => 'required',
+            'variations.*.value' => 'required',
+            'variations.*.received_qty' => 'required',
+            'variations.*.alert_qty' => 'required',
+            'variations.*.item_code' => [
+                'required',
+                function ($attribute, $value, $fail) use ($request) {
+                    $existingCodes = collect($request->input('variations'))->pluck('item_code')->filter();
+                    if ($existingCodes->count() !== $existingCodes->unique()->count()) {
+                        $fail('Duplicate item codes found.');
+                    }
+                },
+            ],
+            'variations.*.points' => 'required',
+            'variations.*.tickets' => 'required',
+            'variations.*.kyat' => 'required',
+            'variations.*.purchased_price' => 'required',
 
         ]);
     
@@ -171,6 +200,7 @@ class ProductsController extends Controller
 
 
         $variations = $request->variations; 
+        $outlet_id = Auth::user()->outlet->id;
 
         // return $request->variations[0]['image'];
 
@@ -197,9 +227,14 @@ class ProductsController extends Controller
                 $variationData['image'] = $imagePath;
             }
         
-            Variation::updateOrCreate(['item_code' => $variation['item_code']], $variationData);
+            $variation_data = Variation::updateOrCreate(['item_code' => $variation['item_code']], $variationData);
+
+            OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_data->id)->update([
+                'quantity' => $variation['received_qty']
+            ]);
 
         }
+       
 
         return back()->with('success','Product update successfully');
     }
@@ -333,6 +368,17 @@ class ProductsController extends Controller
 
     public function exportSampleProduct(){
         return Excel::download(new ProductsSampleExport(), 'products.xlsx');
+    }
+
+    public function importProduct(Request $request){
+
+
+        // return $request;
+        $file = $request->file('file');
+
+        Excel::import(new ProductsImport, $file);
+
+        return redirect()->back()->with('success', 'Products imported successfully.');
     }
 
 }

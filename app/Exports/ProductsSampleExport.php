@@ -9,26 +9,29 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 
 
 class ProductsSampleExport implements WithHeadings , ShouldAutoSize{
-    // function __construct($data){
-    //     $this->products = $data;
-    // }
+   
     public function headings(): array
     {
         return [
             'Item Code',
-            'Image',
             'Product Name',
-            'Points',
-            'Tickets',
+            'Sku',
+            'Point',
+            'Ticket',
             'Kyat',
+            'Category Name',
+            'Category Code',
+            'Brand Name',
+            'Unit Name',
+            'Select',
+            'Value',
+            'Alert Qty',
             'Received Qty',
+            'Purchased Price',
             'Company Name',
             'Country',
-            'Category',
-            'Brand',
-            'Unit',
             'Received Date',
-            'Expired Date'
+            'Expired Date',
         ];
     }
    

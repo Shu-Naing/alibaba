@@ -98,7 +98,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('products-list',[ProductsController::class, 'listProduct'])->name('products.list');
     
     Route::get('products-sample-export',[ProductsController::class, 'exportSampleProduct'])->name('product.sample-export');
-    Route::get('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
+    Route::post('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
 
     //Pos Route Start
     Route::get('pos',[PosController::class,'index'])->name('pos.index');
