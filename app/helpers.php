@@ -146,11 +146,15 @@
         }
     }
 
-    if(!function_exists('machine_stock')){
-        function machine_stock($variation_id,$machine_id){
-            
-           $machine_item_stock = MachineVariant::where('variant_id',$variation_id)->where('machine_id',$machine_id)->value('quantity');
-            return $machine_item_stock;
+    if(!function_exists('oultet_total_machine_stock')){
+        function oultet_total_machine_stock($variation_id,$outlet_id){
+           
+            $sum = MachineVariant::join('machines', 'machine_variants.machine_id', '=', 'machines.id')
+            ->where('machines.outlet_id', $outlet_id)
+            ->where('machine_variants.variant_id', $variation_id)
+            ->sum('machine_variants.quantity');
+       
+            return $sum;
         }
     }
 
