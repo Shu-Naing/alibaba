@@ -53,7 +53,7 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'outlet_id' => 'required',
+            'outlet_id' => 'required|unique:outlets',
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',

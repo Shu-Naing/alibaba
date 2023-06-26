@@ -48,9 +48,9 @@
                         <td>{{ $history->date }}</td>
                         <td>{{ $history->item_code }}</td>
                         <td>{{ $history->quantity }}</td>
-                        <td>{{ $types[$history->type] }}</td>
-                        <td>{{ $branch[$history->branch] }}</td>
-                        <td>{{ $history->remark }}</td>                       
+                        <td>{{ isset($types[$history->type]) ? $types[$history->type] : ''  }}</td>
+                        <td>{{ isset($branch[$history->branch]) ? $branch[$history->branch] : '' }}</td>
+                        <td>{{ $history->remark }}</td>                
                     </tr>
                 @endforeach
             </tbody>

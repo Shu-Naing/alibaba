@@ -136,10 +136,19 @@ class OutletDistributeController extends Controller
         $counter = $counter_machines['counter'];
         $machines = $counter_machines['machine'];
         $outletdistributes = OutletDistribute::findorFail($id);
-        $outlet_distribute_products = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
-                                ->join("products", "products.id", "=", "variations.product_id")->where("outlet_distribute_id", $id)->get();
+        $outlet_distribute_products = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name','variations.item_code')
+        ->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
+        ->join("products", "products.id", "=", "variations.product_id")
+        ->where("outlet_distribute_id", $id)
+        ->get();
         
-        return view('outletdistribute.edit', compact('outletdistributes', 'outlets', 'counter', 'machines', 'outlet_distribute_products'));
+        $outletitems = OutletItem::select('quantity', 'variation_id')->where('outlet_id', $from_outlet)->get();
+        $variant_qty = [];
+        foreach ($outletitems as $outletitem) {
+            $variant_qty[$outletitem->variation_id] = $outletitem->quantity;
+        }
+
+        return view('outletdistribute.edit', compact('outletdistributes', 'outlets', 'counter', 'machines', 'outlet_distribute_products', 'variant_qty'));
     }
 
     /**
@@ -167,11 +176,21 @@ class OutletDistributeController extends Controller
                 $input = [];
                 $input['counter_id'] = $request->toCounterMachine;
                 $input['variant_id'] = $row->variant_id;
-                $input['quantity'] = $row->quantity;
                 $input['created_by'] = Auth::user()->id;
 
                 //create $input with outlet_itmes_tbl columns
-                CounterVariant::create($input);
+                $countervariant = CounterVariant::select('quantity')
+                ->where('counter_id', $request->toCounterMachine)
+                ->where('variant_id', $row->variant_id)
+                ->first();
+                if($countervariant) {
+                    $input['quantity'] = $row->quantity + $countervariant->quantity;
+                    $countervariant->update($input);
+                }else {
+                    $input['quantity'] = $row->quantity;
+                    CounterVariant::create($input);
+                }
+                
                 //get main inventory qty  with variant_id and main outlet id
             
                 $outlet_inv_qty = OutletItem::select('quantity')
@@ -222,9 +241,16 @@ class OutletDistributeController extends Controller
                 $input['created_by'] = Auth::user()->id;
 
                 //create $input with outlet_itmes_tbl columns
-                MachineVariant::create($input);
+                $machinevariant = MachineVariant::select('quantity')->where('machine_id', $request->toCounterMachine)->where('variant_id', $row->variant_id)->first();
+                if($machinevariant) {
+                    $input['quantity'] = $row->quantity + $machinevariant->quantity;
+                    $machinevariant->update($input);
+                }else {
+                    $input['quantity'] = $row->quantity;
+                    MachineVariant::create($input);
+                }
+                
                 //get main inventory qty  with variant_id and main outlet id
-            
                 $outlet_inv_qty = OutletItem::select('quantity')
                     ->where('outlet_id', $request->from_outlet)
                     ->where('variation_id', $row->variant_id)->first();
@@ -250,15 +276,14 @@ class OutletDistributeController extends Controller
 
                 $variant = Variation::find($row->variant_id);
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
-                $input = [];
-                $input['receive_qty'] = $outletstockoverview->receive_qty + $row->quantity;
-                $input['balance'] = ($outletstockoverview->opening_qty + $input['receive_qty']) - $outletstockoverview->issued_qty;
-                $input['updated_by'] = Auth::user()->id; 
-
-                if($outletstockoverview){                                       
+                
+                if($outletstockoverview){     
+                    $input = [];
+                    $input['receive_qty'] = $outletstockoverview->receive_qty + $row->quantity;
+                    $input['balance'] = ($outletstockoverview->opening_qty + $input['receive_qty']) - $outletstockoverview->issued_qty;
+                    $input['updated_by'] = Auth::user()->id;
                     $outletstockoverview->update($input);
-                }          
-
+                }
             }
             
             return redirect()->route('outletdistribute.create', ['id' => $outletdistribute->from_outlet])

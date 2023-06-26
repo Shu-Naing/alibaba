@@ -13,8 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('outlet_distributes', function (Blueprint $table) {
-            $table->integer('counter_machine')->nullable()->change();
+        Schema::table('outlet_distributes', function (Blueprint $table) {            
             $table->integer('store_customer')->nullable()->after('counter_machine');
         });
     }

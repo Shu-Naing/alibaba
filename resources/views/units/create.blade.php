@@ -26,7 +26,7 @@
         <form class="px-3" action="{{ route('units.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row mb-3">
-                <div class="col-md-12">
+                <div class="col-md-4 col-sm-4">
                     <label for="unit" class="form-label">Name *</label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
                         id="name" aria-describedby="emailHelp">
@@ -34,7 +34,7 @@
                         <span class="text-danger ">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-4 col-sm-4">
                     <label for="unit" class="form-label">Short Name *</label>
                     <input type="text" class="form-control @error('short_name') is-invalid @enderror" name="short_name"
                         id="short_name" aria-describedby="emailHelp">
@@ -42,7 +42,7 @@
                         <span class="text-danger ">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-4 col-sm-4">
                     <label for="allow_decimal" class="form-label">Decimal Value</label>
                     <input type="number" step="0.01" pattern="\d+(\.\d{1,2})?"
                         class="form-control @error('allow_decimal') is-invalid @enderror" name="allow_decimal"

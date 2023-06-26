@@ -225,10 +225,7 @@ function autocomplete(inp, arr, callback) {
     currentFocus = -1;
     a = document.createElement("DIV");
     a.setAttribute("id", this.id + "autocomplete-list");
-    a.setAttribute(
-      "class",
-      "autocomplete-items border position-absolute w-100"
-    );
+    a.setAttribute("class", "autocomplete-items border position-absolute w-75");
     this.parentNode.appendChild(a);
 
     var count = 0; // Keep track of displayed suggestions
@@ -296,12 +293,14 @@ if (document.getElementById("searchInput")) {
             data: {
               distributed_id: distributedId,
               variant_id: id,
+              from_outlet: fromOutletId,
             },
             success: function (response) {
-              console.log(response.purchased_price);
-              let res = JSON.parse(response);
-              $("#show_dsProduct").html(res.html);
-              $("#total").html(res.total);
+              location.reload();
+              // console.log(response);
+              // let res = JSON.parse(response);
+              // $("#show_dsProduct").html(res.html);
+              // $("#total").html(res.total);
             },
           });
         }
@@ -343,13 +342,15 @@ if (document.getElementById("outletdistir_searchInput")) {
             data: {
               outlet_distributed_id: outletdistribute_id,
               variant_id: id,
+              from_outlet: fromOutletId,
             },
             success: function (response) {
-              // console.log(response);
+              location.reload();
+              // console.log('response',response);
               // console.log(response.purchased_price);
-              let res = JSON.parse(response);
-              $("#show_dsProduct").html(res.html);
-              $("#total").html(res.total);
+              // let res = JSON.parse(response);
+              // $("#show_dsProduct").html(res.html);
+              // $("#total").html(res.total);
             },
           });
         }
@@ -366,10 +367,10 @@ if (document.getElementById("outletdistir_searchInput")) {
 }
 
 if (document.getElementById("outletissue_searchInput")) {
-  var fromOutletId = $("#outletissue_searchInput").data("id");
+  var to_machine = $("#outletissue_searchInput").data("id");
   $.get(
-    "/get-outletdistir-product-lists",
-    { fromOutletId: fromOutletId },
+    "/get-outletdistir-issue-lists",
+    { to_machine: to_machine },
     function (data, status) {
       // console.log(data);
       if (status == "success") {
@@ -394,11 +395,12 @@ if (document.getElementById("outletissue_searchInput")) {
               from_outlet: fromOutletId,
             },
             success: function (response) {
+              location.reload();
               // console.log(response);
               // console.log(response.purchased_price);
-              let res = JSON.parse(response);
-              $("#show_dsProduct").html(res.html);
-              $("#total").html(res.total);
+              // let res = JSON.parse(response);
+              // $("#show_dsProduct").html(res.html);
+              // $("#total").html(res.total);
             },
           });
         }

@@ -140,34 +140,42 @@ function removeField(group) {
 // }
 
 // start distribute product
-function increaseValue(button, disPdID) {
+function increaseValue(button, disPdID, variantID, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
-  input.value = isNaN(value) ? 0 : value + 1;
-  console.log("incre", disPdID);
+  if (value < variant_qty) {
+    input.value = isNaN(value) ? 0 : value + 1;
+  } else {
+    input.value = variant_qty;
+  }
+  // input.value = isNaN(value) ? 0 : value + 1;
+  // console.log("distribute product id", disPdID);
 
-  console.log("input.value", input.value);
+  // console.log("variant_id", variantID);
+  // console.log("qty", input.value);
 
   $.ajax({
-    url: "/update-product-qty/" + disPdID,
+    url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
       qty: input.value,
     },
     success: function (response) {
       location.reload();
+      // console.log("response is id", response);
     },
   });
 }
 
-function decreaseValue(button, disPdID) {
+function decreaseValue(button, disPdID, variantID) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
   input.value = isNaN(value) || value < 1 ? 0 : value - 1;
-  console.log("decre", disPdID);
+  // input.value = isNaN(value) || value < 1 ? 0 : value - 1;
+  // console.log("decre", disPdID);
 
   $.ajax({
-    url: "/update-product-qty/" + disPdID,
+    url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
       qty: input.value,
@@ -180,16 +188,18 @@ function decreaseValue(button, disPdID) {
   // ajax
 }
 
-function increaseOutletdisValue(button, disPdID) {
+function increaseOutletdisValue(button, disPdID, variantID, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
-  input.value = isNaN(value) ? 0 : value + 1;
-  console.log("incre", disPdID);
 
-  console.log("input.value", input.value);
+  if (value < variant_qty) {
+    input.value = isNaN(value) ? 0 : value + 1;
+  } else {
+    input.value = variant_qty;
+  }
 
   $.ajax({
-    url: "/update-outdis-product-qty/" + disPdID,
+    url: "/update-outdis-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
       qty: input.value,
@@ -198,16 +208,19 @@ function increaseOutletdisValue(button, disPdID) {
       location.reload();
     },
   });
+  // console.log("incre", disPdID);
+
+  // console.log("input.value", input.value);
 }
 
-function decreaseOutletdisValue(button, disPdID) {
+function decreaseOutletdisValue(button, disPdID, variantID) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
   input.value = isNaN(value) || value < 1 ? 0 : value - 1;
   console.log("decre", disPdID);
 
   $.ajax({
-    url: "/update-outdis-product-qty/" + disPdID,
+    url: "/update-outdis-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
       qty: input.value,
@@ -336,3 +349,91 @@ $("#machine").on("change", function () {
 //  });
 //   }
 // });
+
+// hamburger menu
+$(".hamburger").on("click", function () {
+  $(".left-sidebar").toggleClass("sidebar-close");
+  var hamburger = $(".left-sidebar").hasClass("sidebar-close");
+  // hamburger.hasClass("sidebar-close");
+  // console.log(hamburger);
+  if (hamburger) {
+    console.log("has");
+    $(".body-wrapper").css("margin-left", "0px");
+    $(".app-header").css("width", "100%");
+  } else {
+    $(".body-wrapper").css("margin-left", "270px");
+    $(".app-header").css("width", "calc(100% - 270px)");
+  }
+
+  // $(".body-wrapper").css("margin-left", "0px");
+});
+
+$(".number-box").on("focusout", function () {
+  var dataId = $(this).data("id");
+  var disPdID = dataId[0];
+  var variantID = dataId[1];
+  var variant_qty = dataId[2];
+
+  var inputvalue = parseInt($(this).val(), 10);
+  if (inputvalue <= variant_qty) {
+    $.ajax({
+      url: "/update-product-qty/" + disPdID + "/" + variantID,
+      type: "GET",
+      data: {
+        qty: inputvalue,
+      },
+      success: function (response) {
+        // console.log(response);
+        location.reload();
+      },
+    });
+  } else {
+    $(this).val(variant_qty);
+    $.ajax({
+      url: "/update-product-qty/" + disPdID + "/" + variantID,
+      type: "GET",
+      data: {
+        qty: variant_qty,
+      },
+      success: function (response) {
+        // console.log(response);
+        location.reload();
+      },
+    });
+  }
+});
+
+$(".outlet-number-box").on("focusout", function () {
+  var dataId = $(this).data("id");
+  var disPdID = dataId[0];
+  var variantID = dataId[1];
+  var variant_qty = dataId[2];
+
+  var inputvalue = parseInt($(this).val(), 10);
+  if (inputvalue <= variant_qty) {
+    $.ajax({
+      url: "/update-outdis-product-qty/" + disPdID + "/" + variantID,
+      type: "GET",
+      data: {
+        qty: inputvalue,
+      },
+      success: function (response) {
+        // console.log(response);
+        location.reload();
+      },
+    });
+  } else {
+    $(this).val(variant_qty);
+    $.ajax({
+      url: "/update-outdis-product-qty/" + disPdID + "/" + variantID,
+      type: "GET",
+      data: {
+        qty: variant_qty,
+      },
+      success: function (response) {
+        // console.log(response);
+        location.reload();
+      },
+    });
+  }
+});

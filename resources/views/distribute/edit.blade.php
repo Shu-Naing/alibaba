@@ -108,9 +108,11 @@
                     <thead>
                         <tr>
                             <th scope="col" style="width: 30%;">Product Name</th>
+                            <th scope="col">Item Code</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Purchased Price</th>
                             <th scope="col">Subtotal</th>
+                            <th scope="col">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,22 +120,25 @@
                             <td class="align-middle" style="text-align: left;">
                                 {{ $product->product_name }}
                             </td>
+                            <td class="align-middle text-center" style="text-align: left;">
+                                {{ $product->item_code }}
+                            </td>
                             <!-- <td class="align-middle"> 6Pcs + -</td> -->
                             <td class="align-middle">
                                 <div class="qty-box border rounded">
                                     <div class="row gx-0">
                                         <div class="col">
-                                            <div class="border p-2"><input type="number" class="number" min="1"
-                                                    value="{{ $product->quantity }}" data-id="{{ $product->id }}"></div>
+                                            <div class="border p-2"><input type="number" class="number number-box" min="1"
+                                                    value="{{ $product->quantity }}" data-id="[{{ $product->id }}, {{ $product->variant_id }}, {{$variant_qty[$product->variant_id]}}]"></div>
                                         </div>
                                         <div class="col">
                                             <div class="value-button h-100 border d-flex align-items-center justify-content-center"
-                                                onclick="increaseValue(this, {{ $product->id }})" value="Increase Value">+
+                                                onclick="increaseValue(this, {{ $product->id }}, {{ $product->variant_id }}, {{$variant_qty[$product->variant_id]}})" value="Increase Value">+
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="value-button h-100 border d-flex align-items-center justify-content-center"
-                                                onclick="decreaseValue(this, {{ $product->id }})" value="Decrease Value">-
+                                                onclick="decreaseValue(this, {{ $product->id }} , {{ $product->variant_id }})" value="Decrease Value">-
                                             </div>
                                         </div>
                                     </div>
@@ -149,8 +154,8 @@
             @endforeach
         </div>
 
-        <div class="row justify-content-end my-5">
-            <div class="col-md-4">
+        <div class="d-flex gap-4 px-4 justify-content-end my-5">
+            <div class="">
                 <!-- <label for="remark" class="d-block mb-2">Remark</label>
                         <textarea name="remark" id="" cols="40" rows="4"></textarea> -->
                 {!! Form::label('remark', 'Remark', ['class' => 'form-label']) !!}
@@ -161,7 +166,7 @@
                     'rows' => '4',
                 ]) !!}
             </div>
-            <div class="col-md-4 align-items-center d-flex">
+            <div class="align-items-center d-flex">
                 <h4 class="fw-bolder">Total Amount: <span id="total"
                         class="ms-3 inline-block text-blue">{{ $total }}</span></h4>
             </div>

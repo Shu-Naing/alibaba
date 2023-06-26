@@ -25,7 +25,6 @@ class ProductsController extends Controller
 {
     public function index()
     {
-
         // $products = Variation::with('product','product.brand','product.category','product.unit')->get();
         $products = Product::with('brand','category','unit')->get();
 
@@ -243,7 +242,7 @@ class ProductsController extends Controller
         public function get_product_lists(Request $request){
             // return $request;
         $fromOutletId = $request->fromOutletId;
-        $product = Variation::select("variations.id", "products.product_name")
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
                     ->join("products", "variations.product_id", "=", "products.id")
                     ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
                     ->where("outlet_items.outlet_id", "=", $fromOutletId)
@@ -253,37 +252,50 @@ class ProductsController extends Controller
         $product_arr = array();
 
         foreach($product as $row){ 
-            $product_arr[$row->id] = $row->product_name;           
+            $product_arr[$row->id] = $row->item_code.' ('.$row->product_name.')';           
         }
         return $product_arr;
     }
 
-    public function update_product_qty(Request $request, $id) {
+    public function update_product_qty(Request $request, $distribute_id, $variant_id) {
         
-        $DistributeProducts = DistributeProducts::find($id); 
+        $distributeProducts = DistributeProducts::where('id',$distribute_id)->where('variant_id',$variant_id)->first();
 
         $input = [];
         $input['quantity'] = $request->qty;
-        $input['subtotal'] = $request->qty * $DistributeProducts->purchased_price;
+        $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
 
-        return $DistributeProducts->update($input);
+        $arr = [];
+        $arr['request'] = $request->all();
+        $arr['distributeproduct'] = $distributeProducts;
+        $arr['input'] = $input;
+
+        // return $id;
+        if($distributeProducts){
+            $input = [];
+            $input['quantity'] = $request->qty;
+            $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
+            return $distributeProducts->update($input);
+        }else{
+            return 'distribute product does not found'. $id;
+        }
     }
 
      public function delete_dis_product($id) {
         // return $id;
-        $DistributeProducts = DistributeProducts::find($id); 
-        if ($DistributeProducts) {
-            $result = $DistributeProducts->delete();
+        $distributeProducts = DistributeProducts::find($id); 
+        if ($distributeProducts) {
+            $result = $distributeProducts->delete();
             return $result;
         } else {
             return response()->json(['error' => 'Product not found'], 404);
         }
-        $result = $DistributeProducts->delete();
+        $result = $distributeProducts->delete();
     }
 
     public function get_outletdistir_product_lists(Request $request) {
        $fromOutletId = $request->fromOutletId;
-        $product = Variation::select("variations.id", "products.product_name")
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
                     ->join("products", "variations.product_id", "=", "products.id")
                     ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
                     ->where("outlet_items.outlet_id", "=", $fromOutletId)
@@ -294,14 +306,34 @@ class ProductsController extends Controller
         $product_arr = array();
 
         foreach($product as $row){ 
-            $product_arr[$row->id] = $row->product_name;           
+            $product_arr[$row->id] = $row->item_code .' ('.$row->product_name.')';           
         }
         return $product_arr;
     }
 
-    public function update_outdis_product_qty(Request $request, $id) {
+    public function get_outletdistir_issue_lists(Request $request) {
+        $to_machine = $request->to_machine;
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+                     ->join("products", "variations.product_id", "=", "products.id")
+                     ->join("machine_variants", "machine_variants.variant_id", "=", "variations.id")
+                     ->where("machine_variants.machine_id", "=", $to_machine)
+                     ->where("machine_variants.quantity", ">", 0)
+                     ->get();
+         // return $product;
+ 
+         $product_arr = array();
+ 
+         foreach($product as $row){ 
+             $product_arr[$row->id] = $row->item_code .' ('.$row->product_name.')';           
+         }
+         return $product_arr;
+     }
+
+    public function update_outdis_product_qty(Request $request, $outlet_distribute_id, $variant_id) {
         
-        $OutletDistributeProducts = OutletDistributeProduct::find($id); 
+        $OutletDistributeProducts = OutletDistributeProduct::where('id',$outlet_distribute_id)->where('variant_id',$variant_id)->first();
+        
+        // $OutletDistributeProducts = OutletDistributeProduct::find($id); 
 
         $input = [];
         $input['quantity'] = $request->qty;

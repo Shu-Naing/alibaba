@@ -8,7 +8,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">Create brand</h4>
+            <h4 class="fw-bolder mb-3">Create Category</h4>
             <div>
             </div>
         </div>
@@ -26,7 +26,7 @@
         {!! Form::open(['route' => 'categories.store', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
         @csrf
         <div class="row mb-3">
-            <div class="col-md-12">
+            <div class="col-md-6 col-sm-6">
                 <label for="category_name" class="form-label">Category Name *</label>
                 <input type="text" class="form-control @error('category_name') is-invalid @enderror" name="category_name"
                     id="category_name" aria-describedby="emailHelp">
@@ -34,7 +34,7 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="col-md-12">
+            <div class="col-md-6 col-sm-6">
                 <label for="category_code" class="form-label">Category Code *</label>
                 <input type="text" class="form-control @error('category_code') is-invalid @enderror" name="category_code"
                     id="category_code" aria-describedby="emailHelp">

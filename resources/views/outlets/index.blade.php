@@ -52,11 +52,11 @@
                         <td class="d-flex gap-5">
                             <a class="text-decoration-underline"
                                 href="{{ route('outlets.edit', ['outlet' => $outlet->id]) }}">Edit</a>
-                            <a class="text-decoration-underline" href="">Settings</a>
+                            <!-- <a class="text-decoration-underline" href="">Settings</a> -->
                             <div class="d-flex">
+                                <a class="text-decoration-underline text-nowrap" href="{{ route('outletstockoverview.create', $outlet->id ) }}">Opening Qty</a>/
                                 <a class="text-decoration-underline" href="{{ route('outletdistribute.create', $outlet->id ) }}">Receive</a>/ 
-                                <a class="text-decoration-underline" href="{{ route('issue.create', $outlet->id ) }}">Issue</a>/
-                                <a class="text-decoration-underline text-nowrap" href="{{ route('outletstockoverview.create', $outlet->id ) }}">Opening Qty</a>
+                                <a class="text-decoration-underline" href="{{ route('issue.create', $outlet->id ) }}">Issue</a>
                             </div>
                             <form action="{{ route('outlets.destroy', $outlet->id) }}" method="POST">
                                 @csrf
