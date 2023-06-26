@@ -56,11 +56,11 @@
                         <th>Brand</th>
                         <th>UOM</th>
                         <th>Inventory <br> Store Balance</th>
+                        <th>Total <br> Price</th>
                         @foreach ($outlets as $outlet)
-                            <th>{{ $outlet->name }}<br> Store Balance</th>
-                            @foreach ($outlet->machines as $machine)
-                                <th>{{ $machine->name }}<br> Machine Balance</th>
-                            @endforeach
+                            <th>{{ $outlet->name }} Store <br> Balance</th>
+                            <th>{{ $outlet->name }} Machine <br> Balance</th>
+                            <th>Total <br> Price</th>
                         @endforeach
                         <th>Total <br> Store Balance</th>
                         <th>Total <br> Machine Balance</th>
@@ -73,7 +73,8 @@
                         <tr>
                             <td class="sticky-col-id sticky-col-first">{{ $report->id }}</td>
                             <td class="sticky-col-code sticky-col-first">{{ $report->item_code }}</td>
-                            <td><img src="{{ asset('storage/' . $report->image) }}" alt="{{ $report->product->product_name }}">
+                            <td><img src="{{ asset('storage/' . $report->image) }}"
+                                    alt="{{ $report->product->product_name }}">
                             </td>
                             <td>{{ $report->product->product_name }}</td>
                             <td>{{ !isset($report->points) || $report->points == 0 ? 0 : $report->points }}</td>
@@ -87,27 +88,40 @@
                             <td>{{ $report->product->brand->brand_name }}</td>
                             <td>{{ $report->product->unit->name }}</td>
                             <td>{{ outlet_stock($report->id) }}</td>
+                            <td>{{ outlet_stock($report->id) * $report->purchased_price }}</td>
                             @foreach ($outlets as $outlet)
                                 @php  $store_balance = outlet_stock($report->id, $outlet->id); @endphp
                                 <td>
                                     {{ !isset($store_balance) || $store_balance == 0 ? 0 : $store_balance }}
                                 </td>
-                                @foreach ($outlet->machines as $machine)
+                                @php $machine_balance = oultet_total_machine_stock($report->id, $outlet->id); @endphp
+                                <td>
+                                    {{ !isset($machine_balance) || $machine_balance == 0 ? 0 : $machine_balance }}
+                                </td>
+                                @php $outlet_total_price = ($store_balance + $machine_balance) * $report->purchased_price @endphp
+                                <td>
+                                    {{ !isset($outlet_total_price) || $outlet_total_price == 0 ? 0 : $outlet_total_price }}
+                                </td>
+                                {{-- @foreach ($outlet->machines as $machine)
                                     @php  $machine_balance = machine_stock($report->id, $machine->id); @endphp
                                     <td>
                                         {{ !isset($machine_balance) || $machine_balance == 0 ? 0 : $machine_balance }}
                                     </td>
-                                @endforeach
+                                @endforeach --}}
                             @endforeach
                             <td>{{ total_store_stock($report->id) }}</td>
                             <td>{{ total_machine_stock($report->id) }}</td>
-                            <td class="sticky-col-one sticky-td">{{ total_store_stock($report->id) + total_machine_stock($report->id) }}</td>
-                            <td class="sticky-col sticky-td">{{ $report->kyat * (total_store_stock($report->id) + total_machine_stock($report->id)) }}</td>
+                            <td class="sticky-col-one sticky-td">
+                                {{ outlet_stock($report->id) + total_store_stock($report->id) + total_machine_stock($report->id) }}
+                            </td>
+                            <td class="sticky-col sticky-td">
+                                {{ $report->purchased_price * (outlet_stock($report->id) + total_store_stock($report->id) + total_machine_stock($report->id)) }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        
+
     </div>
 @endsection
