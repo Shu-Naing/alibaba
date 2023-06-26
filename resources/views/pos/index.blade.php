@@ -39,6 +39,11 @@
             </div>
         </div>
 
+        <div>
+            <input type="text" id="last-barcode" placeholder="Scan barcode">
+
+        </div>
+
         <div class="row">
             <div class="col-lg-7 d-print-none">
                 <div class="row">
@@ -405,6 +410,29 @@
                 window.location.href = newUrl;
             }
         });
+
+        var barcode = '';
+        var interval;
+
+        $(document).on('keydown', function(evt) {
+            if (interval)
+                clearInterval(interval);
+            if (evt.code == 'Enter') {
+                if (barcode)
+                    handleBarcode(barcode);
+                barcode = '';
+                return;
+            }
+            if (evt.code != 'Shift')
+                barcode += evt.key;
+            interval = setInterval(function() {
+                barcode = '';
+            }, 20);
+        });
+
+        function handleBarcode(scanned_barcode) {
+            $('#last-barcode').text(scanned_barcode);
+        }
     </script>
 @endsection
 @endsection
