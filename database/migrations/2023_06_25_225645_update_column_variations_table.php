@@ -26,7 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('variations', function (Blueprint $table) {
-            $table->string('image')->change();;
+            $table->string('image')->change();
         });
     }
 };
