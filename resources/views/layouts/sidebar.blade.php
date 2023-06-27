@@ -27,12 +27,12 @@
                         <span class="d-none d-sm-inline">Roles & Permissions</span>
                     </a>
                 </li>
-                <li class="nav-item nav-small-cap">
+                <!-- <li class="nav-item nav-small-cap">
                     <a href="#" class="nav-link sidebar-link align-middle">
                         <i class="fs-4 bi bi-person-lines-fill"></i>
                         <span class="d-none d-sm-inline">Contacts</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item nav-small-cap">
                     <a href="#submenu2" data-bs-toggle="collapse" class="nav-link sidebar-link align-middle dropdownli">
                         <i class="fs-4 bi bi-box2"></i>
@@ -173,7 +173,7 @@
                             </a>
                         </li> -->
                         <li class="w-100 sidebar-item">
-                            <a href="#" class="nav-link sidebar-link">
+                            <a href="{{ route('report.products') }}" class="nav-link sidebar-link">
                                 <hr>
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>

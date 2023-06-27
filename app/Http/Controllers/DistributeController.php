@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\Outlets;
-use App\models\distributes;
-use App\models\DistributeProducts;
-use App\models\Variation;
-use App\models\OutletItem;
+use App\Models\Outlets;
+use App\Models\distributes;
+use App\Models\DistributeProducts;
+use App\Models\Variation;
+use App\Models\OutletItem;
 use Validator;
 use Auth;
 

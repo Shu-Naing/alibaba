@@ -8,8 +8,8 @@
             vertical-align: middle;
         }
 
-        table .tb-header-blue {
-            background-color: blue;
+        table .tb-header-red {
+            background-color: var(--primary-color);
             color: white;
         }
 
@@ -41,8 +41,8 @@
             <table class="table  table-bordered">
                 <thead>
                     <tr>
-                        <th class="sticky-col-id sticky-col-first">No</th>
-                        <th class="sticky-col-code sticky-col-first">Item Code</th>
+                        <th class="sticky-col-id tb-header-red">No</th>
+                        <th class="sticky-col-code tb-header-red">Item Code</th>
                         <th>Photo</th>
                         <th>Product Name</th>
                         <th>Point</th>
@@ -64,15 +64,15 @@
                         @endforeach
                         <th>Total <br> Store Balance</th>
                         <th>Total <br> Machine Balance</th>
-                        <th class="tb-header-blue sticky-col-one">Grand <br> Total Balance</th>
-                        <th class="tb-header-blue sticky-col">Grand <br> Total Price</th>
+                        <th class="tb-header-red sticky-col-one">Grand <br> Total Balance</th>
+                        <th class="tb-header-red sticky-col">Grand <br> Total Price</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($reports as $report)
                         <tr>
-                            <td class="sticky-col-id sticky-col-first">{{ $report->id }}</td>
-                            <td class="sticky-col-code sticky-col-first">{{ $report->item_code }}</td>
+                            <td class="sticky-col-id sticky-td">{{ $report->id }}</td>
+                            <td class="sticky-col-code sticky-td">{{ $report->item_code }}</td>
                             <td><img src="{{ asset('storage/' . $report->image) }}" alt="{{ $report->product->product_name }}">
                             </td>
                             <td>{{ $report->product->product_name }}</td>
