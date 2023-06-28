@@ -77,7 +77,17 @@
             background-color: #c22926;
             color:white;
             border: none;
-            padding: 15px 32px;
+            padding: 7px 15px;
+            text-decoration: none;
+            margin-right: 5px;
+        }
+
+        .back-btn{
+            background-color: blue;
+            color:white;
+            border: none;
+            padding: 7px 15px;
+            text-decoration: none;
         }
 
         @media print
@@ -115,7 +125,8 @@
                 <tr>
                     <th colspan="7">
                         <h2>Stock Transfer Form</h2>
-                        <button onclick="printTable()" class="print-btn">Print Table</button>
+                        <a href="javascript:void(0);" onclick="printTable()" class="print-btn">Print Table</button>
+                        <a href="{{ url()->previous() }}" class="back-btn">Back</button>
                     </th>
                 </tr>
                 <tr>
