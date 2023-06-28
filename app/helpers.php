@@ -172,6 +172,13 @@
         }
     }
 
+    if(!function_exists('get_outlet_name')){
+        function get_outlet_name($outlet_id){
+           $outlet_name = Outlets::where('id',$outlet_id)->value('name');
+            return $outlet_name;
+        }
+    }
+
 
 
 

@@ -25,7 +25,7 @@ class DistributeProducts extends Model
     //     return $this->belongto(distributes::class,'distribute_id');
     // }
 
-    // public function variants(){
-    //     return $this->hasOne(Variation::class,'id');
-    // }
+    public function variant(){
+        return $this->hasOne(Variation::class,'id','variant_id');
+    }
 }

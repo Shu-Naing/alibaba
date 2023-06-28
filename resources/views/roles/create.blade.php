@@ -29,6 +29,10 @@
                     <strong>Name:</strong>
                     {!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control']) !!}
                 </div>
+                
+            </div>
+            <div class="my-3">
+                <button class="btn btn-primary btn-sm" id="select-all" type="button">select all</button>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
@@ -48,4 +52,23 @@
         </div>
         {!! Form::close() !!}
     </div>
+
+
+    @section('scripts')
+    <script>
+        $(document).ready(function() {
+  // Toggle select all checkboxes
+  $('#select-all').click(function() {
+    var checkboxes = $('input[type="checkbox"]');
+    checkboxes.prop('checked', !checkboxes.prop('checked'));
+  });
+
+
+});
+
+    </script>
+    @endsection
 @endsection
+
+
+

@@ -43,11 +43,11 @@
                     <tr>
                         <th class="sticky-col-id tb-header-red">No</th>
                         <th class="sticky-col-code tb-header-red">Item Code</th>
-                        <th>Photo</th>
+                        <th class="sticky-col-photo tb-header-red">Photo</th>
+                        <th class="sticky-col-point tb-header-red">Point</th>
+                        <th class="sticky-col-ticket tb-header-red">Ticket</th>
+                        <th class="sticky-col-price tb-header-red">Price (WS)</th>
                         <th>Product Name</th>
-                        <th>Point</th>
-                        <th>Ticket</th>
-                        <th>Price (WS)</th>
                         <th>Size</th>
                         <th>Received Date</th>
                         <th>Company Name</th>
@@ -62,10 +62,11 @@
                             <th>{{ $outlet->name }} Machine <br> Balance</th>
                             <th>Total <br> Price</th>
                         @endforeach
-                        <th>Total <br> Store Balance</th>
-                        <th>Total <br> Machine Balance</th>
-                        <th class="tb-header-red sticky-col-one">Grand <br> Total Balance</th>
-                        <th class="tb-header-red sticky-col">Grand <br> Total Price</th>
+                        
+                        <th>Grand <br> Total Balance</th>
+                        <th>Grand <br> Total Price</th>
+                        <th class="tb-header-red sticky-col-one">Total <br> Store Balance</th>
+                        <th class="tb-header-red sticky-col">Total <br> Machine Balance</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -73,11 +74,11 @@
                         <tr>
                             <td class="sticky-col-id sticky-td">{{ $report->id }}</td>
                             <td class="sticky-col-code sticky-td">{{ $report->item_code }}</td>
-                            <td><img src="{{ asset('storage/' . $report->image) }}" alt="{{ $report->product->product_name }}"></td>
+                            <td class="sticky-col-photo sticky-td"><img src="{{ asset('storage/' . $report->image) }}" alt="{{ $report->product->product_name }}"></td>
+                            <td class="sticky-col-point sticky-td">{{ !isset($report->points) || $report->points == 0 ? 0 : $report->points }}</td>
+                            <td class="sticky-col-ticket sticky-td">{{ !isset($report->tickets) || $report->tickets == 0 ? 0 : $report->tickets }}</td>
+                            <td class="sticky-col-price sticky-td">{{ !isset($report->kyat) || $report->kyat == 0 ? 0 : $report->kyat }}</td>
                             <td>{{ $report->product->product_name }}</td>
-                            <td>{{ !isset($report->points) || $report->points == 0 ? 0 : $report->points }}</td>
-                            <td>{{ !isset($report->tickets) || $report->tickets == 0 ? 0 : $report->tickets }}</td>
-                            <td>{{ !isset($report->kyat) || $report->kyat == 0 ? 0 : $report->kyat }}</td>
                             <td>{{ $report->value }}</td>
                             <td>{{ $report->product->received_date }}</td>
                             <td>{{ $report->product->company_name }}</td>
@@ -107,14 +108,14 @@
                                     </td>
                                 @endforeach --}}
                             @endforeach
-                            <td>{{ total_store_stock($report->id) }}</td>
-                            <td>{{ total_machine_stock($report->id) }}</td>
-                            <td class="sticky-col-one sticky-td">
+                            <td>
                                 {{ outlet_stock($report->id) + total_store_stock($report->id) + total_machine_stock($report->id) }}
                             </td>
-                            <td class="sticky-col sticky-td">
+                            <td>
                                 {{ $report->purchased_price * (outlet_stock($report->id) + total_store_stock($report->id) + total_machine_stock($report->id)) }}
                             </td>
+                            <td class="sticky-col-one sticky-td">{{ total_store_stock($report->id) }}</td>
+                            <td class="sticky-col sticky-td">{{ total_machine_stock($report->id) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

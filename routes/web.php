@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('machine', MachineController::class);
     Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
+    Route::get('/distribute-preview/{distribute_id}',[DistributeController::class, 'preview'])->name('distribute.preview');
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     Route::resource('outletstockhistory', OutletStockHistoryController::class);
     // Route::resource('issue-products', IssueProductController::class);

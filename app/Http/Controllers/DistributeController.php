@@ -100,6 +100,7 @@ class DistributeController extends Controller
 
         $distribute['distribute'] = $distribute_data;
         $distribute['distribute_products'] = $distribute_products;
+        
 
         return view('distribute.show',compact('distribute','breadcrumbs','outlets'));
     }
@@ -188,5 +189,17 @@ class DistributeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function preview($distribute_id){
+
+        $distribute = distributes::whereHas('distribute_porducts', function ($query) use ($distribute_id){
+            $query->where('distribute_id',$distribute_id);
+        })->with('distribute_porducts.variant.product.unit')->first();
+
+        // return $distribute;
+        
+        return view('distribute.preview',compact('distribute'));
     }
 }
