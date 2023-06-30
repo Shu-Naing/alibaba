@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\models\Outlets;
-use App\models\distributes;
-use App\models\DistributeProducts;
-use App\models\Variation;
-use App\models\OutletItem;
+use App\Models\Outlets;
+use App\Models\distributes;
+use App\Models\DistributeProducts;
+use App\Models\Variation;
+use App\Models\OutletItem;
 use Validator;
 use Auth;
 
@@ -100,6 +100,7 @@ class DistributeController extends Controller
 
         $distribute['distribute'] = $distribute_data;
         $distribute['distribute_products'] = $distribute_products;
+        
 
         return view('distribute.show',compact('distribute','breadcrumbs','outlets'));
     }
@@ -188,5 +189,17 @@ class DistributeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function preview($distribute_id){
+
+        $distribute = distributes::whereHas('distribute_porducts', function ($query) use ($distribute_id){
+            $query->where('distribute_id',$distribute_id);
+        })->with('distribute_porducts.variant.product.unit')->first();
+
+        // return $distribute;
+        
+        return view('distribute.preview',compact('distribute'));
     }
 }

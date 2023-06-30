@@ -35,26 +35,26 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
             'Brand',
             'UOM',
             'Inventory Store Balance',
+            'Total Price',
             'Total Store Balance',
             'Total Machine Balance',
             'Grand Total Balance',
             'Grand Total Price'
         ];
     
-        $index = array_search('Inventory Store Balance', $headings);
-    
+        $index = array_search('Total Price', $headings);
+
         foreach ($this->outlets as $outlet) {
-            $outletHeading = $outlet['name'] . ' Store Balance';
+            $outletHeading = $outlet['name'] .''. ' Store Balance';
+            $machineHeading = $outlet['name'] .''. ' Machine Balance';
             $headings = array_merge(
                 array_slice($headings, 0, $index + 1),
-                [$outletHeading],
-                array_map(function ($machine) use ($outlet) {
-                    return $machine['name'] . ' Machine Balance';
-                }, $outlet['machines']->toArray()),
+                [$outletHeading,$machineHeading,'Total Price'],
                 array_slice($headings, $index + 1)
             );
-            $index += count($outlet['machines']) + 1;
         }
+    
+      
     
 
       
@@ -66,10 +66,11 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
     {
 
         $inventory_store_balance = outlet_stock($product->id);
+        $inventory_total_price = $product->purchased_price * $inventory_store_balance;
         $total_store_balance =  total_store_stock($product->id);
         $total_machine_balance = total_machine_stock($product->id);
-        $grand_total_balance = total_store_stock($product->id) + total_machine_stock($product->id);
-        $grand_total_price = $product->kyat * (total_store_stock($product->id) + total_machine_stock($product->id));
+        $grand_total_balance = $inventory_store_balance + $total_store_balance + $total_machine_balance;
+        $grand_total_price = $product->purchased_price * $grand_total_balance;
 
         $data = [
             $product->item_code,
@@ -86,6 +87,7 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
             $product->product->brand->brand_name, 
             $product->product->unit->name, 
             (!isset($inventory_store_balance) || $inventory_store_balance == 0) ? '0' : $inventory_store_balance,
+            (!isset($inventory_total_price) || $inventory_total_price == 0) ? '0' : $inventory_total_price,
             (!isset($total_store_balance) || $total_store_balance == 0) ? '0' : $total_store_balance,
             (!isset($total_machine_balance) || $total_machine_balance == 0) ? '0' : $total_machine_balance,
             (!isset($grand_total_balance) || $grand_total_balance == 0) ? '0' : $grand_total_balance,
@@ -94,20 +96,16 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
     ];
 
 
-    $index = 13;
+    $index = 14;
     $product_id = $product->id;
+   
+
     foreach ($this->outlets as $outlet){
         $outletdata = outlet_stock($product_id,$outlet['id']) ;
-        $data = array_merge(
-            array_slice($data, 0, $index + 1),
-            [(!isset($outletdata) || $outletdata == 0) ? '0' : $outletdata],
-            array_map(function ($machine) use ($outlet,$product_id) {
-                $machinedata = machine_stock($product_id,$machine['id']);
-                return (!isset($machinedata) || $machinedata == 0) ? '0' : $machinedata ;
-            }, $outlet['machines']->toArray()),
-            array_slice($data, $index + 1)
-        );
-        $index += count($outlet['machines']) + 1;
+        $machinedata = oultet_total_machine_stock($product_id,$outlet['id']);
+        $outlet_total_price = ($outletdata + $machinedata) * $product->purchased_price;
+       
+        $data = array_merge(array_slice($data, 0, $index + 1), [$outletdata, $machinedata, $outlet_total_price], array_slice($data, $index + 1));
     }
         
     return $data;

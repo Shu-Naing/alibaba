@@ -272,7 +272,7 @@ input.number {
 
 .sticky-col-one {
   position: sticky;
-  right: 105px;
+  right: 148px;
   z-index: 2;
 }
 
@@ -302,7 +302,31 @@ input.number {
 
 .sticky-col-code {
   position: sticky;
-  left: 51px;
+  left: 52px;
+  z-index: 2;
+}
+
+.sticky-col-photo {
+  position: sticky;
+  left: 160px;
+  z-index: 2;
+}
+
+.sticky-col-point {
+  position: sticky;
+  left: 253px;
+  z-index: 2;
+}
+
+.sticky-col-ticket {
+  position: sticky;
+  left: 321px;
+  z-index: 2;
+}
+
+.sticky-col-price {
+  position: sticky;
+  left: 397px;
   z-index: 2;
 }
 

@@ -146,11 +146,15 @@
         }
     }
 
-    if(!function_exists('machine_stock')){
-        function machine_stock($variation_id,$machine_id){
-            
-           $machine_item_stock = MachineVariant::where('variant_id',$variation_id)->where('machine_id',$machine_id)->value('quantity');
-            return $machine_item_stock;
+    if(!function_exists('oultet_total_machine_stock')){
+        function oultet_total_machine_stock($variation_id,$outlet_id){
+           
+            $sum = MachineVariant::join('machines', 'machine_variants.machine_id', '=', 'machines.id')
+            ->where('machines.outlet_id', $outlet_id)
+            ->where('machine_variants.variant_id', $variation_id)
+            ->sum('machine_variants.quantity');
+       
+            return $sum;
         }
     }
 
@@ -165,6 +169,13 @@
         function total_machine_stock($variation_id){
            $total_store_stock = MachineVariant::where('variant_id',$variation_id)->sum('quantity');
             return $total_store_stock;
+        }
+    }
+
+    if(!function_exists('get_outlet_name')){
+        function get_outlet_name($outlet_id){
+           $outlet_name = Outlets::where('id',$outlet_id)->value('name');
+            return $outlet_name;
         }
     }
 
