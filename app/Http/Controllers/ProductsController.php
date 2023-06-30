@@ -55,7 +55,7 @@ class ProductsController extends Controller
             "sku" => "required|unique:products",
             "received_date" => "required",
             "expired_date" => "required",
-            "description" => "required",
+            // "description" => "required",
             'variations' => 'required|array',
             'variations.*.select' => 'required',
             'variations.*.value' => 'required',

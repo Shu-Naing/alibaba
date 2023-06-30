@@ -274,8 +274,13 @@ class OutletDistributeController extends Controller
                 $input['created_by'] = Auth::user()->id;
                 OutletStockHistory::create($input);
 
+                $month = date('m', strtotime($request->date));
                 $variant = Variation::find($row->variant_id);
-                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
+                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+                ->where('outlet_id', $request->from_outlet)
+                ->where('machine_id', $request->toCounterMachine)
+                ->whereMonth('date', $month)
+                ->where('item_code',$variant->item_code)->first();
                 
                 if($outletstockoverview){     
                     $input = [];

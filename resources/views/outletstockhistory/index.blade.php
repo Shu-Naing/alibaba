@@ -35,6 +35,7 @@
                     <th>Recieved/Issued</th>
                     <th>Branch</th>                    
                     <th>Remark</th>
+                    <th>Check</th>
                 </tr>
             </thead>
             <tbody>
@@ -50,7 +51,8 @@
                         <td>{{ $history->quantity }}</td>
                         <td>{{ isset($types[$history->type]) ? $types[$history->type] : ''  }}</td>
                         <td>{{ isset($branch[$history->branch]) ? $branch[$history->branch] : '' }}</td>
-                        <td>{{ $history->remark }}</td>                
+                        <td>{{ $history->remark }}</td>              
+                        <td class="text-center"><input class="form-check-input mt-0 outletstockhistory-check" type="checkbox" value="{{ $history->id }}" aria-label="Checkbox for following text input" {{ ($history->is_check == 1) ? 'checked' : '' }} /></td>              
                     </tr>
                 @endforeach
             </tbody>

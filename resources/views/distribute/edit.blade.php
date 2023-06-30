@@ -134,6 +134,7 @@
                                         <div class="col">
                                             <div class="value-button h-100 border d-flex align-items-center justify-content-center"
                                                 onclick="increaseValue(this, {{ $product->id }}, {{ $product->variant_id }}, {{$variant_qty[$product->variant_id]}})" value="Increase Value">+
+                                                <!-- <div id="loading-indicator">Loading...</div> -->
                                             </div>
                                         </div>
                                         <div class="col">
