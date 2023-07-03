@@ -148,6 +148,8 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
   } else {
     input.value = variant_qty;
   }
+
+  var type = $("#increase-type").data("id");
   // input.value = isNaN(value) ? 0 : value + 1;
   // console.log("distribute product id", disPdID);
 
@@ -158,6 +160,7 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
     url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
+      type: type,
       qty: input.value,
     },
     beforeSend: function () {},
@@ -177,15 +180,18 @@ function decreaseValue(button, disPdID, variantID) {
   input.value = isNaN(value) || value < 1 ? 0 : value - 1;
   // input.value = isNaN(value) || value < 1 ? 0 : value - 1;
   // console.log("decre", disPdID);
-
+  var type = $("#decrease-type").data("id");
+  // console.log(type);
   $.ajax({
     url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
+      type: type,
       qty: input.value,
     },
     success: function (response) {
       location.reload();
+      // console.log();
     },
   });
 

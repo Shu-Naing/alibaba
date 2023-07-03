@@ -8,6 +8,7 @@ use App\Models\Variation;
 use App\Models\DistributeProducts;
 use App\Models\OutletDistributeProduct;
 use App\Models\OutletItem;
+use App\Models\distributes;
 use Auth;
 
 class SearchController extends Controller
@@ -40,8 +41,7 @@ class SearchController extends Controller
         
         #don't allow to add same product in search product ( recieve/issue/distribute)
         #if added same item, just increse quantity
-        $distributeproduct = DistributeProducts::select('quantity')
-        ->where('distribute_id',$distributedId)
+        $distributeproduct = DistributeProducts::where('distribute_id',$distributedId)
         ->where('variant_id',$variantId)
         ->first();
         if($distributeproduct){
@@ -51,6 +51,36 @@ class SearchController extends Controller
             $input['quantity'] = 1;
             DistributeProducts::create($input);
         }
+
+        //update outlet item quantity
+        $distributes = distributes::where('id', $distributedId)->first();
+        $toOutletId = $distributes->to_outlet;
+        
+        $input = [];
+        $outletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variantId)->first();
+        
+        if($outletitem) {
+            $input['quantity'] = $outletitem->quantity + 1;
+            $input['updated_by'] = Auth::user()->id;
+            // return $input;
+            $outletitem->update($input);
+        }else {
+            $input['outlet_id'] = $toOutletId;
+            $input['variation_id'] = $variantId;
+            $input['created_by'] = Auth::user()->id;
+            $input['quantity'] = 1;
+            OutletItem::create($input);
+        }
+        //create $input with outlet_itmes_tbl columns
+        
+        //get main inventory qty  with variant_id and main outlet id
+        $outletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variantId)->first();
+        
+        $qty = $outletitem->quantity - 1;
+
+        $input = [];
+        $input['quantity'] = $qty;
+        $outletitem->update($input);
 
         // $distribute_product = DistributeProducts::select('distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "distribute_products.variant_id")
         //                         ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $distributedId)->get();
@@ -161,6 +191,7 @@ class SearchController extends Controller
             $input['quantity'] = 1;
             OutletDistributeProduct::create($input);
         }
+
         // $outlet_distribute_product = OutletDistributeProduct::select('outlet_distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "outlet_distribute_products.variant_id")
         //                         ->join("products", "products.id", "=", "variations.product_id")->where("outlet_distribute_id", $distributedId)->get();
         // return $outlet_distribute_product;

@@ -132,13 +132,13 @@
                                                     value="{{ $product->quantity }}" data-id="[{{ $product->id }}, {{ $product->variant_id }}, {{$variant_qty[$product->variant_id]}}]"></div>
                                         </div>
                                         <div class="col">
-                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center"
+                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" id="increase-type" data-id="increase"
                                                 onclick="increaseValue(this, {{ $product->id }}, {{ $product->variant_id }}, {{$variant_qty[$product->variant_id]}})" value="Increase Value">+
                                                 <!-- <div id="loading-indicator">Loading...</div> -->
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center"
+                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" id="decrease-type" data-id="decrease"
                                                 onclick="decreaseValue(this, {{ $product->id }} , {{ $product->variant_id }})" value="Decrease Value">-
                                             </div>
                                         </div>
