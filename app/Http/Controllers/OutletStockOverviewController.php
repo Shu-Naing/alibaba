@@ -96,6 +96,7 @@ class OutletStockOverviewController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // return $request;
         $input = $request->all();
         $input['created_by'] = auth()->user()->id;
         $outletstocksoverview = OutletStockOverview::find($id);
@@ -112,6 +113,37 @@ class OutletStockOverviewController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function checkoutletstockoverview(Request $request) 
+    {
+        $outletstockoverview_id = $request->id;
+        $check =  $request->check;
+        $c = 0;
+        if($check == 'true') {
+            $c = 1;
+        }
+        $input = [];
+        $input['is_check'] = $c;
+        $input['updated_by'] = auth()->user()->id;
+        $outletstocksoverview = OutletStockOverview::find($outletstockoverview_id);
+        $outletstocksoverview->update($input);
+        // return $input;
+        return "success data";
+    }
+
+    public function updatephysicalqty(Request $request) {
+        $physical_qty = $request->physical_qty;
+        $balance_qty =  $request->balance_qty;
+        $difference_qty =  $balance_qty - $physical_qty;
+
+        $input = [];
+        $input['physical_qty'] = $physical_qty;
+        $input['difference_qty'] = $difference_qty;
+        $input['updated_by'] = auth()->user()->id;
+        $outletstocksoverview = OutletStockOverview::find($request->id);
+        $outletstocksoverview->update($input);
+        return "success data";
     }
 
     

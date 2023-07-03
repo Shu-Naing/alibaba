@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Variation;
 use App\Models\Categories;
 use App\Models\OutletItem;
+use App\Models\distributes;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Imports\ProductsImport;
@@ -55,7 +56,7 @@ class ProductsController extends Controller
             "sku" => "required|unique:products",
             "received_date" => "required",
             "expired_date" => "required",
-            "description" => "required",
+            // "description" => "required",
             'variations' => 'required|array',
             'variations.*.select' => 'required',
             'variations.*.value' => 'required',
@@ -161,7 +162,7 @@ class ProductsController extends Controller
             'variations.*.select' => 'required',
             'variations.*.value' => 'required',
             'variations.*.received_qty' => 'required',
-            'variations.*.alert_qty' => 'required',
+            'variations.*.alert_qty' => 'required', 
             'variations.*.item_code' => [
                 'required',
                 function ($attribute, $value, $fail) use ($request) {
@@ -184,7 +185,6 @@ class ProductsController extends Controller
             ->withInput();
         }
         Product::find($product_id)->update([
-
             'product_name' => $request->product_name,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
@@ -229,10 +229,15 @@ class ProductsController extends Controller
         
             $variation_data = Variation::updateOrCreate(['item_code' => $variation['item_code']], $variationData);
 
-            OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_data->id)->update([
-                'quantity' => $variation['received_qty']
-            ]);
 
+            $input = [];
+            $input['outlet_id'] = $outlet_id;
+            $input['quantity'] = $variation['received_qty'];
+            $input['variation_id'] = $variation_data->id;
+            $input['created_by'] = Auth::user()->id;
+            $input['updated_by'] = Auth::user()->id;
+            
+            OutletItem::updateOrCreate(['outlet_id'=>$outlet_id, 'variation_id'=>$variation_data->id], $input);
         }
        
 
@@ -260,22 +265,84 @@ class ProductsController extends Controller
     public function update_product_qty(Request $request, $distribute_id, $variant_id) {
         
         $distributeProducts = DistributeProducts::where('id',$distribute_id)->where('variant_id',$variant_id)->first();
+        $distributeId = $distributeProducts->distribute_id;
+        $oldqty = $distributeProducts->quantity;
 
-        $input = [];
-        $input['quantity'] = $request->qty;
-        $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
-
-        $arr = [];
-        $arr['request'] = $request->all();
-        $arr['distributeproduct'] = $distributeProducts;
-        $arr['input'] = $input;
+        // $input = [];
+        // $input['quantity'] = $request->qty;
+        // $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
 
         // return $id;
         if($distributeProducts){
             $input = [];
             $input['quantity'] = $request->qty;
             $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
-            return $distributeProducts->update($input);
+            $distributeProducts->update($input);
+
+            if($request->type == 'increase') {
+                $distributes = distributes::where('id', $distributeId)->first();
+                $toOutletId = $distributes->to_outlet;
+                $fromOutletId = $distributes->from_outlet;
+                
+                $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
+                $input = [];
+                $input['quantity'] = $outletitem->quantity + 1;
+                $input['updated_by'] = Auth::user()->id;
+                $tooutletitem->update($input);
+
+                $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
+                $qty = $outletitem->quantity - 1;
+                $input = [];
+                $input['quantity'] = $qty;
+                $fromoutletitem->update($input);
+
+                return "success data";
+            }else if($request->type == 'decrease') {
+                $distributes = distributes::where('id', $distributeId)->first();
+                $toOutletId = $distributes->to_outlet;
+                $fromOutletId = $distributes->from_outlet;
+                
+                $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
+                $input = [];
+                $input['quantity'] = $outletitem->quantity - 1;
+                $input['updated_by'] = Auth::user()->id;
+                $tooutletitem->update($input);
+
+                $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
+                $qty = $outletitem->quantity + 1;
+                $input = [];
+                $input['quantity'] = $qty;
+                $fromoutletitem->update($input);
+
+                return "success data";
+            }else {
+                $inputqty = $request->qty;
+                $distributes = distributes::where('id', $distributeId)->first();
+                $toOutletId = $distributes->to_outlet;
+                $fromOutletId = $distributes->from_outlet;
+                // return  $oldqty;
+                
+                $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
+                $input = [];
+                $input['quantity'] = ($tooutletitem->quantity - $oldqty) + $inputqty;
+                $input['updated_by'] = Auth::user()->id;
+                $tooutletitem->update($input);
+                // $rn = [];
+                // $rn['tooutlet'] = $input;
+
+                $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
+                $qty = ($fromoutletitem->quantity + $oldqty) - $inputqty;
+                $input = [];
+                $input['quantity'] = $qty;
+                $fromoutletitem->update($input);
+                // $rn = [];
+                // $rn['tooutlet'] = $tooutletitem;
+                // $rn['fromoutlet'] = $input;
+                // return $rn;
+
+                return "success data";
+            }
+            
         }else{
             return 'distribute product does not found'. $id;
         }

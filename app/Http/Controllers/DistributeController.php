@@ -143,39 +143,39 @@ class DistributeController extends Controller
 
         //select distribute product with distribute id
         // $distribute_products = array();
-        $distribute_products = DistributeProducts::where('distribute_id', $id)->get();
+        // $distribute_products = DistributeProducts::where('distribute_id', $id)->get();
         // return $distribute_products;
-        foreach($distribute_products as $row){
-            // return $row;
-            $input = [];
-            $input['outlet_id'] = $request->to_outlet;
-            $input['variation_id'] = $row->variant_id;
-            $input['created_by'] = Auth::user()->id;
+        // foreach($distribute_products as $row){
+        //     // return $row;
+        //     $input = [];
+        //     $input['outlet_id'] = $request->to_outlet;
+        //     $input['variation_id'] = $row->variant_id;
+        //     $input['created_by'] = Auth::user()->id;
 
-            $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $row->variant_id)->first();
-            if($outletitem) {
-                $input['quantity'] = $row->quantity + $outletitem->quantity;
-                $outletitem->update($input);
-            }else {
-                $input['quantity'] = $row->quantity;
-                OutletItem::create($input);
-            }
-            //create $input with outlet_itmes_tbl columns
+        //     $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $row->variant_id)->first();
+        //     if($outletitem) {
+        //         $input['quantity'] = $row->quantity + $outletitem->quantity;
+        //         $outletitem->update($input);
+        //     }else {
+        //         $input['quantity'] = $row->quantity;
+        //         OutletItem::create($input);
+        //     }
+        //     //create $input with outlet_itmes_tbl columns
             
-            //get main inventory qty  with variant_id and main outlet id
-            $main_inv_qty = OutletItem::select('quantity')
-                ->where('outlet_id', MAIN_INV_ID)
-                ->where('variation_id', $row->variant_id)->first();
+        //     //get main inventory qty  with variant_id and main outlet id
+        //     $main_inv_qty = OutletItem::select('quantity')
+        //         ->where('outlet_id', MAIN_INV_ID)
+        //         ->where('variation_id', $row->variant_id)->first();
             
-            $qty = $main_inv_qty->quantity - $row->quantity;
+        //     $qty = $main_inv_qty->quantity - $row->quantity;
             
-            //update outlet_items_tbl with main outlet id 
-            $mainOutlet = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id', $row->variant_id)->first();
-            $input = [];
-            $input['quantity'] = $qty;
-            $mainOutlet->update($input);  
+        //     //update outlet_items_tbl with main outlet id 
+        //     $mainOutlet = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id', $row->variant_id)->first();
+        //     $input = [];
+        //     $input['quantity'] = $qty;
+        //     $mainOutlet->update($input);  
 
-        }
+        // }
         return redirect()->route('distribute.create')
             ->with('success','Distribute updated successfully');
     }

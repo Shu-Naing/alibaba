@@ -210,7 +210,7 @@ class OutletDistributeController extends Controller
                 $input['machine_id'] = $request->toCounterMachine;
                 $input['quantity'] = $row->quantity;
                 $input['variant_id'] = $row->variant_id;
-                $input['branch'] = $row->quantity;
+                $input['branch'] = IS_STORE;
                 $input['date'] = now();
                 $input['remark'] = $row->remark;
                 $input['created_by'] = Auth::user()->id;
@@ -268,14 +268,19 @@ class OutletDistributeController extends Controller
                 $input['machine_id'] = $request->toCounterMachine;
                 $input['quantity'] = $row->quantity;
                 $input['variant_id'] = $row->variant_id;
-                $input['branch'] = $row->quantity;
+                $input['branch'] = IS_STORE;
                 $input['date'] = now();
                 $input['remark'] = $row->remark;
                 $input['created_by'] = Auth::user()->id;
                 OutletStockHistory::create($input);
 
+                $month = date('m', strtotime($request->date));
                 $variant = Variation::find($row->variant_id);
-                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')->where('item_code',$variant->item_code)->first();
+                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+                ->where('outlet_id', $request->from_outlet)
+                ->where('machine_id', $request->toCounterMachine)
+                ->whereMonth('date', $month)
+                ->where('item_code',$variant->item_code)->first();
                 
                 if($outletstockoverview){     
                     $input = [];
