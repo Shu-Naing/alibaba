@@ -71,10 +71,12 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('distribute/{id}/{from_outlet}/edit', [DistributeController::class, 'edit'])->name('distribute.edit');
 
+    Route::get('/issue', [IssueController::class, 'index'])->name('issue.index');
     Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
     Route::post('/issue', [IssueController::class, 'store'])->name('issue.store');
     Route::get('/issue/{id}/{from_outlet}/{to_machine}/edit', [IssueController::class, 'edit'])->name('issue.edit');
     Route::patch('/issue/{id}', [IssueController::class, 'update'])->name('issue.update');
+    Route::get('/issue/{id}', [IssueController::class, 'show'])->name('issue.show');
 
     Route::get('/outletdistribute', [OutletDistributeController::class, 'index'])->name('outletdistribute.index');
     Route::get('/outletdistribute/{id}/create', [OutletDistributeController::class, 'create'])->name('outletdistribute.create');
@@ -145,6 +147,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     // Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
     Route::get('report/outletdistributeproduct/{id}',[OutletDistributeController::class,'show'])->name('outletdistribute.show');
     Route::get('products-export',[ReportController::class, 'exportProduct'])->name('product.export');
+    Route::get('outletstockoverview-export',[ReportController::class, 'exportOutletstockoverview'])->name('outletstockoverview.export');
+    Route::get('outletstockhistory-export',[OutletStockHistoryController::class, 'exportOutletstockhistory'])->name('outletstockhistory.export');
 
     Route::get('checkoutletstockhistory',[OutletStockHistoryController::class, 'checkoutletstockhistory'])->name('checkoutletstockhistory');
     Route::get('checkoutletstockoverview',[OutletStockOverviewController::class, 'checkoutletstockoverview'])->name('checkoutletstockoverview');

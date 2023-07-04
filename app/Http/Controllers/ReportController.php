@@ -7,6 +7,7 @@ use App\Models\Variation;
 use Illuminate\Http\Request;
 use App\Models\OutletStockOverview;
 use App\Exports\ProductsExport;
+use App\Exports\OutletstockoverviewsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -27,15 +28,24 @@ class ReportController extends Controller
         return Excel::download(new ProductsExport($reports,$outlets), 'products.xlsx');
     }
 
+    
     public function machineReport() {
         return view('reports.machine');
     }
-
+    
     public function outletstockoverviewReport() {
         $outletstockoverviews = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')
-                                ->whereNotNull('item_code')
-                                ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
-                                ->get();
+        ->whereNotNull('item_code')
+        ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
+        ->get();
         return view('reports.outletstockoverview', compact('outletstockoverviews'));
+    }
+    
+    public function exportOutletstockoverview() {
+        $outletstockoverviews = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')
+        ->whereNotNull('item_code')
+        ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
+        ->get();
+        return Excel::download(new OutletstockoverviewsExport($outletstockoverviews), 'outletstockoverview.xlsx');
     }
 }

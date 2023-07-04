@@ -63,5 +63,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with('types',config('constants.types'));
             $view->with('branch',config('constants.branch'));            
         });
+        view()->composer('issue.*',function($view){      
+            $view->with('types',config('constants.types'));           
+        });
+        view()->composer('outletdistribute.*',function($view){      
+            $view->with('types',config('constants.types'));           
+        });
     }
 }
