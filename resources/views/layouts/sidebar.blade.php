@@ -76,6 +76,13 @@
                                 <span class="d-none d-sm-inline">Add Product</span>
                             </a>
                         </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('purchased-price-history.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('purchased-price-history.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">Purchased Price History</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item nav-small-cap">

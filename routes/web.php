@@ -1,31 +1,32 @@
 <?php
-use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\PosController;
+use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\IssueController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UnitsController;
-use App\Http\Controllers\SearchController;
-use App\Http\Controllers\DistributeController;
-use App\Http\Controllers\TestController;
-use App\Http\Controllers\SellingPriceGroupController;
 use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\DistributeController;
 use App\Http\Controllers\PromotionsController;
-use App\Http\Controllers\DistributeProductController;
-use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\OutletDistributeController;
-use App\Http\Controllers\IssueController;
+use App\Http\Controllers\DistributeProductController;
+use App\Http\Controllers\SellingPriceGroupController;
 use App\Http\Controllers\OutletStockHistoryController;
+use App\Http\Controllers\OutletStockOverviewController;
+use App\Http\Controllers\PurchasedPriceHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,5 +153,9 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('checkoutletstockhistory',[OutletStockHistoryController::class, 'checkoutletstockhistory'])->name('checkoutletstockhistory');
     Route::get('checkoutletstockoverview',[OutletStockOverviewController::class, 'checkoutletstockoverview'])->name('checkoutletstockoverview');
     Route::get('updatephysicalqty',[OutletStockOverviewController::class, 'updatephysicalqty'])->name('updatephysicalqty');
+
+
+    Route::get('purchased-price-history',[PurchasedPriceHistoryController::class,'index'])->name('purchased-price-history.index');
+    Route::get('purchased-price-history-export',[PurchasedPriceHistoryController::class,'export'])->name('purchased-price-history.export');
 });
 
