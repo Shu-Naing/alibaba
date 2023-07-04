@@ -26,7 +26,7 @@ class DistributeController extends Controller
         ];
         $outlets = getOutlets();
 
-        $distributes = distributes::all();
+        $distributes = DistributeProducts::join('distributes','distributes.id','=','distribute_products.distribute_id')->get();
         return view('distribute.index',compact('breadcrumbs','distributes','outlets'));
     }
 
