@@ -145,11 +145,11 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
   var value = parseInt(input.value, 10);
   if (value < variant_qty) {
     input.value = isNaN(value) ? 0 : value + 1;
+    console.log(input.value);
   } else {
     input.value = variant_qty;
   }
   var type = $("#increase-type").data("id");
-
   $.ajax({
     url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
@@ -157,13 +157,9 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
       type: type,
       qty: input.value,
     },
-    beforeSend: function () {},
     success: function (response) {
+      // console.log(response);
       location.reload();
-    },
-    complete: function () {
-      // Hide the loading indicator
-      Notiflix.Loading.Remove();
     },
   });
 }

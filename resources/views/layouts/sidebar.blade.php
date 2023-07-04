@@ -95,7 +95,7 @@
                         </li>
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outlets.index') }}"
-                                class="nav-link sidebar-link {{ Route::is('outlets.index') || Route::is('outletstockoverview.*') || Route::is('outletdistribute.create') || Route::is('outletdistribute.edit') || Route::is('issue.*') ? 'active' : '' }}">
+                                class="nav-link sidebar-link {{ Route::is('outlets.index') || Route::is('outletstockoverview.*') || Route::is('outletdistribute.create') || Route::is('outletdistribute.edit') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">List Outlets</span>
                             </a>
@@ -134,7 +134,14 @@
                             <a href="{{ route('outletdistribute.index')}}"
                             class="nav-link sidebar-link {{ Route::is('outletdistribute.index') || Route::is('outletdistribute.show') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">List Outlet Distribute Prodcut</span>
+                                <span class="d-none d-sm-inline text-wrap">List Recieve Distribute Product</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('issue.index')}}"
+                            class="nav-link sidebar-link {{ Route::is('issue.index') || Route::is('issue.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">List Issue Distribute Product</span>
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">

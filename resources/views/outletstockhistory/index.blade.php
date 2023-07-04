@@ -24,6 +24,11 @@
                 {{ Session::get('error') }}
             </div>
         @endif
+
+        <div class="my-3">
+            <a href="{{ route('outletstockhistory.export') }}" class="btn btn-red me-2">Export to Excel</a>
+        </div>
+
         <table id="table_id">
             <thead>
                 <tr>
