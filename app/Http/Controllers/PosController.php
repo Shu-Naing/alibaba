@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Session;
 class PosController extends Controller
 {
     public function index(Request $request){
-
+       
         $pos_id = $request->session()->get('pos-id');
         $user_outlet_id = Auth::user()->outlet->id;
         $search_key = $request->get('key');
@@ -30,7 +30,7 @@ class PosController extends Controller
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
-            }elseif($request->get('filter') === 'point'){
+            }elseif($request->get('filter') === 'points'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
                     $query->whereNotNull('points')
                     ->where('points','!=', 0 )
@@ -39,7 +39,7 @@ class PosController extends Controller
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
-            }elseif($request->get('filter') === 'ticket'){
+            }elseif($request->get('filter') === 'tickets'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
                     $query->whereNotNull('tickets')
                     ->where('tickets','!=', 0 )
@@ -57,14 +57,14 @@ class PosController extends Controller
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
-            }elseif($request->get('filter') === 'point'){
+            }elseif($request->get('filter') === 'points'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) {
                     $query->whereNotNull('points')->where('points','!=', 0 );
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
-            }elseif($request->get('filter') === 'ticket'){
+            }elseif($request->get('filter') === 'tickets'){
                 $outlet_items = OutletItem::whereHas('variation', function ($query) {
                     $query->whereNotNull('tickets')->where('tickets','!=', 0 );
                 })
@@ -77,6 +77,8 @@ class PosController extends Controller
             Session::forget('pos-id');
             $outlet_items = OutletItem::with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
          }
+
+        
         
         $user_id = Auth::user()->id;
         $temps = Temp::with('variation','variation.product')->where('created_by',$user_id)->get();
@@ -92,15 +94,47 @@ class PosController extends Controller
 
     public function addItemPos(Request $request)
     {
+    //    return $request;
+
+       if($request->barcode != null){
+            $variation_id = Variation::where('barcode',$request->barcode)->value('id');
+       }else{
+        $variation_id = $request->variation_id;
+       }
+
        
-        $user_id = Auth::user()->id;
-        Temp::updateOrCreate(
-            ['variation_id' => $request->variation_id,'created_by' => $user_id], // Search criteria
-            ['quantity' => \DB::raw('quantity + 1') ,'variation_value' => $request->variation_value , 'created_by' => $user_id, 'updated_by' => $user_id] // Data to update or create
-        );
+        $product_value = get_product_value($variation_id,'points');
         
-        return response()->json(['message' => 'Product added to cart']);
+        $user_id = Auth::user()->id;
+        $outlet_id = Auth::user()->outlet->id;
+       
+        
+
+        // if($request->variation_id != null){
+            
+           if($variation_id){
+            $available_stock = outlet_stock($variation_id,$outlet_id);
+
+            if($available_stock != 0){
+                Temp::updateOrCreate(
+                    ['variation_id' => $variation_id,'created_by' => $user_id], // Search criteria
+                    ['quantity' => \DB::raw('quantity + 1') ,'variation_value' => $product_value , 'created_by' => $user_id, 'updated_by' => $user_id] // Data to update or create
+                );
+                return response()->json(['message' => 'Product added to cart','status' => 'success']);
+            }else{
+                return response()->json(['message' => 'Out Of Stock !', 'status' => 'fail']);
+            }
+
+           }else{
+            return response()->json(['message' => 'Product Not Found !', 'status' => 'fail']);
+           }
+        // }
+        
+        
+        
     }
+
+    
 
     public function updateItemPos(Request $request){
         // return $request;
