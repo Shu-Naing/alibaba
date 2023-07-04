@@ -90,18 +90,28 @@
             text-decoration: none;
         }
 
+        .top-box {
+            display: flex;
+            justify-content: end;
+            margin: 10px 0px;
+        }
+
         @media print
-{    
-    .print-btn
-    {
-        display: none !important;
-    }
-}
+        {    
+            .print-btn,.back-btn
+            {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div id="print-content">
+        <div class="top-box">
+            <a href="javascript:void(0);" onclick="printTable()" class="print-btn">Print</a>
+            <a href="{{ url()->previous() }}" class="back-btn">Back</a>
+        </div>
         <table>
             <thead>
                 <tr>
@@ -109,13 +119,13 @@
                         <img src="{{ asset('images/logo_1.png') }}" alt="" class="company-logo">
                     </th>
                     <th>
-                        <p>Issued Date: <br> {{ $distribute->date }}</p>
+                        <p>Issued Date: <br> {{ isset($distribute->date) ? $distribute->date : '' }}</p>
                     </th>
                     <th>
-                        <p>{{ $distribute->reference_No }}</p>
+                        <p>{{ isset($distribute->reference_No) ? $distribute->reference_No : '' }}</p>
                     </th>
                     <th>
-                        <p>Revision Date: <br> {{ $distribute->date }}</p>
+                        <p>Revision Date: <br> {{ isset($distribute->date) ? $distribute->date : '' }}</p>
                     </th>
                 </tr>
             </thead>
@@ -125,8 +135,6 @@
                 <tr>
                     <th colspan="7">
                         <h2>Stock Transfer Form</h2>
-                        <a href="javascript:void(0);" onclick="printTable()" class="print-btn">Print Table</button>
-                        <a href="{{ url()->previous() }}" class="back-btn">Back</button>
                     </th>
                 </tr>
                 <tr>
