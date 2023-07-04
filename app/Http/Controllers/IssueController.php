@@ -22,7 +22,14 @@ class IssueController extends Controller
      */
     public function index()
     {
-        // return "hello";
+        $breadcrumbs = [
+              ['name' => 'Outlets', 'url' => route('outletdistribute.index')],
+              ['name' => 'List Issue Distributes Product']
+        ];
+        $outlets = getOutlets();
+        $machines = getMachines();
+        $outletDistributes = OutletDistribute::all()->where('type', ISSUE_TYPE);
+        return view('issue.index', compact('outletDistributes', 'breadcrumbs', 'outlets', 'machines'));
     }
 
     /**
@@ -69,7 +76,23 @@ class IssueController extends Controller
      */
     public function show($id)
     {
-        //
+        $breadcrumbs = [
+              ['name' => 'Outlets', 'url' => route('outletdistribute.index')],
+              ['name' => 'Detail Issue Products']
+        ];
+
+        $outletdistribute_arr = [];
+        $outletdistribute = OutletDistribute::find($id);
+        $outletDistributeProducts = OutletDistributeProduct::select('outlet_distribute_products.*', 'variations.item_code', 'variations.image', 'variations.value')
+        ->join('variations', 'variations.id', '=', 'outlet_distribute_products.variant_id')
+        ->where('outlet_distribute_id', $id)->get();
+        $outletdistribute_arr['outletdistribute'] = $outletdistribute;
+        $outletdistribute_arr['outletDistributeProducts'] = $outletDistributeProducts;
+
+        $outlets = getOutlets();
+        $machines = getMachines();
+        
+        return view('issue.show', compact('outletdistribute_arr', 'outlets', 'machines', 'breadcrumbs'));
     }
 
     /**
@@ -194,24 +217,26 @@ class IssueController extends Controller
                 $input['date'] = now();
                 $input['remark'] = $row->remark;
                 $input['created_by'] = Auth::user()->id;
-                OutletStockHistory::create($input);                
+                OutletStockHistory::create($input);  
+                
+                $month = date('m', strtotime($request->date));
+                $variant = Variation::find($row->variant_id);
+                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+                ->where('outlet_id', $request->from_outlet)
+                ->where('machine_id', $request->toCounterMachine)
+                ->whereMonth('date', $month)
+                ->where('item_code',$variant->item_code)
+                ->first();
+                if($outletstockoverview){                                       
+                    $input = [];
+                    $input['issued_qty'] = $outletstockoverview->issued_qty + $row->quantity;
+                    $input['balance'] = ($outletstockoverview->opening_qty + $outletstockoverview->receive_qty) - $outletstockoverview['issued_qty'];
+                    $input['updated_by'] = Auth::user()->id; 
+                    $outletstockoverview->update($input);
+                }
             }
 
-            $month = date('m', strtotime($request->date));
-            $variant = Variation::find($row->variant_id);
-            $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
-            ->where('outlet_id', $request->from_outlet)
-            ->where('machine_id', $request->toCounterMachine)
-            ->whereMonth('date', $month)
-            ->where('item_code',$variant->item_code)
-            ->first();
-            if($outletstockoverview){                                       
-                $input = [];
-                $input['issued_qty'] = $outletstockoverview->issued_qty + $row->quantity;
-                $input['balance'] = ($outletstockoverview->opening_qty + $outletstockoverview->receive_qty) - $outletstockoverview['issued_qty'];
-                $input['updated_by'] = Auth::user()->id; 
-                $outletstockoverview->update($input);
-            }
+            
             return redirect()->route('issue.create', ['id' => $outletdistribute->from_outlet])
                 ->with('success','issue updated successfully');
         }

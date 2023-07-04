@@ -61,6 +61,11 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
         return $headings;
     }
     
+    public function collection()
+    {
+        return $this->products;
+        
+    }
 
     public function map($product): array
     {
@@ -112,11 +117,6 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
     }
     
 
-    public function collection()
-    {
-        return $this->products;
-        
-    }
 
     public function setImage($workSheet) {
         $this->collection()->each(function($product,$index) use($workSheet) {

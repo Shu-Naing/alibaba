@@ -32,6 +32,8 @@
                         <th scope="col">Ref:</th>
                         <th scope="col">From Outlet</th>
                         <th scope="col">To Machine</th>
+                        <th scope="col">Counter/Machine</th>
+                        <th scope="col">Type</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -42,6 +44,8 @@
                             <td>{{$distribute->reference_No}}</td>
                             <td>{{$outlets[$distribute->from_outlet]}}</td>
                             <td>{{$machines[$distribute->to_machine]}}</td>
+                            <td>{{$counter_machine[$distribute->counter_machine]}}</td>
+                            <td>{{$types[$distribute->type]}}</td>
                             <td><a href="{{ route('outletdistribute.show',$distribute->id) }}">View</a></td>
                         </tr>
                     @endforeach                    

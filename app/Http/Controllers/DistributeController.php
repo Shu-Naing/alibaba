@@ -92,15 +92,14 @@ class DistributeController extends Controller
         ];
         $outlets = getOutlets();
         $distribute_data = distributes::find($id);
-        $distribute_products = distributes::select('distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','variations.value')
+        $distribute_products_data = distributes::select('distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','variations.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
         ->join('variations','variations.id','=','distribute_products.variant_id')
         ->where('distributes.id',$id)
         ->get();
 
         $distribute['distribute'] = $distribute_data;
-        $distribute['distribute_products'] = $distribute_products;
-        
+        $distribute['distribute_products_data'] = $distribute_products_data;        
 
         return view('distribute.show',compact('distribute','breadcrumbs','outlets'));
     }
@@ -176,8 +175,8 @@ class DistributeController extends Controller
         //     $mainOutlet->update($input);  
 
         // }
-        return redirect()->route('distribute.create')
-            ->with('success','Distribute updated successfully');
+        return redirect()->route('distribute.index')
+            ->with('success','Distribute process successfully');
     }
 
     /**

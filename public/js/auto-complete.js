@@ -270,7 +270,7 @@ var product = [];
 
 if (document.getElementById("searchInput")) {
   var fromOutletId = $("#searchInput").data("id");
-  console.log(fromOutletId);
+  // console.log(fromOutletId);
   $.get(
     "/get-product-lists",
     { fromOutletId: fromOutletId },

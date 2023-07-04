@@ -25,7 +25,7 @@ class UnitsController extends Controller
         $this->validate($request, [
             'name' => 'required|unique:units',
             'short_name' => 'required',
-            'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
+            // 'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
         ]);
 
         $inputs = $request->all();
@@ -38,7 +38,6 @@ class UnitsController extends Controller
     public function edit($id)
     {
         $units = units::find($id);
-
         return view('units.edit',compact('units'));
     }
     public function update(Request $request,$id)
@@ -46,7 +45,7 @@ class UnitsController extends Controller
         $request->validate([
             'name' => 'required',
             'short_name' => 'required',
-            'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
+            // 'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
         ]);
 
         $input = $request->all();    

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\OutletStockHistory;
+use App\Exports\OutletstockhistoryExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Auth;
 
 class OutletStockHistoryController extends Controller
@@ -22,6 +24,18 @@ class OutletStockHistoryController extends Controller
                     ->get();
         // return $histories;
         return view('outletstockhistory.index',compact('histories','breadcrumbs'));
+    }
+
+    public function exportOutletstockhistory() {
+        $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.short_name as unit_name')
+                    ->leftjoin('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
+                    ->leftjoin('products', 'products.id', '=', 'variations.product_id')
+                    ->leftjoin('units', 'units.id', '=', 'products.unit_id')
+                    ->leftjoin('machines', 'machines.id', '=', 'outlet_stock_histories.machine_id')
+                    ->leftjoin('outlets', 'outlets.id', '=', 'outlet_stock_histories.outlet_id')
+                    ->get();
+        // return $histories;
+        return Excel::download(new OutletstockhistoryExport($histories), 'outletstockhistory.xlsx');
     }
 
     public function checkoutletstockhistory(Request $request) { 

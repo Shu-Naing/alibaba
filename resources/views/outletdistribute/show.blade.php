@@ -25,10 +25,11 @@
             </div>
         @endif     
             <div class="row p-4">
-                <div class="col col-sm-3 col-lg-3 fw-bold">Date: <span class="text-danger">{{$outletdistribute_arr['outletdistribute']->date}}</span></div>
-                <div class="col col-sm-3 col-lg-3 fw-bold">Reference No: <span class="text-danger">{{$outletdistribute_arr['outletdistribute']->reference_No}}</span></div>
-                <div class="col col-sm-3 col-lg-3 fw-bold">From Outlet: <span class="text-danger">{{$outlets[$outletdistribute_arr['outletdistribute']->from_outlet]}}</span></div>
-                <div class="col col-sm-3 col-lg-3 fw-bold">To Outlet: <span class="text-danger">{{$machines[$outletdistribute_arr['outletdistribute']->to_machine]}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">Date: <br /><span class="text-danger">{{$outletdistribute_arr['outletdistribute']->date}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">Reference No: <br /><span class="text-danger">{{$outletdistribute_arr['outletdistribute']->reference_No}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">From Outlet: <br /><span class="text-danger">{{$outlets[$outletdistribute_arr['outletdistribute']->from_outlet]}}</span></div>
+                <div class="col col-sm-3 col-lg-3 fw-bold">To Machine: <br /><span class="text-danger">{{$machines[$outletdistribute_arr['outletdistribute']->to_machine]}}</span></div>
+                <div class="col col-sm-3 col-lg-3 fw-bold">Counter/Machine: <br /><span class="text-danger">{{$counter_machine[$outletdistribute_arr['outletdistribute']->counter_machine]}}</span></div>
             </div>
             <table class="table table-bordered text-center shadow rounded">
                 <thead>

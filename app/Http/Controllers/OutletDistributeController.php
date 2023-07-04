@@ -26,12 +26,12 @@ class OutletDistributeController extends Controller
     public function index()
     {
         $breadcrumbs = [
-              ['name' => 'Report', 'url' => route('outletdistribute.index')],
-              ['name' => 'List Outlet Distributes']
+              ['name' => 'Outelts', 'url' => route('outletdistribute.index')],
+              ['name' => 'List Recieve Distributes Product']
         ];
         $outlets = getOutlets();
         $machines = getMachines();
-        $outletDistributes = OutletDistribute::all();
+        $outletDistributes = OutletDistribute::all()->where('type', RECIEVE_TYPE);
         return view('outletdistribute.index', compact('outletDistributes', 'breadcrumbs', 'outlets', 'machines'));
     }
 
@@ -104,8 +104,8 @@ class OutletDistributeController extends Controller
     public function show($id)
     {
         $breadcrumbs = [
-              ['name' => 'Report', 'url' => route('outletdistribute.index')],
-              ['name' => 'Detail Outlet Distribute Products']
+              ['name' => 'Outlets', 'url' => route('outletdistribute.index')],
+              ['name' => 'Detail Recieve Products']
         ];
 
         $outletdistribute_arr = [];
