@@ -18,6 +18,7 @@ use Illuminate\Validation\Rule;
 use App\Models\DistributeProducts;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsSampleExport;
+use App\Models\PurchasedPriceHistory;
 use App\Models\OutletDistributeProduct;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -116,6 +117,19 @@ class ProductsController extends Controller
             $outlet_items->quantity = $variation_data['received_qty'];
             $outlet_items->created_by = Auth::user()->id;
             $outlet_items->save();
+
+
+            $purchased_price_history = new PurchasedPriceHistory;
+            $purchased_price_history->variation_id = $variation->id;
+            $purchased_price_history->purchased_price = $variation->purchased_price;
+            $purchased_price_history->points = $variation->points;
+            $purchased_price_history->tickets = $variation->tickets;
+            $purchased_price_history->kyat = $variation->kyat;
+            $purchased_price_history->quantity = $outlet_items->quantity;
+            $purchased_price_history->created_by = Auth::user()->id;
+            $purchased_price_history->save();
+
+
         }
 
        
@@ -229,15 +243,31 @@ class ProductsController extends Controller
         
             $variation_data = Variation::updateOrCreate(['item_code' => $variation['item_code']], $variationData);
 
+            
+
 
             $input = [];
             $input['outlet_id'] = $outlet_id;
-            $input['quantity'] = $variation['received_qty'];
+            $input['quantity'] = $variation['received_qty'] + $variation['new_qty'];
             $input['variation_id'] = $variation_data->id;
             $input['created_by'] = Auth::user()->id;
             $input['updated_by'] = Auth::user()->id;
             
             OutletItem::updateOrCreate(['outlet_id'=>$outlet_id, 'variation_id'=>$variation_data->id], $input);
+
+
+            $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
+                ['variation_id' => $variation_data->id,
+                'purchased_price' => $variation['purchased_price'],
+                    'points' => $variation['points'],
+                    'tickets' => $variation['tickets'],
+                    'kyat' => $variation['kyat'],
+                    'quantity'=> $variation['received_qty'],
+                ],
+                ['quantity'=> $variation['new_qty'],'created_by' =>  Auth::user()->id],
+            );
+
+          
         }
        
 
