@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('short_name')->nullable();
             $table->integer('status')->default(1);
-            $table->decimal('allow_decimal', 11, 2)->nullable();
+            $table->boolean('allow_decimal')->default(0);
             $table->timestamps();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();

@@ -279,6 +279,8 @@ class ProductsController extends Controller
             $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
             $distributeProducts->update($input);
 
+            return $input;
+
             if($request->type == 'increase') {
                 $distributes = distributes::where('id', $distributeId)->first();
                 $toOutletId = $distributes->to_outlet;
@@ -286,12 +288,12 @@ class ProductsController extends Controller
                 
                 $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
                 $input = [];
-                $input['quantity'] = $outletitem->quantity + 1;
+                $input['quantity'] = $tooutletitem->quantity + 1;
                 $input['updated_by'] = Auth::user()->id;
                 $tooutletitem->update($input);
 
                 $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
-                $qty = $outletitem->quantity - 1;
+                $qty = $fromoutletitem->quantity - 1;
                 $input = [];
                 $input['quantity'] = $qty;
                 $fromoutletitem->update($input);
@@ -304,12 +306,12 @@ class ProductsController extends Controller
                 
                 $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
                 $input = [];
-                $input['quantity'] = $outletitem->quantity - 1;
+                $input['quantity'] = $tooutletitem->quantity - 1;
                 $input['updated_by'] = Auth::user()->id;
                 $tooutletitem->update($input);
 
                 $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
-                $qty = $outletitem->quantity + 1;
+                $qty = $fromoutletitem->quantity + 1;
                 $input = [];
                 $input['quantity'] = $qty;
                 $fromoutletitem->update($input);

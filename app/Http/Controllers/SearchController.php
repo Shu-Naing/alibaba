@@ -8,6 +8,7 @@ use App\Models\Variation;
 use App\Models\DistributeProducts;
 use App\Models\OutletDistributeProduct;
 use App\Models\OutletItem;
+use App\Models\MachineVariant;
 use App\Models\distributes;
 use Auth;
 
