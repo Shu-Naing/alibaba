@@ -148,6 +148,8 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
   } else {
     input.value = variant_qty;
   }
+
+  var type = $("#increase-type").data("id");
   // input.value = isNaN(value) ? 0 : value + 1;
   // console.log("distribute product id", disPdID);
 
@@ -158,11 +160,16 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
     url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
+      type: type,
       qty: input.value,
     },
+    beforeSend: function () {},
     success: function (response) {
       location.reload();
-      // console.log("response is id", response);
+    },
+    complete: function () {
+      // Hide the loading indicator
+      Notiflix.Loading.Remove();
     },
   });
 }
@@ -173,15 +180,18 @@ function decreaseValue(button, disPdID, variantID) {
   input.value = isNaN(value) || value < 1 ? 0 : value - 1;
   // input.value = isNaN(value) || value < 1 ? 0 : value - 1;
   // console.log("decre", disPdID);
-
+  var type = $("#decrease-type").data("id");
+  // console.log(type);
   $.ajax({
     url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
     data: {
+      type: type,
       qty: input.value,
     },
     success: function (response) {
       location.reload();
+      // console.log();
     },
   });
 
@@ -437,3 +447,83 @@ $(".outlet-number-box").on("focusout", function () {
     });
   }
 });
+
+// outlet stock histories start
+$(".outletstockhistory-check").on("change", function () {
+  var isChecked = $(this).is(":checked");
+  var outletstockhistory_id = $(this).val();
+  // console.log("Checkbox value:", isChecked);
+  // console.log("Checkbox value:", outletstockhistory_id);
+
+  $.ajax({
+    url: "/checkoutletstockhistory/",
+    type: "GET",
+    data: {
+      check: isChecked,
+      id: outletstockhistory_id,
+    },
+    success: function (response) {
+      console.log(response);
+      // location.reload();
+    },
+  });
+
+  // Perform additional actions based on the checkbox value
+  // if (isChecked) {
+  // Checkbox is checked
+  // Perform some action
+  // } else {
+  // Checkbox is unchecked
+  // Perform some other action
+  //   }
+});
+
+// outlet stock histories end
+
+// outlet stock overview reprot for check column start
+$(".outletstockoverview-check").on("change", function () {
+  var isChecked = $(this).is(":checked");
+  var outletstockoverview_id = $(this).val();
+  // console.log("Checkbox value:", isChecked);
+  // console.log("Checkbox value:", outletstockoverview_id);
+
+  $.ajax({
+    url: "/checkoutletstockoverview/",
+    type: "GET",
+    data: {
+      check: isChecked,
+      id: outletstockoverview_id,
+    },
+    success: function (response) {
+      console.log(response);
+      // location.reload();
+    },
+  });
+});
+// outlet stock overview reprot for check column end
+
+// outlet stock overview reprot for physical column start
+$(".physical-qty").on("focusout", function () {
+  var physical_qty = $(this).val();
+  var balance_qty = $(".balance-qty").text();
+  var outletstockoverview_id = $(this).data("id");
+  // console.log("Checkbox value:", outletstockoverview_id);
+  // console.log("Checkbox value:", physical_qty);
+  // console.log("Checkbox value:", balance_qty);
+
+  $.ajax({
+    url: "/updatephysicalqty/",
+    type: "GET",
+    data: {
+      id: outletstockoverview_id,
+      physical_qty: physical_qty,
+      balance_qty: balance_qty,
+    },
+    success: function (response) {
+      // console.log(response);
+      location.reload();
+    },
+  });
+});
+
+// outlet stock overview reprot for physical column end

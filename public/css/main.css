@@ -24,6 +24,11 @@ img {
   color: var(--blue);
 }
 
+.no-spin-buttons::-webkit-inner-spin-button,
+.no-spin-buttons::-webkit-outer-spin-button {
+  display: none;
+}
+
 /* sidebar menu start */
 .nav-small-cap {
   padding: 0;
@@ -118,7 +123,7 @@ li.nav-item.nav-small-cap a span {
   width: 10px;
 } */
 .scroll-sidebar::-webkit-scrollbar {
-  width: 10px;
+  width: 0px;
 }
 
 .scroll-sidebar:hover::-webkit-scrollbar {

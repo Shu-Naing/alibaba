@@ -18,6 +18,7 @@ class OutletStockHistory extends Model
         'branch',
         'date',
         'remark',
+        'is_check',
         'created_by',
         'updated_by'
     ];

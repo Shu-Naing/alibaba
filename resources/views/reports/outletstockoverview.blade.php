@@ -33,6 +33,9 @@
                     <th>Received Qty</th>
                     <th>Issued Qty</th>
                     <th>Balance Qty</th>
+                    <th>Check</th>
+                    <th>Physical Qty</th>
+                    <th>Difference Qty</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,7 +50,10 @@
                         <td>{{ $outletstockoverview->opening_qty }}</td>
                         <td>{{ $outletstockoverview->receive_qty }}</td>
                         <td>{{ $outletstockoverview->issued_qty }}</td>
-                        <td>{{ $outletstockoverview->opening_qty + $outletstockoverview->receive_qty - $outletstockoverview->issued_qty }}</td>
+                        <td class="balance-qty">{{ $outletstockoverview->opening_qty + $outletstockoverview->receive_qty - $outletstockoverview->issued_qty }}</td>
+                        <td><input class="form-check-input mt-0 outletstockoverview-check" type="checkbox" value="{{ $outletstockoverview->id }}" {{ ($outletstockoverview->is_check == 1) ? 'checked' : '' }} /></td>
+                        <td><input class="form-control mt-0 physical-num no-spin-buttons physical-qty" type="number" min='0' value="{{ $outletstockoverview->physical_qty }}" data-id="{{ $outletstockoverview->id }}" /></td>
+                        <td>{{ $outletstockoverview->difference_qty }}</td>
                     </tr>
                 @endforeach
             </tbody>
