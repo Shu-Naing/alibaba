@@ -11,6 +11,7 @@ use App\Models\Categories;
 use App\Models\OutletItem;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\PurchasedPriceHistory;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
@@ -81,12 +82,23 @@ class ProductsImport implements ToModel,WithHeadingRow
 
         $outlet_id = Auth::user()->outlet->id;
 
-        $outlet_item = OutletItem::create([
-            'outlet_id' => $outlet_id,
-            'variation_id' => $variation->id,
+        $outlet_item = OutletItem::firstOrCreate([
+            'outlet_id' => $outlet_id,'variation_id' => $variation->id,
             'quantity' => $row['received_qty'],
             'created_by' => $created_by,
         ]);
+
+        $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
+            ['variation_id' => $variation->id,
+            'purchased_price' => $variation->purchased_price,
+                'points' => $variation->points,
+                'tickets' => $variation->tickets,
+                'kyat' => $variation->kyat,
+                'quantity'=> $outlet_item->quantity,
+                'created_by' => $created_by,
+            ]
+        );
+
 
         return $product;
        
