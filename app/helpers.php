@@ -1,5 +1,7 @@
 <?php 
 
+use App\Models\Variation;
+
     use App\Models\Outlets;
     use App\Models\Machines;
     use App\Models\distributes;
@@ -184,6 +186,13 @@
         }
     }
 
+    if(!function_exists('get_product_value')){
+        function get_product_value($variation_id,$payment_type){
+           $product_value = Variation::where('id',$variation_id)->value($payment_type);
+            return $product_value;
+        }
+    }
+
     function refGenerateCode($data) {
         $date = date("dmY"); 
         $counter = 1;
@@ -198,6 +207,7 @@
         return $date.$counter;
         // return view('distribute.create', compact('data'));
         // return redirect()->route('distribute.create');
+    
     }
 
 

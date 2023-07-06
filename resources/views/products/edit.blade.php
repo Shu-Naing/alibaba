@@ -154,6 +154,7 @@
                     <th>Kyat</th>
                     <th>Alert Qty</th>
                     <th>Received Qty</th>
+                    <th>New Qty</th>
                     <th>Purchased Price</th>
                     <th>
                         <i class="fs-6 bi bi-plus-square-fill" id="add-variation"></i>
@@ -225,6 +226,16 @@
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][received_qty]', outlet_stock($variation->id), [
+                                'class' => 'form-control',
+                                'disabled',
+                            ]) !!}
+                            {!! Form::hidden('variations[' . $index . '][received_qty]', outlet_stock($variation->id), [
+                                'class' => 'form-control',
+                            ]) !!}
+                            
+                        </td>
+                        <td>
+                            {!! Form::text('variations[' . $index . '][new_qty]', 0, [
                                 'class' => 'form-control',
                             ]) !!}
                         </td>
@@ -334,9 +345,20 @@
                             ]) !!}
                         </td>
                         <td>
-                            {!! Form::text('variations[${variationCount}][received_qty]', null, [
+                            {!! Form::text('variations[${variationCount}][received_qty]', 0, [
+                                'class' => 'form-control',
+                                'disabled',
+                            ]) !!}
+                            {!! Form::hidden('variations[${variationCount}][received_qty]', 0, [
                                 'class' => 'form-control',
                             ]) !!}
+                            
+                        </td>
+                        <td>
+                            {!! Form::text('variations[${variationCount}][new_qty]', 0, [
+                                'class' => 'form-control',
+                            ]) !!}
+                        </td>!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][purchased_price]', null, [

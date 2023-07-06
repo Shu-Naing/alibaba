@@ -23,6 +23,27 @@
         .pos-total td {
             text-align: center;
         }
+
+        .barcode-active{
+            color: red;
+        }
+
+        .barcode-icon i{
+           font-size: 30px;
+        }
+
+        @media print {
+            body .card{
+                height: 100%;
+        width: 100%;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        margin: 0;
+            }
+        }
+
+    
     </style>
 @endsection
 @section('cardtitle')
@@ -39,19 +60,22 @@
             </div>
         </div>
 
-        <div>
+        {{-- <div>
             <input type="text" id="last-barcode" placeholder="Scan barcode">
 
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-lg-7 d-print-none">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card p-3">
-                            <div class="form-outline">
-                                <input type="search" class="form-control" placeholder="Search Product" aria-label="Search"
+                            <div class="d-flex justify-content-between form-outline">
+                                <input type="search" class="form-control w-50" placeholder="Search Product" aria-label="Search"
                                     id="searchInput" name="key" @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif />
+                                    <div class="barcode-icon">
+                                        <i class="bi bi-upc-scan" id="barcode-icon"></i>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -84,11 +108,17 @@
                                 @if ($outlet_item->quantity == 0)
                                     <button class="btn btn-red btn-sm mt-2" disabled>Out Of Stock</button>
                                 @else
-                                    <button class="btn btn-red btn-sm mt-2 add-pos-btn"
+                                    {{-- <button class="btn btn-red btn-sm mt-2 add-pos-btn"
                                         data-variation-id="{{ $outlet_item->variation->id }}"
                                         @if (request()->get('filter') === 'point') data-variation-value="{{ $outlet_item->variation->points }}" @endif
                                         @if (request()->get('filter') === 'ticket') data-variation-value="{{ $outlet_item->variation->tickets }}" @endif
                                         @if (request()->get('filter') === 'kyat') data-variation-value="{{ $outlet_item->variation->kyat }}" @endif
+                                        @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif>Added</button> --}}
+                                        <button class="btn btn-red btn-sm mt-2 add-pos-btn"
+                                        data-variation-id="{{ $outlet_item->variation->id }}"
+                                        @if (request()->get('filter') === 'points') data-payment-type="points" @endif
+                                        @if (request()->get('filter') === 'tickets') data-payment-type="tickets" @endif
+                                        @if (request()->get('filter') === 'kyat') data-payment-type="kyat" @endif
                                         @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif>Added</button>
                                 @endif
                             </div>
@@ -103,10 +133,10 @@
                         <select id="productFilter" class="form-select w-50" aria-label="Default select example"
                             @if (count($temps) > 0) disabled @endif>
                             <option value="{{ URL::current() }}" selected>Choose Payment</option>
-                            <option value="{{ URL::current() }}?filter=point"
-                                @if (request()->get('filter') === 'point') selected @endif>Point</option>
-                            <option value="{{ URL::current() }}?filter=ticket"
-                                @if (request()->get('filter') === 'ticket') selected @endif>Ticket</option>
+                            <option value="{{ URL::current() }}?filter=points"
+                                @if (request()->get('filter') === 'points') selected @endif>Point</option>
+                            <option value="{{ URL::current() }}?filter=tickets"
+                                @if (request()->get('filter') === 'tickets') selected @endif>Ticket</option>
                             <option value="{{ URL::current() }}?filter=kyat"
                                 @if (request()->get('filter') === 'kyat') selected @endif>Kyat</option>
                         </select>
@@ -128,9 +158,9 @@
                                             <small class="fw-bold d-block">[{{ $temp->variation->item_code }}]</small>
                                             @if (request()->get('filter') === 'kyat')
                                                 <small class="fw-bold">Kyat : {{ $temp->variation->kyat }}</small>
-                                            @elseif(request()->get('filter') === 'point')
+                                            @elseif(request()->get('filter') === 'points')
                                                 <small class="fw-bold">Point : {{ $temp->variation->points }}</small>
-                                            @elseif(request()->get('filter') === 'ticket')
+                                            @elseif(request()->get('filter') === 'tickets')
                                                 <small class="fw-bold">Ticket : {{ $temp->variation->tickets }}</small>
                                             @endif
                                             {{-- <small class="fw-bold">Point : {{ $temp->variation->points }},Ticket :
@@ -154,9 +184,9 @@
                             {{-- Calculate Pos Total Section --}}
                             @php
                                 if (request()->has('filter')) {
-                                    if (request()->get('filter') === 'point') {
+                                    if (request()->get('filter') === 'points') {
                                         $item_price = $temp->variation->points * $temp->quantity;
-                                    } elseif (request()->get('filter') === 'ticket') {
+                                    } elseif (request()->get('filter') === 'tickets') {
                                         $item_price = $temp->variation->tickets * $temp->quantity;
                                     } elseif (request()->get('filter') === 'kyat') {
                                         $item_price = $temp->variation->kyat * $temp->quantity;
@@ -242,48 +272,13 @@
 
 
 
-
+    <script src="{{ asset('js/pos.js') }}"></script>
 
 @section('scripts')
     <script>
         $(document).ready(function() {
 
-            // Add Item
-            $('.add-pos-btn').click(function(e) {
-                e.preventDefault();
-
-                var variation_id = $(this).data('variation-id');
-                var variation_value = $(this).data('variation-value');
-
-                console.log(variation_id);
-
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('positem.add') }}',
-                    data: {
-                        variation_value: variation_value,
-                        variation_id: variation_id,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        // $("#product-list").load("partial.html #specificDiv");
-                        location.href = location.href;
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        alert('An error occurred while adding the product to cart');
-                        console.log(xhr.responseText);
-                    }
-                });
-
-
-            });
+           
 
 
             // Update Item
@@ -369,6 +364,7 @@
                 success: function(response) {
                     location.href = location.href;
                     console.log(response);
+                   
                 },
                 error: function(xhr, status, error) {
                     alert('An error occurred while adding the product to cart');
@@ -389,50 +385,9 @@
         });
 
 
-        $('#searchInput').keypress(function(event) {
-            // console.log(event.keyCode);
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                var searchValue = $('#searchInput').val();
-                var currentUrl = window.location.href;
-                console.log(currentUrl);
-                var newUrl;
+        
 
-                // Check if the 'key' parameter already exists in the URL
-                if (currentUrl.indexOf('key=') > -1) {
-                    // If 'key' parameter exists, replace its value
-                    newUrl = currentUrl.replace(/key=.*/, 'key=' + searchValue);
-                } else {
-                    // If 'key' parameter doesn't exist, append it to the URL
-                    newUrl = currentUrl + '&key=' + searchValue;
-                }
-
-                window.location.href = newUrl;
-            }
-        });
-
-        var barcode = '';
-        var interval;
-
-        $(document).on('keydown', function(evt) {
-            if (interval)
-                clearInterval(interval);
-            if (evt.code == 'Enter') {
-                if (barcode)
-                    handleBarcode(barcode);
-                barcode = '';
-                return;
-            }
-            if (evt.code != 'Shift')
-                barcode += evt.key;
-            interval = setInterval(function() {
-                barcode = '';
-            }, 20);
-        });
-
-        function handleBarcode(scanned_barcode) {
-            $('#last-barcode').text(scanned_barcode);
-        }
+       
     </script>
 @endsection
 @endsection

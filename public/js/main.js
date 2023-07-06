@@ -155,11 +155,6 @@ function increaseValue(button, disPdID, variantID, variant_qty) {
     input.value = variant_qty;
   }
   var type = $("#increase-type").data("id");
-  // console.log("distribute product id", disPdID);
-
-  // console.log("variant_id", variantID);
-  // console.log("qty", input.value);
-
   $.ajax({
     url: "/update-product-qty/" + disPdID + "/" + variantID,
     type: "GET",
