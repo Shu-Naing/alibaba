@@ -45,7 +45,7 @@
             </div>
             <div class="col-md-4">
                 {!! Form::label('reference_No', 'Reference No.', ['class' => 'form-label']) !!}
-                {!! Form::text('reference_No', null, ['class' => 'form-control', 'id' => 'reference']) !!}
+                {!! Form::text('reference_No', $generatedRef, ['class' => 'form-control', 'id' => 'reference', 'readonly' => 'readonly']) !!}
             </div>
             <div class="col-md-4">
                 {!! Form::label('status', 'Status', ['class' => 'form-label']) !!}

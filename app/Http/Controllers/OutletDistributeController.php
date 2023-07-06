@@ -47,7 +47,10 @@ class OutletDistributeController extends Controller
         $counter = $counter_machines['counter'];
         $machines = $counter_machines['machine'];
 
-        return view('outletdistribute.create', compact('outlets', 'id','counter', 'machines'));
+        $latestRef = OutletDistribute::orderBy('created_at', 'desc')->value('reference_No');
+        $generatedRef = refGenerateCode($latestRef);
+
+        return view('outletdistribute.create', compact('outlets', 'id','counter', 'machines', 'generatedRef'));
     }
 
     /**

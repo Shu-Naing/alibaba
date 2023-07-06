@@ -41,7 +41,11 @@ class IssueController extends Controller
     {
         $outlets = getOutlets();
         $machines = getIssuedMachinesWithOutletID($id);
-        return view('issue.create', compact('outlets', 'id', 'machines'));
+
+        $latestRef = OutletDistribute::orderBy('created_at', 'desc')->value('reference_No');
+        $generatedRef = refGenerateCode($latestRef);
+
+        return view('issue.create', compact('outlets', 'id', 'machines', 'generatedRef'));
     }
 
     /**

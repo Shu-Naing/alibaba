@@ -6,6 +6,11 @@ $("#table_id").DataTable({
   lengthChange: false, // Disable "Show entries"
 });
 
+$("#table_lsdd").DataTable({
+  lengthChange: false, // Disable "Show entries"
+  searching: false,
+});
+
 $(document).ready(function () {
   let submenu = document.querySelectorAll(".submenuParent");
   submenu.forEach(function (element) {

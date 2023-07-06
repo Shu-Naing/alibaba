@@ -17,6 +17,11 @@
     define('RECIEVE_TYPE', 'R');
     define('ISSUE_TYPE', 'I');
 
+    define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
+    define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
+    define('PD_ITEMCODE_FILTER', 'PD_ITEMCODE_FILTER');
+    
+
     function getOutlets(){
         
         $Outlets = Outlets::get();
@@ -177,6 +182,22 @@
            $outlet_name = Outlets::where('id',$outlet_id)->value('name');
             return $outlet_name;
         }
+    }
+
+    function refGenerateCode($data) {
+        $date = date("dmY"); 
+        $counter = 1;
+        if($data) {
+            $lastThreeChars = substr($data, -3);
+            $counter = intval($lastThreeChars);
+            $counter++;
+        }
+
+        $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
+
+        return $date.$counter;
+        // return view('distribute.create', compact('data'));
+        // return redirect()->route('distribute.create');
     }
 
 
