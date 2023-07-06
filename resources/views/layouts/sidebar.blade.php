@@ -138,6 +138,13 @@
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
+                            <a href="{{ route('listdistributedetail') }}"
+                            class="nav-link sidebar-link {{ Route::is('listdistributedetail') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">List Distribute Detail</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
                             <a href="{{ route('outletdistribute.index')}}"
                             class="nav-link sidebar-link {{ Route::is('outletdistribute.index') || Route::is('outletdistribute.show') ? 'active' : '' }}">
                                 <hr>

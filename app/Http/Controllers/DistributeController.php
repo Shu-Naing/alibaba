@@ -43,7 +43,13 @@ class DistributeController extends Controller
         ];
         $outlets = getOutlets();
         // return $outlets;
-        return view('distribute.create', compact('breadcrumbs', 'outlets'));
+        $latestRef = distributes::orderBy('created_at', 'desc')->value('reference_No');
+        
+        $generatedRef = refGenerateCode($latestRef);
+
+        // return $generatedRef;
+
+        return view('distribute.create', compact('breadcrumbs', 'outlets','generatedRef'));
     }
 
     /**
@@ -200,5 +206,40 @@ class DistributeController extends Controller
         // return $distribute;
         
         return view('distribute.preview',compact('distribute'));
+    }
+
+    public function listdistributedetail() {
+
+        $breadcrumbs = [
+            ['name' => 'Outlets', 'url' => route('distribute.index')],
+            ['name' => 'Distribute Detail']
+        ];
+        $outlets = getOutlets();
+
+        $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
+        $to_outlet = session()->get(PD_TOOUTLET_FILTER);
+        $item_code = session()->get(PD_ITEMCODE_FILTER);
+
+        $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','variations.value')
+        ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
+        ->join('variations','variations.id','=','distribute_products.variant_id');
+
+        if($from_outlet){
+            $distributes = $distributes->where('from_outlet', $from_outlet);        
+        }
+
+        if($to_outlet){
+            $distributes = $distributes->where('to_outlet', $to_outlet);
+        }
+
+        if($item_code){
+            $distributes = $distributes->where('item_code', $item_code);
+        }
+     
+        $distributes = $distributes->get();
+
+        // return $item_code."hellos";
+
+        return view('distribute.listdistributedetail',compact('breadcrumbs','distributes','outlets'));
     }
 }

@@ -51,15 +51,7 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-md-4">
-                {!! Form::label('country', 'Country', ['class' => 'form-label']) !!}
-                {!! Form::select('country', $countries, null, [
-                    'placeholder' => 'Choose',
-                    'class' => 'form-control',
-                    'id' => 'contry',
-                ]) !!}
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 {!! Form::label('city', 'City', ['class' => 'form-label']) !!}
                 {!! Form::select('city', $cities, null, [
                     'placeholder' => 'Choose',
@@ -68,7 +60,7 @@
                     'aria-label' => 'Default select example',
                 ]) !!}
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 {!! Form::label('state', 'State', ['class' => 'form-label']) !!}
                 {!! Form::select('state', $states, null, [
                     'placeholder' => 'Choose',

@@ -366,5 +366,23 @@ class SearchController extends Controller
         return "success data";
     }
 
+    public function search_list_distribute_detail(Request $request) {
+       
+        session()->start();
+        session()->put(PD_FROMOUTLET_FILTER, $request->fromOutlet);
+        session()->put(PD_TOOUTLET_FILTER, $request->toOutlet);
+        session()->put(PD_ITEMCODE_FILTER, $request->itemCode);
+        
+        return redirect()->route('listdistributedetail');
+    }
+
+    public function search_reset() {
+        session()->forget([
+            PD_FROMOUTLET_FILTER,
+            PD_TOOUTLET_FILTER,
+            PD_ITEMCODE_FILTER,
+        ]);
+        return redirect()->route('listdistributedetail');
+    }
     
 }

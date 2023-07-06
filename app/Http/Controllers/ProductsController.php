@@ -309,7 +309,7 @@ class ProductsController extends Controller
             $input['subtotal'] = $request->qty * $distributeProducts->purchased_price;
             $distributeProducts->update($input);
 
-            return $input;
+            // return $input;
 
             if($request->type == 'increase') {
                 $distributes = distributes::where('id', $distributeId)->first();
