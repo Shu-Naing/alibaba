@@ -4,6 +4,15 @@
 
 $("#table_id").DataTable({
   lengthChange: false, // Disable "Show entries"
+  // dom: '<"d-flex"<"form-select w-25"l><"ml-auto"f>>t',
+  buttons: [
+    {
+      text: "My Button",
+      action: function (e, dt, node, config) {
+        alert("Button activated");
+      },
+    },
+  ],
 });
 
 $("#table_lsdd").DataTable({

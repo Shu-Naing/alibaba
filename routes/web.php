@@ -151,6 +151,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('report/outletdistributeproduct/{id}',[OutletDistributeController::class,'show'])->name('outletdistribute.show');
     Route::get('products-export',[ReportController::class, 'exportProduct'])->name('product.export');
     Route::get('outletstockoverview-export',[ReportController::class, 'exportOutletstockoverview'])->name('outletstockoverview.export');
+    Route::get('outletstockoverview-sample-export',[OutletStockOverviewController::class, 'exportSampleOutletstockoverview'])->name('outletstockoverview.sample-export');
+    Route::post('outletstockoverview-import',[OutletStockOverviewController::class, 'importOutletstockoverview'])->name('outletstockoverview.import');
     Route::get('outletstockhistory-export',[OutletStockHistoryController::class, 'exportOutletstockhistory'])->name('outletstockhistory.export');
 
     Route::get('checkoutletstockhistory',[OutletStockHistoryController::class, 'checkoutletstockhistory'])->name('checkoutletstockhistory');
@@ -160,5 +162,10 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('purchased-price-history',[PurchasedPriceHistoryController::class,'index'])->name('purchased-price-history.index');
     Route::get('purchased-price-history-export',[PurchasedPriceHistoryController::class,'export'])->name('purchased-price-history.export');
+
+    Route::get('outlethistory',[OutletController::class,'history'])->name('outlethistory.history');
+
+
+    Route::get('test',[TestController::class,'test'])->name('test');
 });
 
