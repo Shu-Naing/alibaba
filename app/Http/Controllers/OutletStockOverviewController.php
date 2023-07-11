@@ -8,6 +8,9 @@ use App\Models\Machines;
 use App\Models\OutletStockOverview;
 use App\Models\Variation;
 use App\Models\MachineVariant;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\OutletstockoverviewSampleExport;
+use App\Imports\OutletstockoverviewsImport;
 use Auth;
 
 class OutletStockOverviewController extends Controller
@@ -144,6 +147,23 @@ class OutletStockOverviewController extends Controller
         $outletstocksoverview = OutletStockOverview::find($request->id);
         $outletstocksoverview->update($input);
         return "success data";
+    }
+
+    public function exportSampleOutletstockoverview(Request $request) {
+        return Excel::download(new OutletstockoverviewSampleExport(), 'opening_stock_quantity.xlsx');
+    }
+
+    public function importOutletstockoverview(Request $request) {
+        $file = $request->file('file');
+
+        try {
+            Excel::import(new OutletstockoverviewsImport, $file);
+            return redirect()->back()->with('success', 'Products imported successfully.');
+        }catch (Exeption $e) {
+            return redirect()->back()->with('success', $e->getMessage());
+        }
+
+        
     }
 
     

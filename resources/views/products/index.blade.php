@@ -74,7 +74,7 @@
 
                             <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
                                 {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
-                            <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
+                                <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
                                 <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
                             </div>
                         </div>

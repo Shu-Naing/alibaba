@@ -18,6 +18,8 @@ use App\Models\Variation;
     define('IS_STORE', '2');
     define('RECIEVE_TYPE', 'R');
     define('ISSUE_TYPE', 'I');
+    define('MAINOUTLETID', '1');
+    
 
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
@@ -201,13 +203,12 @@ use App\Models\Variation;
             $counter = intval($lastThreeChars);
             $counter++;
         }
-
+    
         $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
 
         return $date.$counter;
         // return view('distribute.create', compact('data'));
-        // return redirect()->route('distribute.create');
-    
+        // return redirect()->route('distribute.create');    
     }
 
 

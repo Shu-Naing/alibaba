@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Outlets;
 use App\Models\Categories;
 use App\Models\Counter;
+use App\Models\DistributeProducts;
 use Illuminate\Support\Facades\DB;
 
 class OutletController extends Controller
@@ -174,6 +175,31 @@ class OutletController extends Controller
             // Failed to save, redirect back to the form view with input and errors
             return redirect()->back()->with('error', 'Failed to update the record.');
         }
+        
+    }
+    
+    public function history(Request $request)
+    {
+        // return "hello".$request->outlet;
+        $outlets = getOutlets();
+        // return view('outlets.history', compact('outlets'));
+        if($request->outlet){
+            $id = $request->outlet;
+        }else{
+            $id = MAINOUTLETID;
+        }
+
+
+        $issued_distribute_porducts = DistributeProducts::join('distributes', 'distributes.id', 'distribute_products.distribute_id')->where('from_outlet', $id)->get();
+        // return $issued_distribute_porducts;
+
+        $recieved_distribute_porducts = DistributeProducts::join('distributes', 'distributes.id', 'distribute_products.distribute_id')->where('to_outlet', $id)->get();
+
+        $data = [];
+        $data['issue'] = $issued_distribute_porducts;
+        $data['recieve'] = $recieved_distribute_porducts;
+        // $di
+        return view('outlets.history', compact('outlets', 'data'));
         
     }
 
