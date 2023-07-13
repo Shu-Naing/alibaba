@@ -31,8 +31,13 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+        
+        $breadcrumbs = [
+              ['name' => 'Roles & Permissions']
+        ];
+
         $roles = Role::orderBy('id','DESC')->paginate(10);
-        return view('roles.index',compact('roles'))
+        return view('roles.index',compact('roles', 'breadcrumbs'))
             ->with('i', ($request->input('page', 1) - 1) * 10);
     }
     
@@ -43,8 +48,14 @@ class RoleController extends Controller
      */
     public function create()
     {
+        
+        $breadcrumbs = [
+              ['name' => 'Roles & Permissions', 'url' => route('roles.index')],
+              ['name' => 'Create']
+        ];
+
         $permission = Permission::get();
-        return view('roles.create',compact('permission'));
+        return view('roles.create',compact('permission', 'breadcrumbs'));
     }
     
     /**
@@ -90,13 +101,18 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        $breadcrumbs = [
+              ['name' => 'Roles & Permissions', 'url' => route('roles.index')],
+              ['name' => 'Edit']
+        ];
+
         $role = Role::find($id);
         $permission = Permission::get();
         $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
             ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
             ->all();
     
-        return view('roles.edit',compact('role','permission','rolePermissions'));
+        return view('roles.edit',compact('role','permission','rolePermissions', 'breadcrumbs'));
     }
     
     /**

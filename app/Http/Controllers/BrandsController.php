@@ -10,14 +10,24 @@ class BrandsController extends Controller
 {
     public function index()
     {
+        
+        $breadcrumbs = [
+              ['name' => 'Brands']
+        ];
+
         $brands = Brands::where('status', 1)->get();
 
-        return view('brands.index', compact('brands'));
+        return view('brands.index', compact('brands', 'breadcrumbs'));
     }
 
     public function create()
     {
-        return view('brands.create');
+            
+        $breadcrumbs = [
+              ['name' => 'Brands', 'url' => route('brands.index')],
+              ['name' => 'create']
+        ];
+        return view('brands.create', compact('breadcrumbs'));
     }
 
     public function store(Request $request){
@@ -33,9 +43,14 @@ class BrandsController extends Controller
     }
     public function edit($id)
     {
+        $breadcrumbs = [
+              ['name' => 'Brands', 'url' => route('brands.index')],
+              ['name' => 'Edit']
+        ];
+
         $brands = Brands::find($id);
 
-        return view('brands.edit',compact('brands'));
+        return view('brands.edit',compact('brands', 'breadcrumbs'));
     }
     public function update(Request $request,$id)
     {

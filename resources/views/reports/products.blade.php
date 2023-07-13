@@ -30,6 +30,7 @@
         <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">Report Product</h4>
             <div>
+                @include('breadcrumbs')
             </div>
         </div>
 

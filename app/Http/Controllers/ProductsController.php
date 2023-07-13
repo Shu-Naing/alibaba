@@ -27,21 +27,29 @@ class ProductsController extends Controller
 {
     public function index()
     {
+        $breadcrumbs = [
+              ['name' => 'Products']
+        ];
+
         // $products = Variation::with('product','product.brand','product.category','product.unit')->get();
         $products = Product::with('brand','category','unit')->get();
 
             // return $products;
     
-        return view('products.index', compact('products'));
+        return view('products.index', compact('products', 'breadcrumbs'));
     }
 
     public function create()
     {
+        $breadcrumbs = [
+              ['name' => 'Products', 'url' => route('products.index')],
+              ['name' => 'create']
+        ];
 
         $brands = Brands::all();
         $categories = Categories::all();
         $units = Units::all();
-        return view('products.create',compact('brands','categories','units'));
+        return view('products.create',compact('brands','categories','units', 'breadcrumbs'));
     }
 
     public function store(Request $request)
@@ -139,6 +147,10 @@ class ProductsController extends Controller
     }
 
     public function edit($product_id){
+        $breadcrumbs = [
+              ['name' => 'products', 'url' => route('products.index')],
+              ['name' => 'Edit']
+        ];
 
         // return $product_id;
         $brands = Brands::all();
@@ -150,7 +162,7 @@ class ProductsController extends Controller
         })->get();
         
         // return $product;
-        return view('products.edit',compact('product','variations','brands','categories','units'));
+        return view('products.edit',compact('product','variations','brands','categories','units','breadcrumbs'));
     }
 
 

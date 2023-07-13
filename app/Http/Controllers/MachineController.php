@@ -16,8 +16,11 @@ class MachineController extends Controller
      */
     public function index()
     {
+        $breadcrumbs = [
+              ['name' => 'Machines']
+        ];
         $machines = Machines::with('outlet')->get();
-        return view('machine.index',compact('machines'));
+        return view('machine.index',compact('machines', 'breadcrumbs'));
     }
 
     /**
@@ -28,8 +31,8 @@ class MachineController extends Controller
     public function create()
     {
         $breadcrumbs = [
-              ['name' => 'Outlets', 'url' => route('outlets.index')],
-              ['name' => 'Create Machine']
+              ['name' => 'Machines', 'url' => route('machine.index')],
+              ['name' => 'Create']
         ];
         $outlets = Outlets::where('id','<>',MAIN_INV_ID)->get();
         // return $outlets;
