@@ -12,15 +12,24 @@ class CategoriesController extends Controller
 {
     public function index()
     {
+        $breadcrumbs = [
+              ['name' => 'Categories']
+        ];
+
         $categories = Categories::where('status', 1)->get();
 
-        return view('categories.index', ['categories' => $categories]);
+        return view('categories.index', ['categories' => $categories, 'breadcrumbs' => $breadcrumbs]);
 
     }
 
     public function create()
     {
-        return view('categories.create');
+        $breadcrumbs = [
+              ['name' => 'Categories', 'url' => route('categories.index')],
+              ['name' => 'Create']
+        ];
+
+        return view('categories.create', compact('breadcrumbs'));
     }
 
     public function store(Request $request)
@@ -42,9 +51,14 @@ class CategoriesController extends Controller
 
     public function edit($id)
     {
+        $breadcrumbs = [
+              ['name' => 'Categories', 'url' => route('categories.index')],
+              ['name' => 'Edit']
+        ];
+
         $cate = Categories::find($id);
 
-        return view('categories.edit',compact('cate'));
+        return view('categories.edit',compact('cate', 'breadcrumbs'));
     }
 
     public function update(Request $request, Categories $category)

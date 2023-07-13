@@ -18,7 +18,7 @@ use App\Models\Variation;
     define('IS_STORE', '2');
     define('RECIEVE_TYPE', 'R');
     define('ISSUE_TYPE', 'I');
-    define('MAINOUTLETID', '1');
+    define('MAINOUTLETID', 1);
     
 
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');

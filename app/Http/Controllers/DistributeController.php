@@ -21,8 +21,7 @@ class DistributeController extends Controller
     public function index()
     {
         $breadcrumbs = [
-                ['name' => 'Reports', 'url' => route('distribute.index')],
-                ['name' => 'List Distribute Product']
+                ['name' => 'Distribute']
         ];
         $outlets = getOutlets();
 
@@ -38,8 +37,8 @@ class DistributeController extends Controller
     public function create()
     {
         $breadcrumbs = [
-              ['name' => 'Outlets', 'url' => route('outlets.index')],
-              ['name' => 'Distribute Products']
+              ['name' => 'Distribute', 'url' => route('distribute.index')],
+              ['name' => 'Create']
         ];
         $outlets = getOutlets();
         // return $outlets;
@@ -118,6 +117,11 @@ class DistributeController extends Controller
      */
     public function edit($id,$from_outlet)
     {
+        $breadcrumbs = [
+              ['name' => 'Distribute Products', 'url' => route('distribute.index')],
+              ['name' => 'Create']
+        ];
+
         $outlets = getOutlets();
         $distribute = distributes::findorFail($id);
         $distribute_products = DistributeProducts::select("distribute_products.*", "products.product_name", "variations.item_code")->join("variations", "variations.id", "=", "distribute_products.variant_id")
@@ -128,7 +132,7 @@ class DistributeController extends Controller
         foreach ($outletitems as $outletitem) {
             $variant_qty[$outletitem->variation_id] = $outletitem->quantity;
         }
-        return view('distribute.edit', compact('distribute','outlets', 'distribute_products', 'variant_qty'));
+        return view('distribute.edit', compact('distribute','outlets', 'distribute_products', 'variant_qty', 'breadcrumbs'));
     }
 
     /**

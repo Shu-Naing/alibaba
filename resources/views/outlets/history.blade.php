@@ -8,8 +8,10 @@
 @section('cardbody')
     <div class="container-fluid main-content mb-5">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">Outlet Edit</h4>
-            <div></div>
+            <h4 class="fw-bolder mb-3">Outlet History</h4>
+            <div>
+                @include('breadcrumbs')
+            </div>
         </div>
         @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -42,35 +44,53 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Outlet</th>
                     <th>Date</th>
-                    <th>From Outlet</th>
-                    <th>To Outlet</th>
-                    <th>Issue/Recieve</th>
+                    <th>Item Code</th>
                     <th>Quantity</th>
+                    <th>Issue/Recieve</th>
+                    <th>Branch</th>
+                    <th>Remark</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($data['issue'] as $fromoutelet)
                     <tr>
                         <td>{{++$i}}</td>
-                        <td>{{$fromoutelet->date}}</td>
                         <td>{{$outlets[$fromoutelet->from_outlet]}}</td>
-                        <td>{{$outlets[$fromoutelet->to_outlet]}}</td>
-                        <td>Issue</td>
+                        <td>{{$fromoutelet->date}}</td>
+                        <td>{{$fromoutelet->item_code}}</td>
                         <td>{{$fromoutelet->quantity}}</td>
+                        <td>Issue</td>
+                        <td>{{$outlets[$fromoutelet->to_outlet]}}</td>
+                        <td>{{$fromoutelet->remark}}</td>
                     </tr>
                 @endforeach
                 @foreach ($data['recieve'] as $tooutelet)
                     <tr>
                         <td>{{++$i}}</td>
-                        <td>{{$tooutelet->date}}</td>
-                        <td>{{$outlets[$tooutelet->from_outlet]}}</td>
                         <td>{{$outlets[$tooutelet->to_outlet]}}</td>
-                        <td>Recieve</td>
+                        <td>{{$tooutelet->date}}</td>
+                        <td>{{$tooutelet->item_code}}</td>
                         <td>{{$tooutelet->quantity}}</td>
+                        <td>Recieve</td>
+                        <td>{{$outlets[$tooutelet->from_outlet]}}</td>
+                        <td>{{$tooutelet->remark}}</td>
+                    </tr>
+                @endforeach
+                @foreach ($data['outletrecieve'] as $recieve)
+                    <tr>
+                        <td>{{++$i}}</td>
+                        <td>{{$outlets[$recieve->from_outlet]}}</td>
+                        <td>{{$recieve->date}}</td>
+                        <td>{{$recieve->item_code}}</td>
+                        <td>{{$recieve->quantity}}</td>
+                        <td>{{ (isset($recieve->type)) ? $types[$recieve->type] : 'Issue'}}</td>
+                        <td>{{$machines[$recieve->to_machine]}}</td>
+                        <td>{{$recieve->remark}}</td>
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table>outletrecieve
     </div>
 @endsection

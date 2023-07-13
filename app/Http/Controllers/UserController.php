@@ -20,8 +20,11 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
+        $breadcrumbs = [
+              ['name' => 'Users']
+        ];
         $data = User::orderBy('id','DESC')->paginate(5);
-        return view('users.index',compact('data'))
+        return view('users.index',compact('data', 'breadcrumbs'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
     
@@ -32,9 +35,13 @@ class UserController extends Controller
      */
     public function create()
     {
+        $breadcrumbs = [
+              ['name' => 'Users', 'url' => route('users.index')],
+              ['name' => 'Create']
+        ];
         $roles = Role::pluck('name','name')->all();
         $outlets = Outlets::where('status',1)->get();
-        return view('users.create',compact('roles','outlets'));
+        return view('users.create',compact('roles','outlets', 'breadcrumbs'));
     }
     
     /**
@@ -82,12 +89,16 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $breadcrumbs = [
+              ['name' => 'Users', 'url' => route('users.index')],
+              ['name' => 'Edit']
+        ];
         $user = User::with('outlet')->find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         $outlets = Outlets::where('status',1)->get();
     
-        return view('users.edit',compact('user','roles','userRole','outlets'));
+        return view('users.edit',compact('user','roles','userRole','outlets', 'breadcrumbs'));
     }
     
     /**

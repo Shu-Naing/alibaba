@@ -166,6 +166,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('outlethistory',[OutletController::class,'history'])->name('outlethistory.history');
 
 
-    Route::get('test',[TestController::class,'test'])->name('test');
+    // Route::get('test',[TestController::class,'test'])->name('test');
+    // Route::post('testform',[TestController::class,'testform'])->name('testform');
 });
 

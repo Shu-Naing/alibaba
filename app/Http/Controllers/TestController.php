@@ -25,7 +25,12 @@ class TestController extends Controller
 
     public function test()
     {
+        return view('testing.test');
+    }
 
+    public function testform(Request $request)
+    {
+        // return $request->g-recaptcha-response;
         return view('testing.test');
     }
 }

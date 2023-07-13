@@ -58,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
         });
         view()->composer('outlets.*',function($view){      
             $view->with('states',config('constants.states'));
+            $view->with('types',config('constants.types'));
         });
         view()->composer('outletstockhistory.*',function($view){      
             $view->with('types',config('constants.types'));
