@@ -209,14 +209,6 @@ function calculateTotal() {
   return total;
 }
 
-var dateInput = $("#date");
-var referenceInput = $("#reference");
-var statusInput = $("#status");
-var fromOutletInput = $("#fromOutlet");
-var toOutletInput = $("#toOutlet");
-var tableValue = $("#show_dsProduct table tbody tr");
-var searchInput = $("#searchInput");
-var errorBox = $(".errorbox");
 // console.log(tableValue.html());
 
 // Select submit button
@@ -224,7 +216,15 @@ var dsButton = $("#dsbutton");
 
 dsButton.on("click", function (event) {
   // Reset previous validation feedback
-  $(".is-invalid").removeClass("is-invalid");
+  // $(".is-invalid").removeClass("is-invalid");
+  var dateInput = $("#date");
+  var referenceInput = $("#reference");
+  var statusInput = $("#status");
+  var fromOutletInput = $("#fromOutlet");
+  var toOutletInput = $("#toOutlet");
+  var tableValue = $("#show_dsProduct table tbody tr");
+  var searchInput = $("#searchInput");
+  var errorBox = $(".errorbox");
 
   if (
     dateInput.val() &&
@@ -276,8 +276,8 @@ dsButton.on("click", function (event) {
       // searchInput.addClass("is-invalid");
       errorBox.append("Product item is required.<br/>");
     }
+    $(window).scrollTop(0);
   }
-
   // $(searchInput).focusout(function () {
   //   searchInput.removeClass("is-invalid");
   // });
