@@ -12,6 +12,7 @@ use App\Models\Categories;
 use App\Models\OutletItem;
 use App\Models\distributes;
 use Illuminate\Http\Request;
+use App\Models\OutletItemData;
 use App\Exports\ProductsExport;
 use App\Imports\ProductsImport;
 use Illuminate\Validation\Rule;
@@ -45,98 +46,181 @@ class ProductsController extends Controller
     }
 
     public function store(Request $request)
-    {
-    //    return $request;
-        $validator = Validator::make($request->all(), [
-            "product_name" => "required|unique:products",
-            "category_id" => "required",
-            "brand_id" => "required",
-            "unit_id" => "required",
-            "company_name" => "required",
-            "country" => "required",
-            "sku" => "required|unique:products",
-            "received_date" => "required",
-            "expired_date" => "required",
-            // "description" => "required",
-            'variations' => 'required|array',
-            'variations.*.select' => 'required',
-            'variations.*.value' => 'required',
-            'variations.*.received_qty' => 'required',
-            'variations.*.alert_qty' => 'required',
-            'variations.*.item_code' => 'required|unique:variations',
-            'variations.*.points' => 'required',
-            'variations.*.image' => 'required',
-            'variations.*.tickets' => 'required',
-            'variations.*.kyat' => 'required',
-            'variations.*.purchased_price' => 'required',
+{
+    $validator = Validator::make($request->all(), [
+        'product_name' => 'required|unique:products',
+        'category_id' => 'required',
+        'brand_id' => 'required',
+        'unit_id' => 'required',
+        'company_name' => 'required',
+        'country' => 'required',
+        'sku' => 'required|unique:products',
+        'received_date' => 'required',
+        'expired_date' => 'required',
+        'variations' => 'required|array',
+        'variations.*.select' => 'required',
+        'variations.*.value' => 'required',
+        'variations.*.received_qty' => 'required',
+        'variations.*.alert_qty' => 'required',
+        'variations.*.item_code' => 'required|unique:variations',
+        'variations.*.points' => 'required',
+        'variations.*.image' => 'required',
+        'variations.*.tickets' => 'required',
+        'variations.*.kyat' => 'required',
+        'variations.*.purchased_price' => 'required',
+    ]);
 
+    if ($validator->fails()) {
+        return redirect()->route('products.create')
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    $product = $this->createProduct($request);
+
+    foreach ($request->variations as $variationData) {
+
+        $variation = $this->createVariation($product, $variationData);
+
+        $outletItems = $this->createOutletItems($variation);
+
+        $outletItemData = $this->createOutletItemData($variation, $outletItems, $variationData);
+
+        $purchasedPriceHistory = $this->createPurchasedPriceHistory($variation, $variationData);
+    }
+
+    return redirect()->route('products.create')->with('success', 'Product created successfully');
+}
+
+private function createProduct(Request $request)
+{
+    $product = new Product([
+        'product_name' => $request->product_name,
+        'unit_id' => $request->unit_id,
+        'brand_id' => $request->brand_id,
+        'category_id' => $request->category_id,
+        'company_name' => $request->company_name,
+        'country' => $request->country,
+        'sku' => $request->sku,
+        'received_date' => $request->received_date,
+        'expired_date' => $request->expired_date,
+        'description' => $request->description,
+        'created_by' => Auth::user()->id,
+    ]);
+
+    $product->save();
+
+    return $product;
+}
+
+private function createVariation(Product $product, array $variationData)
+{
+    $variation = new Variation([
+        'product_id' => $product->id,
+        'select' => $variationData['select'],
+        'value' => $variationData['value'],
+        'alert_qty' => $variationData['alert_qty'],
+        'item_code' => $variationData['item_code'],
+        'purchased_price' => $variationData['purchased_price'],
+        'points' => $variationData['points'],
+        'tickets' => $variationData['tickets'],
+        'kyat' => $variationData['kyat'],
+        'barcode' => $variationData['barcode'],
+        'created_by' => Auth::user()->id,
+    ]);
+
+    $imagePath = $variationData['image']->store('variations', 'public');
+    $variation->image = $imagePath;
+    $variation->save();
+
+    return $variation;
+}
+
+private function createOutletItems(Variation $variation)
+{
+    $outletItems = new OutletItem([
+        'outlet_id' => 1,
+        'variation_id' => $variation->id,
+        'created_by' => Auth::user()->id,
+    ]);
+
+    $outletItems->save();
+
+    return $outletItems;
+}
+
+private function createOutletItemData(Variation $variation,OutletItem $outletItems,array $variationData)
+{
+    $outletItemData = new OutletItemData([
+        'outlet_item_id' =>  $outletItems->id,
+        'purchased_price' => $variation->purchased_price,
+        'points' => $variation->points,
+        'tickets' => $variation->tickets,
+        'kyat' => $variation->kyat,
+        'quantity' => $variationData['received_qty'],
+        'created_by' => Auth::user()->id,
+    ]);
+
+    $outletItemData->save();
+
+    return $outletItemData;
+}
+
+private function createPurchasedPriceHistory(Variation $variation, array $variationData)
+{
+    $purchasedPriceHistory = new PurchasedPriceHistory([
+        'variation_id' => $variation->id,
+        'purchased_price' => $variation->purchased_price,
+        'points' => $variation->points,
+        'tickets' => $variation->tickets,
+        'kyat' => $variation->kyat,
+        'quantity' => $variationData['received_qty'],
+        'created_by' => Auth::user()->id,
+    ]);
+
+    $purchasedPriceHistory->save();
+
+    return $purchasedPriceHistory;
+}
+
+
+
+    public function addStock(Request $request,$variation_id){
+
+        // return $request;
+        $outlet_id = Auth::user()->outlet->id;
+        Variation::find($variation_id)->update([
+            'points' => $request->points,
+            'tickets' => $request->tickets,
+            'kyat' => $request->kyat,
+            'purchased_price' => $request->purchased_price,
         ]);
 
-        if ($validator->fails()) {
-            return redirect()->route('products.create')
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $outlet_item_id = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_id)->value('id');
 
-        // Create a new product instance
-        $product = new Product;
-        $product->product_name = $request->product_name;
-        $product->unit_id = $request->unit_id;
-        $product->brand_id = $request->brand_id;
-        $product->category_id = $request->category_id;
-        $product->company_name = $request->company_name;
-        $product->country = $request->country;
-        $product->sku = $request->sku; 
-        $product->received_date = $request->received_date;
-        $product->expired_date = $request->expired_date;
-        $product->description = $request->description;
-        $product->created_by = Auth::user()->id;
-        $product->save();
+        OutletItemData::create([
+            'outlet_item_id' => $outlet_item_id,
+            'points' => $request->points,
+            'tickets' => $request->tickets,
+            'kyat' => $request->kyat,
+            'purchased_price' => $request->purchased_price,
+            'quantity' => $request->new_qty,
+            'created_by' => Auth::user()->id,
+        ]);
 
-        $variations = $request->variations;
-        foreach($variations as $variation_data){
-            $variation = new Variation;
-            $variation->product_id = $product->id;
-            $variation->select = $variation_data['select'];
-            $variation->value = $variation_data['value'];
-            $variation->alert_qty = $variation_data['alert_qty'];
-            $variation->item_code = $variation_data['item_code'];
-            $variation->purchased_price = $variation_data['purchased_price'];
-            $variation->points = $variation_data['points'];
-            $variation->tickets = $variation_data['tickets'];
-            $variation->kyat = $variation_data['kyat'];
-            $variation_image = $variation_data['image'];
-            $imagePath = $variation_image->store('variations', 'public'); 
-            $variation->image = $imagePath;
-            $variation->created_by = Auth::user()->id;
-            $variation->save();
-            
-            $outlet_items = new OutletItem;
-            $outlet_items->outlet_id = 1;
-            $outlet_items->variation_id = $variation->id;
-            $outlet_items->quantity = $variation_data['received_qty'];
-            $outlet_items->created_by = Auth::user()->id;
-            $outlet_items->save();
+        PurchasedPriceHistory::create([
+            'variation_id' => $variation_id,
+            'purchased_price' => $request->purchased_price,
+            'points' => $request->points,
+            'tickets' => $request->tickets,
+            'kyat' => $request->kyat,
+            'quantity' => $request->new_qty,
+            'created_by' => Auth::user()->id,
+        ]);
 
-
-            $purchased_price_history = new PurchasedPriceHistory;
-            $purchased_price_history->variation_id = $variation->id;
-            $purchased_price_history->purchased_price = $variation->purchased_price;
-            $purchased_price_history->points = $variation->points;
-            $purchased_price_history->tickets = $variation->tickets;
-            $purchased_price_history->kyat = $variation->kyat;
-            $purchased_price_history->quantity = $outlet_items->quantity;
-            $purchased_price_history->created_by = Auth::user()->id;
-            $purchased_price_history->save();
-
-
-        }
-
-       
-    
-        return redirect()->route('products.create')->with('success','Product create successfully');
-
+        return response()->json(['message' => 'New Stock added successfully']);
     }
+
 
     public function edit($product_id){
 
@@ -198,7 +282,8 @@ class ProductsController extends Controller
             ->withErrors($validator)
             ->withInput();
         }
-        Product::find($product_id)->update([
+        
+        $productData = [
             'product_name' => $request->product_name,
             'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
@@ -209,63 +294,115 @@ class ProductsController extends Controller
             'received_date' => $request->received_date,
             'expired_date' => $request->expired_date,
             'description' => $request->description,
-
-        ]);
-
-
-        $variations = $request->variations; 
+            'updated_by' => Auth::user()->id,
+        ];
+    
+        Product::find($product_id)->update($productData);
+    
+        $variations = $request->variations;
         $outlet_id = Auth::user()->outlet->id;
-
-        // return $request->variations[0]['image'];
-
-        foreach($variations as $variation) {
-
-            
-
+    
+        foreach ($variations as $variation) {
             $variationData = [
                 'product_id' => $product_id,
-                'select' => $variation['select'] ,
-                'value' => $variation['value'] ,
-                'points' => $variation['points'] , 
+                'select' => $variation['select'],
+                'value' => $variation['value'],
+                'points' => $variation['points'],
                 'tickets' => $variation['tickets'],
-                'kyat'=> $variation['kyat'], 
+                'kyat' => $variation['kyat'],
                 'alert_qty' => $variation['alert_qty'],
                 'purchased_price' => $variation['purchased_price'],
-                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ];
+    
+            if (isset($variation['image'])) {
+                $variation_image = $variation['image'];
+                $imagePath = $variation_image->store('variations', 'public');
+                $variationData['image'] = $imagePath;
+            }
+    
+            if (isset($variation['item_code'])) {
+                $variation_data = Variation::where('item_code', $variation['item_code'])->first();
+                $variation_data->update($variationData);
+            } else {
+                $variationData['created_by'] = Auth::user()->id;
+                $variation_data = Variation::create($variationData);
+            }
+        
+           
+            
+            $outletItem = [
+                'outlet_id' => $outlet_id,
+                'variation_id' => $variation_data->id,
                 'updated_by' => Auth::user()->id,
             ];
 
-            if (isset($variation['image'])) {
-                $variation_image = $variation['image'];
-                $imagePath = $variation_image->store('variations', 'public'); 
-                $variationData['image'] = $imagePath;
+            $old_outlet_item = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_data->id)->first();
+            if (isset($old_outlet_item)){
+                $outlet_item = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_data->id)->first();
+                $outlet_item->update($outletItem);
+            }else{
+                $outletItem['created_by'] = Auth::user()->id;
+                $outlet_item = OutletItem::create($outletItem);
             }
-        
-            $variation_data = Variation::updateOrCreate(['item_code' => $variation['item_code']], $variationData);
-
-            
 
 
-            $input = [];
-            $input['outlet_id'] = $outlet_id;
-            $input['quantity'] = $variation['received_qty'] + $variation['new_qty'];
-            $input['variation_id'] = $variation_data->id;
-            $input['created_by'] = Auth::user()->id;
-            $input['updated_by'] = Auth::user()->id;
-            
-            OutletItem::updateOrCreate(['outlet_id'=>$outlet_id, 'variation_id'=>$variation_data->id], $input);
-
-
-            $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
-                ['variation_id' => $variation_data->id,
+            $outletItemData = [
+                'outlet_item_id' => $outlet_item->id,
+                'points' => $variation['points'],
+                'tickets' => $variation['tickets'],
+                'kyat' => $variation['kyat'],
                 'purchased_price' => $variation['purchased_price'],
-                    'points' => $variation['points'],
-                    'tickets' => $variation['tickets'],
-                    'kyat' => $variation['kyat'],
-                    'quantity'=> $variation['received_qty'],
-                ],
-                ['quantity'=> $variation['new_qty'],'created_by' =>  Auth::user()->id],
-            );
+                'updated_by' => Auth::user()->id,
+            ];
+
+           $old_outlet_item_data = OutletItemData::where('outlet_item_id',$outlet_item->id)->first();
+
+           if (isset($old_outlet_item_data)){
+                $outlet_item_data = OutletItemData::where('outlet_item_id',$outlet_item->id)->latest('created_at')->first();
+                $outlet_item_data->update($outletItemData);
+           }else{
+            $outletItemData['quantity'] = $variation['received_qty'];
+                $outletItemData['created_by'] = Auth::user()->id;
+                OutletItemData::create($outletItemData);
+           }
+
+
+           $purchasedPriceHistory = [
+                'variation_id' => $variation_data->id,
+                'purchased_price' => $variation['purchased_price'],
+                'points' => $variation['points'],
+                'tickets' => $variation['tickets'],
+                'kyat' => $variation['kyat'],
+                
+                'updated_by' => Auth::user()->id,
+           ];
+
+
+           $old_purchased_price_history = PurchasedPriceHistory::where('variation_id',$variation_data->id)->first();
+           if (isset($old_purchased_price_history)){
+                $purchased_price_history = PurchasedPriceHistory::where('variation_id',$variation_data->id)->latest('created_at')->first();
+                $purchased_price_history->update($purchasedPriceHistory);
+           }else{
+            $purchasedPriceHistory['quantity'] = $variation['received_qty'];
+                $purchasedPriceHistory['created_by'] = Auth::user()->id;
+                 PurchasedPriceHistory::create($purchasedPriceHistory);
+           }
+
+
+
+
+
+            // $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
+            //     ['variation_id' => $variation_data->id,
+            //     'purchased_price' => $variation['purchased_price'],
+            //         'points' => $variation['points'],
+            //         'tickets' => $variation['tickets'],
+            //         'kyat' => $variation['kyat'],
+            //         'quantity'=> $variation['received_qty'],
+            //     ],
+            //     ['quantity'=> $variation['new_qty'],'created_by' =>  Auth::user()->id],
+            // );
 
           
         }
@@ -280,8 +417,10 @@ class ProductsController extends Controller
         $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
                     ->join("products", "variations.product_id", "=", "products.id")
                     ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                    ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
                     ->where("outlet_items.outlet_id", "=", $fromOutletId)
-                    ->where("outlet_items.quantity", ">", 0)
+                    ->where("outlet_item_data.quantity", ">", 0)
+                    // ->latest("outlet_item_data.created_at")
                     ->get();
 
         $product_arr = array();
@@ -317,16 +456,26 @@ class ProductsController extends Controller
                 $fromOutletId = $distributes->from_outlet;
                 
                 $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
-                $input = [];
-                $input['quantity'] = $tooutletitem->quantity + 1;
-                $input['updated_by'] = Auth::user()->id;
-                $tooutletitem->update($input);
+                $tooutletitem->updated_by = Auth::user()->id;
+                $tooutletitem->update();
+
+                $toOutletItemData = outlet_item_data($toOutletId,$variant_id);
+                $toOutletItemData->quantity = $toOutletItemData->quantity + 1;
+                $toOutletItemData->updated_by = Auth::user()->id;
+                $toOutletItemData->update();
+
+
+
 
                 $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
-                $qty = $fromoutletitem->quantity - 1;
-                $input = [];
-                $input['quantity'] = $qty;
-                $fromoutletitem->update($input);
+                $fromoutletitem->updated_by = Auth::user()->id;
+                $fromoutletitem->update();
+
+                $fromOutletItemData = outlet_item_data($fromOutletId,$variant_id);
+                $fromOutletItemData->quantity = $fromOutletItemData->quantity - 1;
+                $fromOutletItemData->updated_by = Auth::user()->id;
+                $fromOutletItemData->update();
+
 
                 return "success data";
             }else if($request->type == 'decrease') {
@@ -334,17 +483,34 @@ class ProductsController extends Controller
                 $toOutletId = $distributes->to_outlet;
                 $fromOutletId = $distributes->from_outlet;
                 
+                // $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
+                // $input = [];
+                // $input['quantity'] = $tooutletitem->quantity - 1;
+                // $input['updated_by'] = Auth::user()->id;
+                // $tooutletitem->update($input);
                 $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
-                $input = [];
-                $input['quantity'] = $tooutletitem->quantity - 1;
-                $input['updated_by'] = Auth::user()->id;
-                $tooutletitem->update($input);
+                $tooutletitem->updated_by = Auth::user()->id;
+                $tooutletitem->update();
+                
+                $toOutletItemData = outlet_item_data($toOutletId,$variant_id);
+                $toOutletItemData->quantity = $toOutletItemData->quantity - 1;
+                $toOutletItemData->updated_by = Auth::user()->id;
+                $toOutletItemData->update();
 
+                // $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
+                // $qty = $fromoutletitem->quantity + 1;
+                // $input = [];
+                // $input['quantity'] = $qty;
+                // $fromoutletitem->update($input);
                 $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
-                $qty = $fromoutletitem->quantity + 1;
-                $input = [];
-                $input['quantity'] = $qty;
-                $fromoutletitem->update($input);
+                $fromoutletitem->updated_by = Auth::user()->id;
+                $fromoutletitem->update();
+
+                $fromOutletItemData = outlet_item_data($fromOutletId,$variant_id);
+                $fromOutletItemData->quantity = $fromOutletItemData->quantity + 1;
+                $fromOutletItemData->updated_by = Auth::user()->id;
+                $fromOutletItemData->update();
+
 
                 return "success data";
             }else {
@@ -354,19 +520,37 @@ class ProductsController extends Controller
                 $fromOutletId = $distributes->from_outlet;
                 // return  $oldqty;
                 
-                $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
-                $input = [];
-                $input['quantity'] = ($tooutletitem->quantity - $oldqty) + $inputqty;
-                $input['updated_by'] = Auth::user()->id;
-                $tooutletitem->update($input);
-                // $rn = [];
-                // $rn['tooutlet'] = $input;
+                // $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
+                // $input = [];
+                // $input['quantity'] = ($tooutletitem->quantity - $oldqty) + $inputqty;
+                // $input['updated_by'] = Auth::user()->id;
+                // $tooutletitem->update($input);
 
+                $tooutletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variant_id)->first();
+                $tooutletitem->updated_by = Auth::user()->id;
+                $tooutletitem->update();
+
+                $toOutletItemData = outlet_item_data($toOutletId,$variant_id);
+                $toOutletItemData->quantity = ($toOutletItemData->quantity - $oldqty) + $inputqty ;
+                $toOutletItemData->updated_by = Auth::user()->id;
+                $toOutletItemData->update();
+               
+
+                // $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
+                // $qty = ($fromoutletitem->quantity + $oldqty) - $inputqty;
+                // $input = [];
+                // $input['quantity'] = $qty;
+                // $fromoutletitem->update($input);
                 $fromoutletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variant_id)->first();
-                $qty = ($fromoutletitem->quantity + $oldqty) - $inputqty;
-                $input = [];
-                $input['quantity'] = $qty;
-                $fromoutletitem->update($input);
+                $fromoutletitem->updated_by = Auth::user()->id;
+                $fromoutletitem->update();
+
+                $fromOutletItemData = outlet_item_data($fromOutletId,$variant_id);
+                $fromOutletItemData->quantity = ($fromOutletItemData->quantity + $oldqty) - $inputqty ;
+                $fromOutletItemData->updated_by = Auth::user()->id;
+                $fromOutletItemData->update();
+
+
                 // $rn = [];
                 // $rn['tooutlet'] = $tooutletitem;
                 // $rn['fromoutlet'] = $input;

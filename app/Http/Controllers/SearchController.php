@@ -2,41 +2,35 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
 use App\Models\Products;
 use App\Models\Variation;
+use App\Models\OutletItem;
+use App\Models\distributes;
+use Illuminate\Http\Request;
+use App\Models\MachineVariant;
+use App\Models\OutletItemData;
 use App\Models\DistributeProducts;
 use App\Models\OutletDistributeProduct;
-use App\Models\OutletItem;
-use App\Models\MachineVariant;
-use App\Models\distributes;
-use Auth;
 
 class SearchController extends Controller
 {
     public function search(Request $request)
     {
+        
         $html = '';
         $variant_qty = 0;
         $distributedId = $request->distributed_id;
         $variantId = $request->variant_id;
         $fromOutletId = $request->from_outlet;
-        $variant_product = Variation::find($variantId);
+        // $variant_product = Variation::find($variantId);
 
-        $outletItem = OutletItem::select('quantity')
-        ->where('outlet_id', $fromOutletId)
-        ->where('variation_id', $variantId)
-        ->first();
-
-        if($outletItem) {
-            $variant_qty = $outletItem->quantity;
-        }
+        $fromOutletItemData = outlet_item_data($fromOutletId,$variantId);
 
         $input = [];
         $input['distribute_id'] = $distributedId;
         $input['variant_id'] = $variantId;
-        $input['purchased_price'] = $variant_product->purchased_price;
-        $input['subtotal'] = $variant_product->purchased_price;
+        $input['purchased_price'] = $fromOutletItemData->purchased_price;
         $input['remark'] = '';
         $input['created_by'] = Auth::user()->id;
         
@@ -45,11 +39,14 @@ class SearchController extends Controller
         $distributeproduct = DistributeProducts::where('distribute_id',$distributedId)
         ->where('variant_id',$variantId)
         ->first();
+
         if($distributeproduct){
             $input['quantity'] = $distributeproduct->quantity + 1;
+            $input['subtotal'] = $fromOutletItemData->purchased_price * ($distributeproduct->quantity + 1);
             $distributeproduct->update($input);
         }else{
             $input['quantity'] = 1;
+            $input['subtotal'] = $fromOutletItemData->purchased_price * 1;
             DistributeProducts::create($input);
         }
 
@@ -58,30 +55,69 @@ class SearchController extends Controller
         $toOutletId = $distributes->to_outlet;
         
         $input = [];
+
+        
         $outletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variantId)->first();
+        // $outletitemdata = OutletItem
+        // OultetItem::where('id',$toOutletItemData->outlet_item_id)->update([
+        //     'updated_by' => Auth::user()->id;
+        // ]);
+
+        // $toOutletItemData->update([
+        //     'quantity' => $toOutletItemData->quantity + 1;
+        // ]);
         
         if($outletitem) {
-            $input['quantity'] = $outletitem->quantity + 1;
+            // $toOutletItemData = outlet_item_data($toOutletId,$variantId);
             $input['updated_by'] = Auth::user()->id;
-            // return $input;
             $outletitem->update($input);
+
+            OutletItemData::create([ 
+                'outlet_item_id' => $outletitem->id,
+                'purchased_price' => $fromOutletItemData->purchased_price,
+                'points' => $fromOutletItemData->points,
+                'tickets' => $fromOutletItemData->tickets,
+                'kyat' => $fromOutletItemData->kyat,
+                'quantity' => 1,
+                'created_by' => Auth::user()->id,
+            ]);
+
+           
+
         }else {
             $input['outlet_id'] = $toOutletId;
             $input['variation_id'] = $variantId;
             $input['created_by'] = Auth::user()->id;
-            $input['quantity'] = 1;
-            OutletItem::create($input);
+            // $input['quantity'] = 1;
+            $outlet_item = OutletItem::create($input);
+            OutletItemData::create([ 
+                'outlet_item_id' => $outlet_item->id,
+                'purchased_price' => $fromOutletItemData->purchased_price,
+                'points' => $fromOutletItemData->points,
+                'tickets' => $fromOutletItemData->tickets,
+                'kyat' => $fromOutletItemData->kyat,
+                'quantity' => 1,
+                'created_by' => Auth::user()->id,
+            ]);
+
+
         }
+
+
         //create $input with outlet_itmes_tbl columns
         
         //get main inventory qty  with variant_id and main outlet id
-        $outletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variantId)->first();
-        
-        $qty = $outletitem->quantity - 1;
+        // $outletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variantId)->first();
+        // $fromOutletItemData = outlet_item_data($fromOutletId,$variantId);
 
-        $input = [];
-        $input['quantity'] = $qty;
-        $outletitem->update($input);
+        $fromOutletItemData->quantity = $fromOutletItemData->quantity - 1;
+        $fromOutletItemData->update();
+        
+        // $qty = $outletitem->quantity - 1;
+
+        // $input = [];
+        // $input['quantity'] = $qty;
+        // $outletitem->update($input);
 
         // $distribute_product = DistributeProducts::select('distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "distribute_products.variant_id")
         //                         ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $distributedId)->get();
@@ -138,6 +174,7 @@ class SearchController extends Controller
         // $response['html'] = $html;
 
         // return json_encode($response);
+        
         return "success data";
         
         // $html = '';
@@ -151,6 +188,7 @@ class SearchController extends Controller
 
     public function search_outlet_distributes (Request $request) 
     {
+
         $html = '';
         $variant_qty = 0;
         $distributedId = $request->outlet_distributed_id;

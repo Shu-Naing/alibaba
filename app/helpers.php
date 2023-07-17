@@ -1,6 +1,7 @@
 <?php 
 
 use App\Models\Variation;
+use App\Models\OutletItemData;
 
     use App\Models\Outlets;
     use App\Models\Machines;
@@ -148,8 +149,11 @@ use App\Models\Variation;
     if(!function_exists('outlet_stock')){
         function outlet_stock($variation_id,$outlet_id = 1){
             
-           $outet_item_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id',$outlet_id)->value('quantity');
-            return $outet_item_stock;
+            $outlet_item_data = OutletItemData::whereHas('outlet_item', function ($query) use ($variation_id,$outlet_id) {
+                $query->where('variation_id',$variation_id)->where('outlet_id',$outlet_id);
+            })->sum('quantity');
+          
+            return $outlet_item_data;
         }
     }
 
@@ -167,7 +171,13 @@ use App\Models\Variation;
 
     if(!function_exists('total_store_stock')){
         function total_store_stock($variation_id){
-           $total_store_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id','!=',1)->sum('quantity');
+        //    $total_store_stock = OutletItem::where('variation_id',$variation_id)->where('outlet_id','!=',1)->sum('quantity');
+        //     return $total_store_stock;
+
+            $total_store_stock = OutletItemData::whereHas('outlet_item', function ($query) use ($variation_id) {
+                $query->where('variation_id',$variation_id)->where('outlet_id','!=',1);
+            })->sum('quantity');
+          
             return $total_store_stock;
         }
     }
@@ -211,6 +221,23 @@ use App\Models\Variation;
     }
 
 
+
+    if(!function_exists('outlet_item_data')){
+        function outlet_item_data($outlet_id,$variation_id){
+            $outlet_item = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_id)->first();
+
+            $outlet_item_data = OutletItemData::where('outlet_item_id',$outlet_item->id)
+            ->where('quantity','>',0)
+            ->orderBy('created_at', 'asc')->first();
+
+            if (!$outlet_item_data) {
+                $outlet_item_data = OutletItemData::where('outlet_item_id',$outlet_item->id)
+                ->orderBy('created_at', 'desc')->first();
+            }
+
+            return $outlet_item_data;
+        }
+    }
 
 
 ?>

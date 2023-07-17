@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
+use Validator;
 use App\Models\Outlets;
-use App\Models\distributes;
-use App\Models\DistributeProducts;
 use App\Models\Variation;
 use App\Models\OutletItem;
-use Validator;
-use Auth;
+use App\Models\distributes;
+use Illuminate\Http\Request;
+use App\Models\OutletItemData;
+use App\Models\DistributeProducts;
 
 class DistributeController extends Controller
 {
@@ -123,11 +124,14 @@ class DistributeController extends Controller
         $distribute_products = DistributeProducts::select("distribute_products.*", "products.product_name", "variations.item_code")->join("variations", "variations.id", "=", "distribute_products.variant_id")
                                 ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $id)->get();
 
-        $outletitems = OutletItem::select('quantity', 'variation_id')->where('outlet_id', $from_outlet)->get();
+        $outletitems = OutletItem::where('outlet_id', $from_outlet)->get();
         $variant_qty = [];
         foreach ($outletitems as $outletitem) {
-            $variant_qty[$outletitem->variation_id] = $outletitem->quantity;
+            $variant_qty[$outletitem->variation_id] = outlet_item_data($outletitem->outlet_id,$outletitem->variation_id)->quantity;
         }
+
+        // return $variant_qty;
+
         return view('distribute.edit', compact('distribute','outlets', 'distribute_products', 'variant_qty'));
     }
 

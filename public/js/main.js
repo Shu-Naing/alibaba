@@ -148,11 +148,13 @@ function removeField(group) {
 function increaseValue(button, disPdID, variantID, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
+ 
   if (value < variant_qty) {
     input.value = isNaN(value) ? 0 : value + 1;
-    console.log(input.value);
+
   } else {
     input.value = variant_qty;
+
   }
   var type = $("#increase-type").data("id");
   $.ajax({

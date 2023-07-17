@@ -18,6 +18,15 @@
             text-align: center;
             vertical-align: middle;
         }
+
+        .modal-bg{
+            background-color: var(--primary-color);
+            
+        }
+
+        .modal-bg h1{
+            color: white;
+        }
     </style>
 @endsection
 @section('cardtitle')
@@ -154,7 +163,7 @@
                     <th>Kyat</th>
                     <th>Alert Qty</th>
                     <th>Received Qty</th>
-                    <th>New Qty</th>
+                    <th>Add Stock</th>
                     <th>Purchased Price</th>
                     <th>
                         <i class="fs-6 bi bi-plus-square-fill" id="add-variation"></i>
@@ -188,7 +197,6 @@
                         <td>
 
                             {!! Form::select('variations[' . $index . '][select]', ['Size' => 'Size'], $variation->select, [
-                                'placeholder' => 'Choose Select',
                                 'class' => 'form-control',
                                 'disabled',
                             ]) !!}
@@ -235,24 +243,21 @@
                             
                         </td>
                         <td>
-                            {!! Form::text('variations[' . $index . '][new_qty]', 0, [
-                                'class' => 'form-control',
-                            ]) !!}
+                            <a class="text-decoration-underline px-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addStockModal{{ $variation->id }}">add stock</a>
+                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                Launch static backdrop modal
+                              </button> --}}
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][purchased_price]', $variation->purchased_price, [
                                 'class' => 'form-control',
                             ]) !!}
                         </td>
-                        <td>
-                            {{-- <a class="text-decoration-underline px-3" href="">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                                Edit
-                            </a> --}}
-                        </td>
+                       
                     </tr>
 
                     @php $index++ @endphp
+                    
                 @endforeach
             </tbody>
         </table>
@@ -267,16 +272,46 @@
         {!! Form::close() !!}
 
     </div>
+    @foreach ($variations as $variation)
+    @include('products.add-stock-modal')
+    @endforeach
+   
 
 @section('scripts')
     <script>
+
+        
         function removeVariation(variation_no) {
             // console.log(variation_no);
             $('#variation_' + variation_no).remove();
         }
 
+        function addStockBtn(variation_id){
+               
+                var addStockForm = $('#addStockForm'+variation_id);
+                // var url = 'products-add-stock/'+variation_id;
+                $.ajax({
+                    url: addStockForm.attr('action'),
+                    type: addStockForm.attr('method'),
+                    _token : "{{ csrf_token() }}",
+                    data: addStockForm.serialize(),
+                    success : function(response) {
+
+                        console.log(response);
+                        location.reload();
+
+                    },
+                    error: function(e){
+                        console.log("asd");
+                        console.log(e.responseText);
+                    }
+                });
+            }
+
 
         $(document).ready(function() {
+
+          
 
             function bindImagePreviewClickEvent() {
                 $('.imagePreview').off('click').on('click', function() {
@@ -355,11 +390,10 @@
                             
                         </td>
                         <td>
-                            {!! Form::text('variations[${variationCount}][new_qty]', 0, [
-                                'class' => 'form-control',
-                            ]) !!}
-                        </td>!}
+                            
                         </td>
+                        </td>
+                       
                         <td>
                             {!! Form::text('variations[${variationCount}][purchased_price]', null, [
                                 'class' => 'form-control',
@@ -386,6 +420,8 @@
         //     console.log('ccc');
         //     $(this).siblings('.fileInput').click();
         // });
+
+        
     </script>
 @endsection
 <script></script>

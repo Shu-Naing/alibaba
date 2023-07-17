@@ -103,6 +103,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     //proudcts excel-export
     Route::get('products-list',[ProductsController::class, 'listProduct'])->name('products.list');
+    Route::post('products-add-stock/{variation_id}',[ProductsController::class, 'addStock'])->name('products.add-stock');
     
     Route::get('products-sample-export',[ProductsController::class, 'exportSampleProduct'])->name('product.sample-export');
     Route::post('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
