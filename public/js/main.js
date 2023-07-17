@@ -211,14 +211,7 @@ function calculateTotal() {
   return total;
 }
 
-var dateInput = $("#date");
-var referenceInput = $("#reference");
-var statusInput = $("#status");
-var fromOutletInput = $("#fromOutlet");
-var toOutletInput = $("#toOutlet");
-var tableValue = $("#show_dsProduct table tbody tr");
-var searchInput = $("#searchInput");
-var errorBox = $(".errorbox");
+
 // console.log(tableValue.html());
 
 // Select submit button
@@ -226,6 +219,16 @@ var dsButton = $("#dsbutton");
 
 dsButton.on("click", function (event) {
   // Reset previous validation feedback
+  var dateInput = $("#date");
+var referenceInput = $("#reference");
+var statusInput = $("#status");
+var fromOutletInput = $("#fromOutlet");
+var toOutletInput = $("#toOutlet");
+var tableValue = $("#show_dsProduct table tbody tr");
+var searchInput = $("#searchInput");
+var errorBox = $(".errorbox");
+
+  console.log(tableValue.length);
   $(".is-invalid").removeClass("is-invalid");
 
   if (
@@ -335,6 +338,8 @@ function deleteDisValue(disPdID) {
   $("#deleteModal").modal("show");
   $(".confirmButton").on("click", function () {
     disPdID.parentNode.parentNode.remove();
+    var total = calculateTotal();
+  $("#total").html(total);
     $("#deleteModal").modal("hide");
   });
   // var deletebutton = $(".deleteBox");

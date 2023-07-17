@@ -26,7 +26,10 @@ class DistributeController extends Controller
         ];
         $outlets = getOutlets();
 
-        $distributes = DistributeProducts::join('distributes','distributes.id','=','distribute_products.distribute_id')->get();
+        // $distributes = DistributeProducts::join('distributes','distributes.id','=','distribute_products.distribute_id')->get();
+        $distributes = distributes::all();
+
+        // return $distributes;
         return view('distribute.index',compact('breadcrumbs','distributes','outlets'));
     }
 
@@ -37,6 +40,8 @@ class DistributeController extends Controller
      */
     public function create()
     {
+
+        
         $breadcrumbs = [
               ['name' => 'Distribute', 'url' => route('distribute.index')],
               ['name' => 'Create']
@@ -60,11 +65,7 @@ class DistributeController extends Controller
      */
     public function store(Request $request)
     {
-        // $breadcrumbs = [
-        //       ['name' => 'Outlets', 'url' => route('outlets.index')],
-        //       ['name' => 'Distribute Products']
-        // ];
-
+       
         $data = $request->all();
         $item_arr = [];
 
@@ -76,7 +77,7 @@ class DistributeController extends Controller
                 'from_outlet' =>'required',
                 'to_outlet' =>'required',
             ]);
-            $input = $request->only('date', 'reference_No', 'status', 'from_outlet', 'to_outlet');
+            $input = $request->only('date', 'reference_No', 'status', 'from_outlet', 'to_outlet','remark');
             $input['created_by'] = Auth::user()->id;
 
             $distribute = distributes::create($input);
@@ -96,32 +97,77 @@ class DistributeController extends Controller
         foreach($item_arr as $key => $value){
             // return $row;
             $variation = Variation::where('item_code', $key)->first();
+            $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
 
             // distribute product create start
-                $input = [];
-                $input['distribute_id'] = $distributeId;
-                $input['variant_id'] = $variation->id;
-                $input['purchased_price'] = $variation->purchased_price;
-                $input['subtotal'] = $variation->purchased_price * $value;
-                $input['remark'] = $request->remark;
-                $input['created_by'] = Auth::user()->id;
-                $input['quantity'] = $value;
-                DistributeProducts::create($input);
+                // $input = [];
+                // $input['distribute_id'] = $distributeId;
+                // $input['variant_id'] = $variation->id;
+                // $input['purchased_price'] = $variation->purchased_price;
+                // $input['subtotal'] = $variation->purchased_price * $value;
+                // $input['remark'] = $request->remark;
+                // $input['created_by'] = Auth::user()->id;
+                // $input['quantity'] = $value;
+                // DistributeProducts::create($input);
+
+                DistributeProducts::create([
+                    'distribute_id' => $distributeId,
+                    'variant_id' => $variation->id,
+                    'purchased_price' => $fromOutletItemData->purchased_price,
+                    'subtotal' => $fromOutletItemData->purchased_price * $value,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                    'quantity' => $value,
+                ]);
             // distribute product create end
             
             // need to change for fifo tech start // to outlet add product item start
-                $input = [];
-                $input['outlet_id'] = $request->to_outlet;
-                $input['variation_id'] = $variation->id;
-                $input['created_by'] = Auth::user()->id;
 
-                $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $variation->id)->first();
-                if($outletitem) {
-                    $input['quantity'] = $value + $outletitem->quantity;
-                    $outletitem->update($input);
-                }else {
-                    $input['quantity'] = $value;
-                    OutletItem::create($input);
+
+                // $input = [];
+                // $input['outlet_id'] = $request->to_outlet;
+                // $input['variation_id'] = $variation->id;
+                // $input['created_by'] = Auth::user()->id;
+
+                // $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $variation->id)->first();
+                // if($outletitem) {
+                //     $input['quantity'] = $value + $outletitem->quantity;
+                //     $outletitem->update($input);
+                // }else {
+                //     $input['quantity'] = $value;
+                //     OutletItem::create($input);
+                // }
+
+                $outletitem = OutletItem::where('outlet_id',$request->to_outlet)->where('variation_id',$variation->id)->first();
+                if($outletitem){
+                    $outletitem->updated_by = Auth::user()->id;
+                    $outletitem->update();
+
+                    OutletItemData::create([
+                        'outlet_item_id' => $outletitem->id,
+                        'purchased_price' => $fromOutletItemData->purchased_price,
+                        'points' => $fromOutletItemData->points,
+                        'tickets' => $fromOutletItemData->tickets,
+                        'kyat' => $fromOutletItemData->kyat, 
+                        'quantity' => $value,
+                        'created_by' => Auth::user()->id,
+                    ]);
+                }else{
+                    $outlet_item = OutletItem::create([
+                        'outlet_id' => $request->to_outlet,
+                        'variation_id' => $variation->id,
+                        'created_by' => Auth::user()->id,
+                    ]);
+
+                    OutletItemData::create([
+                        'outlet_item_id' => $outlet_item->id,
+                        'purchased_price' => $fromOutletItemData->purchased_price,
+                        'points' => $fromOutletItemData->points,
+                        'tickets' => $fromOutletItemData->tickets,
+                        'kyat' => $fromOutletItemData->kyat, 
+                        'quantity' => $value,
+                        'created_by' => Auth::user()->id,
+                    ]);
                 }
             // need to change for fifo tech end // to outlet add product item end
 
@@ -129,17 +175,20 @@ class DistributeController extends Controller
             
             // from formoutlet add product item start
                 //get main inventory qty  with variant_id and main outlet id
-                $from_outlet_item = OutletItem::select('quantity')
-                    ->where('outlet_id', $request->from_outlet)
-                    ->where('variation_id', $variation->id)->first();
+                // $from_outlet_item = OutletItem::select('quantity')
+                //     ->where('outlet_id', $request->from_outlet)
+                //     ->where('variation_id', $variation->id)->first();
                 
-                $qty = $from_outlet_item->quantity - $value;
+                // $qty = $from_outlet_item->quantity - $value;
                 
                 //update outlet_items_tbl with main outlet id 
-                $fromOutlet = OutletItem::where('outlet_id', $request->from_outlet)->where('variation_id', $variation->id)->first();
-                $input = [];
-                $input['quantity'] = $qty;
-                $fromOutlet->update($input); 
+                // $fromOutlet = OutletItem::where('outlet_id', $request->from_outlet)->where('variation_id', $variation->id)->first();
+                // $input = [];
+                // $input['quantity'] = $qty;
+                // $fromOutlet->update($input); 
+
+                $fromOutletItemData->quantity = $fromOutletItemData->quantity - $value;
+                $fromOutletItemData->update();
             // from formoutlet add product item end
 
         }

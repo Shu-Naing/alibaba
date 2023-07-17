@@ -19,85 +19,30 @@ class SearchController extends Controller
     {
         
         $html = '';
-        // $variant_qty = 0;
-        // $distributedId = $request->distributed_id;
+       
         $variantId = $request->variant_id;
         $fromOutletId = $request->from_outlet;
         $variant_product = Variation::join('products', 'products.id', '=', 'variations.product_id')->where('variations.id', $variantId)->first();
         // return $variant_product;
 
-        $outletItem = OutletItem::select('quantity')
-        ->where('outlet_id', $fromOutletId)
-        ->where('variation_id', $variantId)
-        ->first();
-        // return $outletItem->quantity;
-
-        if($outletItem) {
-            $variant_qty = $outletItem->quantity;
-        }
-
-        // $input = [];
-        // $input['distribute_id'] = $distributedId;
-        // $input['variant_id'] = $variantId;
-        // $input['purchased_price'] = $variant_product->purchased_price;
-        // $input['subtotal'] = $variant_product->purchased_price;
-        // $input['remark'] = '';
-        // $input['created_by'] = Auth::user()->id;
-        
-        #don't allow to add same product in search product ( recieve/issue/distribute)
-        #if added same item, just increse quantity
-        // $distributeproduct = DistributeProducts::where('distribute_id',$distributedId)
-        // ->where('variant_id',$variantId)
+        // $outletItem = OutletItem::select('quantity')
+        // ->where('outlet_id', $fromOutletId)
+        // ->where('variation_id', $variantId)
         // ->first();
-        // if($distributeproduct){
-        //     $input['quantity'] = $distributeproduct->quantity + 1;
-        //     $distributeproduct->update($input);
-        // }else{
-        //     $input['quantity'] = 1;
-        //     DistributeProducts::create($input);
+        $fromOutletItemData = outlet_item_data($fromOutletId,$variantId);
+
+        // if($outletItem) {
+        //     $variant_qty = $outletItem->quantity;
         // }
 
-        //update outlet item quantity
-        // $distributes = distributes::where('id', $distributedId)->first();
-        // $toOutletId = $distributes->to_outlet;
-        
-        // $input = [];
-        // $outletitem = OutletItem::where('outlet_id', $toOutletId)->where('variation_id', $variantId)->first();
-        
-        // if($outletitem) {
-        //     $input['quantity'] = $outletitem->quantity + 1;
-        //     $input['updated_by'] = Auth::user()->id;
-        //     // return $input;
-        //     $outletitem->update($input);
-        // }else {
-        //     $input['outlet_id'] = $toOutletId;
-        //     $input['variation_id'] = $variantId;
-        //     $input['created_by'] = Auth::user()->id;
-        //     $input['quantity'] = 1;
-        //     OutletItem::create($input);
-        // }
-        //create $input with outlet_itmes_tbl columns
-        
-        //get main inventory qty  with variant_id and main outlet id
-        // $outletitem = OutletItem::where('outlet_id', $fromOutletId)->where('variation_id', $variantId)->first();
-        
-        // $qty = $outletitem->quantity - 1;
+        $variant_qty = $fromOutletItemData->quantity;
 
-        // $input = [];
-        // $input['quantity'] = $qty;
-        // $outletitem->update($input);
-
-        // $distribute_product = DistributeProducts::select('distribute_products.*','products.product_name')->join("variations", "variations.id", "=", "distribute_products.variant_id")
-        //                         ->join("products", "products.id", "=", "variations.product_id")->where("distribute_id", $distributedId)->get();
-
-                                // return $distribute_product;
+      
         $total = 0;
         $subtotal = 0;
 
-        // if($distribute_product){
-        //     foreach($distribute_product as $product){       
-        //         // return $product;         
-                $subtotal = $variant_product->purchased_price;
+             
+                $subtotal = $fromOutletItemData->purchased_price;
                 $total += $subtotal; 
                 $html .= '
                         <tr data-id="'.$variantId.'">
@@ -112,37 +57,28 @@ class SearchController extends Controller
                                 <div class="qty-box border rounded">
                                     <div class="row gx-0">
                                         <div class="col">
-                                            <div class="border p-2"><input type="text" name="'.$variant_product->item_code.'_qtyNumber" class="number number-box number-qty" id="quantity-num" min="1" value="1" data-id="['.$variant_product->purchased_price.','.$variant_qty.']"></div>
+                                            <div class="border p-2"><input type="text" name="'.$variant_product->item_code.'_qtyNumber" class="number number-box number-qty" id="quantity-num" min="1" value="1" data-id="['.$fromOutletItemData->purchased_price.','.$variant_qty.']"></div>
                                         </div>
                                         <div class="col">
-                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseValue(this, '.$variant_product->purchased_price.','.$variant_qty.')" value="Increase Value">+</div>
+                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="increaseValue(this, '.$fromOutletItemData->purchased_price.','.$variant_qty.')" value="Increase Value">+</div>
                                         </div>
                                         <div class="col">
-                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="decreaseValue(this,'.$variant_product->purchased_price.','.$variant_qty.')" value="Decrease Value">-</div>
+                                            <div class="value-button h-100 border d-flex align-items-center justify-content-center" onclick="decreaseValue(this,'.$fromOutletItemData->purchased_price.','.$variant_qty.')" value="Decrease Value">-</div>
                                         </div>  
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">'.$variant_product->purchased_price.'</td>
+                            <td class="align-middle">'.$fromOutletItemData->purchased_price.'</td>
                             <td class="align-middle subtotal">'.$subtotal.'</td>
                             <td class="align-middle"><a href="javascript:void(0)" onclick="deleteDisValue(this)" class="text-danger deleteBox">Delete</a></td>
                         </tr>';
-        //     }
-        // }
+      
         $response = array();
         $response['total'] = $total;
         $response['html'] = $html;
 
         return json_encode($response);
-        // return $html;
-        
-        // $html = '';
-        // $keyword = $request->input('keyword');
-        // $products = Products::select('*')->where('product_name', 'like', "%$keyword%")
-        //                     ->get();
-        // if($products){
-        //     return $products;
-        // }
+       
     }
 
     public function search_outlet_distributes (Request $request) 
