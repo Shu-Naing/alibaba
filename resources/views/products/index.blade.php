@@ -54,6 +54,7 @@
         <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">List Product</h4>
             <div>
+                @include('breadcrumbs')
             </div>
         </div>
 
@@ -74,7 +75,7 @@
 
                             <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
                                 {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
-                            <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
+                                <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
                                 <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
                             </div>
                         </div>

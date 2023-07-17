@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Outlets;
 use App\Models\Categories;
 use App\Models\Counter;
+use App\Models\DistributeProducts;
+use App\Models\OutletDistributeProduct;
 use Illuminate\Support\Facades\DB;
 
 class OutletController extends Controller
@@ -39,7 +41,7 @@ class OutletController extends Controller
     {
         $breadcrumbs = [
               ['name' => 'Outlets', 'url' => route('outlets.index')],
-              ['name' => 'Create Outlets']
+              ['name' => 'Create']
         ];
         return view('outlets.create', compact('breadcrumbs'));
     }
@@ -107,7 +109,8 @@ class OutletController extends Controller
     {
         $outlet = Outlets::findorFail($id);
         $breadcrumbs = [
-              ['name' => 'Outlets Edit', 'url' => route('outlets.edit', $outlet->id)]
+            ['name' => 'Outlets', 'url' => route('outlets.index')],
+              ['name' => 'Edit', 'url' => route('outlets.edit', $outlet->id)]
         ];
 
         $dummyDataPath = public_path('/dummy_data.json');
@@ -174,6 +177,46 @@ class OutletController extends Controller
             // Failed to save, redirect back to the form view with input and errors
             return redirect()->back()->with('error', 'Failed to update the record.');
         }
+        
+    }
+    
+    public function history(Request $request)
+    {
+        $breadcrumbs = [
+              ['name' => 'Outlets', 'url' => route('outlets.index')],
+              ['name' => 'Outlet History']
+        ];
+        // return "hello".$request->outlet;
+        $outlets = getOutlets();
+        $machines = getMachines();
+        // return view('outlets.history', compact('outlets'));
+        if($request->outlet){
+            $id = $request->outlet;
+        }else{
+            $id = MAINOUTLETID;
+        }
+
+        $issued_distribute_products = DistributeProducts::join('distributes', 'distributes.id', 'distribute_products.distribute_id')->join('variations', 'variations.id', 'distribute_products.variant_id')->where('from_outlet', $id)->get();
+        // return $issued_distribute_porducts;
+
+        $recieved_distribute_products = DistributeProducts::join('distributes', 'distributes.id', 'distribute_products.distribute_id')->join('variations', 'variations.id', 'distribute_products.variant_id')->where('to_outlet', $id)->get();
+
+        // $recieved_outlet_distribute_products = OutletDistributeProduct::join('outlet_distributes', 'outlet_distributes.id', 'outlet_distribute_products.outlet_distribute_id')->join('variations', 'variations.id', 'outlet_distribute_products.variant_id')->where('from_outlet', $id)->where('store_customers', IS_STORE )->orWhere('store_customer', null)->get();
+        $recieved_outlet_distribute_products = OutletDistributeProduct::join('outlet_distributes', 'outlet_distributes.id', 'outlet_distribute_products.outlet_distribute_id')
+        ->join('variations', 'variations.id', 'outlet_distribute_products.variant_id')
+        ->where('from_outlet', $id)
+        ->where(function ($query) {
+                $query->where('store_customer', 2)
+                    ->orWhereNull('store_customer');
+        })
+        ->get();
+
+        $data = [];
+        $data['issue'] = $issued_distribute_products;
+        $data['recieve'] = $recieved_distribute_products;
+        $data['outletrecieve'] = $recieved_outlet_distribute_products;
+        // $di
+        return view('outlets.history', compact('outlets', 'data', 'breadcrumbs', 'machines'));
         
     }
 

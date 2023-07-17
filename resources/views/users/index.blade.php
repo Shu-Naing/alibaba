@@ -9,6 +9,7 @@
         <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">List User</h4>
             <div>
+                @include('breadcrumbs')
             </div>
         </div>
         @if (count($errors) > 0)

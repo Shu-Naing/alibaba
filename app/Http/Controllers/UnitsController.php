@@ -10,14 +10,23 @@ class UnitsController extends Controller
 {
     public function index()
     {
+        $breadcrumbs = [
+              ['name' => 'Units']
+        ];
+
         $units = Units::where('status', 1)->get();
 
-        return view('units.index', compact('units'));
+        return view('units.index', compact('units', 'breadcrumbs'));
     }
 
     public function create()
     {
-        return view('units.create');
+        $breadcrumbs = [
+              ['name' => 'Units', 'url' => route('units.index')],
+              ['name' => 'Create']
+        ];
+
+        return view('units.create', compact('breadcrumbs'));
     }
 
     public function store(Request $request)
@@ -37,8 +46,13 @@ class UnitsController extends Controller
 
     public function edit($id)
     {
+        $breadcrumbs = [
+              ['name' => 'Units', 'url' => route('units.index')],
+              ['name' => 'Edit']
+        ];
+
         $units = units::find($id);
-        return view('units.edit',compact('units'));
+        return view('units.edit',compact('units', 'breadcrumbs'));
     }
     public function update(Request $request,$id)
     {

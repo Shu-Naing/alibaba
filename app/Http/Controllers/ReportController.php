@@ -13,12 +13,16 @@ use Maatwebsite\Excel\Facades\Excel;
 class ReportController extends Controller
 {
     public function productReport(){
-
+        $breadcrumbs = [
+              ['name' => 'Products', 'url' => route('products.index')],
+              ['name' => 'Report Product']
+        ];
+        
         $reports = Variation::with('product.brand','product.category','product.unit')->get();
         // return $reports;
         $outlets = Outlets::with('machines')->where('id','!=',1)->get();
         // return $outlets;
-        return view('reports.products',compact("reports","outlets"));
+        return view('reports.products',compact("reports","outlets", 'breadcrumbs'));
     }
 
     public function exportProduct(){
@@ -34,11 +38,16 @@ class ReportController extends Controller
     }
     
     public function outletstockoverviewReport() {
+        $breadcrumbs = [
+              ['name' => 'Outlets', 'url' => route('outlets.index')],
+              ['name' => 'Outlet Stock Overview Report']
+        ];
+
         $outletstockoverviews = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')
         ->whereNotNull('item_code')
         ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
         ->get();
-        return view('reports.outletstockoverview', compact('outletstockoverviews'));
+        return view('reports.outletstockoverview', compact('outletstockoverviews', 'breadcrumbs'));
     }
     
     public function exportOutletstockoverview() {

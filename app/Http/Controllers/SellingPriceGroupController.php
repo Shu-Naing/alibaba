@@ -10,10 +10,14 @@ class SellingPriceGroupController extends Controller
 {
     public function index()
     {
-
+        
+        $breadcrumbs = [
+              ['name' => 'Selling Price Group']
+        ];
+        
         $sellingprice = SellingPriceGroup::whereIn('status', [1, 2])->get();
 
-        return view('sellingprice.index', compact('sellingprice'));
+        return view('sellingprice.index', compact('sellingprice', 'breadcrumbs'));
     }
 
     public function create()

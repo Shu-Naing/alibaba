@@ -22,4 +22,15 @@ class TestController extends Controller
 
         return view('testing.searchtesting', compact('users'));
     }
+
+    public function test()
+    {
+        return view('testing.test');
+    }
+
+    public function testform(Request $request)
+    {
+        // return $request->g-recaptcha-response;
+        return view('testing.test');
+    }
 }

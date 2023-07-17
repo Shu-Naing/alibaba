@@ -9,6 +9,9 @@
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
             <h4 class="fw-bolder mb-3">List Distribute Product</h4>
+            <div>
+                @include('breadcrumbs')
+            </div>
         </div>
         @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -11,9 +11,13 @@ class PurchasedPriceHistoryController extends Controller
 {
     public function index(){
 
+        $breadcrumbs = [
+              ['name' => 'Purchased Price']
+        ];
+
         $purchased_price_histories = PurchasedPriceHistory::with('variation')->get();
 
-        return view('purchasedpricehistory.index',compact('purchased_price_histories'));
+        return view('purchasedpricehistory.index',compact('purchased_price_histories', 'breadcrumbs'));
     }
 
     public function export(){

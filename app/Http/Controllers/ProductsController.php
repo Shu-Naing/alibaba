@@ -28,21 +28,29 @@ class ProductsController extends Controller
 {
     public function index()
     {
+        $breadcrumbs = [
+              ['name' => 'Products']
+        ];
+
         // $products = Variation::with('product','product.brand','product.category','product.unit')->get();
         $products = Product::with('brand','category','unit')->get();
 
             // return $products;
     
-        return view('products.index', compact('products'));
+        return view('products.index', compact('products', 'breadcrumbs'));
     }
 
     public function create()
     {
+        $breadcrumbs = [
+              ['name' => 'Products', 'url' => route('products.index')],
+              ['name' => 'create']
+        ];
 
         $brands = Brands::all();
         $categories = Categories::all();
         $units = Units::all();
-        return view('products.create',compact('brands','categories','units'));
+        return view('products.create',compact('brands','categories','units', 'breadcrumbs'));
     }
 
     public function store(Request $request)
@@ -223,6 +231,10 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
 
     public function edit($product_id){
+        $breadcrumbs = [
+              ['name' => 'products', 'url' => route('products.index')],
+              ['name' => 'Edit']
+        ];
 
         // return $product_id;
         $brands = Brands::all();
@@ -234,7 +246,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         })->get();
         
         // return $product;
-        return view('products.edit',compact('product','variations','brands','categories','units'));
+        return view('products.edit',compact('product','variations','brands','categories','units','breadcrumbs'));
     }
 
 
@@ -411,8 +423,8 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         return back()->with('success','Product update successfully');
     }
 
-        public function get_product_lists(Request $request){
-            // return $request;
+    public function get_product_lists(Request $request){
+            // return $request->fromOutletId;
         $fromOutletId = $request->fromOutletId;
         $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
                     ->join("products", "variations.product_id", "=", "products.id")

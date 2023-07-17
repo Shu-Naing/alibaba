@@ -165,6 +165,13 @@
                                 <span class="d-none d-sm-inline">Selling Price Group</span>
                             </a>
                         </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outlethistory.history') }}"
+                                class="nav-link sidebar-link {{ Route::is('outlethistory.history') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet History</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <!-- <li class="nav-item nav-small-cap">
@@ -194,7 +201,8 @@
                             </a>
                         </li> -->
                         <li class="w-100 sidebar-item">
-                            <a href="{{ route('report.products') }}" class="nav-link sidebar-link">
+                            <a href="{{ route('report.products') }}" 
+                                class="nav-link sidebar-link {{ Route::is('report.products') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Product Reports</span>
                             </a>
