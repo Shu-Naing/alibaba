@@ -251,6 +251,7 @@ function autocomplete(inp, arr, callback) {
             this.getElementsByTagName("input")[0].getAttribute("data-id");
           callback(inp.value, inp.id);
           closeAllLists();
+          inp.value = "";
         });
         a.appendChild(b);
         count++; // Increment displayed suggestion count
@@ -269,8 +270,113 @@ function autocomplete(inp, arr, callback) {
 var product = [];
 
 if (document.getElementById("searchInput")) {
-  var fromOutletId = $("#searchInput").data("id");
-  // console.log(fromOutletId);
+  $("#fromOutlet").change(function () {
+    var fromOutletId = $(this).children(":selected").val();
+    $("#show_dsProduct table tbody").html("");
+    $("#total").html(0);
+
+    // console.log("hello" + fromOutletId);
+
+    $.get(
+      "/get-product-lists",
+      { fromOutletId: fromOutletId },
+      function (data, status) {
+        // console.log(data);
+        if (status == "success") {
+          let productArr = [];
+          product = Object.keys(data).map((key) => {
+            productArr.push({
+              id: key,
+              title: data[key],
+            });
+          });
+
+          // var distributedId = $("#distributedId").val();
+          function resultGet(res, id) {
+            $.ajax({
+              url: "/search",
+              type: "GET",
+              data: {
+                // distributed_id: distributedId,
+                variant_id: id,
+                from_outlet: fromOutletId,
+              },
+              success: function (response) {
+                var tablehaveItem = $("#show_dsProduct table tbody tr");
+                var res = JSON.parse(response);
+                var errorBox = $(".errorbox");
+                if (
+                  $('#itemTable tbody tr[data-id="' + id + '"]').length === 0
+                ) {
+                  // Item does not exist, add it to the table
+                  $("#show_dsProduct table tbody").append(res.html);
+                  var total = calculateTotal();
+                  $("#total").html(total);
+                  errorBox.html("").removeClass("alert alert-danger");
+                  if (tablehaveItem.css("background-color", "#fee7e1")) {
+                    tablehaveItem.css("background-color", "");
+                  }
+                } else {
+                  if (tablehaveItem.css("background-color", "#fee7e1")) {
+                    tablehaveItem.css("background-color", "");
+                  }
+                  // Item already exists, display an error message or take appropriate action
+                  if (errorBox.html() === "") {
+                    errorBox
+                      .append(
+                        "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+                      )
+                      .addClass("alert alert-danger");
+                    errorBox.append("This item is already have.<br/>");
+                  } else {
+                    errorBox.html("");
+                    errorBox
+                      .append(
+                        "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+                      )
+                      .addClass("alert alert-danger");
+                    errorBox.append("This item is already have.<br/>");
+                  }
+
+                  $('#itemTable tbody tr[data-id="' + id + '"]').css(
+                    "background-color",
+                    "#fee7e1"
+                  );
+
+                  // setTimeout(function () {
+                  //   $('#itemTable tbody tr[data-id="' + id + '"]').removeClass(
+                  //     "border border-warning"
+                  //   );
+                  //   errorBox.html("").removeClass("alert alert-danger");
+                  // }, 10000);
+                  // Remove the highlight when clicked
+                  $('#itemTable tbody tr[data-id="' + id + '"]').on(
+                    "click",
+                    function () {
+                      $(this).css("background-color", "");
+                      errorBox.html("").removeClass("alert alert-danger");
+                    }
+                  );
+
+                  $(window).scrollTop(0);
+                }
+              },
+            });
+          }
+          autocomplete(
+            document.getElementById("searchInput"),
+            productArr,
+            resultGet
+          );
+        } else {
+          console.log(status);
+        }
+      }
+    );
+  });
+
+  // var fromOutletId = $("#searchInput").data("id");
+
   $.get(
     "/get-product-lists",
     { fromOutletId: fromOutletId },
@@ -414,4 +520,17 @@ if (document.getElementById("outletissue_searchInput")) {
       }
     }
   );
+}
+
+function calculateTotal() {
+  var subtotal_arr = $(".subtotal");
+  var total = 0;
+  if (subtotal_arr.length > 0) {
+    subtotal_arr.each(function () {
+      var subtotal = parseInt($(this).text());
+      total += subtotal; // Add subtotal to the sum
+    });
+  }
+
+  return total;
 }

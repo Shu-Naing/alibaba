@@ -286,8 +286,8 @@ class ProductsController extends Controller
         return back()->with('success','Product update successfully');
     }
 
-        public function get_product_lists(Request $request){
-            // return $request;
+    public function get_product_lists(Request $request){
+            // return $request->fromOutletId;
         $fromOutletId = $request->fromOutletId;
         $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
                     ->join("products", "variations.product_id", "=", "products.id")

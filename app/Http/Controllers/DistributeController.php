@@ -59,27 +59,93 @@ class DistributeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'date' => 'required',
-            'reference_No' => 'required|unique:distributes',
-            'status' => 'required',
-            'from_outlet' =>'required',
-            'to_outlet' =>'required',
-        ]);
-        $input = $request->all();
-        $input['created_by'] = Auth::user()->id;
+        // $breadcrumbs = [
+        //       ['name' => 'Outlets', 'url' => route('outlets.index')],
+        //       ['name' => 'Distribute Products']
+        // ];
 
-        $breadcrumbs = [
-              ['name' => 'Outlets', 'url' => route('outlets.index')],
-              ['name' => 'Distribute Products']
-        ];
-        // $outlets = getOutlets();
+        $data = $request->all();
+        $item_arr = [];
 
-        $distribute = distributes::create($input);
-        $distributeId = $distribute->id;
+        // create distribute table start
+            $this->validate($request, [
+                'date' => 'required',
+                'reference_No' => 'required|unique:distributes',
+                'status' => 'required',
+                'from_outlet' =>'required',
+                'to_outlet' =>'required',
+            ]);
+            $input = $request->only('date', 'reference_No', 'status', 'from_outlet', 'to_outlet');
+            $input['created_by'] = Auth::user()->id;
+
+            $distribute = distributes::create($input);
+            $distributeId = $distribute->id;
+            // return $data
+        // create distribute table end
+
+        foreach($data as $key => $value) {
+            $key_arr = explode("_", $key);
+            if(count($key_arr) > 1){
+                if($key_arr[1] == 'qtyNumber'){ 
+                    $item_arr[$key_arr[0]] = $value;    
+                }
+            }
+        }
+        
+        foreach($item_arr as $key => $value){
+            // return $row;
+            $variation = Variation::where('item_code', $key)->first();
+
+            // distribute product create start
+                $input = [];
+                $input['distribute_id'] = $distributeId;
+                $input['variant_id'] = $variation->id;
+                $input['purchased_price'] = $variation->purchased_price;
+                $input['subtotal'] = $variation->purchased_price * $value;
+                $input['remark'] = $request->remark;
+                $input['created_by'] = Auth::user()->id;
+                $input['quantity'] = $value;
+                DistributeProducts::create($input);
+            // distribute product create end
+            
+            // need to change for fifo tech start // to outlet add product item start
+                $input = [];
+                $input['outlet_id'] = $request->to_outlet;
+                $input['variation_id'] = $variation->id;
+                $input['created_by'] = Auth::user()->id;
+
+                $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $variation->id)->first();
+                if($outletitem) {
+                    $input['quantity'] = $value + $outletitem->quantity;
+                    $outletitem->update($input);
+                }else {
+                    $input['quantity'] = $value;
+                    OutletItem::create($input);
+                }
+            // need to change for fifo tech end // to outlet add product item end
+
+            //create $input with outlet_itmes_tbl columns
+            
+            // from formoutlet add product item start
+                //get main inventory qty  with variant_id and main outlet id
+                $from_outlet_item = OutletItem::select('quantity')
+                    ->where('outlet_id', $request->from_outlet)
+                    ->where('variation_id', $variation->id)->first();
+                
+                $qty = $from_outlet_item->quantity - $value;
+                
+                //update outlet_items_tbl with main outlet id 
+                $fromOutlet = OutletItem::where('outlet_id', $request->from_outlet)->where('variation_id', $variation->id)->first();
+                $input = [];
+                $input['quantity'] = $qty;
+                $fromOutlet->update($input); 
+            // from formoutlet add product item end
+
+        }
         
         // return redirect('distribute.edit')->view(, compact('distribute','outlets'));
-        return redirect()->route('distribute.edit', ['id' => $distributeId, 'from_outlet'=>$distribute->from_outlet]);
+        // return redirect()->route('distribute.edit', ['id' => $distributeId, 'from_outlet'=>$distribute->from_outlet]);
+        return redirect()->back();
     }
 
     /**
