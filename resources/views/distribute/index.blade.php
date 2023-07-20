@@ -44,7 +44,7 @@
                             <td>{{$outlets[$distribute->to_outlet]}}</td>
                             <td>
                                 <a href="{{ route('distribute.show',$distribute->id) }}" class="mx-2">View</a>
-                                <a href="{{ route('distribute.edit',[$distribute->id, $distribute->from_outlet]) }}" class="mx-2">Edit</a>
+                                {{-- <a href="{{ route('distribute.edit',[$distribute->id, $distribute->from_outlet]) }}" class="mx-2">Edit</a> --}}
                             </td>
                         </tr>
                     @endforeach                    

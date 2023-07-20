@@ -85,6 +85,8 @@
         </div>
         <!-- Display the list of products -->
 
+
+
         <table id="table_id">
             <thead>
                 {{-- <tr>

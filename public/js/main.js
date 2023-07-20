@@ -143,6 +143,7 @@ function removeField(group) {
 function increaseValue(button, purchasedPrice, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
+
   if (value < variant_qty) {
     input.value = isNaN(value) ? 0 : value + 1;
     var subtotal = input.value * purchasedPrice;
@@ -333,6 +334,8 @@ function deleteDisValue(disPdID) {
   $("#deleteModal").modal("show");
   $(".confirmButton").on("click", function () {
     disPdID.parentNode.parentNode.remove();
+    var total = calculateTotal();
+    $("#total").html(total);
     $("#deleteModal").modal("hide");
   });
   // var deletebutton = $(".deleteBox");
@@ -467,8 +470,29 @@ $(".outletstockhistory-check").on("change", function () {
   // Perform some other action
   //   }
 });
-
 // outlet stock histories end
+
+// outlet level histories start
+$(".outletlevelhistory-check").on("change", function () {
+  // console.log("hello");
+  var isChecked = $(this).is(":checked");
+  var outletlevelhistory_id = $(this).val();
+  // console.log(isChecked, outletlevelhistory_id);
+
+  $.ajax({
+    url: "/checkoutletlevelhistory/",
+    type: "GET",
+    data: {
+      check: isChecked,
+      id: outletlevelhistory_id,
+    },
+    success: function (response) {
+      // console.log(response);
+      // location.reload();
+    },
+  });
+});
+// outlet level histories end
 
 // outlet stock overview reprot for check column start
 $(".outletstockoverview-check").on("change", function () {

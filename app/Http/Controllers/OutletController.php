@@ -59,7 +59,6 @@ class OutletController extends Controller
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'country' => 'required',
         ]);
 
         // return $request;

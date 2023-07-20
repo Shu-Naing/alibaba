@@ -381,7 +381,7 @@ if (document.getElementById("searchInput")) {
     "/get-product-lists",
     { fromOutletId: fromOutletId },
     function (data, status) {
-      // console.log(data);
+      console.log(data);
       if (status == "success") {
         let productArr = [];
         product = Object.keys(data).map((key) => {
@@ -408,6 +408,10 @@ if (document.getElementById("searchInput")) {
               // $("#show_dsProduct").html(res.html);
               // $("#total").html(res.total);
             },
+            error: function(xhr, status, error) {
+              alert('An error occurred while adding the product to cart');
+              console.log(xhr.responseText);
+          }
           });
         }
         autocomplete(

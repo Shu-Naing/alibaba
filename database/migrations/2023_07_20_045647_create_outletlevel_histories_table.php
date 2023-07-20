@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('outlets', function (Blueprint $table) {
+        Schema::create('outletlevel_histories', function (Blueprint $table) {
             $table->id();
-            $table->integer('outlet_id');
-            $table->string('name');
-            $table->string('city');
-            $table->string('state');
+            $table->unsignedBigInteger('outlet_id');
+            $table->string('type')->default('R');
+            $table->integer('quantity');
+            $table->string('item_code');
+            $table->string('branch')->nullable();
+            $table->date('date')->default(now());
+            $table->text('remark')->nullable();
+            $table->boolean('is_check')->default(0);
             $table->timestamps();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('outlets');
+        Schema::dropIfExists('outletlevel_histories');
     }
 };

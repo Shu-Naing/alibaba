@@ -10,6 +10,7 @@ use App\Models\Variation;
 use App\Models\Categories;
 use App\Models\OutletItem;
 use Illuminate\Support\Str;
+use App\Models\OutletItemData;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PurchasedPriceHistory;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -75,6 +76,7 @@ class ProductsImport implements ToModel,WithHeadingRow
             'points' => $row['point'],
             'tickets' => $row['ticket'],
             'kyat' => $row['kyat'],
+            'barcode'=> $row['barcode'],
             'created_by' => $created_by,
         ]);
 
@@ -84,8 +86,17 @@ class ProductsImport implements ToModel,WithHeadingRow
 
         $outlet_item = OutletItem::firstOrCreate([
             'outlet_id' => $outlet_id,'variation_id' => $variation->id,
-            'quantity' => $row['received_qty'],
             'created_by' => $created_by,
+        ]);
+
+        $outlet_item_data = OutletItemData::firstOrCreate([
+            'outlet_item_id' => $outlet_item->id,
+            'purchased_price' => $variation->purchased_price,
+                'points' => $variation->points,
+                'tickets' => $variation->tickets,
+                'kyat' => $variation->kyat,
+                'quantity' => $row['received_qty'],
+                'created_by' => $created_by,
         ]);
 
         $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
@@ -94,7 +105,7 @@ class ProductsImport implements ToModel,WithHeadingRow
                 'points' => $variation->points,
                 'tickets' => $variation->tickets,
                 'kyat' => $variation->kyat,
-                'quantity'=> $outlet_item->quantity,
+                'quantity' => $row['received_qty'],
                 'created_by' => $created_by,
             ]
         );

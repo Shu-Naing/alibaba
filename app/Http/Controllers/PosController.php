@@ -86,7 +86,7 @@ class PosController extends Controller
             $query->where('created_by',$user_id)->where('id',$pos_id);
         })->with('variation','pos')->get();
  
-        
+        // return $outlet_items;
        
         return view('pos.index',compact('outlet_items','temps','pos_items'));
     }
@@ -181,7 +181,10 @@ class PosController extends Controller
             $pos_item->variation_value = $temp->variation_value;
             $pos_item->save();
 
-            OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$temp->variation_id)->decrement('quantity', $temp->quantity);
+            // OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$temp->variation_id)->decrement('quantity', $temp->quantity);
+            $outletItemData = outlet_item_data($outlet_id,$temp->variation_id);
+            $outletItemData->quantity = $outletItemData->quantity - $temp->quantity;
+            $outletItemData->update();
         }
 
         Temp::where('created_by',$user_id)->delete();

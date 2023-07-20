@@ -82,6 +82,17 @@
                 </div>
                 <div class="row">
                     @foreach ($outlet_items as $outlet_item)
+                        @php 
+
+                           
+                                $outlet_item_kyat =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->kyat ;
+                                $outlet_item_points =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->points ;
+                                $outlet_item_tickets =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->tickets ;
+                                $outlet_item_quantity =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->quantity ;
+                          
+                            
+
+                        @endphp
                         <div class="col-lg-4">
                             <div class="card p-2 border text-center">
                                 <img src="{{ asset('storage/' . $outlet_item->variation->image) }}"
@@ -91,9 +102,9 @@
                                 <small class="fw-bolder">[{{ $outlet_item->variation->item_code }}]</small>
                                 <small class="fw-bolder">{{ $outlet_item->variation->select }} :
                                     {{ $outlet_item->variation->value }}</small>
-                                @if ($outlet_item->variation->kyat != null || $outlet_item->variation->kyat != 0)
-                                    <small class="fw-bolder">Kyat :
-                                        {{ $outlet_item->variation->kyat }}</small>
+                               
+                                @if ($outlet_item_kyat != null || $outlet_item_kyat != 0)
+                                <small class="fw-bolder">Kyat : {{$outlet_item_kyat  }}</small>
                                 @endif
 
                                 <small class="fw-bolder">
@@ -105,15 +116,10 @@
                                         {{ $outlet_item->variation->tickets }}
                                     @endif
                                 </small>
-                                @if ($outlet_item->quantity == 0)
+                                @if ($outlet_item_quantity == 0)
                                     <button class="btn btn-red btn-sm mt-2" disabled>Out Of Stock</button>
                                 @else
-                                    {{-- <button class="btn btn-red btn-sm mt-2 add-pos-btn"
-                                        data-variation-id="{{ $outlet_item->variation->id }}"
-                                        @if (request()->get('filter') === 'point') data-variation-value="{{ $outlet_item->variation->points }}" @endif
-                                        @if (request()->get('filter') === 'ticket') data-variation-value="{{ $outlet_item->variation->tickets }}" @endif
-                                        @if (request()->get('filter') === 'kyat') data-variation-value="{{ $outlet_item->variation->kyat }}" @endif
-                                        @if (!request()->has('filter') || session()->has('pos-success')) disabled @endif>Added</button> --}}
+                                    
                                         <button class="btn btn-red btn-sm mt-2 add-pos-btn"
                                         data-variation-id="{{ $outlet_item->variation->id }}"
                                         @if (request()->get('filter') === 'points') data-payment-type="points" @endif
@@ -163,16 +169,14 @@
                                             @elseif(request()->get('filter') === 'tickets')
                                                 <small class="fw-bold">Ticket : {{ $temp->variation->tickets }}</small>
                                             @endif
-                                            {{-- <small class="fw-bold">Point : {{ $temp->variation->points }},Ticket :
-                                                {{ $temp->variation->tickets }}</small> --}}
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <input type="number" class="form-control qty" value="{{ $temp->quantity }}"
                                             data-temp-id="{{ $temp->id }}"
-                                            data-outlet-item-stock="{{ outlet_stock($temp->variation->id, Auth::user()->outlet->id) }}"
+                                            data-outlet-item-stock="{{ outlet_item_data(Auth::user()->outlet_id,$temp->variation->id)->quantity }}"
                                             min="1"
-                                            max="{{ outlet_stock($temp->variation->id, Auth::user()->outlet->id) }}">
+                                            max="{{ outlet_item_data(Auth::user()->outlet_id,$temp->variation->id)->quantity }}" id="quantityInput">
 
                                     </div>
                                     <div class="col-md-1 text-center">
@@ -282,38 +286,43 @@
 
 
             // Update Item
-            $('.qty').on('change', function() {
-                var qty = $(this).val();
-                var temp_id = $(this).data('temp-id');
-                var outlet_item_stock = $(this).data('outlet-item-stock');
-                if (qty > outlet_item_stock) {
-                    qty = outlet_item_stock;
-                }
+            $('.qty').on('change keydown', function(event) {
+    if (event.type === 'keydown' && event.key !== 'Enter') {
+        return; // Ignore keydown events that are not the Enter key
+    }
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
+    var qty = $(this).val();
+    var temp_id = $(this).data('temp-id');
+    var outlet_item_stock = $(this).data('outlet-item-stock');
+    if (qty > outlet_item_stock) {
+        qty = outlet_item_stock;
+    }
 
-                $.ajax({
-                    url: "{{ route('positem.update') }}",
-                    type: "POST",
-                    data: {
-                        qty: qty,
-                        temp_id: temp_id
-                    },
-                    success: function(response) {
-                        // Handle the success response
-                        location.href = location.href;
-                        console.log(response);
-                    },
-                    error: function(xhr) {
-                        // Handle the error response
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: "{{ route('positem.update') }}",
+        type: "POST",
+        data: {
+            qty: qty,
+            temp_id: temp_id
+        },
+        success: function(response) {
+            // Handle the success response
+            location.href = location.href;
+            console.log(response);
+        },
+        error: function(xhr) {
+            // Handle the error response
+            console.log(xhr.responseText);
+        }
+    });
+});
+
 
 
             // Remove Item
