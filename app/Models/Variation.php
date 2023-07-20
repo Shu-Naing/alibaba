@@ -19,6 +19,7 @@ class Variation extends Model
         'points',
         'tickets',
         'kyat',
+        'barcode',
         'image',
         'created_by',
         'updated_by'       

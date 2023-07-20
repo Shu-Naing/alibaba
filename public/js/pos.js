@@ -63,6 +63,7 @@ $(document).on('keydown', function(evt) {
     
     var isActive = $("#barcode-icon").hasClass("barcode-active");
     var isSearchInput = $(evt.target).is("#searchInput");
+    var isQuantityInput = $(evt.target).is("#quantityInput");
     const urlParams = new URLSearchParams(window.location.search);
     const payment_type = urlParams.get('filter');
     // console.log('serarch parmaeter',filterValue);
@@ -76,9 +77,10 @@ $(document).on('keydown', function(evt) {
             barcode = '';
             return;
         }else{
-            if (!isSearchInput) {
+            if (!isSearchInput && !isQuantityInput) {
                 alert('Please Select Barcode First!');
             }
+          
         }
        
     }
@@ -90,18 +92,15 @@ $(document).on('keydown', function(evt) {
 });
 
 function handleBarcode(scanned_barcode,payment_type) {
-    // $('#last-barcode').text(scanned_barcode);
-    // var currentUrl = window.location.href;
-    // console.log(currentUrl);
-    // var urlParams = new URLSearchParams(currentUrl);
+
     
     addTempItem(null , payment_type , scanned_barcode)
 }
 
 
-$('#searchInput').keypress(function(event) {
-    // console.log(event.keyCode);
-    if (event.keyCode === 13) {
+$('#searchInput').on('keydown', function(event) {
+    // console.log(event.key);
+    if (event.key === 'Enter') {
         event.preventDefault();
         var searchValue = $('#searchInput').val();
         var currentUrl = window.location.href;
@@ -109,7 +108,7 @@ $('#searchInput').keypress(function(event) {
         var newUrl;
 
         // Check if the 'key' parameter already exists in the URL
-        if (currentUrl.indexOf('key=') > -1) {
+        if (currentUrl.includes('key=')) {
             // If 'key' parameter exists, replace its value
             newUrl = currentUrl.replace(/key=.*/, 'key=' + searchValue);
         } else {
@@ -120,6 +119,7 @@ $('#searchInput').keypress(function(event) {
         window.location.href = newUrl;
     }
 });
+
 
 });
 

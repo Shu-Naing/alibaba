@@ -169,7 +169,7 @@
                                 'class' => 'form-control',
                             ]) !!}
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <label for="purchased_price" class="form-label">Purchased Price</label>
                             {!! Form::text('variations[0][purchased_price]', null, [
                                 'placeholder' => 'Purchased Price',
@@ -179,6 +179,13 @@
                         <div class="col-lg-4">
                             <label for="product_img" class="form-label">Product Image</label>
                             <input type="file" class="form-control" name="variations[0][image]">
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="barcode" class="form-label">Barcode</label>
+                            {!! Form::text('variations[0][barcode]', null, [
+                                'placeholder' => 'Barcode',
+                                'class' => 'form-control',
+                            ]) !!}
                         </div>
 
                     </div>
@@ -269,7 +276,7 @@
                                 'class' => 'form-control',
                             ]) !!}
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                             <label for="purchased_price" class="form-label">Purchased Price</label>
                             {!! Form::text('variations[${variationCount}][purchased_price]', null, [
                                 'placeholder' => 'Purchased Price',
@@ -279,6 +286,13 @@
                         <div class="col-lg-4">
                             <label for="product_img" class="form-label">Product Image</label>
                             <input type="file" class="form-control" name="variations[${variationCount}][image]" required>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="barcode" class="form-label">Barcode</label>
+                            {!! Form::text('variations[${variationCount}][barcode]', null, [
+                                'placeholder' => 'Barcode',
+                                'class' => 'form-control',
+                            ]) !!}
                         </div>
 
                     </div>

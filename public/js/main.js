@@ -31,20 +31,6 @@ $(document).ready(function () {
     }
   });
 
-  $(".number").focusout(function () {
-    let disPdID = $(this).attr("data-id");
-    $.ajax({
-      url: "/update-product-qty/" + disPdID,
-      type: "GET",
-      data: {
-        qty: this.value,
-      },
-      success: function (response) {
-        location.reload();
-      },
-    });
-  });
-
   $(document).on("change", ".counterMachine", function () {
     if ($(this).val() === "1") {
       $(".counter").attr("disabled", false);
@@ -154,53 +140,149 @@ function removeField(group) {
 // }
 
 // start distribute product
-function increaseValue(button, disPdID, variantID, variant_qty) {
+function increaseValue(button, purchasedPrice, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
+
   if (value < variant_qty) {
     input.value = isNaN(value) ? 0 : value + 1;
-    console.log(input.value);
+    var subtotal = input.value * purchasedPrice;
+    var priceTotal =
+      button.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(
+        ".subtotal"
+      );
+
+    priceTotal.textContent = subtotal;
   } else {
     input.value = variant_qty;
   }
-  var type = $("#increase-type").data("id");
-  $.ajax({
-    url: "/update-product-qty/" + disPdID + "/" + variantID,
-    type: "GET",
-    data: {
-      type: type,
-      qty: input.value,
-    },
-    success: function (response) {
-      // console.log(response);
-      location.reload();
-    },
-  });
+  var total = calculateTotal();
+  $("#total").html(total);
 }
 
-function decreaseValue(button, disPdID, variantID) {
+function decreaseValue(button, purchasedPrice, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
   var value = parseInt(input.value, 10);
-  input.value = isNaN(value) || value < 1 ? 0 : value - 1;
-  // input.value = isNaN(value) || value < 1 ? 0 : value - 1;
-  // console.log("decre", disPdID);
-  var type = $("#decrease-type").data("id");
-  // console.log(type);
-  $.ajax({
-    url: "/update-product-qty/" + disPdID + "/" + variantID,
-    type: "GET",
-    data: {
-      type: type,
-      qty: input.value,
-    },
-    success: function (response) {
-      location.reload();
-      // console.log();
-    },
-  });
+  input.value = isNaN(value) || value < 1 ? 0 : value;
+  if (input.value > 0) {
+    input.value = input.value - 1;
+  }
+  var subtotal = input.value * purchasedPrice;
+  var priceTotal =
+    button.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector(
+      ".subtotal"
+    );
 
-  // ajax
+  priceTotal.textContent = subtotal;
+  var total = calculateTotal();
+  $("#total").html(total);
 }
+
+$(document).on("focusout", ".number-box", function () {
+  var value = $(this).val();
+  var dataId_arr = $(this).data("id");
+  var purchasedPrice = dataId_arr[0];
+  var variant_qty = dataId_arr[1];
+
+  if (value < 0) {
+    $(this).val(1);
+    value = 1;
+  } else if (value > variant_qty) {
+    $(this).val(variant_qty);
+    value = variant_qty;
+  }
+  var subtotal = value * purchasedPrice;
+  $(this).closest("tr").find("td:eq(4)").text(subtotal);
+  var total = calculateTotal();
+  $("#total").html(total);
+});
+
+function calculateTotal() {
+  var subtotal_arr = $(".subtotal");
+  var total = 0;
+  if (subtotal_arr.length > 0) {
+    subtotal_arr.each(function () {
+      var subtotal = parseInt($(this).text());
+      total += subtotal; // Add subtotal to the sum
+    });
+  }
+
+  return total;
+}
+
+// console.log(tableValue.html());
+
+// Select submit button
+var dsButton = $("#dsbutton");
+
+dsButton.on("click", function (event) {
+  // Reset previous validation feedback
+  // $(".is-invalid").removeClass("is-invalid");
+  var dateInput = $("#date");
+  var referenceInput = $("#reference");
+  var statusInput = $("#status");
+  var fromOutletInput = $("#fromOutlet");
+  var toOutletInput = $("#toOutlet");
+  var tableValue = $("#show_dsProduct table tbody tr");
+  var searchInput = $("#searchInput");
+  var errorBox = $(".errorbox");
+
+  if (
+    dateInput.val() &&
+    referenceInput.val() &&
+    statusInput.val() &&
+    fromOutletInput.val() &&
+    toOutletInput.val() &&
+    tableValue.length > 0
+  ) {
+    $(this).submit();
+  } else {
+    event.preventDefault();
+
+    if (errorBox.html() === "") {
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    } else {
+      errorBox.html("");
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    }
+
+    if (dateInput.val() === "") {
+      // dateInput.addClass("is-invalid");
+      errorBox.append("The date field is required.<br/>");
+    }
+    if (referenceInput.val() === "") {
+      // referenceInput.addClass("is-invalid");
+    }
+    if (statusInput.val() === "") {
+      // statusInput.addClass("is-invalid");
+      errorBox.append("The status field is required.<br/>");
+    }
+    if (fromOutletInput.val() === "") {
+      // fromOutletInput.addClass("is-invalid");
+      errorBox.append("From outlet field is required.<br/>");
+    }
+    if (toOutletInput.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("To outlet field is required.<br/>");
+    }
+    if (tableValue.length === 0) {
+      // searchInput.addClass("is-invalid");
+      errorBox.append("Product item is required.<br/>");
+    }
+    $(window).scrollTop(0);
+  }
+  // $(searchInput).focusout(function () {
+  //   searchInput.removeClass("is-invalid");
+  // });
+});
 
 function increaseOutletdisValue(button, disPdID, variantID, variant_qty) {
   var input = button.parentNode.parentNode.querySelector(".number");
@@ -249,14 +331,22 @@ function decreaseOutletdisValue(button, disPdID, variantID) {
 
 // for distribute product
 function deleteDisValue(disPdID) {
-  // console.log(disPdID);
-  $.ajax({
-    url: "/delete-dis-product/" + disPdID,
-    type: "GET",
-    success: function (response) {
-      location.reload();
-    },
+  $("#deleteModal").modal("show");
+  $(".confirmButton").on("click", function () {
+    disPdID.parentNode.parentNode.remove();
+    var total = calculateTotal();
+    $("#total").html(total);
+    $("#deleteModal").modal("hide");
   });
+  // var deletebutton = $(".deleteBox");
+  // alert(deletebutton);
+  // $.ajax({
+  //   url: "/delete-dis-product/" + disPdID,
+  //   type: "GET",
+  //   success: function (response) {
+  //     location.reload();
+  //   },
+  // });
 }
 
 // for outletdistribute product
@@ -324,10 +414,6 @@ $("#machine").on("change", function () {
 //   });
 // }
 
-// $(".number").focusout(() => {
-//   console.log("val", $(this).val());
-// });
-
 // end
 
 // var typingTimer;
@@ -336,32 +422,6 @@ $("#machine").on("change", function () {
 // $("#searchInput").on("input", function () {
 //   clearTimeout(typingTimer);
 //   typingTimer = setTimeout(doneTyping, doneTypingInterval);
-// });
-
-// $("#searchInput").focusout("input", function () {
-//   var keyword = $("#searchInput").val();
-//   var distributedId = $("#distributedId").val();
-//   // console.log(distributedId);
-//   if (keyword.length >= 3) {
-//     // Perform the search only if keyword length is at least 3 characters
-// $.ajax({
-//       url: "/search",
-//       type: "GET",
-//       data: {
-//         keyword: keyword,
-//         distributed_id: distributedId,
-//       },
-//       success: function (response) {
-//         let result = "";
-//         // response.forEach((data) => {
-//         //   result += `<div><a href='edit/${data.id}'>${data.product_name}</a></div>`;
-//         // });
-//         console.log(response);
-//         $("#show_dsProduct").html(response);
-//         // $("#searchResults").append(result);
-//       },
-//  });
-//   }
 // });
 
 // hamburger menu
@@ -378,78 +438,7 @@ $(".hamburger").on("click", function () {
     $(".body-wrapper").css("margin-left", "270px");
     $(".app-header").css("width", "calc(100% - 270px)");
   }
-
   // $(".body-wrapper").css("margin-left", "0px");
-});
-
-$(".number-box").on("focusout", function () {
-  var dataId = $(this).data("id");
-  var disPdID = dataId[0];
-  var variantID = dataId[1];
-  var variant_qty = dataId[2];
-
-  var inputvalue = parseInt($(this).val(), 10);
-  if (inputvalue <= variant_qty) {
-    $.ajax({
-      url: "/update-product-qty/" + disPdID + "/" + variantID,
-      type: "GET",
-      data: {
-        qty: inputvalue,
-      },
-      success: function (response) {
-        // console.log(response);
-        location.reload();
-      },
-    });
-  } else {
-    $(this).val(variant_qty);
-    $.ajax({
-      url: "/update-product-qty/" + disPdID + "/" + variantID,
-      type: "GET",
-      data: {
-        qty: variant_qty,
-      },
-      success: function (response) {
-        // console.log(response);
-        location.reload();
-      },
-    });
-  }
-});
-
-$(".outlet-number-box").on("focusout", function () {
-  var dataId = $(this).data("id");
-  var disPdID = dataId[0];
-  var variantID = dataId[1];
-  var variant_qty = dataId[2];
-
-  var inputvalue = parseInt($(this).val(), 10);
-  if (inputvalue <= variant_qty) {
-    $.ajax({
-      url: "/update-outdis-product-qty/" + disPdID + "/" + variantID,
-      type: "GET",
-      data: {
-        qty: inputvalue,
-      },
-      success: function (response) {
-        // console.log(response);
-        location.reload();
-      },
-    });
-  } else {
-    $(this).val(variant_qty);
-    $.ajax({
-      url: "/update-outdis-product-qty/" + disPdID + "/" + variantID,
-      type: "GET",
-      data: {
-        qty: variant_qty,
-      },
-      success: function (response) {
-        // console.log(response);
-        location.reload();
-      },
-    });
-  }
 });
 
 // outlet stock histories start
@@ -481,8 +470,29 @@ $(".outletstockhistory-check").on("change", function () {
   // Perform some other action
   //   }
 });
-
 // outlet stock histories end
+
+// outlet level histories start
+$(".outletlevelhistory-check").on("change", function () {
+  // console.log("hello");
+  var isChecked = $(this).is(":checked");
+  var outletlevelhistory_id = $(this).val();
+  // console.log(isChecked, outletlevelhistory_id);
+
+  $.ajax({
+    url: "/checkoutletlevelhistory/",
+    type: "GET",
+    data: {
+      check: isChecked,
+      id: outletlevelhistory_id,
+    },
+    success: function (response) {
+      // console.log(response);
+      // location.reload();
+    },
+  });
+});
+// outlet level histories end
 
 // outlet stock overview reprot for check column start
 $(".outletstockoverview-check").on("change", function () {
@@ -529,5 +539,4 @@ $(".physical-qty").on("focusout", function () {
     },
   });
 });
-
 // outlet stock overview reprot for physical column end

@@ -70,5 +70,8 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('outletdistribute.*',function($view){      
             $view->with('types',config('constants.types'));           
         });
+        view()->composer('outletlevelhistory.*',function($view){      
+            $view->with('types',config('constants.types'));           
+        });
     }
 }
