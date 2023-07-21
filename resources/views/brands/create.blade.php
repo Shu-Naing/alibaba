@@ -32,17 +32,17 @@
         ]) !!}
         @csrf
         <div class="row mb-3">
-            <div class="col-md-4 col-sm-4">
-                {!! Form::label('brand_name', 'Name *', ['class' => 'form-label']) !!}
-                {!! Form::text('brand_name', null, ['class' => 'form-control mb-3', 'id' => 'brand_name']) !!}
-            </div>
-            <div class="col-md-12 col-sm-12">
-                {!! Form::label('note', 'Short Description *', ['class' => 'form-label']) !!}
-                {!! Form::textarea('note', null, ['class' => 'form-control', 'id' => 'note', 'cols' => '40', 'rows' => '4']) !!}
+            
+            <div class="col-md-6 col-sm-6">
+                {{ Form::label('brand_name', 'Brand Name', ['class' => 'form-label' . ($errors->has('brand_name') ? ' text-danger' : '')]) }}
+                {{ Form::text('brand_name', null, ['class' => 'form-control' . ($errors->has('brand_name') ? ' is-invalid' : ''), 'id' => 'brand_name', 'placeholder' => 'Brand Name']) }}
+                @error('brand_name')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
         </div>
-        <div class="text-center">
-            <a href="{{ URL::previous() }}" class="btn btn-red">Cancel</a>
+        <div class="">
+            <a href="{{ URL::current() }}" class="btn btn-red">Cancel</a>
             <button type="submit" class="btn btn-blue ms-2">Save</button>
         </div>
         {!! Form::close() !!}

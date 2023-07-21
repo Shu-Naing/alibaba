@@ -38,14 +38,14 @@
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-md-4">
+                {{-- <div class="col-md-4">
                     {!! Form::label('country', 'Country', ['class' => 'form-label']) !!}
                     {!! Form::select('country', $countries, $outlet->country, [
                         'placeholder' => 'Choose',
                         'class' => 'form-control',
                         'id' => 'contry',
                     ]) !!}
-                </div>
+                </div> --}}
                 <div class="col-md-4">
                     {!! Form::label('city', 'City', ['class' => 'form-label']) !!}
                     {!! Form::select('city', $cities, $outlet->city, [

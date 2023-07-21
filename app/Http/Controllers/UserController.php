@@ -54,8 +54,11 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'name' => 'required',
+            'username' =>'required',
             'email' => 'required|email|unique:users,email',
+            'outlet_id' => 'required',
             'password' => 'required|same:confirm-password',
+            'confirm-password'=> 'required',
             'roles' => 'required'
         ]);
     
@@ -111,8 +114,9 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'username' =>'required|max:10|alpha_num',
+            'username' =>'required',
             'name' => 'required',
+            'outlet_id' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
             'roles' => 'required'

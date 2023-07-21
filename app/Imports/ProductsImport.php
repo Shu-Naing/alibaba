@@ -33,9 +33,8 @@ class ProductsImport implements ToModel,WithHeadingRow
        
 
         $category_name = $row['category_name'];
-        $category_code = $row['category_code'];
         $category = Categories::firstOrCreate(
-            ['category_name' => $category_name,'category_code' => $category_code],
+            ['category_name' => $category_name],
             ['create_by' => $created_by],
         );
 

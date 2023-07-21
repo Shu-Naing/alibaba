@@ -59,6 +59,7 @@ class OutletController extends Controller
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',
+            
         ]);
 
         // return $request;
@@ -132,7 +133,7 @@ class OutletController extends Controller
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'country' => 'required',
+            
         ]);
 
         $outlet = Outlets::findorFail($id);
@@ -140,7 +141,7 @@ class OutletController extends Controller
         $outlet->name = $request->name;
         $outlet->city = $request->city;
         $outlet->state = $request->state;
-        $outlet->country = $request->country;
+        // $outlet->country = $request->country;
         // $outlet->created_by = Auth::id();
         $outlet->updated_by = Auth::id();
         $outlet->save();

@@ -13,6 +13,13 @@
                 @include('breadcrumbs')
             </div>
         </div>
+
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="d-flex mb-3 justify-content-end">
             <a class="btn btn-blue" href="{{ route('units.create') }}">Add +</a>
         </div>
@@ -20,8 +27,8 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Short Name</th>
-                    <th>Allow Decimal</th>
+                    {{-- <th>Short Name</th>
+                    <th>Allow Decimal</th> --}}
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,8 +36,9 @@
                 @foreach ($units as $unit)
                     <tr>
                         <td>{{ $unit->name }}</td>
-                        <td>{{ $unit->short_name }}</td>
-                        <td>{{ $unit->allow_decimal }}</td>
+                        {{-- <td>{{ $unit->short_name }}</td>
+                        <td>{{ $unit->allow_decimal }}</td> --}}
+                        
                         <td>
                             <a class="text-decoration-underline px-3" href="{{ route('units.edit', $unit->id) }}"><i
                                     class="fa-solid fa-pen-to-square"></i> Edit</a>

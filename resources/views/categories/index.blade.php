@@ -13,15 +13,19 @@
                 @include('breadcrumbs')
             </div>
         </div>
+        @if (Session::has('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ Session::get('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="d-flex mb-3 justify-content-end">
             <a class="btn btn-blue" href="{{ route('categories.create') }}">Add +</a>
         </div>
         <table id="table_id">
             <thead>
                 <tr>
-                    <th>Category</th>
-                    <th>Category Code</th>
-                    <th>Descriptions</th>
+                    <th>Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -29,8 +33,6 @@
                 @foreach ($categories as $cate)
                     <tr>
                         <td>{{ $cate->category_name }}</td>
-                        <td>{{ $cate->category_code }}</td>
-                        <td>{{ $cate->description }}</td>
                         <td>
                             <a class="text-decoration-underline px-3" href="{{ route('categories.edit', $cate->id) }}"><i
                                     class="fa-solid fa-pen-to-square"></i> Edit</a>

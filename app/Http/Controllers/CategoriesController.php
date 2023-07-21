@@ -40,8 +40,8 @@ class CategoriesController extends Controller
 
         $category = Categories::create([
             'category_name' => $request->category_name,
-            'category_code' => $request->category_code,
-            'description' => $request->description,
+            // 'category_code' => $request->category_code,
+            // 'description' => $request->description,
             'create_by' => auth()->id()
         ]);
 
@@ -64,8 +64,8 @@ class CategoriesController extends Controller
     public function update(Request $request, Categories $category)
     {
         $request->validate([
-            'category_code' => 'required|unique:categories,category_code,'.$category->id,
-            'category_name' => 'required',
+            // 'category_code' => 'required|unique:categories,category_code,'.$category->id,
+            'category_name' => 'required|unique:categories,category_name,'.$category->id,
         ]);
 
         $category->update($request->all());
