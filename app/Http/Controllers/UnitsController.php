@@ -31,15 +31,15 @@ class UnitsController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+
+        $request->validate([
             'name' => 'required|unique:units',
-            'short_name' => 'required',
-            // 'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
         ]);
 
-        $inputs = $request->all();
-        $inputs['created_by'] = Auth::user()->id;
-        units::create($inputs);
+        Units::create([
+            'name' => $request->name,
+            'created_by' => Auth::user()->id,
+        ]);
 
         return redirect()->route('units.index')->with('success', 'Units created successfully');
     }
@@ -58,7 +58,7 @@ class UnitsController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'short_name' => 'required',
+            // 'short_name' => 'required',
             // 'allow_decimal' => ['nullable', 'regex:/^\d{1,9}(\.\d{1,2})?$/'],
         ]);
 
@@ -71,7 +71,7 @@ class UnitsController extends Controller
         //                 ->with('success','Distributor updated successfully');
 
         return redirect()->route('units.index')
-            ->with('success','Brand updated successfully');
+            ->with('success','Units updated successfully');
     }
     public function destroy($id)
     {    
@@ -81,6 +81,6 @@ class UnitsController extends Controller
         $units->save();
 
         return redirect()->route('units.index')
-                        ->with('success','units deleted successfully');
+                        ->with('success','Units deleted successfully');
     }
 }

@@ -22,10 +22,11 @@ class Authenticate extends Middleware
     // Add new method 
     protected function unauthenticated($request, array $guards)
     {
-        abort(response()->json(
-            [
-                'status' => '401',
-                'description' => 'UnAuthenticated'
-            ], 401));
+        // abort(response()->json(
+        //     [
+        //         'status' => '401',
+        //         'description' => 'UnAuthenticated'
+        //     ], 401));
+        return redirect()->guest(route('login'));
     }
 }

@@ -32,14 +32,13 @@ class BrandsController extends Controller
 
     public function store(Request $request){
         $this->validate($request,[
-            'brand_name' => 'required|unique:brands',
-            'note' => 'required'
+            'brand_name' => 'required|unique:brands,brand_name',
         ]);
         $inputs = $request->all();
         $inputs['created_by'] = Auth::user()->id;
         Brands::create($inputs);
         
-        return redirect()->route('brands.index')->with('succes','Brands create successfully');
+        return redirect()->route('brands.index')->with('success','Brands created successfully');
     }
     public function edit($id)
     {
@@ -55,8 +54,7 @@ class BrandsController extends Controller
     public function update(Request $request,$id)
     {
         $request->validate([
-            'brand_name' => 'required',
-            'note' => 'required',
+            'brand_name' => 'required|unique:brands,brand_name,'.$id,
         ]);
 
         $input = $request->all();    

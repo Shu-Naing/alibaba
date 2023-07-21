@@ -19,40 +19,33 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        @if (Session::has('error'))
+        {{-- @if (Session::has('error'))
             <div>
                 {{ Session::get('error') }}
             </div>
-        @endif
+        @endif --}}
             
-        </form>
+        {{-- </form> --}}
 
 
         {!! Form::open([
             'route' => 'units.store',
             'method' => 'post',
             'class' => 'px-3 mb-5',
-            'id' => 'distribute',
-            'enctype' => 'multipart/form-data'
         ]) !!}
         @csrf
-            <div class="row mb-3 g-3">
-                <div class="col-md-6">
-                    {!! Form::label('unit', 'Name *', ['class' => 'form-label']) !!}
-                    {!! Form::text('name', null, ['class' => 'form-control', 'id' => 'name']) !!}
-                </div>
-                <div class="col-md-6">
-                    {!! Form::label('unit', 'Short Name *', ['class' => 'form-label']) !!}
-                    {!! Form::text('short_name', null, ['class' => 'form-control', 'id' => 'short_name']) !!}
-                </div>
-                <div class="col">
-                    {{ Form::checkbox('allow_decimal') }} 
-                    {!! Form::label('allow_decimal', 'Decimal Permission', ['class' => 'form-label']) !!}
+            <div class="row mb-3">
+                <div class="col-md-6 col-sm-6">
+                    {{ Form::label('name', 'Name *', ['class' => 'form-label' . ($errors->has('name') ? ' text-danger' : '')]) }}
+                    {{ Form::text('name', null, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : ''), 'id' => 'name', 'placeholder' => 'Name']) }}
+                    @error('name')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
-            <div class="text-center">
-                <a class="btn btn-red" href="{{ URL::previous() }}">Cancel</a>
+            <div class="">
+                <a class="btn btn-red" href="{{ URL::current() }}">Cancel</a>
                 <button type="submit" class="btn btn-blue ms-2">Save</button>
             </div>
         {!! Form::close() !!}

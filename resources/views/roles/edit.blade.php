@@ -30,7 +30,7 @@
                     {!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control']) !!}
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
+            <div class="col-xs-12 col-sm-12 col-md-12 mt-3">
                 <div class="form-group">
                     <strong>Permission:</strong>
                     <br />
