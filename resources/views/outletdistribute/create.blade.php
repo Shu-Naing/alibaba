@@ -61,6 +61,43 @@
             </div>
         {!! Form::close() !!}
 
+        <h5 class="fw-bold mb-4">Add Products</h5>
+        <div class="input-group rounded w-25 mb-3">
+            <div>
+                <input type="hidden" id="outletdistribute_id" value="">
+                <input type="text" class="form-control" id="outletdistir_searchInput" data-id="" placeholder="Search...">
+                <div id="searchResults"></div>
+            </div>
+        </div>
+
+        <div id="show_dsProduct">
+            <table class="table table-bordered text-center shadow rounded">
+                <thead>
+                    <tr>
+                    <th scope="col" style="width: 30%;">Product Name</th>
+                    <th scope="col">Item Code</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Purchased Price</th>
+                    <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row justify-content-end my-5">
+            <div class="col-md-4">
+                <!-- <label for="remark" class="d-block mb-2">Remark</label>
+                <textarea name="remark" id="" cols="40" rows="4"></textarea> -->
+                {!! Form::label('remark', 'Remark', array('class' => 'form-label')) !!}
+                {!! Form::textarea('remark', null, array('class' => 'form-control','id'=>'remark', 'cols' => '40', 'rows' => '4')) !!}
+            </div>
+            <div class="col-md-4 align-items-center d-flex">
+                <h4 class="fw-bolder">Total Amount: <span id="total" class="ms-3 inline-block text-blue">0</span></h4> 
+            </div>
+        </div>
+
         <div class="text-center my-5">
             <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
@@ -68,5 +105,6 @@
         </div>
     </div>
     
+
 
 @endsection

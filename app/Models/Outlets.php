@@ -15,7 +15,6 @@ class Outlets extends Model
         'city',
         'state',
         'category_id',
-        'country',
         'created_by',
         'updated_by',
         'status',

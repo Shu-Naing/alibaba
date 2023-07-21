@@ -9,6 +9,7 @@ class TestController extends Controller
 {
     public function index(Request $request)
     {
+        // return "hello";
         $users = Products::where([
             ['product_name', '!=', Null],
             [function ($query) use ($request) {

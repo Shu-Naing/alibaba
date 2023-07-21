@@ -27,6 +27,8 @@ use App\Http\Controllers\SellingPriceGroupController;
 use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
+use App\Http\Controllers\OutletlevelhistoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -158,6 +160,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('checkoutletstockhistory',[OutletStockHistoryController::class, 'checkoutletstockhistory'])->name('checkoutletstockhistory');
     Route::get('checkoutletstockoverview',[OutletStockOverviewController::class, 'checkoutletstockoverview'])->name('checkoutletstockoverview');
+    Route::get('checkoutletlevelhistory',[OutletlevelhistoryController::class, 'checkoutletlevelhistory'])->name('checkoutletlevelhistory');
     Route::get('updatephysicalqty',[OutletStockOverviewController::class, 'updatephysicalqty'])->name('updatephysicalqty');
 
 
@@ -165,6 +168,10 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('purchased-price-history-export',[PurchasedPriceHistoryController::class,'export'])->name('purchased-price-history.export');
 
     Route::get('outlethistory',[OutletController::class,'history'])->name('outlethistory.history');
+
+    Route::get('outletlevelhistory',[OutletlevelhistoryController::class,'index'])->name('outletlevelhistory.index');
+
+
 
 
     // Route::get('test',[TestController::class,'test'])->name('test');

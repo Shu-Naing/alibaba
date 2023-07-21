@@ -11,6 +11,7 @@ use App\Models\distributes;
 use Illuminate\Http\Request;
 use App\Models\OutletItemData;
 use App\Models\DistributeProducts;
+use App\Models\OutletlevelHistory;
 
 class DistributeController extends Controller
 {
@@ -118,6 +119,30 @@ class DistributeController extends Controller
                     'remark' => $request->remark,
                     'created_by' => Auth::user()->id,
                     'quantity' => $value,
+                ]);
+
+                OutletlevelHistory::create([
+                    'outlet_id' => $request->from_outlet,
+                    'type' => ISSUE_TYPE,
+                    'quantity' => $value,
+                    'item_code' => $key,
+                    'branch' => $request->to_outlet,
+                    'date' => $request->date,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                    'remark' => $request->remark,
+                ]);
+
+                OutletlevelHistory::create([
+                    'outlet_id' => $request->to_outlet,
+                    'type' => RECIEVE_TYPE,
+                    'quantity' => $value,
+                    'item_code' => $key,
+                    'branch' => $request->from_outlet,
+                    'date' => $request->date,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                    'remark' => $request->remark,
                 ]);
             // distribute product create end
             
