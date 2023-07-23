@@ -11,6 +11,7 @@ use App\Models\Variation;
 use App\Models\Categories;
 use App\Models\OutletItem;
 use App\Models\distributes;
+use App\Models\SizeVariant;
 use Illuminate\Http\Request;
 use App\Models\OutletItemData;
 use App\Exports\ProductsExport;
@@ -21,6 +22,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ProductsSampleExport;
 use App\Models\PurchasedPriceHistory;
 use App\Models\OutletDistributeProduct;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -50,7 +52,8 @@ class ProductsController extends Controller
         $brands = Brands::all();
         $categories = Categories::all();
         $units = Units::all();
-        return view('products.create',compact('brands','categories','units', 'breadcrumbs'));
+        $sizeVariants = SizeVariant::all();
+        return view('products.create',compact('brands','categories','units','sizeVariants', 'breadcrumbs'));
     }
 
         public function store(Request $request)
@@ -66,8 +69,8 @@ class ProductsController extends Controller
             'received_date' => 'required',
             'expired_date' => 'required',
             'variations' => 'required|array',
-            'variations.*.select' => 'required',
-            'variations.*.value' => 'required',
+            'variations.*.size_variant_value' => 'required',
+            'variations.*.grn_no' => 'required',
             'variations.*.received_qty' => 'required',
             'variations.*.alert_qty' => 'required',
             'variations.*.item_code' => 'required|unique:variations',
@@ -79,8 +82,8 @@ class ProductsController extends Controller
         ],
 
         [
-            'variations.*.select.required' => 'The select field is required.',
-            'variations.*.value.required' => 'The value field is required.',
+            'variations.*.size_variant_value.required' => 'The Size Variant field is required.',
+            'variations.*.grn_no.required' => 'The Grn no field is required.',
             'variations.*.received_qty.required' => 'The received quantity is required.',
             'variations.*.alert_qty.required' => 'The alert quantity is required.',
             'variations.*.item_code.required' => 'The item code is required.',
@@ -93,11 +96,7 @@ class ProductsController extends Controller
         ]
     );
 
-        // if ($validator->fails()) {
-        //     return redirect()->route('products.create')
-        //         ->withErrors($validator)
-        //         ->withInput();
-        // }
+      
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
@@ -147,8 +146,8 @@ private function createVariation(Product $product, array $variationData)
 {
     $variation = new Variation([
         'product_id' => $product->id,
-        'select' => $variationData['select'],
-        'value' => $variationData['value'],
+        'size_variant_value' => $variationData['size_variant_value'],
+        'grn_no' => $variationData['grn_no'],
         'alert_qty' => $variationData['alert_qty'],
         'item_code' => $variationData['item_code'],
         'purchased_price' => $variationData['purchased_price'],
@@ -262,13 +261,14 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         $brands = Brands::all();
         $categories = Categories::all();
         $units = Units::all();
+        $sizeVariants = SizeVariant::all();
         $product = Product::with('brand','category','unit')->find($product_id);
         $variations = Variation::whereHas('product',function ($query) use ($product_id){
             $query->where('product_id',$product_id);
         })->get();
         
         // return $product;
-        return view('products.edit',compact('product','variations','brands','categories','units','breadcrumbs'));
+        return view('products.edit',compact('product','variations','brands','categories','units','sizeVariants','breadcrumbs'));
     }
 
 
@@ -315,8 +315,8 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             $variationData = [
                 'product_id' => $product_id,
                 'item_code' =>$variation['item_code'],
-                'select' => $variation['select'],
-                'value' => $variation['value'],
+                'size_variant_value' => $variation['size_variant_value'],
+                'grn_no' => $variation['grn_no'],
                 'points' => $variation['points'],
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
@@ -666,5 +666,9 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
         return redirect()->back()->with('success', 'Products imported successfully.');
     }
+
+    
+
+   
 
 }

@@ -109,6 +109,14 @@
                             </a>
                         </li>
                         @endcan
+
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('size-variant.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('size-variant.*') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">Size Variant</span>
+                            </a>
+                        </li>
                        
                     </ul>
                 </li>

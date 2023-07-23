@@ -142,8 +142,8 @@
                     <th>ID</th>
                     <th>Item Code</th>
                     <th>Image</th>
-                    <th>Select</th>
-                    <th>Value</th>
+                    <th>Size Variant</th>
+                    <th>GRN No</th>
                     <th>Point</th>
                     <th>Ticket</th>
                     <th>Kyat</th>
@@ -181,23 +181,10 @@
                                 name="variations[{{ $index }}][image]">
                         </td>
                         <td>
-
-                            {!! Form::select('variations[' . $index . '][select]', ['Size' => 'Size'], $variation->select, [
-                                'class' => 'form-control',
-                                'disabled',
-                            ]) !!}
-                            {!! Form::hidden('variations[' . $index . '][select]', $variation->select, [
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::select('variations[' . $index . '][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(),$variation->size_variant_value , ['class' => 'form-control', 'id'=> 'variations_0_size_variant_value']) }}
                         </td>
                         <td>
-                            {!! Form::text('variations[' . $index . '][value]', $variation->value, [
-                                'class' => 'form-control',
-                                'disabled',
-                            ]) !!}
-                            {!! Form::hidden('variations[' . $index . '][value]', $variation->value, [
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::text('variations[' . $index . '][grn_no]', $variation->grn_no, ['class' => 'form-control']) }}
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][points]', $variation->points, [
@@ -339,17 +326,10 @@
                             <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]">
                         </td>
                         <td>
-                            {!! Form::select('variations[${variationCount}][select]', ['size' => 'Size'], null, [
-                                'placeholder' => 'Choose Select',
-                                'class' => 'form-control',
-                                'required',
-                            ]) !!}
+                            {{ Form::select('variations[${variationCount}][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(),null , ['class' => 'form-control','required']) }}
                         </td>
                         <td>
-                            {!! Form::text('variations[${variationCount}][value]', null, [
-                                'class' => 'form-control',
-                                'required',
-                            ]) !!}
+                            {{ Form::text('variations[${variationCount}][grn_no]', null, ['class' => 'form-control','required']) }}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][points]', null, [

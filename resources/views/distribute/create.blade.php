@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        @if (count($errors) > 0)
+        {{-- @if (count($errors) > 0)
             <div class="alert alert-danger">
                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
                 <ul>
@@ -29,7 +29,7 @@
                     @endforeach
                 </ul>
             </div>
-        @endif
+        @endif --}}
         
         <div class="errorbox"></div>
 
@@ -50,14 +50,7 @@
                         {!! Form::label('reference_No', 'Reference No.', ['class' => 'form-label']) !!}
                         {!! Form::text('reference_No', $generatedRef, ['class' => 'form-control', 'id' => 'reference', 'readonly' => 'readonly']) !!}
                     </div>
-                    <div class="col-md-4">
-                        {!! Form::label('status', 'Status', ['class' => 'form-label']) !!}
-                        {!! Form::select('status', $ds_status, null, [
-                            'placeholder' => 'Choose to status',
-                            'class' => 'form-control',
-                            'id' => 'status',
-                        ]) !!}
-                    </div>
+                    
                     <div class="col-md-4">
                         {!! Form::label('from_outlet', 'From (Outlet)', ['class' => 'form-label']) !!}
                         {!! Form::select('from_outlet', $outlets, null, [

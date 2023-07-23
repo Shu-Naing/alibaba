@@ -56,11 +56,43 @@
             </table>
 
             <div class="mr-0 my-5">
-                <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
+                <a class="btn btn-blue" href="{{ url()->previous() }}">Back</a>
+                <button class="btn btn-success" onclick="updateStatus('approve','<?php echo $distribute['distribute']->id ?>');" @if($distribute['distribute']->status == 2) disabled @endif>Approve</button>
+                <button class="btn btn-danger" onclick="updateStatus('reject',<?php echo $distribute['distribute']->id ?>);"  @if($distribute['distribute']->status == 2) disabled @endif>Reject</button>
                 
-                <a class="btn btn-blue" href="{{route('distribute.preview',$distribute['distribute']->id)}}">Preview</a>
+                <a class="btn btn-info" href="{{route('distribute.preview',$distribute['distribute']->id)}}">Preview</a>
             </div>
         </div>
+@endsection
+@section('scripts')
+<script>
+    function updateStatus(status,distribute_id){
+
+        // console.log(di);
+        $.ajax({
+            type: "PUT",
+            url: "/distribute/" + distribute_id,
+            headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                },
+            data: {
+                status : status,
+            },
+            success: function(response) {
+                
+                console.log(response);
+                window.location.reload();
+              
+
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+               
+            }
+        });
+          
+    }
+</script>
 @endsection
 
 

@@ -2,7 +2,8 @@
     return [
         'ds_status' => [
             DS_PENDING => 'pending',
-            DS_APPROVE => 'approve'
+            DS_APPROVE => 'approve',
+            DS_REJECT => 'reject',
         ],
         'counter_machine' => [
             OD_COUNTER => 'Counter',

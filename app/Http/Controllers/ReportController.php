@@ -5,20 +5,29 @@ namespace App\Http\Controllers;
 use App\Models\Outlets;
 use App\Models\Variation;
 use Illuminate\Http\Request;
-use App\Models\OutletStockOverview;
 use App\Exports\ProductsExport;
-use App\Exports\OutletstockoverviewsExport;
+use App\Models\OutletStockOverview;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Session;
+use App\Exports\OutletstockoverviewsExport;
 
 class ReportController extends Controller
 {
     public function productReport(){
+
         $breadcrumbs = [
-              ['name' => 'Products', 'url' => route('products.index')],
-              ['name' => 'Report Product']
+            ['name' => 'Report Products', 'url' => route('report.products')],
         ];
-        
-        $reports = Variation::with('product.brand','product.category','product.unit')->get();
+        $received_date = session()->get(PD_RECEIVED_DATE_FILTER);
+
+        if( $received_date){
+            $reports = Variation::whereHas('product',function ($query) use ($received_date){
+            $query->where('received_date',$received_date);})
+            ->with('product.brand','product.category','product.unit')->get();
+
+        }else{
+            $reports = Variation::with('product.brand','product.category','product.unit')->get();
+        }
         // return $reports;
         $outlets = Outlets::with('machines')->where('id','!=',1)->get();
         // return $outlets;
@@ -26,7 +35,17 @@ class ReportController extends Controller
     }
 
     public function exportProduct(){
-        $reports = Variation::with('product.brand','product.category','product.unit')->get();
+
+        $received_date = session()->get(PD_RECEIVED_DATE_FILTER);
+
+        if($received_date){
+            $reports = Variation::whereHas('product',function ($query) use ($received_date){
+            $query->where('received_date',$received_date);})
+            ->with('product.brand','product.category','product.unit')->get();
+
+        }else{
+            $reports = Variation::with('product.brand','product.category','product.unit')->get();
+        }
         $outlets = Outlets::with('machines')->where('id','!=',1)->get();
         // $data = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();
         return Excel::download(new ProductsExport($reports,$outlets), 'products.xlsx');
