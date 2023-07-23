@@ -38,24 +38,47 @@
         ]) !!}  
         @csrf
             <div class="row mb-3 g-3">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     {!! Form::label('fromOutlet', 'From Outlet', ['class' => 'form-label']) !!}
                     {!! Form::select('fromOutlet',$outlets, $from_outlet, ['placeholder'=>'Choose..','class' => 'form-control', 'id' => 'fromOutlet']) !!}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     {!! Form::label('toOutlet', 'To Outlet', ['class' => 'form-label']) !!}
                     {!! Form::select('toOutlet', $outlets, $to_outlet, ['placeholder'=>'Choose..','class' => 'form-control', 'id' => 'toOutlet']) !!}
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     {!! Form::label('itemCode', 'Item Code', ['class' => 'form-label']) !!}
                     {!! Form::text('itemCode', $itemcode, ['class' => 'form-control', 'id' => 'itemCode']) !!}
                 </div>
-                <div class="col-md-3 d-flex align-items-end">
+                <div class="col-md-2">
+                    {!! Form::label('date', 'Date Filter', ['class' => 'form-label']) !!}
+                    {{ Form::date('date', null, ['class' => 'form-control']) }}
+    
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-blue ms-2">Search</button>
                     <a href="{{route('search-reset')}}" class="btn btn-blue ms-2">Reset</a>
+                    <a href="{{ route('distribute-detail-export') }}" class="btn btn-blue ms-2">Export to Excel</a>
                 </div>
             </div>
         {!! Form::close() !!}
+
+
+        {{-- {!! Form::open([
+            'route' => 'search-date-distribute-detail',
+            'method' => 'post',
+            'class' => 'p-4 rounded border shadow-sm mb-5',
+        ]) !!}  
+        @csrf
+        <div class="row mb-3 g-3">
+            
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-blue ms-2">Search</button>
+                <a href="{{route('search-date-reset')}}" class="btn btn-blue ms-2">Reset</a>
+            </div>
+        </div>
+
+        {!! Form::close() !!} --}}
 
             <table class="table table-bordered text-center shadow rounded mb-3" id="table_lsdd">
                 <thead>
@@ -66,7 +89,7 @@
                         <th scope="col">To Outlet</th>
                         <th scope="col">Item Code</th>
                         <th scope="col">Photo</th>
-                        <th scope="col">Size</th>
+                        <th scope="col">Size Variant</th>
                         <th scope="col">Purchase Price:</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Sub Total</th>

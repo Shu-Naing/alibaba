@@ -21,13 +21,14 @@ use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DistributeController;
 use App\Http\Controllers\PromotionsController;
+use App\Http\Controllers\SizeVariantController;
 use App\Http\Controllers\OutletDistributeController;
 use App\Http\Controllers\DistributeProductController;
 use App\Http\Controllers\SellingPriceGroupController;
+use App\Http\Controllers\OutletlevelhistoryController;
 use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
-use App\Http\Controllers\OutletlevelhistoryController;
 
 
 /*
@@ -67,9 +68,11 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('distribute-products', DistributeProductController::class);
     Route::resource('distribute', DistributeController::class);
     Route::get('listdistributedetail', [DistributeController::class, 'listdistributedetail'])->name('listdistributedetail');
+    Route::get('distribute-detail-export',[DistributeController::class, 'distributeDetailExport'])->name('distribute-detail-export');
     Route::get('/distribute-preview/{distribute_id}',[DistributeController::class, 'preview'])->name('distribute.preview');
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     Route::resource('outletstockhistory', OutletStockHistoryController::class);
+    Route::resource('size-variant', SizeVariantController::class);
     // Route::resource('issue-products', IssueProductController::class);
 
     Route::get('distribute/{id}/{from_outlet}/edit', [DistributeController::class, 'edit'])->name('distribute.edit');
@@ -97,6 +100,9 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
     Route::get('/search-outlet-issue', [SearchController::class, 'search_outlet_issue'])->name('search-outlet-issue');
     Route::post('/search-list-distribute-detail', [SearchController::class, 'search_list_distribute_detail'])->name('search-list-distribute-detail');
+   
+
+    
     Route::get('/search-reset', [SearchController::class, 'search_reset'])->name('search-reset');
     
     // Route::resource('distribute/{id}', DistributeController::class);
@@ -109,6 +115,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     
     Route::get('products-sample-export',[ProductsController::class, 'exportSampleProduct'])->name('product.sample-export');
     Route::post('products-import',[ProductsController::class, 'importProduct'])->name('product.import');
+    Route::post('search-products',[SearchController::class, 'searchProduct'])->name('product.search');
+    Route::get('products-reset',[SearchController::class, 'resetProduct'])->name('product.reset');
 
     //Pos Route Start
     Route::get('pos',[PosController::class,'index'])->name('pos.index');

@@ -305,6 +305,7 @@ class SearchController extends Controller
         session()->put(PD_FROMOUTLET_FILTER, $request->fromOutlet);
         session()->put(PD_TOOUTLET_FILTER, $request->toOutlet);
         session()->put(PD_ITEMCODE_FILTER, $request->itemCode);
+        session()->put(PD_DATE_FILTER, $request->date);
         
         return redirect()->route('listdistributedetail');
     }
@@ -314,8 +315,22 @@ class SearchController extends Controller
             PD_FROMOUTLET_FILTER,
             PD_TOOUTLET_FILTER,
             PD_ITEMCODE_FILTER,
+            PD_DATE_FILTER,
         ]);
         return redirect()->route('listdistributedetail');
+    }
+
+    public function searchProduct(Request $request) {
+        // return $request;
+        session()->start();
+        session()->put('PD_RECEIVED_DATE_FILTER', $request->received_date);
+        
+        return redirect()->route('report.products');
+    }
+
+    public function resetProduct(){
+        session()->forget('PD_RECEIVED_DATE_FILTER');
+        return redirect()->route('report.products');
     }
     
 }

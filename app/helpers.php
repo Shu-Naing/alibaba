@@ -12,6 +12,7 @@ use App\Models\OutletItemData;
 
     define('DS_PENDING', '1');
     define('DS_APPROVE', '2');
+    define('DS_REJECT', '0');
     define('MAIN_INV_ID', '1');
     define('OD_COUNTER', '1');
     define('OD_MACHINE', '2');
@@ -25,6 +26,9 @@ use App\Models\OutletItemData;
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
     define('PD_ITEMCODE_FILTER', 'PD_ITEMCODE_FILTER');
+    define('PD_DATE_FILTER', 'PD_DATE_FILTER');
+
+    define('PD_RECEIVED_DATE_FILTER', 'PD_RECEIVED_DATE_FILTER');
     
 
     function getOutlets(){

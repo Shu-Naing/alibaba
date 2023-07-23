@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use App\Models\OutletItemData;
 use App\Models\DistributeProducts;
 use App\Models\OutletlevelHistory;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ListDistributeDetailExport;
 
 class DistributeController extends Controller
 {
@@ -66,7 +68,7 @@ class DistributeController extends Controller
      */
     public function store(Request $request)
     {
-       
+    //    return $request;
         $data = $request->all();
         $item_arr = [];
 
@@ -74,11 +76,11 @@ class DistributeController extends Controller
             $this->validate($request, [
                 'date' => 'required',
                 'reference_No' => 'required|unique:distributes',
-                'status' => 'required',
                 'from_outlet' =>'required',
                 'to_outlet' =>'required',
             ]);
-            $input = $request->only('date', 'reference_No', 'status', 'from_outlet', 'to_outlet','remark');
+            $input = $request->only('date', 'reference_No', 'from_outlet', 'to_outlet','remark');
+            $input['status'] = DS_PENDING;
             $input['created_by'] = Auth::user()->id;
 
             $distribute = distributes::create($input);
@@ -100,16 +102,6 @@ class DistributeController extends Controller
             $variation = Variation::where('item_code', $key)->first();
             $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
 
-            // distribute product create start
-                // $input = [];
-                // $input['distribute_id'] = $distributeId;
-                // $input['variant_id'] = $variation->id;
-                // $input['purchased_price'] = $variation->purchased_price;
-                // $input['subtotal'] = $variation->purchased_price * $value;
-                // $input['remark'] = $request->remark;
-                // $input['created_by'] = Auth::user()->id;
-                // $input['quantity'] = $value;
-                // DistributeProducts::create($input);
 
                 DistributeProducts::create([
                     'distribute_id' => $distributeId,
@@ -121,105 +113,70 @@ class DistributeController extends Controller
                     'quantity' => $value,
                 ]);
 
-                OutletlevelHistory::create([
-                    'outlet_id' => $request->from_outlet,
-                    'type' => ISSUE_TYPE,
-                    'quantity' => $value,
-                    'item_code' => $key,
-                    'branch' => $request->to_outlet,
-                    'date' => $request->date,
-                    'remark' => $request->remark,
-                    'created_by' => Auth::user()->id,
-                    'remark' => $request->remark,
-                ]);
+                // OutletlevelHistory::create([
+                //     'outlet_id' => $request->from_outlet,
+                //     'type' => ISSUE_TYPE,
+                //     'quantity' => $value,
+                //     'item_code' => $key,
+                //     'branch' => $request->to_outlet,
+                //     'date' => $request->date,
+                //     'remark' => $request->remark,
+                //     'created_by' => Auth::user()->id,
+                //     'remark' => $request->remark,
+                // ]);
 
-                OutletlevelHistory::create([
-                    'outlet_id' => $request->to_outlet,
-                    'type' => RECIEVE_TYPE,
-                    'quantity' => $value,
-                    'item_code' => $key,
-                    'branch' => $request->from_outlet,
-                    'date' => $request->date,
-                    'remark' => $request->remark,
-                    'created_by' => Auth::user()->id,
-                    'remark' => $request->remark,
-                ]);
-            // distribute product create end
-            
-            // need to change for fifo tech start // to outlet add product item start
+                // OutletlevelHistory::create([
+                //     'outlet_id' => $request->to_outlet,
+                //     'type' => RECIEVE_TYPE,
+                //     'quantity' => $value,
+                //     'item_code' => $key,
+                //     'branch' => $request->from_outlet,
+                //     'date' => $request->date,
+                //     'remark' => $request->remark,
+                //     'created_by' => Auth::user()->id,
+                //     'remark' => $request->remark,
+                // ]);
+         
 
+                // $outletitem = OutletItem::where('outlet_id',$request->to_outlet)->where('variation_id',$variation->id)->first();
+                // if($outletitem){
+                //     $outletitem->updated_by = Auth::user()->id;
+                //     $outletitem->update();
 
-                // $input = [];
-                // $input['outlet_id'] = $request->to_outlet;
-                // $input['variation_id'] = $variation->id;
-                // $input['created_by'] = Auth::user()->id;
+                //     OutletItemData::create([
+                //         'outlet_item_id' => $outletitem->id,
+                //         'purchased_price' => $fromOutletItemData->purchased_price,
+                //         'points' => $fromOutletItemData->points,
+                //         'tickets' => $fromOutletItemData->tickets,
+                //         'kyat' => $fromOutletItemData->kyat, 
+                //         'quantity' => $value,
+                //         'created_by' => Auth::user()->id,
+                //     ]);
+                // }else{
+                //     $outlet_item = OutletItem::create([
+                //         'outlet_id' => $request->to_outlet,
+                //         'variation_id' => $variation->id,
+                //         'created_by' => Auth::user()->id,
+                //     ]);
 
-                // $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $variation->id)->first();
-                // if($outletitem) {
-                //     $input['quantity'] = $value + $outletitem->quantity;
-                //     $outletitem->update($input);
-                // }else {
-                //     $input['quantity'] = $value;
-                //     OutletItem::create($input);
+                //     OutletItemData::create([
+                //         'outlet_item_id' => $outlet_item->id,
+                //         'purchased_price' => $fromOutletItemData->purchased_price,
+                //         'points' => $fromOutletItemData->points,
+                //         'tickets' => $fromOutletItemData->tickets,
+                //         'kyat' => $fromOutletItemData->kyat, 
+                //         'quantity' => $value,
+                //         'created_by' => Auth::user()->id,
+                //     ]);
                 // }
+        
 
-                $outletitem = OutletItem::where('outlet_id',$request->to_outlet)->where('variation_id',$variation->id)->first();
-                if($outletitem){
-                    $outletitem->updated_by = Auth::user()->id;
-                    $outletitem->update();
-
-                    OutletItemData::create([
-                        'outlet_item_id' => $outletitem->id,
-                        'purchased_price' => $fromOutletItemData->purchased_price,
-                        'points' => $fromOutletItemData->points,
-                        'tickets' => $fromOutletItemData->tickets,
-                        'kyat' => $fromOutletItemData->kyat, 
-                        'quantity' => $value,
-                        'created_by' => Auth::user()->id,
-                    ]);
-                }else{
-                    $outlet_item = OutletItem::create([
-                        'outlet_id' => $request->to_outlet,
-                        'variation_id' => $variation->id,
-                        'created_by' => Auth::user()->id,
-                    ]);
-
-                    OutletItemData::create([
-                        'outlet_item_id' => $outlet_item->id,
-                        'purchased_price' => $fromOutletItemData->purchased_price,
-                        'points' => $fromOutletItemData->points,
-                        'tickets' => $fromOutletItemData->tickets,
-                        'kyat' => $fromOutletItemData->kyat, 
-                        'quantity' => $value,
-                        'created_by' => Auth::user()->id,
-                    ]);
-                }
-            // need to change for fifo tech end // to outlet add product item end
-
-            //create $input with outlet_itmes_tbl columns
-            
-            // from formoutlet add product item start
-                //get main inventory qty  with variant_id and main outlet id
-                // $from_outlet_item = OutletItem::select('quantity')
-                //     ->where('outlet_id', $request->from_outlet)
-                //     ->where('variation_id', $variation->id)->first();
-                
-                // $qty = $from_outlet_item->quantity - $value;
-                
-                //update outlet_items_tbl with main outlet id 
-                // $fromOutlet = OutletItem::where('outlet_id', $request->from_outlet)->where('variation_id', $variation->id)->first();
-                // $input = [];
-                // $input['quantity'] = $qty;
-                // $fromOutlet->update($input); 
-
-                $fromOutletItemData->quantity = $fromOutletItemData->quantity - $value;
-                $fromOutletItemData->update();
-            // from formoutlet add product item end
+                // $fromOutletItemData->quantity = $fromOutletItemData->quantity - $value;
+                // $fromOutletItemData->update();
+          
 
         }
         
-        // return redirect('distribute.edit')->view(, compact('distribute','outlets'));
-        // return redirect()->route('distribute.edit', ['id' => $distributeId, 'from_outlet'=>$distribute->from_outlet]);
         return redirect()->back();
     }
 
@@ -285,49 +242,95 @@ class DistributeController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         // return $request;
-        $input = $request->all();
-        $inputs['updated_by'] = Auth::user()->id;
         $distribute = distributes::find($id);
-        $distribute->update($input);
+        if($distribute->status !== 2 ){
+            $distribute->updated_by = Auth::user()->id;
+            if($request->status == 'approve'){
+                $distribute->status = DS_APPROVE;
 
-        //select distribute product with distribute id
-        // $distribute_products = array();
-        // $distribute_products = DistributeProducts::where('distribute_id', $id)->get();
-        // return $distribute_products;
-        // foreach($distribute_products as $row){
-        //     // return $row;
-        //     $input = [];
-        //     $input['outlet_id'] = $request->to_outlet;
-        //     $input['variation_id'] = $row->variant_id;
-        //     $input['created_by'] = Auth::user()->id;
 
-        //     $outletitem = OutletItem::select('quantity')->where('outlet_id', $request->to_outlet)->where('variation_id', $row->variant_id)->first();
-        //     if($outletitem) {
-        //         $input['quantity'] = $row->quantity + $outletitem->quantity;
-        //         $outletitem->update($input);
-        //     }else {
-        //         $input['quantity'] = $row->quantity;
-        //         OutletItem::create($input);
-        //     }
-        //     //create $input with outlet_itmes_tbl columns
-            
-        //     //get main inventory qty  with variant_id and main outlet id
-        //     $main_inv_qty = OutletItem::select('quantity')
-        //         ->where('outlet_id', MAIN_INV_ID)
-        //         ->where('variation_id', $row->variant_id)->first();
-            
-        //     $qty = $main_inv_qty->quantity - $row->quantity;
-            
-        //     //update outlet_items_tbl with main outlet id 
-        //     $mainOutlet = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id', $row->variant_id)->first();
-        //     $input = [];
-        //     $input['quantity'] = $qty;
-        //     $mainOutlet->update($input);  
+                $distribute_products = DistributeProducts::where('distribute_id',$distribute->id)->get();
 
-        // }
-        return redirect()->route('distribute.index')
-            ->with('success','Distribute process successfully');
+                foreach($distribute_products as $distribute_product){
+
+                    $fromOutletItemData = outlet_item_data($distribute->from_outlet,$distribute_product->variant_id);
+
+                    OutletlevelHistory::create([
+                        'outlet_id' => $distribute->from_outlet,
+                        'type' => ISSUE_TYPE,
+                        'quantity' => $distribute_product->quantity,
+                        'item_code' => Variation::where('id',$distribute_product->variant_id)->value('item_code'),
+                        'branch' => $distribute->to_outlet,
+                        'date' => $distribute->date,
+                        'remark' => $distribute->remark,
+                        'created_by' => Auth::user()->id,
+                        'remark' => $distribute->remark,
+                    ]);
+    
+                    OutletlevelHistory::create([
+                        'outlet_id' => $distribute->to_outlet,
+                        'type' => RECIEVE_TYPE,
+                        'quantity' => $distribute_product->quantity,
+                        'item_code' => Variation::where('id',$distribute_product->variant_id)->value('item_code'),
+                        'branch' => $distribute->from_outlet,
+                        'date' => $distribute->date,
+                        'remark' => $distribute->remark,
+                        'created_by' => Auth::user()->id,
+                        'remark' => $distribute->remark,
+                    ]);
+
+
+                    $outletitem = OutletItem::where('outlet_id',$distribute->to_outlet)->where('variation_id',$distribute_product->variant_id)->first();
+                    if($outletitem){
+                        $outletitem->updated_by = Auth::user()->id;
+                        $outletitem->update();
+    
+                        OutletItemData::create([
+                            'outlet_item_id' => $outletitem->id,
+                            'purchased_price' => $fromOutletItemData->purchased_price,
+                            'points' => $fromOutletItemData->points,
+                            'tickets' => $fromOutletItemData->tickets,
+                            'kyat' => $fromOutletItemData->kyat, 
+                            'quantity' => $distribute_product->quantity,
+                            'created_by' => Auth::user()->id,
+                        ]);
+                    }else{
+                        $outlet_item = OutletItem::create([
+                            'outlet_id' => $distribute->to_outlet,
+                            'variation_id' => $distribute_product->variant_id,
+                            'created_by' => Auth::user()->id,
+                        ]);
+    
+                        OutletItemData::create([
+                            'outlet_item_id' => $outlet_item->id,
+                            'purchased_price' => $fromOutletItemData->purchased_price,
+                            'points' => $fromOutletItemData->points,
+                            'tickets' => $fromOutletItemData->tickets,
+                            'kyat' => $fromOutletItemData->kyat, 
+                            'quantity' => $distribute_product->quantity,
+                            'created_by' => Auth::user()->id,
+                        ]);
+                    }
+            
+    
+                    $fromOutletItemData->quantity = $fromOutletItemData->quantity - $distribute_product->quantity;
+                    $fromOutletItemData->update();
+             
+
+                }
+
+            }else{
+                $distribute->status = DS_REJECT;
+            }
+           
+        }
+
+        $distribute->update();
+
+        return response()->json(['message' => 'Success']);
+        
     }
 
     /**
@@ -364,10 +367,14 @@ class DistributeController extends Controller
         $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
         $to_outlet = session()->get(PD_TOOUTLET_FILTER);
         $item_code = session()->get(PD_ITEMCODE_FILTER);
+        $date = session()->get(PD_DATE_FILTER);
 
-        $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','variations.value')
+       
+        $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
-        ->join('variations','variations.id','=','distribute_products.variant_id');
+        ->join('variations','variations.id','=','distribute_products.variant_id')
+        ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value');
+
 
         if($from_outlet){
             $distributes = $distributes->where('from_outlet', $from_outlet);        
@@ -380,11 +387,54 @@ class DistributeController extends Controller
         if($item_code){
             $distributes = $distributes->where('item_code', $item_code);
         }
+
+        if($date){
+            $distributes = $distributes->whereDate('date',$date);
+        }
      
         $distributes = $distributes->get();
 
         // return $item_code."hellos";
 
+        // return $distributes;
+
         return view('distribute.listdistributedetail',compact('breadcrumbs','distributes','outlets'));
+    }
+
+
+    public function distributeDetailExport(){
+
+        $outlets = getOutlets();
+        $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
+        $to_outlet = session()->get(PD_TOOUTLET_FILTER);
+        $item_code = session()->get(PD_ITEMCODE_FILTER);
+        $date = session()->get(PD_DATE_FILTER);
+
+       
+        $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
+        ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
+        ->join('variations','variations.id','=','distribute_products.variant_id')
+        ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value');
+
+
+        if($from_outlet){
+            $distributes = $distributes->where('from_outlet', $from_outlet);        
+        }
+
+        if($to_outlet){
+            $distributes = $distributes->where('to_outlet', $to_outlet);
+        }
+
+        if($item_code){
+            $distributes = $distributes->where('item_code', $item_code);
+        }
+
+        if($date){
+            $distributes = $distributes->whereDate('date',$date);
+        }
+     
+        $distributes = $distributes->get();
+
+        return Excel::download(new ListDistributeDetailExport($distributes,$outlets), 'distribute-detail.xlsx');
     }
 }
