@@ -23,7 +23,6 @@ class OutletSeeder extends Seeder
             'name' => 'Main Outlet',
             'city' => '1',
             'state' => '1',
-            'country' => '1',
             'created_by' => 1,
         ]);
     }
