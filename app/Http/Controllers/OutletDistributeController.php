@@ -14,6 +14,9 @@ use App\Models\CounterVariant;
 use App\Models\MachineVariant;
 use App\Models\OutletStockOverview;
 use App\Models\Variation;
+use App\Models\OutletItemData;
+use App\Models\OutletlevelHistory;
+use App\Models\OutletLevelOverview;
 use Auth;
 
 class OutletDistributeController extends Controller
@@ -61,40 +64,232 @@ class OutletDistributeController extends Controller
      */
     public function store(Request $request)
     {
-        //get to machin id 
-        // $this->validate($request, [
-        //     'date' => 'required',
-        //     'reference_No' => 'required',
-        //     'status' => 'required',
-        //     'counter_machine' => ['required', 'in:1,2'],
-        //     'to_counter' => ['sometimes', 'required', 'when:counter_machine,1'],
-        //     'to_machine' => ['sometimes', 'required', 'when:counter_machine,2'],
-        // ]);
-
+        $data = $request->all();
+        // return $data;
+        $item_arr = [];
         
         $this->validate($request,[ 
             'date' => 'required',
             'reference_No' => 'required|unique:outlet_distributes',
-            'status' => 'required',             
+            // 'status' => 'required',             
             'counterMachine' => 'required|in:1,2',
             'to_counter' => 'sometimes|required|required_if:counterMachine,1',
             'to_machine' => 'sometimes|required|required_if:counterMachine,2',
         ]);
         
-        $input = $request->only('date','reference_no','status','from_outlet','reference_No');
+        $input = $request->only('date','reference_no','from_outlet','reference_No', 'remark');
         if($request->counterMachine == 1){
             $input['to_machine'] = $request->to_counter;
         }else{
             $input['to_machine'] = $request->to_machine;
         }
         $input['counter_machine'] = $request->counterMachine;
+        $input['type'] = RECIEVE_TYPE;
         $input['created_by'] = Auth::user()->id;
-
         $outletdistribute = OutletDistribute::create($input);
+        $outletdistributeId = $outletdistribute->id;
+        // return "success";
 
-        // return $outletdistribute;
-       
-        return redirect()->route('outletdistribute.edit', ['id' => $outletdistribute->id,'from_outlet'=>$outletdistribute->from_outlet]);
+
+        foreach($data as $key => $value) {
+            $key_arr = explode("_", $key);
+            if(count($key_arr) > 1){
+                if($key_arr[1] == 'qtyNumber'){ 
+                    $item_arr[$key_arr[0]] = $value;    
+                }
+            }
+        }
+
+
+        if($request->counterMachine === "1") {
+            // return "counter".$data;
+            foreach($item_arr as $key => $value){
+                $variation = Variation::where('item_code', $key)->first();
+                $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
+                // return $fromOutletItemData;
+                // die();
+
+                OutletDistributeProduct::create([
+                    'outlet_distribute_id' => $outletdistributeId,
+                    'variant_id' => $variation->id,
+                    'quantity' => $value,
+                    'purchased_price' => $fromOutletItemData->purchased_price,
+                    'subtotal' => $fromOutletItemData->purchased_price * $value,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                ]);
+                // return "success";
+
+                CounterVariant::create([
+                    'counter_id' => $request->to_counter,
+                    'variant_id' => $variation->id,
+                    'quantity' => $value,
+                    'created_by' => Auth::user()->id,
+                ]);
+                // return "success for countervariant";
+                
+                OutletStockHistory::create([
+                    'outlet_id' => $request->from_outlet,
+                    'machine_id' => $request->to_counter,
+                    'quantity' => $value,
+                    'variant_id' => $variation->id,
+                    'branch' => IS_STORE,
+                    'date' => now(),
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                ]);
+                // return "success for outletstockhistory";
+
+                $input = [];
+                $input['outlet_id'] = $request->from_outlet;
+                $input['type'] = ISSUE_TYPE;
+                $input['quantity'] = $value;
+                $input['item_code'] = $key;
+                $input['branch'] = $request->to_counter;
+                $input['date'] = $request->date;
+                $input['remark'] = $request->remark;
+                $input['created_by'] = Auth::user()->id;
+                $outletdistribute = OutletlevelHistory::create($input);
+                // return "success for outletlevelhistory";
+
+                //we need to add outletleveloverview and outletstockoverview
+                
+                $outlet_inv_qty = outlet_item_data($request->from_outlet, $variation->id); 
+                $qty = $outlet_inv_qty->quantity - $value;
+                // return $qty;
+
+                $input = [];
+                $input['quantity'] = $qty;
+                $outlet_inv_qty->update($input);
+            }   
+            return redirect()->back();
+
+        } else {
+            // return "machine";
+            foreach($item_arr as $key => $value){
+                $variation = Variation::where('item_code', $key)->first();
+                $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
+                // return $row;
+
+                OutletDistributeProduct::create([
+                    'outlet_distribute_id' => $outletdistributeId,
+                    'variant_id' => $variation->id,
+                    'quantity' => $value,
+                    'purchased_price' => $fromOutletItemData->purchased_price,
+                    'subtotal' => $fromOutletItemData->purchased_price * $value,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                ]);
+                // return "success outletdistributeproduct";
+
+                MachineVariant::create([
+                    'machine_id' => $request->to_machine,
+                    'variant_id' => $variation->id,
+                    'quantity' => $value,
+                    'created_by' => Auth::user()->id,
+                ]);
+                // return "success machinevaritant";
+
+                OutletStockHistory::create([
+                    'outlet_id' => $request->from_outlet,
+                    'machine_id' => $request->to_machine,
+                    'quantity' => $value,
+                    'variant_id' => $variation->id,
+                    'branch' => IS_STORE,
+                    'date' => now(),
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                ]);
+                // return "success outletstockhistory";
+
+                $input = [];
+                $input['outlet_id'] = $request->from_outlet;
+                $input['type'] = ISSUE_TYPE;
+                $input['quantity'] = $value;
+                $input['item_code'] = $key;
+                $input['branch'] = $request->to_machine;
+                $input['date'] = $request->date;
+                $input['remark'] = $request->remark;
+                $input['created_by'] = Auth::user()->id;
+                $outletdistribute = OutletlevelHistory::create($input);
+                // return "success for outletlevelhistory";
+                
+                // from outlet for outletleveloverview start
+                    $month = date('m', strtotime($request->date));
+                    $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                    ->where('outlet_id', $request->from_outlet)
+                    ->whereMonth('date', $month)
+                    ->where('item_code',$key)->first();
+
+                    if($outletleveloverview){     
+                        $input = [];
+                        $input['issued_qty'] = $outletleveloverview->issued_qty + $value;
+                        $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $input['issued_qty'];
+                        $input['updated_by'] = Auth::user()->id;
+                        $outletleveloverview->update($input);
+                    }else {
+                        $input = [];
+                        $input['date'] = $request->date;
+                        $input['outlet_id'] = $request->from_outlet;
+                        $input['item_code'] = $key;
+                        $input['issued_qty'] = $value;
+                        $input['balance'] = (0 + 0) - $value;
+                        $input['created_by'] = Auth::user()->id;
+                        OutletLevelOverview::create($input);
+                    }
+                // from outlet for outletleveloverview end
+                
+                //get main inventory qty  with variant_id and main outlet id
+                // $outlet_inv_qty = OutletItem::select('outlet_item_data.quantity')
+                //     ->join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')
+                //     ->where('outlet_items.outlet_id', $request->from_outlet)
+                //     ->where('outlet_items.variation_id', $variation->id)->first();
+                //     // return $value;
+                $outlet_inv_qty = outlet_item_data($request->from_outlet, $variation->id); 
+                $qty = $outlet_inv_qty->quantity - $value;
+                // return $qty;
+
+                // $totalOutlet = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
+                // ->where('outlet_items.outlet_id', $request->from_outlet)
+                // ->where('outlet_items.variation_id', $variation->id)->first();
+                    // return $totalOutlet;
+
+                $input = [];
+                $input['quantity'] = $qty;
+                $outlet_inv_qty->update($input);
+                // return "success outletitemdata";
+
+                $month = date('m', strtotime($request->date));
+                $variant = Variation::find($variation->id);
+                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+                ->where('outlet_id', $request->from_outlet)
+                ->where('machine_id', $request->to_machine)
+                ->whereMonth('date', $month)
+                ->where('item_code',$variant->item_code)->first();
+                
+                if($outletstockoverview){     
+                    $input = [];
+                    $input['receive_qty'] = $outletstockoverview->receive_qty + $value;
+                    $input['balance'] = ($outletstockoverview->opening_qty + $input['receive_qty']) - $outletstockoverview->issued_qty;
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletstockoverview->update($input);
+                }else {
+                    $input = [];
+                    $input['date'] = $request->date;
+                    $input['outlet_id'] = $request->from_outlet;
+                    $input['machine_id'] = $request->to_machine;
+                    $input['item_code'] = $variant->item_code;
+                    $input['receive_qty'] = $value;
+                    $input['balance'] = $input['receive_qty'];
+                    $input['created_by'] = Auth::user()->id;
+                    OutletStockOverview::create($input);
+                }
+
+
+            }
+            
+            return redirect()->back();
+        }
        
     }
 

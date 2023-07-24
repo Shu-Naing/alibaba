@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\OutletItemData;
 use App\Models\DistributeProducts;
 use App\Models\OutletlevelHistory;
+use App\Models\OutletLevelOverview;
 
 class DistributeController extends Controller
 {
@@ -130,7 +131,6 @@ class DistributeController extends Controller
                     'date' => $request->date,
                     'remark' => $request->remark,
                     'created_by' => Auth::user()->id,
-                    'remark' => $request->remark,
                 ]);
 
                 OutletlevelHistory::create([
@@ -142,9 +142,60 @@ class DistributeController extends Controller
                     'date' => $request->date,
                     'remark' => $request->remark,
                     'created_by' => Auth::user()->id,
-                    'remark' => $request->remark,
                 ]);
             // distribute product create end
+
+            // from outlet for outletleveloverview start
+                $month = date('m', strtotime($request->date));
+                $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                ->where('outlet_id', $request->from_outlet)
+                ->whereMonth('date', $month)
+                ->where('item_code',$key)->first();
+
+                if($outletleveloverview){     
+                    $input = [];
+                    $input['issued_qty'] = $outletleveloverview->issued_qty + $value;
+                    $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $input['issued_qty'];
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletleveloverview->update($input);
+                }else {
+                    $input = [];
+                    $input['date'] = $request->date;
+                    $input['outlet_id'] = $request->from_outlet;
+                    $input['item_code'] = $key;
+                    $input['issued_qty'] = $value;
+                    $input['balance'] = (0 + 0) - $value;
+                    $input['created_by'] = Auth::user()->id;
+                    OutletLevelOverview::create($input);
+                }
+            // from outlet for outletleveloverview end
+
+            // to outlet for outletleveloverview start
+                $month = date('m', strtotime($request->date));
+                $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                ->where('outlet_id', $request->to_outlet)
+                ->whereMonth('date', $month)
+                ->where('item_code',$key)->first();
+
+                if($outletleveloverview){     
+                    $input = [];
+                    $input['receive_qty'] = $outletleveloverview->receive_qty + $value;
+                    $input['balance'] = ($outletleveloverview->opening_qty + $input['receive_qty']) - $outletleveloverview->issued_qty;
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletleveloverview->update($input);
+                }else {
+                    $input = [];
+                    $input['date'] = $request->date;
+                    $input['outlet_id'] = $request->to_outlet;
+                    $input['item_code'] = $key;
+                    $input['receive_qty'] = $value;
+                    $input['balance'] = $value;
+                    $input['created_by'] = Auth::user()->id;
+                    OutletLevelOverview::create($input);
+                }
+            // to outlet for outletleveloverview end
+
+
             
             // need to change for fifo tech start // to outlet add product item start
 

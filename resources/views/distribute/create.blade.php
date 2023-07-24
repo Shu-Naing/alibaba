@@ -87,8 +87,8 @@
                 </div>
             </div>
 
-            <div id="show_dsProduct">
-                <table class="table table-bordered text-center shadow rounded" id='itemTable'>
+            <div id="show_Product">
+                <table class="table table-bordered text-center shadow rounded dstable" id='ds_itemTable'>
                     <thead>
                         <tr>
                             <th scope="col" style="width: 30%;">Product Name</th>

@@ -26,33 +26,83 @@
             </ul>
         </div>
         @endif
-        {!! Form::open(array('route' => 'issue.store', 'method' => 'post', 'class' => 'p-4 rounded border shadow-sm mb-5', 'id' => 'outletissue')) !!}
+
+        <div class="errorbox"></div>
+
+        {!! Form::open(array('route' => 'issue.store', 'method' => 'post', 'class' => '', 'id' => 'outletissue')) !!}
             @csrf
-            <div class="row mb-3 g-3">
-                <div class="col-md-4">
-                    {!! Form::label('date', 'Date', array('class' => 'form-label')) !!}
-                    {!! Form::date('date', null, array('class' => 'form-control', 'id'=>'date')) !!}
+            <div class="p-4 rounded border shadow-sm mb-5">
+                <div class="row mb-3 g-3">
+                    <div class="col-md-4">
+                        {!! Form::label('date', 'Date', array('class' => 'form-label')) !!}
+                        {!! Form::date('date', null, array('class' => 'form-control', 'id'=>'date')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('reference_No', 'Reference No.', array('class' => 'form-label')) !!}
+                        {!! Form::text('reference_No', $generatedRef, array('class' => 'form-control', 'id' => 'reference')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('status', 'Status', array('class' => 'form-label')) !!}
+                        {!! Form::select('status', $ds_status, null, array('placeholder' => 'Choose to status', 'class' => 'form-control','id'=>'status')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('from_outlet', 'From (Outlet)', array('class' => 'form-label')) !!}
+                        {!! Form::hidden('from_outlet', $id) !!}
+                        {!! Form::select('from_outlet_select',$outlets, $id, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'fromOutlet', 'disabled' => 'disabled')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('to_machine', 'From Machine', array('class' => 'form-label')) !!}
+                        {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'to_machine')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('store_customer', 'To (Customer / Store)', array('class' => 'form-label')) !!}
+                        {!! Form::select('store_customer', $branch, null, array('placeholder' => 'Choose', 'class' => 'form-control store_customer','id'=>'store_customer')) !!}
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    {!! Form::label('reference_No', 'Reference No.', array('class' => 'form-label')) !!}
-                    {!! Form::text('reference_No', $generatedRef, array('class' => 'form-control', 'id' => 'reference')) !!}
+            </div>
+
+            <h5 class="fw-bold mb-4">Add Products</h5>
+            <div class="input-group rounded w-25 mb-3">
+                <div>
+                    <!-- <input type="hidden" id="outletdistributed_id" value=""> -->
+                    <input type="text" class="form-control" id="outletissue_searchInput" data-id="" placeholder="Search...">
+                    <!-- <div id="searchResults"></div> -->
                 </div>
-                <div class="col-md-4">
-                    {!! Form::label('status', 'Status', array('class' => 'form-label')) !!}
-                    {!! Form::select('status', $ds_status, null, array('placeholder' => 'Choose to status', 'class' => 'form-control','id'=>'status')) !!}
+            </div>
+
+            <div id="show_Product">
+                <table class="table table-bordered text-center shadow rounded issuetable" id='issue_itemTable'>
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 30%;">Product Name</th>
+                            <th scope="col">Item Code</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Purchased Price</th>
+                            <th scope="col">Subtotal</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="d-flex gap-4 px-4 justify-content-end my-5">
+                <div class="">
+                    <!-- <label for="remark" class="d-block mb-2">Remark</label>
+                            <textarea name="remark" id="" cols="40" rows="4"></textarea> -->
+                    {!! Form::label('remark', 'Remark', ['class' => 'form-label']) !!}
+                    {!! Form::textarea('remark', null, [
+                        'class' => 'form-control',
+                        'id' => 'remark',
+                        'cols' => '40',
+                        'rows' => '4',
+                    ]) !!}
                 </div>
-                <div class="col-md-4">
-                    {!! Form::label('from_outlet', 'From (Outlet)', array('class' => 'form-label')) !!}
-                    {!! Form::hidden('from_outlet', $id) !!}
-                    {!! Form::select('from_outlet_select',$outlets, $id, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'fromOutlet', 'disabled' => 'disabled')) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! Form::label('to_machine', 'From Machine', array('class' => 'form-label')) !!}
-                    {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control','id'=>'to_machine')) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! Form::label('store_customer', 'To (Customer / Store)', array('class' => 'form-label')) !!}
-                    {!! Form::select('store_customer', $branch, null, array('placeholder' => 'Choose', 'class' => 'form-control store_customer','id'=>'store_customer')) !!}
+                <div class="align-items-center d-flex">
+                    <h4 class="fw-bolder">Total Amount: <span id="total"
+                            class="ms-3 inline-block text-blue">0</span></h4>
                 </div>
             </div>
         {!! Form::close() !!}
@@ -60,7 +110,25 @@
         <div class="text-center my-5">
             <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
-            <button type="submit" form="outletissue" class="btn btn-blue ms-2">Next</button>
+            <button type="submit" form="outletissue" class="btn btn-blue ms-2" id="issuebutton">Next</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Delete</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">Are you sure delete this Item</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary confirmButton">Confirm</button>
+            </div>
+            </div>
         </div>
     </div>
     

@@ -49,7 +49,7 @@
             {!! Form::close() !!}
         </div>
 
-        {!! Form::open(['route' => 'outletstockoverview.store', 'method' => 'POST', 'class' => 'px-3']) !!}
+        {!! Form::open(['route' => 'outletleveloverview.store', 'method' => 'POST', 'class' => 'px-3']) !!}
         @csrf
         <div class="row mb-3">
             <div class="col-md-4">
@@ -57,17 +57,12 @@
                 {!! Form::date('date', null, ['class' => 'form-control', 'id' => 'date']) !!}
             </div>
             <div class="col-md-4">
-                    {!! Form::label('outlet_id', 'Outlet Id', array('class' => 'form-label')) !!}
-                    {!! Form::hidden('outlet_id', $id) !!}
-                    {!! Form::select('outlet_id',$outlets, $id, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'outlet_id', 'disabled' => 'disabled')) !!}
-                </div>
-            <div class="col-md-4">
-                {!! Form::label('machine', 'Machine ID *', ['class' => 'form-label']) !!}
-                {!! Form::select('machine_id', $machines['machine'], null, ['placeholder' => 'Choose', 'class' => 'form-control', 'id' => 'odsopenmachine']) !!}
+                {!! Form::label('outlet_id', 'Outlet Id', array('class' => 'form-label')) !!}
+                {!! Form::select('outlet_id',$outlets, null, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'open_outlet_id')) !!}
             </div>
             <div class="col-md-4">
                 {!! Form::label('item_code', 'Item Code *', ['class' => 'form-label']) !!}
-                {!! Form::select('item_code', [], null, ['class' => 'form-control', 'id' => 'odsopen_item_code']) !!}
+                {!! Form::select('item_code', [], null, ['class' => 'form-control', 'id' => 'out_open_item_code']) !!}
             </div>
             <div class="col-md-4">
                 {!! Form::label('opening_qty', 'Opening Quantity *', ['class' => 'form-label']) !!}

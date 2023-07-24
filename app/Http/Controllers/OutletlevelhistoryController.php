@@ -9,8 +9,7 @@ class OutletlevelhistoryController extends Controller
 {
     public function index() {
         $breadcrumbs = [
-              ['name' => 'Distribute', 'url' => route('distribute.index')],
-              ['name' => 'Create']
+              ['name' => 'Outlet Level History']
         ];
         $histories = OutletlevelHistory::all();
         // return $histories;

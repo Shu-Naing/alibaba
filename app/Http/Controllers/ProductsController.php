@@ -588,23 +588,23 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         $result = $distributeProducts->delete();
     }
 
-    public function get_outletdistir_product_lists(Request $request) {
-       $fromOutletId = $request->fromOutletId;
-        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
-                    ->join("products", "variations.product_id", "=", "products.id")
-                    ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
-                    ->where("outlet_items.outlet_id", "=", $fromOutletId)
-                    ->where("outlet_items.quantity", ">", 0)
-                    ->get();
-        // return $product;
+    // public function get_outletdistir_product_lists(Request $request) {
+    //    $fromOutletId = $request->fromOutletId;
+    //     $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+    //                 ->join("products", "variations.product_id", "=", "products.id")
+    //                 ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+    //                 ->where("outlet_items.outlet_id", "=", $fromOutletId)
+    //                 ->where("outlet_items.quantity", ">", 0)
+    //                 ->get();
+    //     // return $product;
 
-        $product_arr = array();
+    //     $product_arr = array();
 
-        foreach($product as $row){ 
-            $product_arr[$row->id] = $row->item_code .' ('.$row->product_name.')';           
-        }
-        return $product_arr;
-    }
+    //     foreach($product as $row){ 
+    //         $product_arr[$row->id] = $row->item_code .' ('.$row->product_name.')';           
+    //     }
+    //     return $product_arr;
+    // }
 
     public function get_outletdistir_issue_lists(Request $request) {
         $to_machine = $request->to_machine;
@@ -614,7 +614,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                      ->where("machine_variants.machine_id", "=", $to_machine)
                      ->where("machine_variants.quantity", ">", 0)
                      ->get();
-         // return $product;
+        //  return $product;
  
          $product_arr = array();
  
