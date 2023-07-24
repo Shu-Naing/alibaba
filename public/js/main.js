@@ -35,9 +35,11 @@ $(document).ready(function () {
     if ($(this).val() === "1") {
       $(".counter").attr("disabled", false);
       $(".machine").attr("disabled", true);
+      $(".machine").val("");
     } else if ($(this).val() === "2") {
-      $(".counter").attr("disabled", true);
       $(".machine").attr("disabled", false);
+      $(".counter").attr("disabled", true);
+      $(".counter").val("");
     }
   });
 
@@ -48,11 +50,11 @@ $(document).ready(function () {
     console.log(outlet_id);
   });
 
-  if ($(".counterMachine").find(":selected").val() == 1) {
-    $(".counter").attr("disabled", false);
-  } else if ($(".counterMachine").find(":selected").val() == 2) {
-    $(".machine").attr("disabled", false);
-  }
+  // if ($(".counterMachine").find(":selected").val() == 1) {
+  //   $(".counter").attr("disabled", false);
+  // } else if ($(".counterMachine").find(":selected").val() == 2) {
+  //   $(".machine").attr("disabled", false);
+  // }
 });
 
 // product start
@@ -212,7 +214,7 @@ function calculateTotal() {
 
 // console.log(tableValue.html());
 
-// Select submit button
+// distribute create submit button
 var dsButton = $("#dsbutton");
 
 dsButton.on("click", function (event) {
@@ -222,7 +224,7 @@ dsButton.on("click", function (event) {
   var referenceInput = $("#reference");
   var fromOutletInput = $("#fromOutlet");
   var toOutletInput = $("#toOutlet");
-  var tableValue = $("#show_dsProduct table tbody tr");
+  var tableValue = $("#show_Product .dstable tbody tr");
   var searchInput = $("#searchInput");
   var errorBox = $(".errorbox");
 
@@ -276,6 +278,187 @@ dsButton.on("click", function (event) {
   // $(searchInput).focusout(function () {
   //   searchInput.removeClass("is-invalid");
   // });
+});
+
+// outletdistribute create submit button
+var outletdsButton = $("#outletDsbutton");
+
+outletdsButton.on("click", function (event) {
+  // event.preventDefault();
+  // console.log("hello");
+  // Reset previous validation feedback
+  // $(".is-invalid").removeClass("is-invalid");
+  var dateInput = $("#date");
+  var referenceInput = $("#reference");
+  var fromOutletInput = $("#fromOutlet");
+  var counterMachineInput = $("#counterMachine");
+  var counterInput = $("#counter");
+  var machineInput = $("#machine");
+  var tableValue = $("#show_Product .outdstable tbody tr");
+  var searchInput = $("#searchInput");
+  var errorBox = $(".errorbox");
+  // console.log(dateInput.val(), "date");
+  // console.log(referenceInput.val(), "ref");
+  // console.log(fromOutletInput.val(), "from");
+  // console.log(counterMachineInput.val(), "CM");
+  // console.log(counterInput.val(), "counter");
+  // console.log(machineInput.val(), "machine");
+  // console.log(tableValue.length, "table value");
+  // if (counterMachineInput.val() && (counterInput.val() || machineInput.val())) {
+  //   alert("containe cm and c or m");
+  // } else {
+  //   if (counterMachineInput.val() === "1") {
+  //     if (counterInput.val() === "") {
+  //       alert("c false");
+  //     }
+  //   } else if (counterMachineInput.val() === "2") {
+  //     if (machineInput.val() === "") {
+  //       alert("m false");
+  //     }
+  //   } else {
+  //     alert("cm false");
+  //   }
+  // }
+
+  if (
+    dateInput.val() &&
+    referenceInput.val() &&
+    fromOutletInput.val() &&
+    counterMachineInput.val() &&
+    (counterInput.val() || machineInput.val()) &&
+    tableValue.length > 0
+  ) {
+    $(this).submit();
+  } else {
+    event.preventDefault();
+
+    if (errorBox.html() === "") {
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    } else {
+      errorBox.html("");
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    }
+    if (dateInput.val() === "") {
+      // dateInput.addClass("is-invalid");
+      errorBox.append("The date field is required.<br/>");
+    }
+    if (referenceInput.val() === "") {
+      // referenceInput.addClass("is-invalid");
+    }
+    if (fromOutletInput.val() === "") {
+      // fromOutletInput.addClass("is-invalid");
+      errorBox.append("From outlet field is required.<br/>");
+    }
+    if (counterMachineInput.val() === "1") {
+      if (counterInput.val() === "") {
+        // alert("c false");
+        errorBox.append("Counter field is required.<br/>");
+      }
+    } else if (counterMachineInput.val() === "2") {
+      if (machineInput.val() === "") {
+        // alert("m false");
+        errorBox.append("Machine field is required.<br/>");
+      }
+    } else {
+      // alert("cm false");
+      errorBox.append("To (Counter/Machine) field is required.<br/>");
+    }
+    if (tableValue.length === 0) {
+      // searchInput.addClass("is-invalid");
+      errorBox.append("Product item is required.<br/>");
+    }
+    $(window).scrollTop(0);
+  }
+  // $(searchInput).focusout(function () {
+  //   searchInput.removeClass("is-invalid");
+  // });
+});
+
+// issue create submit button
+var issueButton = $("#issuebutton");
+issueButton.on("click", function (event) {
+  // event.preventDefault();
+  // console.log("hello");
+  var dateInput = $("#date");
+  var referenceInput = $("#reference");
+  var statusInput = $("#status");
+  var fromOutletInput = $("#fromOutlet");
+  var toMachineInput = $("#to_machine");
+  var storeCustomer = $("#store_customer");
+  var tableValue = $("#show_Product .issuetable tbody tr");
+  var searchInput = $("#searchInput");
+  var errorBox = $(".errorbox");
+  // console.log(dateInput.val(), "date");
+  // console.log(referenceInput.val(), "ref");
+  // console.log(statusInput.val(), "status");
+  // console.log(fromOutletInput.val(), "from");
+  // console.log(toMachineInput.val(), "tomachine");
+  // console.log(storeCustomer.val(), "store customer");
+  // console.log(tableValue.length, "table value");
+
+  if (
+    dateInput.val() &&
+    referenceInput.val() &&
+    statusInput.val() &&
+    fromOutletInput.val() &&
+    toMachineInput.val() &&
+    storeCustomer.val() &&
+    tableValue.length > 0
+  ) {
+    $(this).submit();
+  } else {
+    event.preventDefault();
+
+    if (errorBox.html() === "") {
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    } else {
+      errorBox.html("");
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    }
+
+    if (dateInput.val() === "") {
+      // dateInput.addClass("is-invalid");
+      errorBox.append("The date field is required.<br/>");
+    }
+    if (referenceInput.val() === "") {
+      // referenceInput.addClass("is-invalid");
+    }
+    if (statusInput.val() === "") {
+      // statusInput.addClass("is-invalid");
+      errorBox.append("The status field is required.<br/>");
+    }
+    if (fromOutletInput.val() === "") {
+      // fromOutletInput.addClass("is-invalid");
+      errorBox.append("From outlet field is required.<br/>");
+    }
+    if (toMachineInput.val() === "") {
+      errorBox.append("From Machine field is required.<br/>");
+    }
+    if (storeCustomer.val() === "") {
+      errorBox.append("To Store Customer field is required.<br/>");
+    }
+    if (tableValue.length === 0) {
+      // searchInput.addClass("is-invalid");
+      errorBox.append("Product item is required.<br/>");
+    }
+    $(window).scrollTop(0);
+  }
 });
 
 function increaseOutletdisValue(button, disPdID, variantID, variant_qty) {
@@ -355,36 +538,36 @@ function deleteOutDisValue(disPdID) {
   });
 }
 
-$("#machine").on("change", function () {
-  var machineId = $(this).val();
-  // console.log(machineId);
-  // Make an AJAX request to retrieve the item code data
-  $.ajax({
-    url: "outlet-machine-item", // Replace with the appropriate Laravel route
-    method: "GET",
-    data: {
-      machineId: machineId,
-    },
-    success: function (response) {
-      var itemCodeSelect = $("#item_code");
-      itemCodeSelect.empty(); // Clear existing options
+// $("#machine").on("change", function () {
+//   var machineId = $(this).val();
+//   // console.log(machineId);
+//   // Make an AJAX request to retrieve the item code data
+//   $.ajax({
+//     url: "outlet-machine-item", // Replace with the appropriate Laravel route
+//     method: "GET",
+//     data: {
+//       machineId: machineId,
+//     },
+//     success: function (response) {
+//       var itemCodeSelect = $("#item_code");
+//       itemCodeSelect.empty(); // Clear existing options
 
-      if (response.itemCodes && response.itemCodes.length > 0) {
-        $.each(response.itemCodes, function (index, itemCode) {
-          itemCodeSelect.append(
-            $("<option>", {
-              value: itemCode,
-              text: itemCode,
-            })
-          );
-        });
-      }
-    },
-    error: function (xhr, status, error) {
-      console.error(error);
-    },
-  });
-});
+//       if (response.itemCodes && response.itemCodes.length > 0) {
+//         $.each(response.itemCodes, function (index, itemCode) {
+//           itemCodeSelect.append(
+//             $("<option>", {
+//               value: itemCode,
+//               text: itemCode,
+//             })
+//           );
+//         });
+//       }
+//     },
+//     error: function (xhr, status, error) {
+//       console.error(error);
+//     },
+//   });
+// });
 
 // function addOpeiningItemCode() {
 //   var item_code = $("#item_code").find(":selected").val();
@@ -510,6 +693,26 @@ $(".outletstockoverview-check").on("change", function () {
 });
 // outlet stock overview reprot for check column end
 
+// outlet level overview reprot for check column start
+$(".outletleveloverview-check").on("change", function () {
+  var isChecked = $(this).is(":checked");
+  var outletleveloverview_id = $(this).val();
+
+  $.ajax({
+    url: "/checkoutletleveloverview/",
+    type: "GET",
+    data: {
+      check: isChecked,
+      id: outletleveloverview_id,
+    },
+    success: function (response) {
+      console.log(response);
+      // location.reload();
+    },
+  });
+});
+// outlet level overview reprot for check column end
+
 // outlet stock overview reprot for physical column start
 $(".physical-qty").on("focusout", function () {
   var physical_qty = $(this).val();
@@ -530,6 +733,45 @@ $(".physical-qty").on("focusout", function () {
     success: function (response) {
       // console.log(response);
       location.reload();
+    },
+  });
+});
+
+// console.log("hello");
+var outlet_id = $("#outlet_id").val();
+$.ajax({
+  url: "/getoutletItem/",
+  type: "GET",
+  data: {
+    outlet_id,
+  },
+  success: function (response) {
+    // console.log(response);
+    $("#odsopen_item_code").html('<option value="">Choose...</option>');
+    $.each(response, function (key, value) {
+      $("#odsopen_item_code").append(
+        '<option value="' + key + '">' + value + "</option>"
+      );
+    });
+    // location.reload();
+  },
+});
+
+$("#open_outlet_id").on("change", function () {
+  var outlet_id = $(this).val();
+  $.ajax({
+    url: "/getoutletItem/",
+    type: "GET",
+    data: {
+      outlet_id,
+    },
+    success: function (response) {
+      $("#out_open_item_code").html('<option value="">Choose...</option>');
+      $.each(response, function (key, value) {
+        $("#out_open_item_code").append(
+          '<option value="' + key + '">' + value + "</option>"
+        );
+      });
     },
   });
 });

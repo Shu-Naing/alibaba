@@ -29,6 +29,8 @@ use App\Http\Controllers\OutletlevelhistoryController;
 use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
+use App\Http\Controllers\OutletlevelhistoryController;
+use App\Http\Controllers\OutletLevelOverviewController;
 
 
 /*
@@ -72,6 +74,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/distribute-preview/{distribute_id}',[DistributeController::class, 'preview'])->name('distribute.preview');
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     Route::resource('outletstockhistory', OutletStockHistoryController::class);
+    Route::resource('outletleveloverview', OutletLevelOverviewController::class);
     Route::resource('size-variant', SizeVariantController::class);
     // Route::resource('issue-products', IssueProductController::class);
 
@@ -94,7 +97,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/outletstockoverview/{id}/edit', [OutletStockOverviewController::class, 'edit'])->name('outletstockoverview.edit');
     Route::post('/outletstockoverview', [OutletStockOverviewController::class, 'store'])->name('outletstockoverview.store');
     Route::patch('/outletstockoverview/{id}/update', [OutletStockOverviewController::class, 'update'])->name('outletstockoverview.update');
-    Route::get('/outlet-machine-item', [OutletStockOverviewController::class, 'getOutletMachineItem'])->name('outletmachineitem');
+    // Route::get('/outlet-machine-item', [OutletStockOverviewController::class, 'getOutletMachineItem'])->name('outletmachineitem');
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
     Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
@@ -169,6 +172,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('checkoutletstockhistory',[OutletStockHistoryController::class, 'checkoutletstockhistory'])->name('checkoutletstockhistory');
     Route::get('checkoutletstockoverview',[OutletStockOverviewController::class, 'checkoutletstockoverview'])->name('checkoutletstockoverview');
     Route::get('checkoutletlevelhistory',[OutletlevelhistoryController::class, 'checkoutletlevelhistory'])->name('checkoutletlevelhistory');
+    Route::get('checkoutletleveloverview',[OutletLevelOverviewController::class, 'checkoutletleveloverview'])->name('checkoutletleveloverview');
     Route::get('updatephysicalqty',[OutletStockOverviewController::class, 'updatephysicalqty'])->name('updatephysicalqty');
 
 
@@ -178,6 +182,11 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('outlethistory',[OutletController::class,'history'])->name('outlethistory.history');
 
     Route::get('outletlevelhistory',[OutletlevelhistoryController::class,'index'])->name('outletlevelhistory.index');
+
+    // Route::get('outletleveloverview',[OutletLevelOverviewController::class,'index'])->name('outletleveloverview.index');
+
+    Route::get('getoutletItem',[OutletStockOverviewController::class,'getoutletItem'])->name('getoutletItem');
+
 
 
 

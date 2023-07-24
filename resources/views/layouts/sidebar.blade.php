@@ -234,6 +234,13 @@
                                 <span class="d-none d-sm-inline text-wrap">Outlet History</span>
                             </a>
                         </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletleveloverview.create') }}"
+                                class="nav-link sidebar-link {{ Route::is('outletleveloverview.create') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outletleval Opening Quantity</span>
+                            </a>
+                        </li>
                         @endcan
                     </ul>
                 </li>
@@ -296,6 +303,27 @@
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
                             </a>
                         </li> -->
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletstockhistory.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock History</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletlevelhistory.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('outletlevelhistory.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Level History</span>
+                            </a>
+                        </li>
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('outletleveloverview.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('outletleveloverview.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Level Overview</span>
+                            </a>
+                        </li>
                         @can('outletstockhistory.index')
                             <li class="w-100 sidebar-item">
                                 <a href="{{ route('outletstockhistory.index') }}"
@@ -305,7 +333,6 @@
                                 </a>
                             </li> 
                         @endcan
-                        
                     </ul>
                 </li>
                 @endif

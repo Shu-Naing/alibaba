@@ -55,12 +55,37 @@ class OutletStockOverviewController extends Controller
             'date' => 'required',            
             'outlet_id' => 'required',
             'machine_id' => 'required',
+            'item_code' => 'required',
+            'opening_qty' => 'required',
         ]);
-        $input = [];
-        $input = $request->all();
-        $input['created_by'] = Auth::user()->id;
-        $outletstockeoverview = OutletStockOverview::create($input); 
-        return redirect()->route('outletstockoverview.edit',$outletstockeoverview->id);
+
+        $month = date('m', strtotime($request->date));
+        $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+        ->where('outlet_id', $request->outlet_id)
+        ->where('machine_id', $request->machine_id)
+        ->whereMonth('date', $month)
+        ->where('item_code',$request->item_code)->first();
+
+        if($outletstockoverview){     
+            $opening_qty = $outletstockoverview->opening_qty + $request->opening_qty;
+            $input = [];
+            $input['opening_qty'] = $opening_qty;
+            $input['balance'] = ($opening_qty + $outletstockoverview->receive_qty) - $outletstockoverview->issued_qty;
+            $input['updated_by'] = Auth::user()->id;
+            $outletstockoverview->update($input);
+        }else {
+            $input = [];
+            $input['date'] = $request->date;
+            $input['outlet_id'] = $request->outlet_id;
+            $input['machine_id'] = $request->machine_id;
+            $input['item_code'] = $request->item_code;
+            $input['opening_qty'] = $request->opening_qty;
+            $input['balance'] = $request->opening_qty;
+            $input['created_by'] = Auth::user()->id;
+            OutletStockOverview::create($input);
+        }
+
+        return redirect()->back()->with('success', 'Opening Qty is create or update success');
     }
 
     /**
@@ -164,6 +189,14 @@ class OutletStockOverviewController extends Controller
         }
 
         
+    }
+
+    public function getoutletItem(Request $request) {
+        $outletId = $request->outlet_id;
+
+        $item_codes = getOutletItem($request->outlet_id);
+        
+        return $item_codes;
     }
 
     

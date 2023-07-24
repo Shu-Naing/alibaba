@@ -17,6 +17,7 @@ class OutletDistribute extends Model
         'remark',
         'counter_machine',
         'store_customer',
+        'type',
         'created_by',
         'updated_by'
     ];
