@@ -21,7 +21,6 @@ class ProductsSampleExport implements WithHeadings , ShouldAutoSize{
             'Ticket',
             'Kyat',
             'Category Name',
-            'Category Code',
             'Brand Name',
             'Unit Name',
             'Select',

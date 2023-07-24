@@ -49,101 +49,86 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        @if (Session::has('error'))
-            <div>
-                {{ Session::get('error') }}
-            </div>
-        @endif
-
-        @if (count($errors) > 0)
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-
-        {!! Form::open([
-            'route' => ['products.update', $product->id],
+       
+        {!! Form::model($product, [
             'method' => 'PUT',
+            'route' => ['products.update', $product->id],
             'enctype' => 'multipart/form-data',
         ]) !!}
         <div class="row">
             <div class="col-lg-12">
                 <div class="card p-3">
-                    <div class="row">
+                    <div class="row g-2">
                         <div class="col-lg-4">
-                            <label for="product_name" class="form-label">Product Name *</label>
-                            {!! Form::text('product_name', $product->product_name, [
-                                'placeholder' => 'Product Name',
-                                'class' => 'form-control',
-                            ]) !!}
-                        </div>
-                        <div class="col-lg-4">
-                            <label for="category" class="form-label">Category</label>
-                            {!! Form::select('category_id', $categories->pluck('category_name', 'id'), $product->category->id, [
-                                'placeholder' => 'Choose Category',
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::label('product_name', 'Product Name', ['class' => 'form-label'. ($errors->has('product_name') ? ' text-danger' : '')]) }}
+                            {{ Form::text('product_name', null, ['class' => 'form-control' . ($errors->has('product_name') ? ' is-invalid' : ''), 'id' => 'product_name', 'placeholder' => 'Product Name']) }}
+                            @error('product_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
                         <div class="col-lg-4">
-                            <label for="brand" class="form-label">Brand</label>
-                            {!! Form::select('brand_id', $brands->pluck('brand_name', 'id'), $product->brand->id, [
-                                'placeholder' => 'Choose Brand',
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::label('category_id', 'Category', ['class' => 'form-label'. ($errors->has('category_id') ? ' text-danger' : '')]) }}
+                            {{ Form::select('category_id', ['' => 'Choose Category'] + $categories->pluck('category_name', 'id')->toArray(), null, ['class' => 'form-control' . ($errors->has('category_id') ? ' is-invalid' : '')]) }}
+                            @error('category_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-                        <div class="col-lg-4 my-2">
-                            <label for="unit" class="form-label">Unit *</label>
-                            {!! Form::select('unit_id', $units->pluck('name', 'id'), $product->unit->id, [
-                                'placeholder' => 'Choose Unit',
-                                'class' => 'form-control',
-                            ]) !!}
+                        <div class="col-lg-4">
+                            {{ Form::label('brand_id', 'Brand', ['class' => 'form-label'. ($errors->has('brand_id') ? ' text-danger' : '')]) }}
+                            {{ Form::select('brand_id', ['' => 'Choose Brand'] + $brands->pluck('brand_name', 'id')->toArray(), null, ['class' => 'form-control' . ($errors->has('brand_id') ? ' is-invalid' : '')]) }}
+                            @error('brand_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-                        <div class="col-lg-4 my-2">
-                            <label for="company_name" class="form-label">Company Name</label>
-                            {!! Form::text('company_name', $product->company_name, [
-                                'placeholder' => 'Company Name',
-                                'class' => 'form-control',
-                            ]) !!}
+                        <div class="col-lg-4">
+                            {{ Form::label('unit_id', 'Unit', ['class' => 'form-label'. ($errors->has('unit_id') ? ' text-danger' : '')]) }}
+                            {{ Form::select('unit_id', ['' => 'Choose Unit'] + $units->pluck('name', 'id')->toArray(), null, ['class' => 'form-control' . ($errors->has('unit_id') ? ' is-invalid' : '')]) }}
+                            @error('unit_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-                        <div class="col-lg-4 my-2">
-                            <label for="country" class="form-label">Country</label>
-                            {!! Form::text('country', $product->country, ['placeholder' => 'Country', 'class' => 'form-control']) !!}
+                        <div class="col-lg-4">
+                            {{ Form::label('company_name', 'Company Name', ['class' => 'form-label'. ($errors->has('company_name') ? ' text-danger' : '')]) }}
+                            {{ Form::text('company_name', null, ['class' => 'form-control' . ($errors->has('company_name') ? ' is-invalid' : ''), 'id' => 'company_name', 'placeholder' => 'Company Name']) }}
+                            @error('company_name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-                        <div class="col-lg-4 my-2">
-                            <label for="sku" class="form-label">SKU *</label>
-                            {!! Form::text('sku', $product->sku, ['placeholder' => 'SKU', 'class' => 'form-control']) !!}
-                        </div>
-                        <div class="col-lg-4 my-2">
-                            <label for="received_date" class="form-label">Received Date</label>
-                            {!! Form::date('received_date', $product->received_date, [
-                                'placeholder' => 'Received date',
-                                'class' => 'form-control',
-                            ]) !!}
+                        <div class="col-lg-4">
+                            {{ Form::label('country', 'Country', ['class' => 'form-label'. ($errors->has('country') ? ' text-danger' : '')]) }}
+                            {{ Form::text('country', null, ['class' => 'form-control' . ($errors->has('country') ? ' is-invalid' : ''), 'id' => 'country', 'placeholder' => 'Country']) }}
+                            @error('country')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
 
-                        <div class="col-lg-4 my-2">
-                            <label for="expired_date" class="form-label">Expired Date</label>
-                            {!! Form::date('expired_date', $product->expired_date, [
-                                'placeholder' => 'Expired date',
-                                'class' => 'form-control',
-                            ]) !!}
+                        <div class="col-lg-4">
+                            {{ Form::label('sku', 'SKU', ['class' => 'form-label'. ($errors->has('sku') ? ' text-danger' : '')]) }}
+                            {{ Form::text('sku', null, ['class' => 'form-control' . ($errors->has('sku') ? ' is-invalid' : ''), 'id' => 'sku', 'placeholder' => 'SKU']) }}
+                            @error('sku')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
                         </div>
-
-                    </div>
-                    <div class="row my-2">
+                       
+                        <div class="col-lg-4">
+                            {{ Form::label('received_date', 'Received Date', ['class' => 'form-label'. ($errors->has('received_date') ? ' text-danger' : '')]) }}
+                            {{ Form::date('received_date', null, ['class' => 'form-control' . ($errors->has('received_date') ? ' is-invalid' : ''), 'id' => 'received_date']) }}
+                            @error('received_date')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                
+                        <div class="col-lg-4">
+                            {{ Form::label('expired_date', 'Expired Date', ['class' => 'form-label'. ($errors->has('expired_date') ? ' text-danger' : '')]) }}
+                            {{ Form::date('expired_date', null, ['class' => 'form-control' . ($errors->has('expired_date') ? ' is-invalid' : ''), 'id' => 'expired_date']) }}
+                            @error('expired_date')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                         <div class="col-lg-12">
-                            <label for="description" class="form-label">Product Description</label>
-                            {!! Form::textarea('description', $product->description, [
-                                'cols' => '30',
-                                'rows' => '5',
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::label('description', 'Product Description', ['class' => 'form-label', 'id' => 'description']) }}
+                            {!! Form::textarea('description', null, ['cols' => '30', 'rows' => '5', 'class' => 'form-control']) !!}
+                            <span class="text-danger error" id="description_error"></span>
                         </div>
                     </div>
                 </div>
@@ -157,8 +142,8 @@
                     <th>ID</th>
                     <th>Item Code</th>
                     <th>Image</th>
-                    <th>Select</th>
-                    <th>Value</th>
+                    <th>Size Variant</th>
+                    <th>GRN No</th>
                     <th>Point</th>
                     <th>Ticket</th>
                     <th>Kyat</th>
@@ -196,41 +181,32 @@
                                 name="variations[{{ $index }}][image]">
                         </td>
                         <td>
-
-                            {!! Form::select('variations[' . $index . '][select]', ['Size' => 'Size'], $variation->select, [
-                                'class' => 'form-control',
-                                'disabled',
-                            ]) !!}
-                            {!! Form::hidden('variations[' . $index . '][select]', $variation->select, [
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::select('variations[' . $index . '][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(),$variation->size_variant_value , ['class' => 'form-control', 'id'=> 'variations_0_size_variant_value']) }}
                         </td>
                         <td>
-                            {!! Form::text('variations[' . $index . '][value]', $variation->value, [
-                                'class' => 'form-control',
-                                'disabled',
-                            ]) !!}
-                            {!! Form::hidden('variations[' . $index . '][value]', $variation->value, [
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::text('variations[' . $index . '][grn_no]', $variation->grn_no, ['class' => 'form-control']) }}
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][points]', $variation->points, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][tickets]', $variation->tickets, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}</td>
                         <td>
                             {!! Form::text('variations[' . $index . '][kyat]', $variation->kyat, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][alert_qty]', $variation->alert_qty, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
@@ -245,13 +221,11 @@
                         </td>
                         <td>
                             <a class="text-decoration-underline px-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addStockModal{{ $variation->id }}">add stock</a>
-                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                                Launch static backdrop modal
-                              </button> --}}
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][purchased_price]', $variation->purchased_price, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                        
@@ -344,6 +318,7 @@
                         <td>
                             {!! Form::text('variations[${variationCount}][item_code]', null, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
@@ -351,42 +326,38 @@
                             <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]">
                         </td>
                         <td>
-                            {!! Form::select('variations[${variationCount}][select]', ['size' => 'Size'], null, [
-                                'placeholder' => 'Choose Select',
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::select('variations[${variationCount}][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(),null , ['class' => 'form-control','required']) }}
                         </td>
                         <td>
-                            {!! Form::text('variations[${variationCount}][value]', null, [
-                                'class' => 'form-control',
-                            ]) !!}
+                            {{ Form::text('variations[${variationCount}][grn_no]', null, ['class' => 'form-control','required']) }}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][points]', null, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][tickets]', null, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}</td>
                         <td>
                             {!! Form::text('variations[${variationCount}][kyat]', null, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][alert_qty]', null, [
                                 'class' => 'form-control',
+                                'required',
                             ]) !!}
                         </td>
                         <td>
-                            {!! Form::text('variations[${variationCount}][received_qty]', 0, [
+                            {!! Form::text('variations[${variationCount}][received_qty]', null, [
                                 'class' => 'form-control',
-                                'disabled',
-                            ]) !!}
-                            {!! Form::hidden('variations[${variationCount}][received_qty]', 0, [
-                                'class' => 'form-control',
+                                'required',
                             ]) !!}
                             
                         </td>

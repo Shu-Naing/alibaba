@@ -222,7 +222,6 @@ dsButton.on("click", function (event) {
   // $(".is-invalid").removeClass("is-invalid");
   var dateInput = $("#date");
   var referenceInput = $("#reference");
-  var statusInput = $("#status");
   var fromOutletInput = $("#fromOutlet");
   var toOutletInput = $("#toOutlet");
   var tableValue = $("#show_Product .dstable tbody tr");
@@ -232,7 +231,6 @@ dsButton.on("click", function (event) {
   if (
     dateInput.val() &&
     referenceInput.val() &&
-    statusInput.val() &&
     fromOutletInput.val() &&
     toOutletInput.val() &&
     tableValue.length > 0
@@ -262,10 +260,6 @@ dsButton.on("click", function (event) {
     }
     if (referenceInput.val() === "") {
       // referenceInput.addClass("is-invalid");
-    }
-    if (statusInput.val() === "") {
-      // statusInput.addClass("is-invalid");
-      errorBox.append("The status field is required.<br/>");
     }
     if (fromOutletInput.val() === "") {
       // fromOutletInput.addClass("is-invalid");

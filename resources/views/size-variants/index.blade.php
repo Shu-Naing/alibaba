@@ -4,15 +4,15 @@
     <span class="loginUser">Welcome, <?php $userName = Auth::user();
     echo $userName->username; ?></span>
 @endsection
-
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">List Category</h4>
+            <h4 class="fw-bolder mb-3">List Size Variants</h4>
             <div>
                 @include('breadcrumbs')
             </div>
         </div>
+       
         @if (Session::has('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ Session::get('success') }}
@@ -20,25 +20,29 @@
             </div>
         @endif
         <div class="d-flex mb-3 justify-content-end">
-            <a class="btn btn-blue" href="{{ route('categories.create') }}">Add +</a>
+            <a class="btn btn-blue" href="{{ route('size-variant.create') }}">Add +</a>
         </div>
         <table id="table_id">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Action</th>
+                    <th>No</th>
+                    <th>Value</th>
+                    <th width="280px">Action</th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach ($categories as $cate)
-                    <tr>
-                        <td>{{ $cate->category_name }}</td>
-                        <td>
-                            <a class="text-decoration-underline px-3" href="{{ route('categories.edit', $cate->id) }}"><i
-                                    class="fa-solid fa-pen-to-square"></i> Edit</a>
+            @php $no = 1 ; @endphp
+            @foreach ($data as $key => $size_variant)
+                <tr>
+                    <td>{{ $no++ }}</td>
+                    <td>{{ $size_variant->value }}</td>
+                    <td>
+                       
+                        <a class="px-3" href="{{ route('size-variant.edit', $size_variant->id) }}"><i
+                                class="fa-solid fa-pen-to-square"></i> Edit</a>
+
                             {!! Form::open([
                                 'method' => 'DELETE',
-                                'route' => ['categories.destroy', $cate->id],
+                                'route' => ['size-variant.destroy', $size_variant->id],
                                 'style' => 'display:inline',
                             ]) !!}
                             {!! Form::submit('Delete', [
@@ -46,10 +50,10 @@
                                 'style' => 'font-family: Arial, sans-serif; font-size: 14px;',
                             ]) !!}
                             {!! Form::close() !!}
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
+                    </td>
+                </tr>
+            @endforeach
         </table>
+    </div>
     </div>
 @endsection
