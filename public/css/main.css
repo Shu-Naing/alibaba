@@ -9,6 +9,7 @@
   --blue-transparent-10: rgba(38, 72, 194, 0.1);
   --blue: #2648c2;
   --blue-dark: #1434a8;
+  --fs-small: 14px;
 }
 
 body {
@@ -22,6 +23,26 @@ img {
 
 .text-blue {
   color: var(--blue);
+}
+
+.cs-text-primary {
+  color: var(--primary-color);
+}
+
+.fs-small {
+  font-size: var(--fs-small);
+}
+
+.cs-bg-primary {
+  background-color: var(--primary-color);
+}
+
+.input-bg-graylight {
+  background-color: #efefef;
+}
+
+.input-bg-graylight:focus {
+  background-color: #efefef;
 }
 
 .no-spin-buttons::-webkit-inner-spin-button,
@@ -341,3 +362,12 @@ input.number {
 .sidebar-close {
   transform: translateX(-300px);
 }
+
+/* delete modal box comfirm btn start */
+.delmodal-comfirm-btn:hover,
+.delmodal-comfirm-btn:active,
+.custom-btn:hover,
+.custom-btn:active {
+  background-color: var(--primary-color) !important;
+}
+/* delete modal box comfirm btn end */

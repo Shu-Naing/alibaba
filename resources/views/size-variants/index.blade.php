@@ -40,7 +40,10 @@
                         <a class="px-3" href="{{ route('size-variant.edit', $size_variant->id) }}"><i
                                 class="fa-solid fa-pen-to-square"></i> Edit</a>
 
-                            {!! Form::open([
+                        <a class="text-danger text-decoration-underline btn btn-link p-0" href="" data-bs-toggle='modal' 
+                            data-bs-target='#svariantsdelete' style='font-family: Arial, sans-serif; font-size: 14px;'> delete</a>
+
+                            <!-- {!! Form::open([
                                 'method' => 'DELETE',
                                 'route' => ['size-variant.destroy', $size_variant->id],
                                 'style' => 'display:inline',
@@ -49,9 +52,11 @@
                                 'class' => 'text-danger text-decoration-underline btn btn-link p-0',
                                 'style' => 'font-family: Arial, sans-serif; font-size: 14px;',
                             ]) !!}
-                            {!! Form::close() !!}
+                            {!! Form::close() !!} -->
                     </td>
                 </tr>
+
+                <x-delete-modal id="svariantsdelete" deletedataid="{{$size_variant->id}}" route="size-variant.destroy"></x-delete-modal>
             @endforeach
         </table>
     </div>
