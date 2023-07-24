@@ -1,9 +1,9 @@
 <?php
     return [
         'ds_status' => [
-            DS_PENDING => 'pending',
-            DS_APPROVE => 'approve',
-            DS_REJECT => 'reject',
+            DS_PENDING => 'Pending',
+            DS_APPROVE => 'Approve',
+            DS_REJECT => 'Reject',
         ],
         'counter_machine' => [
             OD_COUNTER => 'Counter',

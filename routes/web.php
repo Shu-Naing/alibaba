@@ -29,7 +29,6 @@ use App\Http\Controllers\OutletlevelhistoryController;
 use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
-use App\Http\Controllers\OutletlevelhistoryController;
 use App\Http\Controllers\OutletLevelOverviewController;
 
 

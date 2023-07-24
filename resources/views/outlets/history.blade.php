@@ -91,6 +91,6 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>outletrecieve
+        </table>
     </div>
 @endsection

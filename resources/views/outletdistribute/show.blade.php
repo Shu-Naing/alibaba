@@ -56,7 +56,7 @@
                 </tbody>
             </table>
             <div class="mr-0 my-5">
-                <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
+                <a class="btn btn-red" href="{{ route('outletdistribute.index') }}">Back</a>
             </div>
         </div>
 @endsection

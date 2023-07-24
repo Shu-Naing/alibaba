@@ -88,8 +88,9 @@ class IssueController extends Controller
 
         if($request->store_customer === IS_CUSTOMER) {
             // return "ehllo";
-            foreach($item_arr as $key => $value){
+            foreach($item_arr as $key => $value){                
                 $variation = Variation::where('item_code', $key)->first();
+                $fromOutletItemData = outlet_item_data($outletdistribute->from_outlet,$variation->id);
 
                 $outlet_inv_qty = MachineVariant::select('quantity')
                     ->where('machine_id', $request->to_machine)
@@ -103,6 +104,16 @@ class IssueController extends Controller
                 $input['quantity'] = $qty;
                 $totalOutlet->update($input);
                 // return "hello";
+
+                OutletDistributeProduct::create([
+                    'outlet_distribute_id' => $outletdistributeId,
+                    'variant_id' => $variation->id,
+                    'quantity' => $value,
+                    'purchased_price' => $fromOutletItemData->purchased_price,
+                    'subtotal' => $fromOutletItemData->purchased_price * $value,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                ]);
                 
                 OutletStockHistory::create([
                     'outlet_id' => $request->from_outlet,
@@ -115,12 +126,35 @@ class IssueController extends Controller
                     'remark' => $request->remark,
                     'created_by' => Auth::user()->id,
                 ]);
-                // return "success outletstockhistory";
+                $month = date('m', strtotime($request->date));                    
+                $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+                ->where('outlet_id', $request->from_outlet)
+                ->where('machine_id', $request->to_machine)
+                ->whereMonth('date', $month)
+                ->where('item_code',$key)->first();
+                
+                if($outletstockoverview){     
+                    $input = [];
+                    $input['issued_qty'] = $outletstockoverview->issued_qty + $value;
+                    $input['balance'] = ($outletstockoverview->opening_qty + $input['issued_qty']) - $outletstockoverview->receive_qty;
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletstockoverview->update($input);
+                }else {
+                    $input = [];
+                    $input['date'] = $request->date;
+                    $input['outlet_id'] = $request->from_outlet;
+                    $input['machine_id'] = $request->to_machine;
+                    $input['item_code'] = $key;
+                    $input['issued_qty'] = $value;
+                    $input['balance'] = $input['issued_qty'];
+                    $input['created_by'] = Auth::user()->id;
+                    OutletStockOverview::create($input);
+                }
             }
 
             return redirect()->back();
         } else {
-            foreach($item_arr as $key => $value){
+            foreach($item_arr as $key => $value){                
                 $variation = Variation::where('item_code', $key)->first();
                 $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
 
@@ -136,6 +170,16 @@ class IssueController extends Controller
                 $input['quantity'] = $machineqty;
                 $totalOutlet->update($input);
                 // return "hello";
+              
+                OutletDistributeProduct::create([
+                    'outlet_distribute_id' => $outletdistributeId,
+                    'variant_id' => $variation->id,
+                    'quantity' => $value,
+                    'purchased_price' => $fromOutletItemData->purchased_price,
+                    'subtotal' => $fromOutletItemData->purchased_price * $value,
+                    'remark' => $request->remark,
+                    'created_by' => Auth::user()->id,
+                ]);
 
                 $outlet_inv_qty = outlet_item_data($request->from_outlet, $variation->id); 
                 $qty = $outlet_inv_qty->quantity + $value;
@@ -192,6 +236,30 @@ class IssueController extends Controller
                         $input['created_by'] = Auth::user()->id;
                         OutletLevelOverview::create($input);
                     }
+                    $month = date('m', strtotime($request->date));                    
+                    $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
+                    ->where('outlet_id', $request->from_outlet)
+                    ->where('machine_id', $request->to_machine)
+                    ->whereMonth('date', $month)
+                    ->where('item_code',$key)->first();
+                    
+                    if($outletstockoverview){     
+                        $input = [];
+                        $input['issued_qty'] = $outletstockoverview->issued_qty + $value;
+                        $input['balance'] = ($outletstockoverview->opening_qty + $input['issued_qty']) - $outletstockoverview->receive_qty;
+                        $input['updated_by'] = Auth::user()->id;
+                        $outletstockoverview->update($input);
+                    }else {
+                        $input = [];
+                        $input['date'] = $request->date;
+                        $input['outlet_id'] = $request->from_outlet;
+                        $input['machine_id'] = $request->to_machine;
+                        $input['item_code'] = $key;
+                        $input['issued_qty'] = $value;
+                        $input['balance'] = $input['issued_qty'];
+                        $input['created_by'] = Auth::user()->id;
+                        OutletStockOverview::create($input);
+                    }
                 // from outlet for outletleveloverview end
             }
             return redirect()->back();
@@ -207,6 +275,8 @@ class IssueController extends Controller
      */
     public function show($id)
     {
+
+        // return $id;
         $breadcrumbs = [
               ['name' => 'Outlets', 'url' => route('outletdistribute.index')],
               ['name' => 'Detail Issue Products']
@@ -214,9 +284,12 @@ class IssueController extends Controller
 
         $outletdistribute_arr = [];
         $outletdistribute = OutletDistribute::find($id);
-        $outletDistributeProducts = OutletDistributeProduct::select('outlet_distribute_products.*', 'variations.item_code', 'variations.image', 'variations.value')
+        $outletDistributeProducts = OutletDistributeProduct::select('outlet_distribute_products.*', 'variations.item_code', 'variations.image', 'size_variants.value')
         ->join('variations', 'variations.id', '=', 'outlet_distribute_products.variant_id')
+        ->join('size_variants', 'size_variants.id', '=', 'variations.size_variant_value')
         ->where('outlet_distribute_id', $id)->get();
+
+        // return $outletDistributeProducts;
         $outletdistribute_arr['outletdistribute'] = $outletdistribute;
         $outletdistribute_arr['outletDistributeProducts'] = $outletDistributeProducts;
 

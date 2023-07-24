@@ -23,11 +23,15 @@ class ReportController extends Controller
         if( $received_date){
             $reports = Variation::whereHas('product',function ($query) use ($received_date){
             $query->where('received_date',$received_date);})
-            ->with('product.brand','product.category','product.unit')->get();
+            ->with('product.brand','product.category','product.unit')
+            ->with('sizeVariant')->get();
 
         }else{
-            $reports = Variation::with('product.brand','product.category','product.unit')->get();
+            $reports = Variation::with('product.brand','product.category','product.unit')
+            ->with('sizeVariant')->get();
         }
+
+        // return $reports;
         // return $reports;
         $outlets = Outlets::with('machines')->where('id','!=',1)->get();
         // return $outlets;
@@ -41,10 +45,12 @@ class ReportController extends Controller
         if($received_date){
             $reports = Variation::whereHas('product',function ($query) use ($received_date){
             $query->where('received_date',$received_date);})
-            ->with('product.brand','product.category','product.unit')->get();
+            ->with('product.brand','product.category','product.unit')
+            ->with('sizeVariant')->get();
 
         }else{
-            $reports = Variation::with('product.brand','product.category','product.unit')->get();
+            $reports = Variation::with('product.brand','product.category','product.unit')
+            ->with('sizeVariant')->get();
         }
         $outlets = Outlets::with('machines')->where('id','!=',1)->get();
         // $data = Variation::with('product','outlet_item','product.brand','product.category','product.unit')->get();

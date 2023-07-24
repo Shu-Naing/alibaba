@@ -32,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('components.detail-card',function($view){      
             $view->with('ridertypes',config('constants.ridertypes'));
         });
-        view()->composer('distribute.create',function($view){      
+        view()->composer('distribute.*',function($view){      
             $view->with('ds_status',config('constants.ds_status'));
         });
         view()->composer('distribute.edit',function($view){      
