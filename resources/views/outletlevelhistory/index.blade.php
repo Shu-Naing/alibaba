@@ -29,7 +29,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
-                    <th>Machine</th>
+                    <th>Outlet</th>
                     <th>Date</th>
                     <th>Item Code</th>
                     <th>Quantity</th>

@@ -32,6 +32,7 @@
                         <th scope="col">Ref:</th>
                         <th scope="col">From Outlet</th>
                         <th scope="col">To Outlet</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -42,6 +43,7 @@
                             <td>{{$distribute->reference_No}}</td>
                             <td>{{$outlets[$distribute->from_outlet]}}</td>
                             <td>{{$outlets[$distribute->to_outlet]}}</td>
+                            <td>{{ $ds_status[$distribute->status] }}</td>
                             <td>
                                 <a href="{{ route('distribute.show',$distribute->id) }}" class="mx-2">View</a>
                                 {{-- <a href="{{ route('distribute.edit',[$distribute->id, $distribute->from_outlet]) }}" class="mx-2">Edit</a> --}}

@@ -144,7 +144,7 @@
                     </th>
                     <th colspan="3" class="text-right">
                         <p>Voucher No: {{ str_replace(' ','-',get_outlet_name($distribute->from_outlet)) . '-' . $distribute->id }}</p>
-                        <p>Date: 6-27-2023</p>
+                        <p>Date: {{ $distribute->date }}</p>
                     </th>
                 </tr>
                 <tr>

@@ -42,7 +42,7 @@
         @csrf
             <div class="row mb-3 g-3">
                 <div class="col-md-2">
-                    {!! Form::label('received_date', 'Date Filter', ['class' => 'form-label']) !!}
+                    {!! Form::label('received_date', 'Received Date', ['class' => 'form-label']) !!}
                     {{ Form::date('received_date', null, ['class' => 'form-control']) }}
     
                 </div>
@@ -82,7 +82,7 @@
                         <th class="sticky-col-ticket tb-header-red">Ticket</th>
                         <th class="sticky-col-price tb-header-red">Price (WS)</th>
                         <th>Product Name</th>
-                        <th>Size</th>
+                        <th>Size Variant</th>
                         <th>Received Date</th>
                         <th>Company Name</th>
                         <th>Country</th>
@@ -118,7 +118,7 @@
                             <td class="sticky-col-price sticky-td">
                                 {{ !isset($report->kyat) || $report->kyat == 0 ? 0 : $report->kyat }}</td>
                             <td>{{ $report->product->product_name }}</td>
-                            <td>{{ $report->value }}</td>
+                            <td>{{ $report->sizeVariant->value }}</td>
                             <td>{{ $report->product->received_date }}</td>
                             <td>{{ $report->product->company_name }}</td>
                             <td>{{ $report->product->country }}</td>

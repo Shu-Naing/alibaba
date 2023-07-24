@@ -51,7 +51,7 @@
                     {!! Form::text('itemCode', $itemcode, ['class' => 'form-control', 'id' => 'itemCode']) !!}
                 </div>
                 <div class="col-md-2">
-                    {!! Form::label('date', 'Date Filter', ['class' => 'form-label']) !!}
+                    {!! Form::label('date', 'Date', ['class' => 'form-label']) !!}
                     {{ Form::date('date', null, ['class' => 'form-control']) }}
     
                 </div>

@@ -120,7 +120,7 @@
         <div class="text-center my-5">
             <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
-            <button type="submit" form="distributeForm" class="btn btn-blue ms-2" id="dsbutton">Next</button>
+            <button type="submit" form="distributeForm" class="btn btn-blue ms-2" id="dsbutton">Save</button>
         </div>
     </div>
 

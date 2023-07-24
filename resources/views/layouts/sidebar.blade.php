@@ -303,13 +303,13 @@
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
                             </a>
                         </li> -->
-                        <li class="w-100 sidebar-item">
+                        {{-- <li class="w-100 sidebar-item">
                             <a href="{{ route('outletstockhistory.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline text-wrap">Outlet Stock History</span>
                             </a>
-                        </li>
+                        </li> --}}
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outletlevelhistory.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletlevelhistory.index') ? 'active' : '' }}">

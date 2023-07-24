@@ -70,7 +70,7 @@ class ProductsController extends Controller
             'expired_date' => 'required',
             'variations' => 'required|array',
             'variations.*.size_variant_value' => 'required',
-            'variations.*.grn_no' => 'required',
+            'variations.*.grn_no' => 'required|unique:variations',
             'variations.*.received_qty' => 'required',
             'variations.*.alert_qty' => 'required',
             'variations.*.item_code' => 'required|unique:variations',
@@ -82,6 +82,7 @@ class ProductsController extends Controller
         ],
 
         [
+            'variations.*.grn_no.unique' => 'GRN No must be unique.',
             'variations.*.size_variant_value.required' => 'The Size Variant field is required.',
             'variations.*.grn_no.required' => 'The Grn no field is required.',
             'variations.*.received_qty.required' => 'The received quantity is required.',
