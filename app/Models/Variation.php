@@ -40,4 +40,9 @@ class Variation extends Model
     {
     return $this->belongsTo(MachineVariant::class, 'variant_id', 'id');
     }
+
+    public function sizeVariant()
+    {
+        return $this->hasOne(SizeVariant::class, 'id','size_variant_value');
+    }
 }

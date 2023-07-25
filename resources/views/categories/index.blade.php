@@ -36,18 +36,13 @@
                         <td>
                             <a class="text-decoration-underline px-3" href="{{ route('categories.edit', $cate->id) }}"><i
                                     class="fa-solid fa-pen-to-square"></i> Edit</a>
-                            {!! Form::open([
-                                'method' => 'DELETE',
-                                'route' => ['categories.destroy', $cate->id],
-                                'style' => 'display:inline',
-                            ]) !!}
-                            {!! Form::submit('Delete', [
-                                'class' => 'text-danger text-decoration-underline btn btn-link p-0',
-                                'style' => 'font-family: Arial, sans-serif; font-size: 14px;',
-                            ]) !!}
-                            {!! Form::close() !!}
+
+                            <a class="text-danger btn btn-link p-0" href="" data-bs-toggle='modal' 
+                            data-bs-target='#catdelete' style='font-family: Arial, sans-serif; font-size: 14px;'> delete</a>
                         </td>
                     </tr>
+
+                    <x-delete-modal id="catdelete" deletedataid="{{$cate->id}}" route="categories.destroy"></x-delete-modal>
                 @endforeach
             </tbody>
         </table>

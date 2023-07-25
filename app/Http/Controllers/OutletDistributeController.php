@@ -284,8 +284,6 @@ class OutletDistributeController extends Controller
                     $input['created_by'] = Auth::user()->id;
                     OutletStockOverview::create($input);
                 }
-
-
             }
             
             return redirect()->back();
@@ -308,8 +306,9 @@ class OutletDistributeController extends Controller
 
         $outletdistribute_arr = [];
         $outletdistribute = OutletDistribute::find($id);
-        $outletDistributeProducts = OutletDistributeProduct::select('outlet_distribute_products.*', 'variations.item_code', 'variations.image', 'variations.value')
+        $outletDistributeProducts = OutletDistributeProduct::select('outlet_distribute_products.*', 'variations.item_code', 'variations.image', 'size_variants.value')
         ->join('variations', 'variations.id', '=', 'outlet_distribute_products.variant_id')
+        ->join('size_variants', 'size_variants.id', '=', 'variations.size_variant_value')
         ->where('outlet_distribute_id', $id)->get();
         $outletdistribute_arr['outletdistribute'] = $outletdistribute;
         $outletdistribute_arr['outletDistributeProducts'] = $outletDistributeProducts;

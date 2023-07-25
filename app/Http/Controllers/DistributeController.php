@@ -18,62 +18,35 @@ use App\Exports\ListDistributeDetailExport;
 
 class DistributeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $breadcrumbs = [
                 ['name' => 'Distribute']
         ];
         $outlets = getOutlets();
-
-        // $distributes = DistributeProducts::join('distributes','distributes.id','=','distribute_products.distribute_id')->get();
         $distributes = distributes::all();
 
-        // return $distributes;
         return view('distribute.index',compact('breadcrumbs','distributes','outlets'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-
-        
         $breadcrumbs = [
               ['name' => 'Distribute', 'url' => route('distribute.index')],
               ['name' => 'Create']
         ];
         $outlets = getOutlets();
-        // return $outlets;
         $latestRef = distributes::orderBy('created_at', 'desc')->value('reference_No');
-        
         $generatedRef = refGenerateCode($latestRef);
-
-        // return $generatedRef;
 
         return view('distribute.create', compact('breadcrumbs', 'outlets','generatedRef'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-    //    return $request;
         $data = $request->all();
         $item_arr = [];
 
-        // create distribute table start
             $this->validate($request, [
                 'date' => 'required',
                 'reference_No' => 'required|unique:distributes',
@@ -86,8 +59,6 @@ class DistributeController extends Controller
 
             $distribute = distributes::create($input);
             $distributeId = $distribute->id;
-            // return $data
-        // create distribute table end
 
         foreach($data as $key => $value) {
             $key_arr = explode("_", $key);
@@ -99,11 +70,8 @@ class DistributeController extends Controller
         }
         
         foreach($item_arr as $key => $value){
-            // return $row;
             $variation = Variation::where('item_code', $key)->first();
             $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
-
-
                 DistributeProducts::create([
                     'distribute_id' => $distributeId,
                     'variant_id' => $variation->id,
@@ -273,15 +241,10 @@ class DistributeController extends Controller
 
         }
         
-        return redirect()->back();
+        return redirect()->back()->with('success','Distribute created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id)
     {
         $distribute = [];
@@ -291,9 +254,10 @@ class DistributeController extends Controller
         ];
         $outlets = getOutlets();
         $distribute_data = distributes::find($id);
-        $distribute_products_data = distributes::select('distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','variations.value')
+        $distribute_products_data = distributes::select('distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
         ->join('variations','variations.id','=','distribute_products.variant_id')
+        ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value')
         ->where('distributes.id',$id)
         ->get();
 
@@ -303,12 +267,7 @@ class DistributeController extends Controller
         return view('distribute.show',compact('distribute','breadcrumbs','outlets'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id,$from_outlet)
     {
         $breadcrumbs = [
@@ -329,35 +288,23 @@ class DistributeController extends Controller
         return view('distribute.edit', compact('distribute','outlets', 'distribute_products', 'variant_qty', 'breadcrumbs'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
-
-        // return $request;
         $distribute = distributes::find($id);
         if($distribute->status !== 2 ){
             $distribute->updated_by = Auth::user()->id;
             if($request->status == 'approve'){
                 $distribute->status = DS_APPROVE;
-
-
                 $distribute_products = DistributeProducts::where('distribute_id',$distribute->id)->get();
-
                 foreach($distribute_products as $distribute_product){
-
+                    $item_code = Variation::where('id',$distribute_product->variant_id)->value('item_code');
                     $fromOutletItemData = outlet_item_data($distribute->from_outlet,$distribute_product->variant_id);
-
                     OutletlevelHistory::create([
                         'outlet_id' => $distribute->from_outlet,
                         'type' => ISSUE_TYPE,
                         'quantity' => $distribute_product->quantity,
-                        'item_code' => Variation::where('id',$distribute_product->variant_id)->value('item_code'),
+                        'item_code' => $item_code,
                         'branch' => $distribute->to_outlet,
                         'date' => $distribute->date,
                         'remark' => $distribute->remark,
@@ -369,14 +316,13 @@ class DistributeController extends Controller
                         'outlet_id' => $distribute->to_outlet,
                         'type' => RECIEVE_TYPE,
                         'quantity' => $distribute_product->quantity,
-                        'item_code' => Variation::where('id',$distribute_product->variant_id)->value('item_code'),
+                        'item_code' => $item_code,
                         'branch' => $distribute->from_outlet,
                         'date' => $distribute->date,
                         'remark' => $distribute->remark,
                         'created_by' => Auth::user()->id,
                         'remark' => $distribute->remark,
                     ]);
-
 
                     $outletitem = OutletItem::where('outlet_id',$distribute->to_outlet)->where('variation_id',$distribute_product->variant_id)->first();
                     if($outletitem){
@@ -409,20 +355,66 @@ class DistributeController extends Controller
                             'created_by' => Auth::user()->id,
                         ]);
                     }
-            
-    
+
                     $fromOutletItemData->quantity = $fromOutletItemData->quantity - $distribute_product->quantity;
                     $fromOutletItemData->update();
-             
 
+                    $month = date('m', strtotime($distribute->date));
+                    $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                    ->where('outlet_id', $distribute->from_outlet)
+                    ->whereMonth('date', $month)
+                    ->where('item_code',$item_code)->first();
+
+                    if($outletleveloverview){ 
+                        $issued_qty = $outletleveloverview->issued_qty + $distribute_product->quantity;    
+                        $input = [];
+                        $input['issued_qty'] = $issued_qty;
+                        $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
+                        $input['updated_by'] = Auth::user()->id;
+                        $outletleveloverview->update($input);
+                    }else {
+                        $input = [];
+                        $input['date'] = $distribute->date;
+                        $input['outlet_id'] = $distribute->from_outlet;
+                        $input['item_code'] = $item_code;
+                        $input['issued_qty'] = $distribute_product->quantity;
+                        $input['balance'] = (0 + 0) - $distribute_product->quantity;
+                        $input['created_by'] = Auth::user()->id;
+                        OutletLevelOverview::create($input);
+                    }
+                // from outlet for outletleveloverview end
+
+                // to outlet for outletleveloverview start
+                    $month = date('m', strtotime($distribute->date));
+                    $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                    ->where('outlet_id', $distribute->to_outlet)
+                    ->whereMonth('date', $month)
+                    ->where('item_code',$item_code)->first();
+
+                    if($outletleveloverview){     
+                        $input = [];
+                        $input['receive_qty'] = $outletleveloverview->receive_qty + $distribute_product->quantity;
+                        $input['balance'] = ($outletleveloverview->opening_qty + $input['receive_qty']) - $outletleveloverview->issued_qty;
+                        $input['updated_by'] = Auth::user()->id;
+                        $outletleveloverview->update($input);
+                    }else {
+                        $input = [];
+                        $input['date'] = $distribute->date;
+                        $input['outlet_id'] = $distribute->to_outlet;
+                        $input['item_code'] = $item_code;
+                        $input['receive_qty'] = $distribute_product->quantity;
+                        $input['balance'] = $distribute_product->quantity;
+                        $input['created_by'] = Auth::user()->id;
+                        OutletLevelOverview::create($input);
+                    }
                 }
 
             }else{
-                $distribute->status = DS_REJECT;
+                $distribute->status = DS_REJECT;  
             }
            
         }
-
+        $distribute->updated_by = Auth::user()->id;
         $distribute->update();
 
         return response()->json(['message' => 'Success']);
@@ -447,8 +439,6 @@ class DistributeController extends Controller
             $query->where('distribute_id',$distribute_id);
         })->with('distribute_porducts.variant.product.unit')->first();
 
-        // return $distribute;
-        
         return view('distribute.preview',compact('distribute'));
     }
 
@@ -459,18 +449,15 @@ class DistributeController extends Controller
             ['name' => 'Distribute Detail']
         ];
         $outlets = getOutlets();
-
         $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
         $to_outlet = session()->get(PD_TOOUTLET_FILTER);
         $item_code = session()->get(PD_ITEMCODE_FILTER);
         $date = session()->get(PD_DATE_FILTER);
 
-       
         $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
         ->join('variations','variations.id','=','distribute_products.variant_id')
         ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value');
-
 
         if($from_outlet){
             $distributes = $distributes->where('from_outlet', $from_outlet);        
@@ -490,10 +477,6 @@ class DistributeController extends Controller
      
         $distributes = $distributes->get();
 
-        // return $item_code."hellos";
-
-        // return $distributes;
-
         return view('distribute.listdistributedetail',compact('breadcrumbs','distributes','outlets'));
     }
 
@@ -506,12 +489,10 @@ class DistributeController extends Controller
         $item_code = session()->get(PD_ITEMCODE_FILTER);
         $date = session()->get(PD_DATE_FILTER);
 
-       
         $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
         ->join('variations','variations.id','=','distribute_products.variant_id')
         ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value');
-
 
         if($from_outlet){
             $distributes = $distributes->where('from_outlet', $from_outlet);        

@@ -36,15 +36,12 @@
                         <td>
                             <a class="text-decoration-underline px-3" href="{{ route('brands.edit', $brand->id) }}"><i
                                     class="fa-solid fa-pen-to-square"></i> Edit</a>
-                            {!! Form::open(['method' => 'DELETE', 'route' => ['brands.destroy', $brand->id], 'style' => 'display:inline']) !!}
-                            {!! Form::submit('Delete', [
-                                'class' => 'text-danger text-decoration-underline btn btn-link p-0',
-                                'style' => 'font-family: Arial, sans-serif; font-size: 14px;',
-                            ]) !!}
-                            {!! Form::close() !!}
-                            </i>
+                            <a class="text-danger text-decoration-underline btn btn-link p-0" href="" data-bs-toggle='modal' 
+                                    data-bs-target='#branddelete' style='font-family: Arial, sans-serif; font-size: 14px;'> delete</a>
                         </td>
                     </tr>
+
+                    <x-delete-modal id="branddelete" deletedataid="{{$brand->id}}" route="brands.destroy"></x-delete-modal>
                 @endforeach
             </tbody>
         </table>

@@ -35,7 +35,7 @@
                     <tr>
                         <th scope="col">Item Code</th>
                         <th scope="col">Photo</th>
-                        <th scope="col">Size</th>
+                        <th scope="col">Size Variant</th>
                         <th scope="col">Purchase Price:</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Sub Total</th>
@@ -56,7 +56,7 @@
             </table>
 
             <div class="mr-0 my-5">
-                <a class="btn btn-blue" href="{{ url()->previous() }}">Back</a>
+                <a class="btn btn-blue" href="{{ route('distribute.index') }}">Back</a>
                 <button class="btn btn-success" onclick="updateStatus('approve','<?php echo $distribute['distribute']->id ?>');" @if($distribute['distribute']->status == 2) disabled @endif>Approve</button>
                 <button class="btn btn-danger" onclick="updateStatus('reject',<?php echo $distribute['distribute']->id ?>);"  @if($distribute['distribute']->status == 2) disabled @endif>Reject</button>
                 

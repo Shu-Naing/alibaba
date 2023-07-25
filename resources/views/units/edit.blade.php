@@ -44,7 +44,7 @@
             </div>
 
             <div class="">
-                <a class="btn btn-red" href="{{ URL::current() }}">Cancel</a>
+                <a class="btn btn-red" href="{{ route('units.index')}}">Cancel</a>
                 <button type="submit" class="btn btn-blue ms-2">Save</button>
             </div>
         {!! Form::close() !!}
