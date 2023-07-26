@@ -25,6 +25,18 @@
             </div>
         @endif
 
+        <form action="{{ route('outletlevelhistory.index') }}" method="get">
+            @csrf
+            <div class="d-flex">
+                <select class="form-select w-25" id="outlethistory_select" name="outlet" aria-label="Default select example">
+                    @foreach ($outlets as $key => $outlet)
+                        <option value="{{ $key }}">{{ $outlet }}</option>
+                    @endforeach
+                </select>
+                <button type="submit" class="btn btn-blue ms-2">Select</button>
+            </div>
+        </form> 
+
         <table id="table_id">
             <thead>
                 <tr>

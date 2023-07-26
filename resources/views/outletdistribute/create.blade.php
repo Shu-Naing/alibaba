@@ -29,37 +29,39 @@
 
          <div class="errorbox"></div>
 
-        {!! Form::open(array('route' => 'outletdistribute.store', 'method' => 'post', 'class' => 'p-4 rounded border shadow-sm mb-5', 'id' => 'outletdistribute')) !!}
+        {!! Form::open(array('route' => 'outletdistribute.store', 'method' => 'post', 'id' => 'outletdistribute')) !!}
             @csrf
-            <div class="row mb-3 g-3">
-                <div class="col-md-4">
-                    {!! Form::label('date', 'Date', array('class' => 'form-label')) !!}
-                    {!! Form::date('date', null, array('class' => 'form-control', 'id'=>'date')) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! Form::label('reference_No', 'Reference No.', array('class' => 'form-label')) !!}
-                    {!! Form::text('reference_No', $generatedRef, array('class' => 'form-control', 'id' => 'reference')) !!}
-                </div>
-                <!-- <div class="col-md-4">
-                    {!! Form::label('status', 'Status', array('class' => 'form-label')) !!}
-                    {!! Form::select('status', $ds_status, null, array('placeholder' => 'Choose to status', 'class' => 'form-control','id'=>'status')) !!}
-                </div> -->
-                <div class="col-md-4">
-                    {!! Form::label('from_outlet', 'From (Outlet)', array('class' => 'form-label')) !!}
-                    {!! Form::hidden('from_outlet', $id) !!}
-                    {!! Form::select('from_outlet_select',$outlets, $id, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'fromOutlet', 'disabled' => 'disabled')) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! Form::label('counterMachine', 'To (Counter / Machine)', array('class' => 'form-label')) !!}
-                    {!! Form::select('counterMachine', $counter_machine, null, array('placeholder' => 'Choose', 'class' => 'form-control counterMachine','id'=>'counterMachine')) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! Form::label('counter', 'Counter', array('class' => 'form-label')) !!}
-                    {!! Form::select('to_counter', $counter, null, array('placeholder' => 'Choose', 'class' => 'form-control counter','id'=>'counter', 'disabled')) !!}
-                </div>
-                <div class="col-md-4">
-                    {!! Form::label('machine', 'Machine', array('class' => 'form-label')) !!}
-                    {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control machine','id'=>'machine', 'disabled')) !!}
+            <div class="p-4 rounded border shadow-sm mb-5">
+                <div class="row mb-3 g-3">
+                    <div class="col-md-4">
+                        {!! Form::label('date', 'Date', array('class' => 'form-label')) !!}
+                        {!! Form::date('date', null, array('class' => 'form-control', 'id'=>'date')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('reference_No', 'Reference No.', array('class' => 'form-label')) !!}
+                        {!! Form::text('reference_No', $generatedRef, array('class' => 'form-control', 'id' => 'reference')) !!}
+                    </div>
+                    <!-- <div class="col-md-4">
+                        {!! Form::label('status', 'Status', array('class' => 'form-label')) !!}
+                        {!! Form::select('status', $ds_status, null, array('placeholder' => 'Choose to status', 'class' => 'form-control','id'=>'status')) !!}
+                    </div> -->
+                    <div class="col-md-4">
+                        {!! Form::label('from_outlet', 'From (Outlet)', array('class' => 'form-label')) !!}
+                        {!! Form::hidden('from_outlet', $id) !!}
+                        {!! Form::select('from_outlet_select',$outlets, $id, array('placeholder' => 'Choose From outlets', 'class' => 'form-control','id'=>'fromOutlet', 'disabled' => 'disabled')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('counterMachine', 'To (Counter / Machine)', array('class' => 'form-label')) !!}
+                        {!! Form::select('counterMachine', $counter_machine, null, array('placeholder' => 'Choose', 'class' => 'form-control counterMachine','id'=>'counterMachine')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('counter', 'Counter', array('class' => 'form-label')) !!}
+                        {!! Form::select('to_counter', $counter, null, array('placeholder' => 'Choose', 'class' => 'form-control counter','id'=>'counter', 'disabled')) !!}
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('machine', 'Machine', array('class' => 'form-label')) !!}
+                        {!! Form::select('to_machine', $machines, null, array('placeholder' => 'Choose', 'class' => 'form-control machine','id'=>'machine', 'disabled')) !!}
+                    </div>
                 </div>
             </div>
 
@@ -112,7 +114,7 @@
             <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
             <!-- <button type="submit" form="outletdistribute" class="btn btn-blue ms-2">Next</button> -->
-            <button type="submit" form="outletdistribute" class="btn btn-blue ms-2" id="outletDsbutton">Next</button>
+            <button type="submit" form="outletdistribute" class="btn btn-blue ms-2" id="outletDsbutton">Save</button>
         </div>
             
     </div>

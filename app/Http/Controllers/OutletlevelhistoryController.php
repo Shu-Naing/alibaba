@@ -7,13 +7,20 @@ use App\Models\OutletlevelHistory;
 
 class OutletlevelhistoryController extends Controller
 {
-    public function index() {
+    public function index(Request $request) {
         $breadcrumbs = [
               ['name' => 'Outlet Level History']
         ];
-        $histories = OutletlevelHistory::all();
         // return $histories;
         $outlets = getOutlets();
+        
+        if($request->outlet){
+            $id = $request->outlet;
+        }else{
+            $id = MAINOUTLETID;
+        }
+        $histories = OutletlevelHistory::where('outlet_id', $id)->get();
+        
         // return $outlets[1];
         return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets'));
     }

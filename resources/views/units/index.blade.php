@@ -43,12 +43,9 @@
                             <a class="text-decoration-underline px-3" href="{{ route('units.edit', $unit->id) }}"><i
                                     class="fa-solid fa-pen-to-square"></i> Edit</a>
             
-                            <a class="text-danger btn btn-link p-0" href="" data-bs-toggle='modal' 
-                                    data-bs-target='#unitdelete' style='font-family: Arial, sans-serif; font-size: 14px;'> delete</a>
+                            <a class="text-danger btn btn-link p-0" href="" data-bs-toggle='modal' onClick="deleteModalBox('units',{{$unit->id}})" style='font-family: Arial, sans-serif; font-size: 14px;'> delete</a>
                         </td>
                     </tr>
-
-                    <x-delete-modal id="unitdelete" deletedataid="{{$unit->id}}" route="units.destroy"></x-delete-modal>
                 @endforeach
             </tbody>
         </table>

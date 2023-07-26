@@ -1,6 +1,8 @@
-// const { start, end } = require("@popperjs/core");
-
-// const { start } = require("@popperjs/core");
+$.ajaxSetup({
+  headers: {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+  },
+});
 
 $("#table_id").DataTable({
   lengthChange: false, // Disable "Show entries"
@@ -389,7 +391,7 @@ issueButton.on("click", function (event) {
   // console.log("hello");
   var dateInput = $("#date");
   var referenceInput = $("#reference");
-  var statusInput = $("#status");
+  // var statusInput = $("#status");
   var fromOutletInput = $("#fromOutlet");
   var toMachineInput = $("#to_machine");
   var storeCustomer = $("#store_customer");
@@ -407,7 +409,7 @@ issueButton.on("click", function (event) {
   if (
     dateInput.val() &&
     referenceInput.val() &&
-    statusInput.val() &&
+    // statusInput.val() &&
     fromOutletInput.val() &&
     toMachineInput.val() &&
     storeCustomer.val() &&
@@ -439,10 +441,10 @@ issueButton.on("click", function (event) {
     if (referenceInput.val() === "") {
       // referenceInput.addClass("is-invalid");
     }
-    if (statusInput.val() === "") {
-      // statusInput.addClass("is-invalid");
-      errorBox.append("The status field is required.<br/>");
-    }
+    // if (statusInput.val() === "") {
+    //   // statusInput.addClass("is-invalid");
+    //   errorBox.append("The status field is required.<br/>");
+    // }
     if (fromOutletInput.val() === "") {
       // fromOutletInput.addClass("is-invalid");
       errorBox.append("From outlet field is required.<br/>");
@@ -716,7 +718,8 @@ $(".outletleveloverview-check").on("change", function () {
 // outlet stock overview reprot for physical column start
 $(".physical-qty").on("focusout", function () {
   var physical_qty = $(this).val();
-  var balance_qty = $(".balance-qty").text();
+  var balance_qty = $(this).parent().parent().find(".balance-qty").text();
+  // console.log(balance_qty);
   var outletstockoverview_id = $(this).data("id");
   // console.log("Checkbox value:", outletstockoverview_id);
   // console.log("Checkbox value:", physical_qty);
@@ -736,6 +739,31 @@ $(".physical-qty").on("focusout", function () {
     },
   });
 });
+// outlet level overview reprot for physical column end
+
+$(".outlevel-physical-qty").on("focusout", function () {
+  var physical_qty = $(this).val();
+  var balance_qty = $(this)
+    .parent()
+    .parent()
+    .find(".outlevel-balance-qty")
+    .text();
+  var outletleveloverview_id = $(this).data("id");
+  $.ajax({
+    url: "/updateoutletlevelphysicalqty/",
+    type: "GET",
+    data: {
+      id: outletleveloverview_id,
+      physical_qty: physical_qty,
+      balance_qty: balance_qty,
+    },
+    success: function (response) {
+      // console.log(response);
+      location.reload();
+    },
+  });
+});
+// outlet level overview reprot for physical column end
 
 // console.log("hello");
 var outlet_id = $("#outlet_id").val();
@@ -775,4 +803,25 @@ $("#open_outlet_id").on("change", function () {
     },
   });
 });
-// outlet stock overview reprot for physical column end
+
+function deleteModalBox(deleteUrl, id) {
+  // console.log(deleteUrl, id);
+  Swal.fire({
+    title: "Are you sure?",
+    text: "You won't be able to revert this!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: deleteUrl + "/" + id,
+        type: "DELETE",
+        success: function (response) {},
+      });
+    }
+    location.reload();
+  });
+}
