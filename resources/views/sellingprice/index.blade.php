@@ -38,16 +38,9 @@
                                 <a href="{{ route('sellingprice.activate', ['id' => $sell->id]) }}"
                                     class="text-decoration-underline text-success">Activate</a>
                             @endif
-                            {!! Form::open(['method' => 'DELETE', 'route' => ['sellingprice.destroy', $sell->id]]) !!}
-                            {!! Form::submit('Delete', [
-                                'class' => 'text-danger text-decoration-underline btn btn-link p-0',
-                                'style' => 'font-family: Arial, sans-serif; font-size: 14px;',
-                            ]) !!}
-                            {!! Form::close() !!}
+                            <a class="text-danger btn btn-link p-0" href="" data-bs-toggle='modal' onClick="deleteModalBox('sellingprice',{{$sell->id}})" style='font-family: Arial, sans-serif; font-size: 14px;'> delete</a>
 
-
-                            </i>
-                        </td>
+                        </td>sellingprice
                     </tr>
                 @endforeach
             </tbody>

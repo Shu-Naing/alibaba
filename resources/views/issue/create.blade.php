@@ -41,10 +41,10 @@
                         {!! Form::label('reference_No', 'Reference No.', array('class' => 'form-label')) !!}
                         {!! Form::text('reference_No', $generatedRef, array('class' => 'form-control', 'id' => 'reference')) !!}
                     </div>
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         {!! Form::label('status', 'Status', array('class' => 'form-label')) !!}
                         {!! Form::select('status', $ds_status, null, array('placeholder' => 'Choose to status', 'class' => 'form-control','id'=>'status')) !!}
-                    </div>
+                    </div> -->
                     <div class="col-md-4">
                         {!! Form::label('from_outlet', 'From (Outlet)', array('class' => 'form-label')) !!}
                         {!! Form::hidden('from_outlet', $id) !!}
@@ -110,7 +110,7 @@
         <div class="text-center my-5">
             <a class="btn btn-red" href="{{ url()->previous() }}">Back</a>
             <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
-            <button type="submit" form="outletissue" class="btn btn-blue ms-2" id="issuebutton">Next</button>
+            <button type="submit" form="outletissue" class="btn btn-blue ms-2" id="issuebutton">Save</button>
         </div>
     </div>
 

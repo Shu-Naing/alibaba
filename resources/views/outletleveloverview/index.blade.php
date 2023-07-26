@@ -35,6 +35,8 @@
                     <th>Issued Qty</th>
                     <th>Balance</th>
                     <th>Check</th>
+                    <th>Physical Qty</th>
+                    <th>Difference Qty</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,10 +50,12 @@
                         <td>{{ $outlevel->date }}</td>
                         <td>{{ $outlevel->item_code }}</td>
                         <td>{{ $outlevel->opening_qty }}</td>
-                        <td>{{ $outlevel->received_qty }}</td>
+                        <td>{{ $outlevel->receive_qty }}</td>
                         <td>{{ $outlevel->issued_qty }}</td>
-                        <td>{{ $outlevel->opening_qty + $outlevel->received_qty - $outlevel->issued_qty }}</td>
+                        <td class="outlevel-balance-qty">{{ $outlevel->opening_qty + $outlevel->receive_qty - $outlevel->issued_qty }}</td>
                         <td><input class="form-check-input mt-0 outletleveloverview-check" type="checkbox" value="{{ $outlevel->id }}" aria-label="Checkbox for following text input" {{ ($outlevel->is_check == 1) ? 'checked' : '' }} /></td>
+                        <td><input class="form-control mt-0 physical-num no-spin-buttons outlevel-physical-qty" type="number" min='0' value="{{ $outlevel->physical_qty }}" data-id="{{ $outlevel->id }}" /></td>
+                        <td>{{ $outlevel->difference_qty }}</td>
                     </tr>
                 @endforeach
             </tbody>

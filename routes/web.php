@@ -182,7 +182,11 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('outletlevelhistory',[OutletlevelhistoryController::class,'index'])->name('outletlevelhistory.index');
 
-    // Route::get('outletleveloverview',[OutletLevelOverviewController::class,'index'])->name('outletleveloverview.index');
+    Route::get('updateoutletlevelphysicalqty',[OutletLevelOverviewController::class,'updateoutletlevelphysicalqty'])->name('updateoutletlevelphysicalqty');
+
+    Route::get('outletlevelopeningqty-sample-export',[OutletLevelOverviewController::class, 'exportSampleOutletlevelopeningqty'])->name('outletlevelopeningqty.sample-export');
+
+    Route::post('outletlevelopeningqty-import',[OutletLevelOverviewController::class, 'importOutletlevelopeningqty'])->name('outletlevelopeningqty.import');
 
     Route::get('getoutletItem',[OutletStockOverviewController::class,'getoutletItem'])->name('getoutletItem');
 

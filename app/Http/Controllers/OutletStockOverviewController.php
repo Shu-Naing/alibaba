@@ -60,10 +60,12 @@ class OutletStockOverviewController extends Controller
         ]);
 
         $month = date('m', strtotime($request->date));
+        $year = date('Y', strtotime($request->date));
         $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
         ->where('outlet_id', $request->outlet_id)
         ->where('machine_id', $request->machine_id)
         ->whereMonth('date', $month)
+        ->whereYear('date', $year)
         ->where('item_code',$request->item_code)->first();
 
         if($outletstockoverview){     
@@ -161,9 +163,14 @@ class OutletStockOverviewController extends Controller
     }
 
     public function updatephysicalqty(Request $request) {
+        // return $request;
         $physical_qty = $request->physical_qty;
         $balance_qty =  $request->balance_qty;
-        $difference_qty =  $balance_qty - $physical_qty;
+        if ($balance_qty < 0) {
+            $difference_qty =  $balance_qty + $physical_qty;
+        } else {
+            $difference_qty =  $balance_qty - $physical_qty;
+        }
 
         $input = [];
         $input['physical_qty'] = $physical_qty;
