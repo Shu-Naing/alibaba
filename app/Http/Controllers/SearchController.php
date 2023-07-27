@@ -280,4 +280,27 @@ class SearchController extends Controller
         return redirect()->route('report.products');
     }
     
+    public function outletlevelhistorySearch(Request $request){
+        session()->start();
+        session()->put('OUTLET_LEVEL_HISTORY_FILTER', $request->outlet_id);
+        return redirect()->route('outletlevelhistory.index');
+    }
+
+    public function resetOutletlevelhistory(){
+        session()->forget('OUTLET_LEVEL_HISTORY_FILTER');
+        return redirect()->route('outletlevelhistory.index');
+    }
+
+    public function outletlevelverviewSearch(Request $request){
+        session()->start();
+        session()->put('OUTLET_LEVEL_OVERVIEW_FILTER', $request->outlet_id);
+        return redirect()->route('outletleveloverview.index');
+    }
+
+    public function resetOutletleveloverview(){
+        session()->forget('OUTLET_LEVEL_OVERVIEW_FILTER');
+        return redirect()->route('outletleveloverview.index');
+    }
+
+    
 }

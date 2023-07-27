@@ -29,6 +29,8 @@ use App\Models\OutletItemData;
     define('PD_DATE_FILTER', 'PD_DATE_FILTER');
 
     define('PD_RECEIVED_DATE_FILTER', 'PD_RECEIVED_DATE_FILTER');
+    define('OUTLET_LEVEL_HISTORY_FILTER','OUTLET_LEVEL_HISTORY_FILTER');
+    define('OUTLET_LEVEL_OVERVIEW_FILTER','OUTLET_LEVEL_OVERVIEW_FILTER');
     
 
     function getOutlets(){

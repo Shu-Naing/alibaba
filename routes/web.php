@@ -181,14 +181,19 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('outlethistory',[OutletController::class,'history'])->name('outlethistory.history');
 
     Route::get('outletlevelhistory',[OutletlevelhistoryController::class,'index'])->name('outletlevelhistory.index');
-
+    Route::get('outletlevelhistory-export',[OutletlevelhistoryController::class,'export'])->name('outletlevelhistory.export');
+    Route::post('outletlevelhistory-search',[SearchController::class,'outletlevelhistorySearch'])->name('outletlevelhistory.search');
+    Route::get('outletlevelhistory-reset',[SearchController::class,'resetOutletlevelhistory'])->name('outletlevelhistory.reset');
+    
     // Route::get('outletleveloverview',[OutletLevelOverviewController::class,'index'])->name('outletleveloverview.index');
 
     Route::get('getoutletItem',[OutletStockOverviewController::class,'getoutletItem'])->name('getoutletItem');
 
 
 
-
+    Route::get('outletleveloverview-export',[OutletLevelOverviewController::class,'export'])->name('outletleveloverview.export');
+    Route::post('outletleveloverview-search',[SearchController::class,'outletlevelverviewSearch'])->name('outletleveloverview.search');
+    Route::get('outletleveloverview-reset',[SearchController::class,'resetOutletleveloverview'])->name('outletleveloverview.reset');
 
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');

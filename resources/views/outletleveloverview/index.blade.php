@@ -23,6 +23,26 @@
             </div>
         @endif
 
+        {!! Form::open([
+            'route' => 'outletleveloverview.search',
+            'method' => 'post',
+            'class' => 'p-4 rounded border shadow-sm mb-5',
+        ]) !!}  
+        @csrf
+            <div class="row mb-3 g-3">
+                <div class="col-md-3">
+                    {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
+                    {{ Form::select('outlet_id', ['' => 'Choose Outlet'] + $outlets->pluck('name', 'id')->toArray(), null, ['class' => 'form-control']) }}
+    
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-blue ms-2">Search</button>
+                    <a href="{{route('outletleveloverview.reset')}}" class="btn btn-blue ms-2">Reset</a>
+                    <a href="{{ route('outletleveloverview.export') }}" class="btn btn-blue ms-2">Export to Excel</a>
+                </div>
+            </div>
+        {!! Form::close() !!}
+
         <table id="table_id">
             <thead>
                 <tr>
