@@ -89,6 +89,7 @@
                         <th>Category</th>
                         <th>Brand</th>
                         <th>UOM</th>
+                        <th>Purchased Price</th>
                         <th>Inventory <br> Store Balance</th>
                         <th>Total <br> Price</th>
                         @foreach ($outlets as $outlet)
@@ -125,6 +126,7 @@
                             <td>{{ $report->product->category->category_name }}</td>
                             <td>{{ $report->product->brand->brand_name }}</td>
                             <td>{{ $report->product->unit->name }}</td>
+                            <td>{{ $report->purchased_price }}</td>
                             <td>{{ outlet_stock($report->id) }}</td>
                             <td>{{ outlet_stock($report->id) * $report->purchased_price }}</td>
                             @foreach ($outlets as $outlet)

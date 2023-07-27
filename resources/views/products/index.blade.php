@@ -65,15 +65,18 @@
                         @csrf
                         <div class="row">
 
-                            <div class="col-lg-4 col-sm-12">
-                                <input type="file" class="form-control" name="file">
+                            <div class="col-lg-3 col-sm-12">
+                                <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                            </div>
+                            <div class="col-lg-3 col-sm-12">
+                                <input type="file" class="form-control" name="images[]" accept="image/*" multiple required/>
                             </div>
                             <div class="col-lg-4 col-sm-12">
                                 <button class="btn btn-primary">Submit</button>
                                 <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a>
                             </div>
 
-                            <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
+                            <div class="col-lg-2 col-sm-12 d-flex justify-content-end">
                                 {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
                                 <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
                                 <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>

@@ -34,6 +34,7 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
             'Category',
             'Brand',
             'UOM',
+            'Purchased Price',
             'Inventory Store Balance',
             'Total Price',
             'Total Store Balance',
@@ -91,6 +92,7 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
             $product->product->category->category_name, 
             $product->product->brand->brand_name, 
             $product->product->unit->name, 
+            $product->purchased_price,
             (!isset($inventory_store_balance) || $inventory_store_balance == 0) ? '0' : $inventory_store_balance,
             (!isset($inventory_total_price) || $inventory_total_price == 0) ? '0' : $inventory_total_price,
             (!isset($total_store_balance) || $total_store_balance == 0) ? '0' : $total_store_balance,
@@ -101,7 +103,7 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
     ];
 
 
-    $index = 14;
+    $index = 15;
     $product_id = $product->id;
    
 
@@ -123,7 +125,11 @@ class ProductsExport implements FromCollection, WithHeadings, WithMapping, Shoul
             $drawing = new Drawing();
             $drawing->setName($product->item_code);
             $drawing->setDescription($product->item_code);
-            $drawing->setPath(public_path('storage/'.$product->image));
+            if (isset($product->image)){
+                $drawing->setPath(public_path('storage/'.$product->image));
+            }else{
+                $drawing->setPath(public_path('storage/dummy-img.jpg'));
+            }
             $drawing->setHeight(60);
             $index+=2;
             $drawing->setCoordinates("B$index");
