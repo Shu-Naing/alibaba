@@ -34,9 +34,9 @@
                     </div>
                 </form>
             </div>
-            <div class="modal-footer modal-bg">
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary btn-sm"
+            <div class="modal-footer">
+                <button type="button" class="btn bg-muted text-white px-4 py-2 btn-sm" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn delmodal-comfirm-btn cs-bg-primary text-white px-4 py-2 btn-sm"
                     onclick="addStockBtn('<?php echo $variation->id; ?>')">Add</button>
             </div>
         </div>

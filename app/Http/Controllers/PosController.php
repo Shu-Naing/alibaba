@@ -17,6 +17,11 @@ class PosController extends Controller
 {
     public function index(Request $request){
        
+        $breadcrumbs = [
+            ['name' => 'Home', 'url' => route('home')],
+              ['name' => 'Pos']
+        ];
+
         $pos_id = $request->session()->get('pos-id');
         $user_outlet_id = Auth::user()->outlet->id;
         $search_key = $request->get('key');
@@ -88,7 +93,7 @@ class PosController extends Controller
  
         // return $outlet_items;
        
-        return view('pos.index',compact('outlet_items','temps','pos_items'));
+        return view('pos.index',compact('outlet_items','temps','pos_items', 'breadcrumbs'));
     }
     
 

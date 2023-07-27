@@ -65,7 +65,7 @@ class IssueController extends Controller
         $this->validate($request,[ 
             'date' => 'required',
             'reference_No' => 'required|unique:outlet_distributes',
-            'status' => 'required',        
+            // 'status' => 'required',        
             'to_machine' => 'required',
             'store_customer' => 'required'
         ]);
@@ -127,10 +127,12 @@ class IssueController extends Controller
                     'created_by' => Auth::user()->id,
                 ]);
                 $month = date('m', strtotime($request->date));                    
+                $year = date('Y', strtotime($request->date));                    
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                 ->where('outlet_id', $request->from_outlet)
                 ->where('machine_id', $request->to_machine)
                 ->whereMonth('date', $month)
+                ->whereYear('date', $year)
                 ->where('item_code',$key)->first();
                 
                 if($outletstockoverview){     
@@ -152,7 +154,7 @@ class IssueController extends Controller
                 }
             }
 
-            return redirect()->back();
+            return redirect()->back()->with('success', 'issue created successfully');
         } else {
             foreach($item_arr as $key => $value){                
                 $variation = Variation::where('item_code', $key)->first();
@@ -215,9 +217,11 @@ class IssueController extends Controller
 
                 // from outlet for outletleveloverview start
                     $month = date('m', strtotime($request->date));
+                    $year = date('Y', strtotime($request->date));
                     $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                     ->where('outlet_id', $request->from_outlet)
                     ->whereMonth('date', $month)
+                    ->whereYear('date', $year)
                     ->where('item_code',$key)->first();
 
                     if($outletleveloverview){     
@@ -236,11 +240,13 @@ class IssueController extends Controller
                         $input['created_by'] = Auth::user()->id;
                         OutletLevelOverview::create($input);
                     }
-                    $month = date('m', strtotime($request->date));                    
+                    $month = date('m', strtotime($request->date));   
+                    $year = date('Y', strtotime($request->date));                 
                     $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                     ->where('outlet_id', $request->from_outlet)
                     ->where('machine_id', $request->to_machine)
                     ->whereMonth('date', $month)
+                    ->whereYear('date', $year)
                     ->where('item_code',$key)->first();
                     
                     if($outletstockoverview){     
@@ -262,7 +268,7 @@ class IssueController extends Controller
                     }
                 // from outlet for outletleveloverview end
             }
-            return redirect()->back();
+            return redirect()->back()->with('success', 'issue created successfully');
         }
 
     }
@@ -424,11 +430,13 @@ class IssueController extends Controller
                 OutletStockHistory::create($input);  
                 
                 $month = date('m', strtotime($request->date));
+                $year = date('Y', strtotime($request->date));
                 $variant = Variation::find($row->variant_id);
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                 ->where('outlet_id', $request->from_outlet)
                 ->where('machine_id', $request->toCounterMachine)
                 ->whereMonth('date', $month)
+                ->whereYear('date', $year)
                 ->where('item_code',$variant->item_code)
                 ->first();
                 if($outletstockoverview){                                       

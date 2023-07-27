@@ -1,5 +1,21 @@
 // dropdown plus and minutes start
 const aElement = document.querySelectorAll(".dropdownli");
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Update the text content for each dropdownli element on page load
+  aElement.forEach(function (element) {
+    const classExit = element.parentNode.querySelectorAll(
+      ".submenuParent li a.active"
+    );
+    const spanElement = element.querySelector(".showHide");
+    if (classExit.length > 0) {
+      spanElement.textContent = "-";
+    } else {
+      spanElement.textContent = "+";
+    }
+  });
+});
+
 // console.log(aElement);
 aElement.forEach(function (element) {
   element.addEventListener("click", () => {

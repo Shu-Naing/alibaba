@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 use App\Models\OutletlevelOverview;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OutletLevelOverviewExport;
+use App\Exports\OutletleveloverviewSampleExport;
+use App\Imports\OutletleveloverviewsImport;
+use Auth;
 
 class OutletLevelOverviewController extends Controller
 {
     public function index() {
-        $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id');
+         $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
-            $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
+            $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
         }
         $outletleveloverview = $outletleveloverview->get(); 
 
@@ -22,6 +25,7 @@ class OutletLevelOverviewController extends Controller
         $outlets = Outlets::all();
         // return $outlets;
         return view("outletleveloverview.index", compact('outletleveloverview','outlets'));
+
     }
 
     public function create() {
@@ -38,9 +42,12 @@ class OutletLevelOverviewController extends Controller
         ]);
 
         $month = date('m', strtotime($request->date));
+        $year = date('Y', strtotime($request->date));
+        // return $month;
         $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
         ->where('outlet_id', $request->outlet_id)
         ->whereMonth('date', $month)
+        ->whereYear('date', $year)
         ->where('item_code',$request->item_code)->first();
 
         if($outletleveloverview){     
@@ -80,15 +87,53 @@ class OutletLevelOverviewController extends Controller
         return "success data";
     }
 
+
     public function export(){
 
-        $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id');
+        $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
-            $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
+            $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
         }
-        $outletleveloverview = $outletleveloverview->get();
+        $outletleveloverview = $outletleveloverview->get(); 
 
         return Excel::download(new OutletLevelOverviewExport($outletleveloverview), 'outlet-level-overview.xlsx');
+      
+    }
+
+    public function updateoutletlevelphysicalqty(Request $request) {
+        // return $request;
+        $physical_qty = $request->physical_qty;
+        $balance_qty =  $request->balance_qty;
+        $difference_qty =  $balance_qty - $physical_qty;
+        
+
+        $input = [];
+        $input['physical_qty'] = $physical_qty;
+        $input['difference_qty'] = $difference_qty;
+        $input['updated_by'] = auth()->user()->id;
+        $outletstocksoverview = OutletLevelOverview::find($request->id);
+        $outletstocksoverview->update($input);
+        return "success data";
+    }
+
+    public function exportSampleOutletlevelopeningqty(Request $request) {
+        // return "hello";
+        return Excel::download(new OutletleveloverviewSampleExport(), 'opening_stock_quantity.xlsx');
+
+    }
+
+    public function importOutletlevelopeningqty(Request $request) {
+        // return $request;
+
+        $file = $request->file('file');
+
+        try {
+            Excel::import(new OutletleveloverviewsImport, $file);
+            return redirect()->back()->with('success', 'Outletlevel Overview imported successfully.');
+        }catch (Exeption $e) {
+            return redirect()->back()->with('success', $e->getMessage());
+        }
+
     }
 
 }

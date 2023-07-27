@@ -162,7 +162,7 @@ class OutletDistributeController extends Controller
                 $input['quantity'] = $qty;
                 $outlet_inv_qty->update($input);
             }   
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Receive created successfully');
 
         } else {
             // return "machine";
@@ -216,9 +216,11 @@ class OutletDistributeController extends Controller
                 
                 // from outlet for outletleveloverview start
                     $month = date('m', strtotime($request->date));
+                    $year = date('Y', strtotime($request->date));
                     $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                     ->where('outlet_id', $request->from_outlet)
                     ->whereMonth('date', $month)
+                    ->whereYear('date', $year)
                     ->where('item_code',$key)->first();
 
                     if($outletleveloverview){     
@@ -260,11 +262,13 @@ class OutletDistributeController extends Controller
                 // return "success outletitemdata";
 
                 $month = date('m', strtotime($request->date));
+                $year = date('Y', strtotime($request->date));
                 $variant = Variation::find($variation->id);
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                 ->where('outlet_id', $request->from_outlet)
                 ->where('machine_id', $request->to_machine)
                 ->whereMonth('date', $month)
+                ->whereYear('date', $year)
                 ->where('item_code',$variant->item_code)->first();
                 
                 if($outletstockoverview){     
@@ -286,7 +290,7 @@ class OutletDistributeController extends Controller
                 }
             }
             
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Receive created successfully');
         }
        
     }
@@ -472,11 +476,13 @@ class OutletDistributeController extends Controller
                 OutletStockHistory::create($input);
 
                 $month = date('m', strtotime($request->date));
+                $year = date('Y', strtotime($request->date));
                 $variant = Variation::find($row->variant_id);
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                 ->where('outlet_id', $request->from_outlet)
                 ->where('machine_id', $request->toCounterMachine)
                 ->whereMonth('date', $month)
+                ->whereYear('date', $year)
                 ->where('item_code',$variant->item_code)->first();
                 
                 if($outletstockoverview){     

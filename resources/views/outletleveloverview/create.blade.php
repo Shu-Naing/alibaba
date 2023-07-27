@@ -34,7 +34,7 @@
         @endif
 
         <div class="card p-3">
-            {!! Form::open(array('route' => 'outletstockoverview.import', 'method' => 'post', 'enctype' => 'multipart/form-data')) !!}
+            {!! Form::open(array('route' => 'outletlevelopeningqty.import', 'method' => 'post', 'enctype' => 'multipart/form-data')) !!}
                 @csrf
                 <div class="row">
                     <div class="col-lg-4 col-sm-12">
@@ -43,7 +43,7 @@
                     <div class="col-lg-4 col-sm-12">
                         <button class="btn btn-primary">Submit</button>
                         <!-- <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a> -->
-                        <a href="{{ route('outletstockoverview.sample-export') }}" class="btn btn-success">Download Template</a>
+                        <a href="{{ route('outletlevelopeningqty.sample-export') }}" class="btn btn-success">Download Template</a>
                     </div>
                 </div>
             {!! Form::close() !!}

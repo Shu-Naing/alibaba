@@ -119,7 +119,7 @@
                             <td class="sticky-col-price sticky-td">
                                 {{ !isset($report->kyat) || $report->kyat == 0 ? 0 : $report->kyat }}</td>
                             <td>{{ $report->product->product_name }}</td>
-                            <td>{{ $report->sizeVariant->value }}</td>
+                            <td>{{ isset($report->sizeVariant->value) ? $report->sizeVariant->value : '' }}</td>
                             <td>{{ $report->product->received_date }}</td>
                             <td>{{ $report->product->company_name }}</td>
                             <td>{{ $report->product->country }}</td>

@@ -258,7 +258,7 @@ class DistributeController extends Controller
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
         ->join('variations','variations.id','=','distribute_products.variant_id')
         ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value')
-        ->where('distributes.id',$id)
+        ->where('distributes.id',1)
         ->get();
 
         $distribute['distribute'] = $distribute_data;
@@ -360,9 +360,11 @@ class DistributeController extends Controller
                     $fromOutletItemData->update();
 
                     $month = date('m', strtotime($distribute->date));
+                    $year = date('Y', strtotime($request->date));
                     $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                     ->where('outlet_id', $distribute->from_outlet)
                     ->whereMonth('date', $month)
+                    ->whereYear('date', $year)
                     ->where('item_code',$item_code)->first();
 
                     if($outletleveloverview){ 
@@ -386,9 +388,11 @@ class DistributeController extends Controller
 
                 // to outlet for outletleveloverview start
                     $month = date('m', strtotime($distribute->date));
+                    $year = date('Y', strtotime($request->date));
                     $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                     ->where('outlet_id', $distribute->to_outlet)
                     ->whereMonth('date', $month)
+                    ->whereYear('date', $year)
                     ->where('item_code',$item_code)->first();
 
                     if($outletleveloverview){     

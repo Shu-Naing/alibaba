@@ -11,6 +11,7 @@
         table img {
             width: 60px;
             height: 60px;
+            object-fit: cover;
         }
 
         table th,
@@ -181,6 +182,7 @@
         </div>
 
 
+ <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -292,13 +294,94 @@
                             ]) !!}
                         </td>
                        
-                    </tr>
 
-                    @php $index++ @endphp
-                    
-                @endforeach
-            </tbody>
-        </table>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $no = 1;
+                        $index = 0;
+                    @endphp
+                    @foreach ($variations as $variation)
+                        <tr class="variation">
+
+                            <td>{{ $no++ }}</td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][item_code]', $variation->item_code, [
+                                    'class' => 'form-control',
+                                    'disabled',
+                                    'style' => 'width: 100px',
+                                ]) !!}
+                                {!! Form::hidden('variations[' . $index . '][item_code]', $variation->item_code, [
+                                    'class' => 'form-control',
+                                ]) !!}
+
+                            </td>
+                            <td>
+                                <img class="imagePreview" src="{{ asset('storage/' . $variation->image) }}" alt="Old Image">
+                                <input class="fileInput" type="file" style="display: none;"
+                                    name="variations[{{ $index }}][image]">
+                            </td>
+                            <td>
+                                {{ Form::select('variations[' . $index . '][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(),$variation->size_variant_value , ['class' => 'form-control', 'id'=> 'variations_0_size_variant_value', 'style' => 'width: 200px',]) }}
+                            </td>
+                            <td>
+                                {{ Form::text('variations[' . $index . '][grn_no]', $variation->grn_no, ['class' => 'form-control', 'style' => 'width: 60px',]) }}
+                            </td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][points]', $variation->points, [
+                                    'class' => 'form-control',
+                                    'required',
+                                    'style' => 'width: 60px',
+                                ]) !!}
+                            </td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][tickets]', $variation->tickets, [
+                                    'class' => 'form-control',
+                                    'required',
+                                    'style' => 'width: 60px',
+                                ]) !!}</td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][kyat]', $variation->kyat, [
+                                    'class' => 'form-control',
+                                    'required',
+                                    'style' => 'width: 100px',
+                                ]) !!}
+                            </td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][alert_qty]', $variation->alert_qty, [
+                                    'class' => 'form-control',
+                                    'required',
+                                ]) !!}
+                            </td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][received_qty]', outlet_stock($variation->id), [
+                                    'class' => 'form-control',
+                                    'disabled',
+                                ]) !!}
+                                {!! Form::hidden('variations[' . $index . '][received_qty]', outlet_stock($variation->id), [
+                                    'class' => 'form-control',
+                                ]) !!}
+                                
+                            </td>
+                            <td>
+                                <a class="text-decoration-underline px-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addStockModal{{ $variation->id }}">add stock</a>
+                            </td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][purchased_price]', $variation->purchased_price, [
+                                    'class' => 'form-control',
+                                    'required',
+                                ]) !!}
+                            </td>
+                        
+                        </tr>
+
+                        @php $index++ @endphp
+                        
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
 
 
@@ -383,7 +466,7 @@
                             <span class="text-danger error" id="variations_${variationCount}_item_code_error"></span>
                         </td>
                         <td>
-                            <img class="imagePreview" src="{{ asset('assets/images/file-upload-icon.png') }}" alt="Old Image">
+                            <img class="imagePreview" src="{{ asset('assets/images/dummy-post-horisontal.jpg') }}" alt="Old Image">
                             <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]">
                         </td>
                         <td>
