@@ -825,3 +825,29 @@ function deleteModalBox(deleteUrl, id) {
     location.reload();
   });
 }
+
+// $(".productcreatebtn").on("keyup", function (event) {
+//   if (event.key === "Enter") {
+//     // console.log("hello");
+//     event.preventDefault();
+//   }
+// });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Get the button element
+  const productCreateBtn = document.querySelector(".productcreatebtn");
+
+  // Add event listener to the button
+  productCreateBtn.addEventListener("click", function (event) {
+    // Check if the button was clicked
+    if (event.detail === 0) {
+      // If the button was not clicked (e.g., triggered programmatically), do preventDefault()
+      event.preventDefault();
+    } else {
+      // If the button was clicked, do the submission or any other desired action
+      // For example, you can submit a form or call a function that handles the submission.
+      // Replace the following line with your desired action:
+      event.submit();
+    }
+  });
+});

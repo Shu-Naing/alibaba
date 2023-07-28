@@ -296,6 +296,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'variations.*.points' => 'required',
             'variations.*.tickets' => 'required',
             'variations.*.kyat' => 'required',
+            'variations.*.barcode' => 'required',
             'variations.*.purchased_price' => 'required',
         ],
 
@@ -310,6 +311,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'variations.*.points.required' => 'The points are required.',
             'variations.*.tickets.required' => 'The tickets are required.',
             'variations.*.kyat.required' => 'The kyat is required.',
+            'variations.*.barcode.required' => 'The barcode is required.',
             'variations.*.purchased_price.required' => 'The purchased price is required.',
         ]
     
@@ -349,6 +351,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
                 'alert_qty' => $variation['alert_qty'],
+                'barcode' => $variation['barcode'],
                 'purchased_price' => $variation['purchased_price'],
                 'updated_by' => Auth::user()->id,
             ];
