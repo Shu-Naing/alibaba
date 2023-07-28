@@ -56,9 +56,13 @@ class Handler extends ExceptionHandler
             return new JsonResponse($response, Response::HTTP_METHOD_NOT_ALLOWED);
     
             throw new HttpResponseException(response($message, Response::HTTP_METHOD_NOT_ALLOWED));
+        }else if ($exception instanceof \Illuminate\Session\TokenMismatchException) {
+            return redirect('/');
         }
    
         return parent::render($request, $exception);
     }
+
+    
 }
 ?>
