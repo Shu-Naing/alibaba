@@ -151,6 +151,7 @@
                         <th>Kyat</th>
                         <th>Alert Qty</th>
                         <th>Received Qty</th>
+                        <th>Barcode</th>
                         <th>Add Stock</th>
                         <th>Purchased Price</th>
                         <th>
@@ -224,6 +225,13 @@
                                     'class' => 'form-control',
                                 ]) !!}
                                 
+                            </td>
+                            <td>
+                                {!! Form::text('variations[' . $index . '][barcode]', $variation->barcode, [
+                                    'class' => 'form-control',
+                                    'required',
+                                    'style' => 'width: 100px',
+                                ]) !!}
                             </td>
                             <td>
                                 <a class="text-decoration-underline px-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addStockModal{{ $variation->id }}">add stock</a>
@@ -368,6 +376,12 @@
                             ]) !!}
                             
                         </td>
+                        <td>
+                                {!! Form::text('variations[${variationCount}][barcode]', null, [
+                                    'class' => 'form-control',
+                                    'required',
+                                ]) !!}
+                            </td>
                         <td>
                             
                         </td>

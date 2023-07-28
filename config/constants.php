@@ -19,9 +19,13 @@
             '3' => 'Korea',
         ],
         'cities' => [
-            '1' => 'Yangon',
-            '2' => 'Mandalay',
-            '3' => 'Naypyidaw',
+            '1' => 'Pabedan',
+            '2' => 'Kyaunktada',
+            '3' => 'Bahan',
+            '4' => 'Kamaryut',
+            '5' => 'Pazundaung',
+            '6' => 'Chan Aye Thar San',
+            '7' => 'Chan Mya Tharsi',
         ],
         'states' => [
             '1' => 'Hledan',
