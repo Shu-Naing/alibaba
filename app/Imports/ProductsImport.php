@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Imports;
-
 use Carbon\Carbon;
 use App\Models\Units;
 use App\Models\Brands;
@@ -9,29 +8,26 @@ use App\Models\Product;
 use App\Models\Variation;
 use App\Models\Categories;
 use App\Models\OutletItem;
+use App\Models\SizeVariant;
 use Illuminate\Support\Str;
 use App\Models\OutletItemData;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PurchasedPriceHistory;
+use Illuminate\Support\Facades\Storage;
+
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;  
+use PhpOffice\PhpSpreadsheet\Worksheet\MemoryDrawing;
 
 class ProductsImport implements ToModel,WithHeadingRow
 {
    
-    // private $brands,$categories,$units,$product;
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
     public function model(array $row)
     {
 
-        
         $created_by = Auth::user()->id;
        
-
         $category_name = $row['category_name'];
         $category = Categories::firstOrCreate(
             ['category_name' => $category_name],
@@ -50,6 +46,13 @@ class ProductsImport implements ToModel,WithHeadingRow
             ['created_by' => $created_by],
         );
 
+        $size_variant_value = $row['size_variant'];
+
+        $SizeVariant = SizeVariant::firstOrCreate(
+            ['value' => $size_variant_value],
+            ['created_by' => $created_by],
+        );
+
         $product = Product::firstOrCreate(
             ['product_name' => $row['product_name']],
             ['sku' => $row['sku'], 
@@ -62,16 +65,15 @@ class ProductsImport implements ToModel,WithHeadingRow
               ]
         );
 
-       
-
         $variation = Variation::firstOrCreate(
             ['item_code'  => $row['item_code']],
             [
             'product_id' => $product->id,
-            'select' => $row['select'],
-            'value' => $row['value'],
+            'size_variant_value' => $SizeVariant->id,
+            'grn_no' => $row['grn_no'],
             'alert_qty' => $row['alert_qty'],
             'purchased_price' => $row['purchased_price'],
+            'image' => 'variations/'. $row['image_name'],
             'points' => $row['point'],
             'tickets' => $row['ticket'],
             'kyat' => $row['kyat'],
@@ -79,7 +81,7 @@ class ProductsImport implements ToModel,WithHeadingRow
             'created_by' => $created_by,
         ]);
 
-     
+       
 
         $outlet_id = Auth::user()->outlet->id;
 
@@ -109,10 +111,12 @@ class ProductsImport implements ToModel,WithHeadingRow
             ]
         );
 
-
         return $product;
        
     }
+
+
+ 
 
     
 }

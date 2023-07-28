@@ -15,6 +15,7 @@ class ProductsSampleExport implements WithHeadings , ShouldAutoSize{
         return [
             'Item Code',
             'Product Name',
+            'Image Name',
             'Barcode',
             'Sku',
             'Point',
@@ -23,8 +24,8 @@ class ProductsSampleExport implements WithHeadings , ShouldAutoSize{
             'Category Name',
             'Brand Name',
             'Unit Name',
-            'Select',
-            'Value',
+            'Size Variant',
+            'Grn No',
             'Alert Qty',
             'Received Qty',
             'Purchased Price',

@@ -13,17 +13,28 @@
                 @include('breadcrumbs')
             </div>
         </div>
-        @if (Session::has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ Session::get('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
+
+
+        {!! Form::open([
+            'route' => 'outletlevelhistory.search',
+            'method' => 'post',
+            'class' => 'p-4 rounded border shadow-sm mb-5',
+        ]) !!}  
+        @csrf
+            <div class="row mb-3 g-3">
+                <div class="col-md-3">
+                    {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
+                    {{ Form::select('outlet_id', ['' => 'Choose Outlet'] + $all_outlets->pluck('name', 'id')->toArray(), null, ['class' => 'form-control']) }}
+    
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-blue ms-2">Search</button>
+                    <a href="{{route('outletlevelhistory.reset')}}" class="btn btn-blue ms-2">Reset</a>
+                    <a href="{{ route('outletlevelhistory.export') }}" class="btn btn-blue ms-2">Export to Excel</a>
+                </div>
             </div>
-        @endif
-        @if (Session::has('error'))
-            <div>
-                {{ Session::get('error') }}
-            </div>
-        @endif
+        {!! Form::close() !!}
 
         <form action="{{ route('outletlevelhistory.index') }}" method="get">
             @csrf

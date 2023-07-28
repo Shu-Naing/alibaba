@@ -64,16 +64,20 @@
                     <form action="{{ route('product.import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
-
-                            <div class="col-lg-4 col-sm-12">
-                                <input type="file" class="form-control" name="file">
+                            <div class="col-lg-3 col-sm-12">
+                                <span>File</span>
+                                <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
                             </div>
-                            <div class="col-lg-4 col-sm-12">
+                            <div class="col-lg-3 col-sm-12">
+                                <span>Images</span>
+                                <input type="file" class="form-control" name="images[]" accept="image/*" multiple required/>
+                            </div>
+                            <div class="col-lg-4 col-sm-12 mt-4">
                                 <button class="btn btn-primary">Submit</button>
                                 <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a>
                             </div>
 
-                            <div class="col-lg-4 col-sm-12 d-flex justify-content-end">
+                            <div class="col-lg-2 col-sm-12 d-flex justify-content-end mt-4">
                                 {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
                                 <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
                                 <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
@@ -89,23 +93,7 @@
 
         <table id="table_id">
             <thead>
-                {{-- <tr>
-                    <th>ID</th>
-                    <th>Item Code</th>
-                    <th>Image</th>
-                    <th>Product Name</th>
-                    <th>Points</th>
-                    <th>Tickets</th>
-                    <th>Kyat</th>
-                    <th>Received Qty</th>
-                    <th>Company Name</th>
-                    <th>Country</th>
-                    <th>Category</th>
-                    <th>Brand</th>
-                    <th>Unit</th>
-                    <th>Received Date</th>
-                    <th>Expired Date</th>
-                </tr> --}}
+                
                 <tr>
                     <th>ID</th>
                     <th>Product Name</th>
@@ -126,24 +114,7 @@
                     $no = 1;
                 @endphp
                 @foreach ($products as $product)
-                    {{-- <tr>
-                        <td>{{ $no++ }}</td>
-                        <td>{{ $product->item_code }}</td>
-                        <td><img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->product_name }}"></td>
-                        <td>{{ $product->product->product_name }}</td>
-                        <td>{{ $product->points }}</td>
-                        <td>{{ $product->tickets }}</td>
-                        <td>{{ $product->kyat }}</td>
-                        <td>{{ isset($product->outlet_item->quantity ) ?? $product->outlet_item->quantity}}</td>
-
-                        <td>{{ $product->product->company_name }}</td>
-                        <td>{{ $product->product->country }}</td>
-                        <td>{{ $product->product->category->category_name }}</td>
-                        <td>{{ $product->product->brand->brand_name }}</td>
-                        <td>{{ $product->product->unit->name }}</td>
-                        <td>{{ $product->product->received_date }}</td>
-                        <td>{{ $product->product->expired_date }}</td>
-                    </tr> --}}
+                    
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $product->product_name }}</td>

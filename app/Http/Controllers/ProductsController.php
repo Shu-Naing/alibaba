@@ -267,6 +267,8 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         $variations = Variation::whereHas('product',function ($query) use ($product_id){
             $query->where('product_id',$product_id);
         })->get();
+
+        // return $variations;
         
         // return $product;
         return view('products.edit',compact('product','variations','brands','categories','units','sizeVariants','breadcrumbs'));
@@ -274,7 +276,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
 
     public function update(Request $request,$product_id){
-        // return $request;
+        
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|unique:products,product_name,'.$product_id,
             "category_id" => "required",
@@ -285,13 +287,38 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'sku' => 'required|unique:products,sku,'.$product_id,
             "received_date" => "required",
             "expired_date" => "required",
-        ]);
+            'variations' => 'required|array',
+            'variations.*.size_variant_value' => 'required',
+            'variations.*.grn_no' => 'required|unique:variations,grn_no,'.$product_id.',product_id',
+            'variations.*.received_qty' => 'required',
+            'variations.*.alert_qty' => 'required',
+            'variations.*.item_code' => 'required|unique:variations,item_code,'.$product_id.',product_id',
+            'variations.*.points' => 'required',
+            'variations.*.tickets' => 'required',
+            'variations.*.kyat' => 'required',
+            'variations.*.purchased_price' => 'required',
+        ],
+
+        [
+            'variations.*.grn_no.unique' => 'GRN No must be unique.',
+            'variations.*.size_variant_value.required' => 'The Size Variant field is required.',
+            'variations.*.grn_no.required' => 'The Grn no field is required.',
+            'variations.*.received_qty.required' => 'The received quantity is required.',
+            'variations.*.alert_qty.required' => 'The alert quantity is required.',
+            'variations.*.item_code.required' => 'The item code is required.',
+            'variations.*.item_code.unique' => 'The item code must be unique.',
+            'variations.*.points.required' => 'The points are required.',
+            'variations.*.tickets.required' => 'The tickets are required.',
+            'variations.*.kyat.required' => 'The kyat is required.',
+            'variations.*.purchased_price.required' => 'The purchased price is required.',
+        ]
+    
+    );
     
         if ($validator->fails()) {
-            return redirect()->back()
-            ->withErrors($validator)
-            ->withInput();
+            return response()->json(['errors' => $validator->errors()], 422);
         }
+
         
         $productData = [
             'product_name' => $request->product_name,
@@ -412,7 +439,8 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         }
        
 
-        return back()->with('success','Product update successfully');
+        // return back()->with('success','Product update successfully');
+        return response()->json(['message' => 'Product updated successfully'], 201);
     }
 
     public function get_product_lists(Request $request){
@@ -662,6 +690,14 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
         // return $request;
         $file = $request->file('file');
+
+        $images = $request->file('images');
+
+        foreach ($images as $image) {
+           
+            $imageName = $image->getClientOriginalName();
+            $image->storeAs('public/variations', $imageName);
+        }
 
         Excel::import(new ProductsImport, $file);
 
