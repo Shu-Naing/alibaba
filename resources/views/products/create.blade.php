@@ -139,7 +139,7 @@
                             <span class="text-danger error" id="variations_0_image_error"></span>
                         </div>
                         <div class="col-lg-4">
-                            <label for="barcode" class="form-label">Barcode</label>
+                            <!-- <label for="barcode" class="form-label">Barcode</label> -->
                             {{ Form::label('barcode', 'Barcode', ['class' => 'form-label' , 'id' => 'variations_0_barcode_label']) }}
                             {!! Form::text('variations[0][barcode]', null, [
                                 'placeholder' => 'Barcode',
@@ -232,7 +232,6 @@
                             <span class="text-danger error" id="variations_${variationCount}_image_error"></span>
                         </div>
                         <div class="col-lg-4">
-                            <label for="barcode" class="form-label">Barcode</label>
                             {{ Form::label('barcode', 'Barcode', ['class' => 'form-label' , 'id' => 'variations_${variationCount}_barcode_label']) }}
                             {!! Form::text('variations[${variationCount}][barcode]', null, [
                                 'placeholder' => 'Barcode',

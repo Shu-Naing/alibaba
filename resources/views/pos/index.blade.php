@@ -118,24 +118,33 @@
                                 <img src="{{ asset('storage/' . $outlet_item->variation->image) }}"
                                     alt="{{ $outlet_item->variation->item_code }}">
                                 <span
-                                    class="fw-bolder mt-2 pb-0">{{ $outlet_item->variation->product->product_name }}</span>
-                                <small class="fw-bolder">[{{ $outlet_item->variation->item_code }}]</small>
-                                <small class="fw-bolder">{{ $outlet_item->variation->select }} :
-                                    {{ $outlet_item->variation->value }}</small>
+                                    class="mt-2 pb-0 fw-bold" style="font-size: 18px;color: #000;">{{ $outlet_item->variation->product->product_name }}</span>
+                                <small class="mb-3">{{ $outlet_item->variation->item_code }} . Size{{ $outlet_item->variation->select }} :
+                                    {{ $outlet_item->variation->value }}S</small>
+                                
                                
-                                @if ($outlet_item_kyat != null || $outlet_item_kyat != 0)
-                                <small class="fw-bolder">Kyat : {{$outlet_item_kyat  }}</small>
-                                @endif
+                                
 
-                                <small class="fw-bolder">
-                                    @if ($outlet_item->variation->points != null || $outlet_item->variation->points != 0)
-                                        Point : {{ $outlet_item->variation->points }}
-                                    @endif
-                                    @if ($outlet_item->variation->tickets != null || $outlet_item->variation->tickets != 0)
-                                        ,Ticket :
-                                        {{ $outlet_item->variation->tickets }}
-                                    @endif
-                                </small>
+                                <div class="fw-bolder d-flex justify-content-between mb-2">
+                                    <small>
+                                        @if ($outlet_item->variation->points != null || $outlet_item->variation->points != 0)
+                                            Point : {{ $outlet_item->variation->points }}
+                                        @endif
+                                    </small>
+                                    <small>
+                                        @if ($outlet_item_kyat != null || $outlet_item_kyat != 0)
+                                            {{$outlet_item_kyat  }} Kyat
+                                        @endif    
+                                    </small>
+                                    <small>
+                                        @if ($outlet_item->variation->tickets != null || $outlet_item->variation->tickets != 0)
+                                            Ticket :
+                                            {{ $outlet_item->variation->tickets }}
+                                        @endif
+                                    </small>
+                                </div>
+                                
+                                
                                 @if ($outlet_item_quantity == 0)
                                     <button class="btn btn-red btn-sm mt-2" disabled>Out Of Stock</button>
                                 @else
