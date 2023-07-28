@@ -217,15 +217,7 @@
                             </a>
                         </li>
                         @endcan
-                        @can('sellingprice.index')
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('sellingprice.index') }}"
-                                class="nav-link sidebar-link {{ Route::is('sellingprice.index') ? 'active' : '' }}">
-                                <hr>
-                                <span class="d-none d-sm-inline">Selling Price Group</span>
-                            </a>
-                        </li>
-                        @endcan
+                        
                         @can('outlethistory.history')
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outlethistory.history') }}"
@@ -238,7 +230,16 @@
                             <a href="{{ route('outletleveloverview.create') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletleveloverview.create') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outletleval Opening Quantity</span>
+                                <span class="d-none d-sm-inline text-wrap">Opening Quantity (Outlet)</span>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('sellingprice.index')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('sellingprice.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('sellingprice.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">Selling Price Group</span>
                             </a>
                         </li>
                         @endcan
@@ -284,18 +285,6 @@
                             </a>
                         </li>
                         @endcan
-
-                        @can('report.outletstockoverview')
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('report.outletstockoverview')}}"
-                                class="nav-link sidebar-link {{ Route::is('report.outletstockoverview') ? 'active' : '' }}">
-                                <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports</span>
-                            </a>
-                        </li>
-                        @endcan
-                       
-                         
                         <!-- <li class="w-100 sidebar-item">
                             <a href="{{ route('outletdistribute.index')}}"
                                 class="nav-link sidebar-link {{ Route::is('outletdistribute.index') ? 'active' : '' }}">
@@ -303,36 +292,40 @@
                                 <span class="d-none d-sm-inline">Outlet Stock History</span>
                             </a>
                         </li> -->
-                        {{-- <li class="w-100 sidebar-item">
-                            <a href="{{ route('outletstockhistory.index') }}"
-                                class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
+                        @can('outletstockhistory.index')
+                            <li class="w-100 sidebar-item">
+                                <a href="{{ route('outletstockhistory.index') }}"
+                                    class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
+                                    <hr>
+                                    <span class="d-none d-sm-inline text-wrap">Outlet Stock History (Machine)</span>
+                                </a>
+                            </li> 
+                        @endcan
+                        
+                        @can('report.outletstockoverview')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('report.outletstockoverview')}}"
+                                class="nav-link sidebar-link {{ Route::is('report.outletstockoverview') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outlet Stock History</span>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview Reports (Machine)</span>
                             </a>
-                        </li> --}}
+                        </li>
+                        @endcan
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outletlevelhistory.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletlevelhistory.index') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outlet Level History</span>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock History (Store)</span>
                             </a>
                         </li>
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outletleveloverview.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletleveloverview.index') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">Outlet Level Overview</span>
+                                <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview (Store)</span>
                             </a>
                         </li>
-                        @can('outletstockhistory.index')
-                            <li class="w-100 sidebar-item">
-                                <a href="{{ route('outletstockhistory.index') }}"
-                                    class="nav-link sidebar-link {{ Route::is('outletstockhistory.index') ? 'active' : '' }}">
-                                    <hr>
-                                    <span class="d-none d-sm-inline text-wrap">Outlet Stock History</span>
-                                </a>
-                            </li> 
-                        @endcan
+                      
                     </ul>
                 </li>
                 @endif

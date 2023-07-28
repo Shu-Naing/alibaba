@@ -10,18 +10,16 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OutletLevelOverviewExport;
 use App\Exports\OutletleveloverviewSampleExport;
 use App\Imports\OutletleveloverviewsImport;
-use Auth;
 
 class OutletLevelOverviewController extends Controller
 {
     public function index() {
-         $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)
+         $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
+         ->where('outlet_level_overviews.outlet_id', '>', 1);
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
-            $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
+            $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
         }
-        $outletleveloverview = $outletleveloverview->get(); 
-
-       
+        $outletleveloverview = $outletleveloverview->get();        
         $outlets = Outlets::all();
         // return $outlets;
         return view("outletleveloverview.index", compact('outletleveloverview','outlets'));
@@ -90,9 +88,10 @@ class OutletLevelOverviewController extends Controller
 
     public function export(){
 
-        $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)
+        $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
+        ->where('outlet_level_overviews.outlet_id', '>', 1);
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
-            $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')->where('outlet_level_overviews.outlet_id', '>', 1)->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
+            $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
         }
         $outletleveloverview = $outletleveloverview->get(); 
 

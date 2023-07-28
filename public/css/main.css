@@ -371,3 +371,7 @@ input.number {
   background-color: var(--primary-color) !important;
 }
 /* delete modal box comfirm btn end */
+.thead-primary th {
+  color: #fff;
+  background-color: var(--primary-color);
+}

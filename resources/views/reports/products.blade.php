@@ -7,15 +7,16 @@
             text-align: center;
             vertical-align: middle;
         }
-
         table .tb-header-red {
             background-color: var(--primary-color);
             color: white;
         }
-
         table img {
             width: 60px;
             height: 60px;
+        }
+        input[type='search'],label{
+            display:none;
         }
     </style>
 @endsection
@@ -52,35 +53,17 @@
                     <a href="{{ route('product.export') }}" class="btn btn-blue ms-2">Export to Excel</a>
                 </div>
             </div>
-        {!! Form::close() !!}
-        {{-- <form action="{{ route('product.filter') }}" method="POST">
-            @csrf
-            <label for="received_date" class="form-label">Filter By Received Date :</label>
-            <div class=" mb-3 d-flex">
-
-                <div class="w-25">
-                    <input type="date" name="received_date" class="form-control">
-                </div>
-                <div>
-                    <button class="btn btn-info" type="submit">Search</button>
-                    <button class="btn btn-danger" type="button" onclick="resetProduct();">Reset</button>
-                </div>
-
-                <div>
-                    <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a>
-                </div>
-            </div>
-        </form> --}}
+        {!! Form::close() !!}        
         <div class="table-responsive sticky-div">
-            <table class="table  table-bordered">
+            <table class="thead-primary" id="table_id">
                 <thead>
                     <tr>
-                        <th class="sticky-col-id tb-header-red">No</th>
-                        <th class="sticky-col-code tb-header-red">Item Code</th>
-                        <th class="sticky-col-photo tb-header-red">Photo</th>
-                        <th class="sticky-col-point tb-header-red">Point</th>
-                        <th class="sticky-col-ticket tb-header-red">Ticket</th>
-                        <th class="sticky-col-price tb-header-red">Price (WS)</th>
+                        <th>No</th>
+                        <th>Item Code</th>
+                        <th>Photo</th>
+                        <th>Point</th>
+                        <th>Ticket</th>
+                        <th>Price (WS)</th>
                         <th>Product Name</th>
                         <th>Size Variant</th>
                         <th>Received Date</th>
@@ -97,26 +80,24 @@
                             <th>{{ $outlet->name }} Machine <br> Balance</th>
                             <th>Total <br> Price</th>
                         @endforeach
-
                         <th>Grand <br> Total Balance</th>
                         <th>Grand <br> Total Price</th>
-                        <th class="tb-header-red sticky-col-one">Total <br> Store Balance</th>
-                        <th class="tb-header-red sticky-col">Total <br> Machine Balance</th>
+                        <th>Total <br> Store Balance</th>
+                        <th>Total <br> Machine Balance</th>
                     </tr>
                 </thead>
                 <tbody>
-
                     @foreach ($reports as $report)
                         <tr>
-                            <td class="sticky-col-id sticky-td">{{ $report->id }}</td>
-                            <td class="sticky-col-code sticky-td">{{ $report->item_code }}</td>
-                            <td class="sticky-col-photo sticky-td"><img src="{{ asset('storage/' . $report->image) }}"
+                            <td>{{ $report->id }}</td>
+                            <td>{{ $report->item_code }}</td>
+                            <td><img src="{{ asset('storage/' . $report->image) }}"
                                     alt="{{ $report->product->product_name }}"></td>
-                            <td class="sticky-col-point sticky-td">
+                            <td>
                                 {{ !isset($report->points) || $report->points == 0 ? 0 : $report->points }}</td>
-                            <td class="sticky-col-ticket sticky-td">
+                            <td>
                                 {{ !isset($report->tickets) || $report->tickets == 0 ? 0 : $report->tickets }}</td>
-                            <td class="sticky-col-price sticky-td">
+                            <td>
                                 {{ !isset($report->kyat) || $report->kyat == 0 ? 0 : $report->kyat }}</td>
                             <td>{{ $report->product->product_name }}</td>
                             <td>{{ isset($report->sizeVariant->value) ? $report->sizeVariant->value : '' }}</td>
@@ -155,15 +136,13 @@
                             <td>
                                 {{ $report->purchased_price * (outlet_stock($report->id) + total_store_stock($report->id) + total_machine_stock($report->id)) }}
                             </td>
-                            <td class="sticky-col-one sticky-td">{{ total_store_stock($report->id) }}</td>
-                            <td class="sticky-col sticky-td">{{ total_machine_stock($report->id) }}</td>
+                            <td>{{ total_store_stock($report->id) }}</td>
+                            <td>{{ total_machine_stock($report->id) }}</td>
                         </tr>
                     @endforeach
-
                 </tbody>
             </table>
         </div>
-
     </div>
 @endsection
 
