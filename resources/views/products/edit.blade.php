@@ -269,7 +269,7 @@
                         </td>
                         <td>
                             {!! Form::text('variations[' . $index . '][barcode]', $variation->barcode, [
-                                'class' => 'form-control',
+                                'class' => 'form-control inputbarcode',
                                 'required',
                                 'style' => 'width: 100px',
                             ]) !!}
@@ -293,7 +293,7 @@
                 
             </table>
         </div>
-        <button class="btn btn-red" type="submit">Save</button>
+        <button class="btn btn-red productcreatebtn" type="submit">Save</button>
         {!! Form::close() !!}
     </div>
     @foreach ($variations as $variation)
