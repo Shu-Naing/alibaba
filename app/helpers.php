@@ -21,12 +21,31 @@ use App\Models\OutletItemData;
     define('RECIEVE_TYPE', 'R');
     define('ISSUE_TYPE', 'I');
     define('MAINOUTLETID', 1);
+
+    define('DESTORYDONATION', '1');
+    define('DISPOSAL', '2');
+    define('REUSE', '3');
     
+    define('TOYSUPER', '1');
+    define('STORE', '2');
+    define('COUNTER', '3');
 
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
     define('PD_ITEMCODE_FILTER', 'PD_ITEMCODE_FILTER');
     define('PD_DATE_FILTER', 'PD_DATE_FILTER');
+
+    define('DA_FROMDATE_FILTER', 'DA_FROMDATE_FILTER');
+    define('DA_TODATE_FILTER', 'DA_TODATE_FILTER');
+    define('DA_VOUCHERNO_FILTER', 'DA_VOUCHERNO_FILTER');
+    define('DA_OUTLETID_FILTER', 'DA_OUTLETID_FILTER');
+    define('DA_ITEMCODE_FILTER', 'DA_ITEMCODE_FILTER');
+    
+    define('ADJ_FROMDATE_FILTER', 'ADJ_FROMDATE_FILTER');
+    define('ADJ_TODATE_FILTER', 'ADJ_TODATE_FILTER');
+    define('ADJ_ADJNO_FILTER', 'ADJ_ADJNO_FILTER');
+    define('ADJ_OUTLETID_FILTER', 'ADJ_OUTLETID_FILTER');
+    define('ADJ_ITEMCODE_FILTER', 'ADJ_ITEMCODE_FILTER');
 
     define('PD_RECEIVED_DATE_FILTER', 'PD_RECEIVED_DATE_FILTER');
     define('OUTLET_LEVEL_HISTORY_FILTER','OUTLET_LEVEL_HISTORY_FILTER');

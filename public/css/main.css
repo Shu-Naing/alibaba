@@ -375,3 +375,12 @@ input.number {
   color: #fff;
   background-color: var(--primary-color);
 }
+
+.btn-alert-box {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  padding: 1rem;
+  cursor: pointer;
+}

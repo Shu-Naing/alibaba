@@ -204,7 +204,7 @@
                             <a href="{{ route('outletdistribute.index')}}"
                             class="nav-link sidebar-link {{ Route::is('outletdistribute.index') || Route::is('outletdistribute.show') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">List Recieve Distribute Product</span>
+                                <span class="d-none d-sm-inline text-wrap">List Receive Distribute Product</span>
                             </a>
                         </li>
                         @endcan
@@ -243,6 +243,24 @@
                             </a>
                         </li>
                         @endcan
+                        @can('adjustment.index')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('adjustment.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('adjustment.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">Adjustment</span>
+                            </a>
+                        </li>
+                        @endcan
+                        @can('damage.index')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('damage.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('damage.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline">Damage</span>
+                            </a>
+                        </li>
+                        @endcan
                     </ul>
                 </li>
                 @endif
@@ -252,6 +270,15 @@
                         class="nav-link sidebar-link align-middle {{ Route::is('pos.index') ? 'active' : '' }}">
                         <i class="fs-4 bi bi-receipt"></i>
                         <span class="d-none d-sm-inline">Pos</span></a>
+                </li>
+                @endcan
+
+                @can('stockalert.index')
+                <li class="nav-item nav-small-cap">
+                    <a href="{{ route('stockalert.index') }}" 
+                        class="nav-link sidebar-link align-middle {{ Route::is('stockalert.index') ? 'active' : '' }}">
+                        <i class="fs-4 bi bi-receipt"></i>
+                        <span class="d-none d-sm-inline">Stock Alert</span></a>
                 </li>
                 @endcan
                 

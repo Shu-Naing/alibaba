@@ -263,8 +263,57 @@ class SearchController extends Controller
             PD_TOOUTLET_FILTER,
             PD_ITEMCODE_FILTER,
             PD_DATE_FILTER,
+            DA_FROMDATE_FILTER,
+            DA_TODATE_FILTER,
+            DA_VOUCHERNO_FILTER,
+            DA_OUTLETID_FILTER,
+            DA_ITEMCODE_FILTER,
         ]);
         return redirect()->route('listdistributedetail');
+    }
+
+    public function search_list_damage(Request $request) {
+    //    return $request;
+        session()->start();
+        session()->put(DA_FROMDATE_FILTER, $request->fromDate);
+        session()->put(DA_TODATE_FILTER, $request->toDate);
+        session()->put(DA_VOUCHERNO_FILTER, $request->voucherNo);
+        session()->put(DA_OUTLETID_FILTER, $request->outletId);
+        session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
+        return redirect()->route('damage.index');
+    }
+
+    public function damage_search_reset() {
+        session()->forget([
+            DA_FROMDATE_FILTER,
+            DA_TODATE_FILTER,
+            DA_VOUCHERNO_FILTER,
+            DA_OUTLETID_FILTER,
+            DA_ITEMCODE_FILTER,
+        ]);
+        return redirect()->route('damage.index');
+    }
+
+    public function search_list_adjustment(Request $request) {
+    //    return $request;
+        session()->start();
+        session()->put(ADJ_FROMDATE_FILTER, $request->fromDate);
+        session()->put(ADJ_TODATE_FILTER, $request->toDate);
+        session()->put(ADJ_ADJNO_FILTER, $request->adjNo);
+        session()->put(ADJ_OUTLETID_FILTER, $request->outletId);
+        session()->put(ADJ_ITEMCODE_FILTER, $request->itemCode);
+        return redirect()->route('adjustment.index');
+    }
+
+    public function adjustment_search_reset() {
+        session()->forget([
+            ADJ_FROMDATE_FILTER,
+            ADJ_TODATE_FILTER,
+            ADJ_ADJNO_FILTER,
+            ADJ_OUTLETID_FILTER,
+            ADJ_ITEMCODE_FILTER,
+        ]);
+        return redirect()->route('adjustment.index');
     }
 
     public function searchProduct(Request $request) {

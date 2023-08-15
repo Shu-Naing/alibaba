@@ -73,5 +73,12 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('outletlevelhistory.*',function($view){      
             $view->with('types',config('constants.types'));           
         });
+        view()->composer('adjustment.*',function($view){      
+            $view->with('adjustment_types',config('constants.adjustment_types'));           
+        });
+        view()->composer('damage.*',function($view){      
+            $view->with('action',config('constants.action'));           
+            $view->with('distination',config('constants.distination'));           
+        });
     }
 }
