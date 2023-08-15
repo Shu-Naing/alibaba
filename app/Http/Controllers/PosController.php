@@ -8,6 +8,7 @@ use App\Models\PosItem;
 use App\Models\Product;
 use App\Models\Variation;
 use App\Models\OutletItem;
+use App\Models\PosItemsAlert;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -219,6 +220,22 @@ class PosController extends Controller
         
        
         return view('pos.index',compact('outlet_items','temps','pos_items'));
+    }
+
+    public function alertItemPos(Request $request){
+
+        $temps = Temp::with('variation')->where('id',$request->temp_id)->first();
+
+        $input = [];
+        if($request->outlet_item_alert) {
+            $input['message'] = $temps->variation->item_code.' is under '.$request->outlet_item_alert;
+        }else {
+            $input['message'] = $temps->variation->item_code.' is out of stock ';
+        }
+        $input['created_by'] = Auth::user()->id;
+
+        PosItemsAlert::create($input);
+        return response()->json($input);
     }
 
    

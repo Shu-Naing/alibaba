@@ -36,5 +36,20 @@
             RECIEVE_TYPE => 'Recieved',
             ISSUE_TYPE => 'Issued'
         ],
+        'adjustment_types' => [
+            '1' => 'Recieve',
+            '2' => 'Loss'
+        ],
+        
+        'action' => [
+            DESTORYDONATION => 'destroy donation',
+            DISPOSAL => 'disposal',
+            REUSE => 'reuse'
+        ],
+        'distination' => [
+            TOYSUPER => 'toy super',
+            STORE => 'store',
+            COUNTER => 'counter'
+        ],
     ];
 ?>

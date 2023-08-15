@@ -63,7 +63,7 @@
                         <th>Photo</th>
                         <th>Point</th>
                         <th>Ticket</th>
-                        <th>Price (WS)</th>
+                        <th>Kyat</th>
                         <th>Product Name</th>
                         <th>Size Variant</th>
                         <th>Received Date</th>

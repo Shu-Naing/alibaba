@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Pos extends Model
+class PosItemsAlert extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'invoice_no',
-        'total',
-        'payment_type',
+        'message',
         'created_by',
-        'updated_by'       
+        'updated_by',
+       
     ];
 }

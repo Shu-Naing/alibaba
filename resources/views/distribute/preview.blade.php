@@ -163,6 +163,8 @@
                     $distribute_product_count = count($distribute->distribute_porducts);
                     $left_count = $fixed_min_row_count - $distribute_product_count;
                     $no = 1;
+                    $quantitySum = 0;
+                    $subtotalSum = 0;
                 @endphp
 
                 @foreach ($distribute->distribute_porducts as $distribute_product)
@@ -171,10 +173,14 @@
                         <td>{{ $distribute_product->variant->item_code }}</td>
                         <td>{{ $distribute_product->variant->product->unit->name }}</td>
                         <td>{{ $distribute_product->quantity }}</td>
-                        <td>{{ $distribute_product->purchased_price }}</td>
-                        <td>{{ $distribute_product->subtotal }}</td>
+                        <td class="text-left">{{ $distribute_product->purchased_price }}</td>
+                        <td class="text-left">{{ $distribute_product->subtotal }}</td>
                         <td>{{ $distribute->remark }}</td>
                     </tr>
+                    @php
+                        $quantitySum += $distribute_product->quantity;
+                        $subtotalSum += $distribute_product->subtotal;
+                    @endphp
                 @endforeach
                 @for ($i = 1; $i < $left_count; $i++)
                     <tr>
@@ -187,6 +193,13 @@
                         <td></td>
                     </tr>
                 @endfor
+                    <tr>                          
+                        <td colspan="3" class="text-end">Total</td>
+                        <td>{{$quantitySum}}</td>
+                        <td></td>
+                        <td>{{$subtotalSum}}</td>
+                        <td></td>
+                    </tr>
             </tbody>
         </table>
         <div class="first-footer footer-section">

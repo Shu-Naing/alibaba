@@ -42,6 +42,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $quantitySum = 0;
+                        $subtotalSum = 0;
+                    @endphp
+
                     @foreach($distribute['distribute_products_data'] as $distribute_product)
                         <tr>
                             <td>{{$distribute_product->item_code}}</td>
@@ -51,7 +56,18 @@
                             <td>{{$distribute_product->quantity}}</td>
                             <td>{{$distribute_product->subtotal}}</td>
                         </tr>
-                    @endforeach                    
+
+                        @php
+                            $quantitySum += $distribute_product->quantity;
+                            $subtotalSum += $distribute_product->subtotal;
+                        @endphp
+
+                    @endforeach   
+                        <tr>                          
+                            <td colspan="4" class="text-end">Total</td>
+                            <td>{{$quantitySum}}</td>
+                            <td>{{$subtotalSum}}</td>
+                        </tr>                 
                 </tbody>
             </table>
 

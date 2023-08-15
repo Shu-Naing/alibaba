@@ -85,6 +85,8 @@
 
         </div> --}}
 
+        <div class="errorbox"></div>
+
         <div class="row">
             <div class="col-lg-7 d-print-none">
                 <div class="row">
@@ -103,8 +105,6 @@
                 <div class="row">
                     @foreach ($outlet_items as $outlet_item)
                         @php 
-
-                           
                                 $outlet_item_kyat =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->kyat ;
                                 $outlet_item_points =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->points ;
                                 $outlet_item_tickets =  outlet_item_data($outlet_item->outlet_id,$outlet_item->variation_id)->tickets ;
@@ -204,6 +204,7 @@
                                         <input type="number" class="form-control qty" value="{{ $temp->quantity }}"
                                             data-temp-id="{{ $temp->id }}"
                                             data-outlet-item-stock="{{ outlet_item_data(Auth::user()->outlet_id,$temp->variation->id)->quantity }}"
+                                            data-outlet-item-alert="{{ $temp->variation->alert_qty }}"
                                             min="1"
                                             max="{{ outlet_item_data(Auth::user()->outlet_id,$temp->variation->id)->quantity }}" id="quantityInput">
 
@@ -319,43 +320,79 @@
 
             // Update Item
             $('.qty').on('change keydown', function(event) {
-    if (event.type === 'keydown' && event.key !== 'Enter') {
-        return; // Ignore keydown events that are not the Enter key
-    }
+                if (event.type === 'keydown' && event.key !== 'Enter') {
+                    return; // Ignore keydown events that are not the Enter key
+                }
 
-    var qty = $(this).val();
-    var temp_id = $(this).data('temp-id');
-    var outlet_item_stock = $(this).data('outlet-item-stock');
-    if (qty > outlet_item_stock) {
-        qty = outlet_item_stock;
-    }
+                var qty = $(this).val();
+                var temp_id = $(this).data('temp-id');
+                var outlet_item_stock = $(this).data('outlet-item-stock');
+                var outlet_item_alert = $(this).data('outlet-item-alert');
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+                if (qty > outlet_item_stock) {
+                    qty = outlet_item_stock;
+                }
 
-    $.ajax({
-        url: "{{ route('positem.update') }}",
-        type: "POST",
-        data: {
-            qty: qty,
-            temp_id: temp_id
-        },
-        success: function(response) {
-            // Handle the success response
-            location.href = location.href;
-            console.log(response);
-        },
-        error: function(xhr) {
-            // Handle the error response
-            console.log(xhr.responseText);
-        }
-    });
-});
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
 
+                $.ajax({
+                    url: "{{ route('positem.update') }}",
+                    type: "POST",
+                    data: {
+                        qty: qty,
+                        temp_id: temp_id
+                    },
+                    success: function(response) {
+                        // Handle the success response
+                        // location.href = location.href;
+                        console.log(response);
+                    },
+                    error: function(xhr) {
+                        // Handle the error response
+                        console.log(xhr.responseText);
+                    }
+                });
 
+                // alert(outlet_item_stock);
+                // alert(qty);
+                // alert(outlet_item_alert);
+                if((outlet_item_stock - qty) <= outlet_item_alert) {
+                    $.ajax({
+                        url: "{{ route('positem.alert') }}",
+                        type: "POST",
+                        data: {
+                            temp_id,
+                            outlet_item_alert,
+                        },
+                        success: function(response) {
+                            localStorage.setItem('message', response.message);
+                            // Handle the success response
+                            location.href = location.href;
+                            // console.log(response);
+                            // alert(`${response.item_code} is under ${outlet_item_alert}`);
+                            // alert(response.message);
+                        },
+                        error: function(xhr) {
+                            // Handle the error response
+                            console.log(xhr.responseText);
+                        }
+                    });
+                    // alert('your item is under');
+                }
+            });
+
+            if (localStorage.getItem('message')) {
+                // Get the message from localStorage
+                var message = localStorage.getItem('message');
+                // Display the message in the designated element
+                $('.errorbox').append(`Warning: ${message} <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>`).addClass("alert alert-warning alert-dismissible fade show");
+                // Clear the stored message from localStorage
+                localStorage.removeItem('message');
+            }
 
             // Remove Item
             $('.remove-pos-btn').click(function(e) {
@@ -423,12 +460,7 @@
                 // $('.add-pos-btn').removeAttr("disabled");
                 window.location.href = selectedValue;
             }
-        });
-
-
-        
-
-       
+        });       
     </script>
 </body>
 
