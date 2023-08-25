@@ -8,7 +8,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">List Outlet Level Overview Report</h4>
+            <h4 class="fw-bolder mb-3">Outlet Stock Overview Report(Store)</h4>
             <div></div>
         </div>
         @if (Session::has('success'))
