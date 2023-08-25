@@ -5,16 +5,15 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Outlets;
 use Illuminate\Http\Request;
-use App\Models\OutletlevelOverview;
+use App\Models\OutletLevelOverview;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OutletLevelOverviewExport;
 use App\Exports\OutletleveloverviewSampleExport;
 use App\Imports\OutletleveloverviewsImport;
-
 class OutletLevelOverviewController extends Controller
 {
     public function index() {
-         $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
+         $outletleveloverview = OutletLevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
          ->where('outlet_level_overviews.outlet_id', '>', 1);
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
             $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
@@ -88,7 +87,7 @@ class OutletLevelOverviewController extends Controller
 
     public function export(){
 
-        $outletleveloverview = OutletlevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
+        $outletleveloverview = OutletLevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
         ->where('outlet_level_overviews.outlet_id', '>', 1);
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
             $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
