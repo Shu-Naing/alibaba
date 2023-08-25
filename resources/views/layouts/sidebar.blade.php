@@ -42,7 +42,7 @@
                 </li> -->
                 @if (auth()->user()->can('units.index') || auth()->user()->can('categories.index')
                  || auth()->user()->can('brands.index') || auth()->user()->can('products.index') 
-                 || auth()->user()->can('products.create') || auth()->user()->can('purchased-price-history.index'))
+                 || auth()->user()->can('products.create'))
                 <li class="nav-item nav-small-cap">
                     <a href="#submenu2" data-bs-toggle="collapse" class="nav-link sidebar-link align-middle dropdownli">
                         <i class="fs-4 bi bi-box2"></i>
@@ -96,16 +96,6 @@
                                 class="nav-link sidebar-link {{ Route::is('products.create') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline">Add Product</span>
-                            </a>
-                        </li>
-                        @endcan
-                       
-                        @can('purchased-price-history.index')
-                        <li class="w-100 sidebar-item">
-                            <a href="{{ route('purchased-price-history.index') }}"
-                                class="nav-link sidebar-link {{ Route::is('purchased-price-history.index') ? 'active' : '' }}">
-                                <hr>
-                                <span class="d-none d-sm-inline">Purchased Price History</span>
                             </a>
                         </li>
                         @endcan
@@ -264,6 +254,48 @@
                     </ul>
                 </li>
                 @endif
+
+                @if (auth()->user()->can('outlets.create') || auth()->user()->can('purchased-price-history.index'))
+
+                    <li class="nav-item nav-small-cap">
+                        <a href="#submenuPurchase" data-bs-toggle="collapse" class="nav-link sidebar-link align-middle dropdownli">
+                            <i class="fs-4 bi bi-shop"></i>
+                            <span class="d-none d-sm-inline">Purchase</span>
+                            <span class="showHide">+</span>
+                        </a>
+                        
+                        <ul class="collapse nav flex-column submenuParent" id="submenuPurchase" data-bs-parent="#menu">
+                            @can('purchase.create')
+                                <li class="w-100 sidebar-item">
+                                    <a href="{{ route('purchase.create') }}"
+                                        class="nav-link sidebar-link {{ Route::is('purchase.create') ? 'active' : '' }}">
+                                        <hr>
+                                        <span class="d-none d-sm-inline">Add Purchase</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('purchase.index')
+                                <li class="w-100 sidebar-item">
+                                    <a href="{{ route('purchase.index') }}"
+                                        class="nav-link sidebar-link {{ Route::is('purchase.index') ? 'active' : '' }}">
+                                        <hr>
+                                        <span class="d-none d-sm-inline">Purchase(GRN Report)</span>
+                                    </a>
+                                </li>
+                            @endcan
+                            @can('purchased-price-history.index')
+                                <li class="w-100 sidebar-item">
+                                    <a href="{{ route('purchased-price-history.index') }}"
+                                        class="nav-link sidebar-link {{ Route::is('purchased-price-history.index') ? 'active' : '' }}">
+                                        <hr>
+                                        <span class="d-none d-sm-inline">Purchased Price History</span>
+                                    </a>
+                                </li>
+                            @endcan
+                        </ul>
+                    </li>
+                @endif
+
                 @can('pos.index')
                 <li class="nav-item nav-small-cap">
                     <a href="{{ route('pos.index') }}" 

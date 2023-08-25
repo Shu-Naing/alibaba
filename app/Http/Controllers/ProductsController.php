@@ -215,41 +215,45 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
 
 
-    public function addStock(Request $request,$variation_id){
+    // public function addStock(Request $request,$variation_id){
 
-        // return $request;
-        $outlet_id = Auth::user()->outlet->id;
-        Variation::find($variation_id)->update([
-            'points' => $request->points,
-            'tickets' => $request->tickets,
-            'kyat' => $request->kyat,
-            'purchased_price' => $request->purchased_price,
-        ]);
+    //     // return $request;
+    //     $outlet_id = Auth::user()->outlet->id;
+    //     Variation::find($variation_id)->update([
+    //         'points' => $request->points,
+    //         'tickets' => $request->tickets,
+    //         'kyat' => $request->kyat,
+    //         'purchased_price' => $request->purchased_price,
+    //     ]);
 
-        $outlet_item_id = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_id)->value('id');
+    //     $outlet_item_id = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_id)->value('id');
 
-        OutletItemData::create([
-            'outlet_item_id' => $outlet_item_id,
-            'points' => $request->points,
-            'tickets' => $request->tickets,
-            'kyat' => $request->kyat,
-            'purchased_price' => $request->purchased_price,
-            'quantity' => $request->new_qty,
-            'created_by' => Auth::user()->id,
-        ]);
+    //     OutletItemData::create([
+    //         'outlet_item_id' => $outlet_item_id,
+    //         'points' => $request->points,
+    //         'tickets' => $request->tickets,
+    //         'kyat' => $request->kyat,
+    //         'purchased_price' => $request->purchased_price,
+    //         'quantity' => $request->new_qty,
+    //         'grn_no' => $request->grn_no,
+    //         'received_date' => $request->received_date,
+    //         'created_by' => Auth::user()->id,
+    //     ]);
 
-        PurchasedPriceHistory::create([
-            'variation_id' => $variation_id,
-            'purchased_price' => $request->purchased_price,
-            'points' => $request->points,
-            'tickets' => $request->tickets,
-            'kyat' => $request->kyat,
-            'quantity' => $request->new_qty,
-            'created_by' => Auth::user()->id,
-        ]);
+    //     PurchasedPriceHistory::create([
+    //         'variation_id' => $variation_id,
+    //         'purchased_price' => $request->purchased_price,
+    //         'points' => $request->points,
+    //         'tickets' => $request->tickets,
+    //         'kyat' => $request->kyat,
+    //         'quantity' => $request->new_qty,
+    //         'grn_no' => $request->grn_no,
+    //         'received_date' => $request->received_date,
+    //         'created_by' => Auth::user()->id,
+    //     ]);
 
-        return response()->json(['message' => 'New Stock added successfully']);
-    }
+    //     return response()->json(['message' => 'New Stock added successfully']);
+    // }
 
 
     public function edit($product_id){
@@ -453,10 +457,13 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                     ->join("products", "variations.product_id", "=", "products.id")
                     ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
                     ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
-                    ->where("outlet_items.outlet_id", "=", $fromOutletId)
-                    ->where("outlet_item_data.quantity", ">", 0)
+                    ->where("outlet_item_data.quantity", ">", 0);
+                    if($fromOutletId) {
+                       $product = $product->where("outlet_items.outlet_id", "=", $fromOutletId);
+                    }
+
                     // ->latest("outlet_item_data.created_at")
-                    ->get();
+        $product = $product->get();
 
         $product_arr = array();
 

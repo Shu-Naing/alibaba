@@ -311,7 +311,9 @@ if (document.getElementById("searchInput")) {
                   // Item does not exist, add it to the table
                   $("#show_Product table tbody").append(res.html);
                   var total = calculateTotal();
-                  $("#total").html(total);
+                  var numberformattotal = total.toLocaleString();
+                  $("#total").html(numberformattotal);
+
                   errorBox.html("").removeClass("alert alert-danger");
                   if (tablehaveItem.css("background-color", "#fee7e1")) {
                     tablehaveItem.css("background-color", "");
@@ -694,10 +696,59 @@ function calculateTotal() {
   var total = 0;
   if (subtotal_arr.length > 0) {
     subtotal_arr.each(function () {
-      var subtotal = parseInt($(this).text());
+      // var subtotal = parseInt();
+      var subtotal = parseFloat($(this).text().replace(/,/g, ""));
       total += subtotal; // Add subtotal to the sum
     });
   }
 
   return total;
+}
+
+if (document.getElementById("searchInputPurchase")) {
+  $.get("/get-product-lists", function (data, status) {
+    // console.log(data);
+    if (status == "success") {
+      let productArr = [];
+      product = Object.keys(data).map((key) => {
+        productArr.push({
+          id: key,
+          title: data[key],
+        });
+      });
+
+      // var distributedId = $("#distributedId").val();
+      function resultGet(res, id) {
+        $.ajax({
+          url: "/search-purchase",
+          type: "GET",
+          data: {
+            variant_id: id,
+          },
+          success: function (response) {
+            // console.log(response);
+            var errorBox = $(".errorbox");
+            var tablehaveItem = $("#show_Product table tbody tr");
+            // console.log(tablehaveItem);
+            if (
+              $('#ds_itemTable tbody tr[data-id="' + id + '"]').length === 0
+            ) {
+              $("#show_Product table tbody").append(response);
+              errorBox.html("").removeClass("alert alert-danger");
+              if (tablehaveItem.css("background-color", "#fee7e1")) {
+                tablehaveItem.css("background-color", "");
+              }
+            }
+          },
+        });
+      }
+      autocomplete(
+        document.getElementById("searchInputPurchase"),
+        productArr,
+        resultGet
+      );
+    } else {
+      console.log(status);
+    }
+  });
 }

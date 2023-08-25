@@ -24,8 +24,40 @@
                 {{ Session::get('error') }}
             </div>
         @endif
-        <div class="my-3">
-            <a href="{{ route('outletstockoverview.export') }}" class="btn btn-red me-2">Export to Excel</a>
+
+        @php
+            $outlet_id = session()->get(OUTLET_STOCK_OVERVIEW_OUTLET_FILTER);
+            $machine_id = session()->get(OUTLET_STOCK_OVERVIEW_MACHINE_FILTER);
+        @endphp
+
+        {!! Form::open([
+            'route' => 'outletstockoverview.search',
+            'method' => 'post',
+            'class' => 'p-4 rounded border shadow-sm mb-5',
+        ]) !!}  
+        @csrf
+            <div class="row mb-3 g-3">
+                <div class="col-md-3">
+                    {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
+                    {{ Form::select('outlet_id', $outlets, null, ['placeholder' => 'Choose...', 'class' => 'form-control', 'id' => 'outlet-dropdown']) }}
+    
+                </div>
+                <div class="col-md-3">
+                    {!! Form::label('machine_id', 'Machine', ['class' => 'form-label']) !!}
+                    {{ Form::select('machine_id', $machines, null, ['placeholder' => 'Choose...', 'class' => 'form-control', 'id' => 'machine-dropdown']) }}
+    
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-blue ms-2">Search</button>
+                    <a href="{{route('outletstockoverview.reset')}}" class="btn btn-blue ms-2">Reset</a>
+                    <a href="{{ route('outletstockoverview.export') }}" class="btn btn-blue ms-2">Export to Excel</a>
+                </div>
+            </div>
+        {!! Form::close() !!}
+
+        <div class="row p-4">
+            <div class="col col-sm-3 col-lg-2 fw-bold">Outlet: <span class="text-danger">{{ isset($outlets[$outlet_id]) ? $outlets[$outlet_id] : '' }}</span></div>
+            <div class="col col-sm-3 col-lg-2 fw-bold">Machine: <span class="text-danger">{{ isset($machines[$machine_id]) ? $machines[$machine_id] : '' }}</span></div>
         </div>
 
         <table id="table_id">

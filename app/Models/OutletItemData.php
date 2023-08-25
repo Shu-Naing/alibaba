@@ -15,6 +15,9 @@ class OutletItemData extends Model
         'tickets',
         'kyat',
         'quantity',
+        'grn_no',
+        'received_date',
+        'country',
         'created_by',
         'updated_by'
        

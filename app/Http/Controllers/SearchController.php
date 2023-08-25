@@ -22,7 +22,8 @@ class SearchController extends Controller
        
         $variantId = $request->variant_id;
         $fromOutletId = $request->from_outlet;
-        $variant_product = Variation::join('products', 'products.id', '=', 'variations.product_id')->where('variations.id', $variantId)->first();
+        $variant_product = Variation::join('products', 'products.id', '=', 'variations.product_id')
+        ->where('variations.id', $variantId)->first();
         // return $variant_product;
 
         // $outletItem = OutletItem::select('quantity')
@@ -43,7 +44,7 @@ class SearchController extends Controller
                 $subtotal = $fromOutletItemData->purchased_price;
                 $total += $subtotal; 
                 $html .= '
-                        <tr data-id="'.$variantId.'">
+                        <tr data-id="'.$variantId.'" class="hello">
                             <td class="align-middle" style="text-align: left;">
                                 '.$variant_product->product_name.'
                             </td>
@@ -66,8 +67,8 @@ class SearchController extends Controller
                                     </div>
                                 </div>
                             </td>
-                            <td class="align-middle">'.$fromOutletItemData->purchased_price.'</td>
-                            <td class="align-middle subtotal">'.$subtotal.'</td>
+                            <td class="align-middle">'.number_format($fromOutletItemData->purchased_price, 0, '', ',').'</td>
+                            <td class="align-middle subtotal">'.number_format($subtotal, 0, '', ',').'</td>
                             <td class="align-middle"><a href="javascript:void(0)" onclick="deleteDisValue(this)" class="text-danger deleteBox">Delete</a></td>
                         </tr>';
       
@@ -316,6 +317,20 @@ class SearchController extends Controller
         return redirect()->route('adjustment.index');
     }
 
+    public function search_purchase_detail(Request $request) {
+    //    return $request;
+        session()->start();
+        session()->put(PURCHASE_ITEMCODE_FILTER, $request->itemCode);
+        return redirect()->back();
+    }
+
+    public function purchase_search_reset() {
+        session()->forget([
+            PURCHASE_ITEMCODE_FILTER,
+        ]);
+        return redirect()->back();
+    }
+
     public function searchProduct(Request $request) {
         // return $request;
         session()->start();
@@ -351,5 +366,89 @@ class SearchController extends Controller
         return redirect()->route('outletleveloverview.index');
     }
 
+    public function search_purchase(Request $request){
+        $html = '';
+        $variantId = $request->variant_id;
+
+        $outletItemData = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
+        ->join('variations', 'variations.id', '=', 'outlet_items.variation_id')
+        ->where('outlet_items.variation_id', $variantId)
+        ->first();
+        // return $outletItemData;
+
+        $html .= '
+                <tr data-id="'.$variantId.'">
+                    <td class="align-middle" style="text-align: left;">
+                        '.$outletItemData->item_code.'
+                        <input type="hidden" class="form-control" name="variation_id" id="variation_id" value='.$variantId.'>
+                    </td>
+                    <td class="align-middle" style="text-align: left;">
+                        
+                        <input type="number" class="form-control" name="tickets" id="tickets" value='.$outletItemData->tickets.'>
+                    </td>
+                    <td class="align-middle">
+                        <input type="number" class="form-control" name="points" id="points" value='.$outletItemData->points.'>
+                    </td>
+                    <td class="align-middle">
+                        <input type="number" class="form-control" name="kyat" id="kyat" value='.$outletItemData->kyat.'>
+                    </td>
+                    <td class="align-middle">
+                        <input type="number" class="form-control" name="purchased_price" id="purchased_price" value='.$outletItemData->purchased_price.'>
+                    </td>
+                    <td class="align-middle">
+                        <input type="number" class="form-control" name="quantity" id="quantity" value='.$outletItemData->quantity.'>
+                    </td>
+                    <td class="align-middle"><a href="javascript:void(0)" onclick="deleteDisValue(this)" class="text-danger deleteBox">Delete</a></td>
+                </tr>
+        ';
+
+        // $response = array();
+        // $response['total'] = $total;
+        // $response['html'] = $html;
+
+        // return json_encode($html);
+        return $html;
+    }
+
+    public function search_list_purchasedpricehistory(Request $request) {
+    //    return $request;
+        session()->start();
+        session()->put(PURCHASEEDPRICEHISTORY_FROMDATE_FILTER, $request->fromDate);
+        session()->put(PURCHASEEDPRICEHISTORY_TODATE_FILTER, $request->toDate);
+        return redirect()->route('purchased-price-history.index');
+    }
+
+    public function purchasedpricehistory_search_reset() {
+        session()->forget([
+            PURCHASEEDPRICEHISTORY_FROMDATE_FILTER,
+            PURCHASEEDPRICEHISTORY_TODATE_FILTER,
+        ]);
+        return redirect()->route('purchased-price-history.index');
+    }
+
+    public function search_list_distribute(Request $request) {
+    //    return $request;
+        session()->start();
+        session()->put(DISTRIBUTE_FROMDATE_FILTER, $request->fromDate);
+        session()->put(DISTRIBUTE_TODATE_FILTER, $request->toDate);
+        session()->put(DISTRIBUT_FROMOUTLET_FILTER, $request->fromOutlet);
+        session()->put(DISTRIBUT_TOOUTLET_FILTER, $request->toOutlet);
+        session()->put(DISTRIBUT_VOUNCHERNO_FILTER, $request->vouncher_no);
+        session()->put(DISTRIBUT_STATUS_FILTER, $request->status);
+        return redirect()->route('distribute.index');
+    }
+
+    public function distribute_search_reset() {
+        session()->forget([
+            DISTRIBUTE_FROMDATE_FILTER,
+            DISTRIBUTE_TODATE_FILTER,
+            DISTRIBUT_FROMOUTLET_FILTER,
+            DISTRIBUT_TOOUTLET_FILTER,
+            DISTRIBUT_VOUNCHERNO_FILTER,
+            DISTRIBUT_STATUS_FILTER,
+        ]);
+        return redirect()->route('distribute.index');
+    }
+    
     
 }

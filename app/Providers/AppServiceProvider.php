@@ -35,9 +35,9 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('distribute.*',function($view){      
             $view->with('ds_status',config('constants.ds_status'));
         });
-        view()->composer('distribute.edit',function($view){      
-            $view->with('ds_status',config('constants.ds_status'));
-        });
+        // view()->composer('distribute.edit',function($view){      
+        //     $view->with('ds_status',config('constants.ds_status'));
+        // });
         view()->composer('outletdistribute.*',function($view){      
             $view->with('ds_status',config('constants.ds_status'));
         });
@@ -80,5 +80,9 @@ class AppServiceProvider extends ServiceProvider
             $view->with('action',config('constants.action'));           
             $view->with('distination',config('constants.distination'));           
         });
+        view()->composer('purchase.*',function($view){      
+            $view->with('countries',config('constants.countries'));          
+        });
+        
     }
 }

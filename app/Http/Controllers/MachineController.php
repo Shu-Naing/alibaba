@@ -112,4 +112,12 @@ class MachineController extends Controller
     {
         //
     }
+
+    public function getMachineByOutletId (Request $request) 
+    {
+        $outlet_id = $request->id;
+        $machines = Machines::where('outlet_id', '=', $outlet_id)->get();
+
+        return $machines;  
+    }
 }

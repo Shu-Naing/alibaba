@@ -25,10 +25,11 @@
             </div>
         @endif     
             <div class="row p-4">
-                <div class="col col-sm-3 col-lg-3 fw-bold">Date: <span class="text-danger">{{$distribute['distribute']->id}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">Date: <span class="text-danger">{{$distribute['distribute']->id}}</span></div>
                 <div class="col col-sm-3 col-lg-3 fw-bold">Reference No: <span class="text-danger">{{$distribute['distribute']->reference_No}}</span></div>
                 <div class="col col-sm-3 col-lg-3 fw-bold">From Outlet: <span class="text-danger">{{$outlets[$distribute['distribute']->from_outlet]}}</span></div>
-                <div class="col col-sm-3 col-lg-3 fw-bold">To Outlet: <span class="text-danger">{{$outlets[$distribute['distribute']->to_outlet]}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">To Outlet: <span class="text-danger">{{$outlets[$distribute['distribute']->to_outlet]}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">Created By: <span class="text-danger">{{$distribute['distribute']->created_by}}</span></div>
             </div>
             <table class="table table-bordered text-center shadow rounded">
                 <thead>
@@ -52,9 +53,9 @@
                             <td>{{$distribute_product->item_code}}</td>
                             <td><img class="product-img" src="{{ asset('storage/' . $distribute_product->image) }}" alt="{{ $distribute_product->image }}"></td>
                             <td>{{$distribute_product->value}}</td>
-                            <td>{{$distribute_product->purchased_price}}</td>                           
+                            <td>{{ number_format($distribute_product->purchased_price, 0, '', ',') }}</td>                           
                             <td>{{$distribute_product->quantity}}</td>
-                            <td>{{$distribute_product->subtotal}}</td>
+                            <td>{{ number_format($distribute_product->subtotal, 0, '', ',') }} </td>
                         </tr>
 
                         @php
@@ -66,7 +67,7 @@
                         <tr>                          
                             <td colspan="4" class="text-end">Total</td>
                             <td>{{$quantitySum}}</td>
-                            <td>{{$subtotalSum}}</td>
+                            <td>{{ number_format($subtotalSum, 0, '', ',') }}</td>
                         </tr>                 
                 </tbody>
             </table>

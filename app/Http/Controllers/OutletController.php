@@ -55,7 +55,7 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'outlet_id' => 'required|unique:outlets',
+            // 'outlet_id' => 'required|unique:outlets',
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',
@@ -110,7 +110,7 @@ class OutletController extends Controller
         $outlet = Outlets::findorFail($id);
         $breadcrumbs = [
             ['name' => 'Outlets', 'url' => route('outlets.index')],
-              ['name' => 'Edit', 'url' => route('outlets.edit', $outlet->id)]
+            ['name' => 'Edit', 'url' => route('outlets.edit', $outlet->id)]
         ];
 
         $dummyDataPath = public_path('/dummy_data.json');
@@ -129,7 +129,7 @@ class OutletController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'outletId' => 'required',
+            // 'outletId' => 'required',
             'name' => 'required',
             'city' => 'required',
             'state' => 'required',

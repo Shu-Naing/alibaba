@@ -17,6 +17,7 @@ class distributes extends Model
         'status',
         'from_outlet',
         'to_outlet',
+        'vouncher_no',
         'remark',
         'created_by',
         'updated_by'

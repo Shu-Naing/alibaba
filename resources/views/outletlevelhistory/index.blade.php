@@ -14,7 +14,9 @@
             </div>
         </div>
 
-
+        @php
+            $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
+        @endphp
 
         {!! Form::open([
             'route' => 'outletlevelhistory.search',
@@ -25,7 +27,7 @@
             <div class="row mb-3 g-3">
                 <div class="col-md-3">
                     {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
-                    {{ Form::select('outlet_id', ['' => 'Choose Outlet'] + $all_outlets->pluck('name', 'id')->toArray(), null, ['class' => 'form-control']) }}
+                    {{ Form::select('outlet_id', $outlets, $outlet_id, ['placeholder' => 'Choose...', 'class' => 'form-control']) }}
     
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
@@ -35,18 +37,6 @@
                 </div>
             </div>
         {!! Form::close() !!}
-
-        <form action="{{ route('outletlevelhistory.index') }}" method="get">
-            @csrf
-            <div class="d-flex">
-                <select class="form-select w-25" id="outlethistory_select" name="outlet" aria-label="Default select example">
-                    @foreach ($outlets as $key => $outlet)
-                        <option value="{{ $key }}">{{ $outlet }}</option>
-                    @endforeach
-                </select>
-                <button type="submit" class="btn btn-blue ms-2">Select</button>
-            </div>
-        </form> 
 
         <table id="table_id">
             <thead>
