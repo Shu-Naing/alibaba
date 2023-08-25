@@ -50,6 +50,11 @@ img {
   display: none;
 }
 
+/* data table search box start */
+#table_id_filter {
+}
+/* data table search box end */
+
 /* sidebar menu start */
 .nav-small-cap {
   padding: 0;

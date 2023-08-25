@@ -16,6 +16,8 @@ class PurchasedPriceHistory extends Model
         'tickets',
         'kyat',
         'quantity',
+        'grn_no',
+        'received_date',
         'created_by',
         'updated_by'
        

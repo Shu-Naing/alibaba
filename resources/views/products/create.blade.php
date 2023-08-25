@@ -13,6 +13,39 @@
                 @include('breadcrumbs')
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card p-3">
+                    <form action="{{ route('product.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col-lg-3 col-sm-12 d-flex align-items-center gap-2">
+                                <label for="file" class="form-label">File: </label>
+                                <div>
+                                    <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-12 d-flex align-items-center gap-2">
+                                <label for="images" class="form-label">Images: </label>
+                                <div>
+                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple required/>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-sm-12">
+                                <button class="btn btn-primary">Submit</button>
+                                <a href="{{ route('product.sample-export') }}" class="btn btn-success">Download Template</a>
+                            </div>
+
+                            <div class="col-lg-2 col-sm-12 d-flex justify-content-end mt-4">
+                                {{-- <a href="{{ route('products.list') }}" class="btn btn-red me-2">Print</a>
+                                <a href="{{ route('product.export') }}" class="btn btn-red me-2">Export to Excel</a> --}}
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
       
         {!! Form::open([
             'route' => 'products.store',

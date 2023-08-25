@@ -68,11 +68,24 @@ class ReportController extends Controller
               ['name' => 'Outlet Stock Overview Report']
         ];
 
+        $outlet_id = session()->get(OUTLET_STOCK_OVERVIEW_OUTLET_FILTER);
+        $machine_id = session()->get(OUTLET_STOCK_OVERVIEW_MACHINE_FILTER);
+
+        $outlets = getOutlets();
+        $machines = getMachines();
+
         $outletstockoverviews = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')
         ->whereNotNull('item_code')
-        ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
-        ->get();
-        return view('reports.outletstockoverview', compact('outletstockoverviews', 'breadcrumbs'));
+        ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id');
+        if($outlet_id) {
+            $outletstockoverviews = $outletstockoverviews->where('outlet_stock_overviews.outlet_id', $outlet_id);
+        }
+        if($machine_id) {
+            $outletstockoverviews = $outletstockoverviews->where('outlet_stock_overviews.machine_id', $machine_id);
+        }
+
+        $outletstockoverviews = $outletstockoverviews->get();
+        return view('reports.outletstockoverview', compact('outletstockoverviews', 'breadcrumbs', 'outlets', 'machines'));
     }
     
     public function exportOutletstockoverview() {
@@ -81,5 +94,18 @@ class ReportController extends Controller
         ->join('machines', 'machines.id', '=', 'outlet_stock_overviews.machine_id')
         ->get();
         return Excel::download(new OutletstockoverviewsExport($outletstockoverviews), 'outletstockoverview.xlsx');
+    }
+
+    public function search(Request $request){
+        session()->start();
+        session()->put('OUTLET_STOCK_OVERVIEW_OUTLET_FILTER', $request->outlet_id);
+        session()->put('OUTLET_STOCK_OVERVIEW_MACHINE_FILTER', $request->machine_id);
+        return redirect()->route('report.outletstockoverview');
+    }
+
+    public function reset(){
+        session()->forget('OUTLET_STOCK_OVERVIEW_OUTLET_FILTER');
+        session()->forget('OUTLET_STOCK_OVERVIEW_MACHINE_FILTER');
+        return redirect()->route('report.outletstockoverview');
     }
 }

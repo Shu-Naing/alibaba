@@ -108,17 +108,19 @@
 
 <body>
     <div id="print-content">
-        <div class="top-box">
-            <a href="javascript:void(0);" onclick="printTable()" class="print-btn">Print</a>
-            <a href="{{ url()->previous() }}" class="back-btn">Back</a>
-        </div>
         <table>
             <thead>
                 <tr>
                     <th class="logo-style tb-border-none">
                         <img src="{{ asset('images/logo_1.png') }}" alt="" class="company-logo">
                     </th>
-                    <th>
+                    <th class="tb-border-none text-left">
+                        <div class="top-box">
+                            <a href="javascript:void(0);" onclick="printTable()" class="print-btn">Print</a>
+                            <a href="{{ url()->previous() }}" class="back-btn">Back</a>
+                        </div>
+                    </th>
+                    <!-- <th>
                         <p>Issued Date: <br> {{ isset($distribute->date) ? $distribute->date : '' }}</p>
                     </th>
                     <th>
@@ -126,7 +128,7 @@
                     </th>
                     <th>
                         <p>Revision Date: <br> {{ isset($distribute->date) ? $distribute->date : '' }}</p>
-                    </th>
+                    </th> -->
                 </tr>
             </thead>
         </table>
@@ -143,7 +145,7 @@
                         <p>From: {{ get_outlet_name($distribute->from_outlet) }}</p>
                     </th>
                     <th colspan="3" class="text-right">
-                        <p>Voucher No: {{ str_replace(' ','-',get_outlet_name($distribute->from_outlet)) . '-' . $distribute->id }}</p>
+                        <p>Voucher No: {{ str_replace(' ','-',get_outlet_name($distribute->from_outlet)) . '-' . $distribute->reference_No }}</p>
                         <p>Date: {{ $distribute->date }}</p>
                     </th>
                 </tr>

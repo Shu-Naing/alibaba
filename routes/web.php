@@ -33,6 +33,7 @@ use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletLevelOverviewController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
+use App\Http\Controllers\PurchaseController;
 
 
 /*
@@ -81,6 +82,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('stockalert', PosItemAlertController::class);
     Route::resource('adjustment', AdjustmentController::class);
     Route::resource('damage', DamageController::class);
+    Route::resource('purchase', PurchaseController::class);
+    Route::get('purchase-detail-export/{grn_no}',[PurchaseController::class, 'purchaseDetailExport'])->name('purchase-detail-export');
     // Route::resource('issue-products', IssueProductController::class);
 
     Route::get('distribute/{id}/{from_outlet}/edit', [DistributeController::class, 'edit'])->name('distribute.edit');
@@ -110,10 +113,17 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::post('/search-list-distribute-detail', [SearchController::class, 'search_list_distribute_detail'])->name('search-list-distribute-detail');
     Route::post('/search-list-damage', [SearchController::class, 'search_list_damage'])->name('search-list-damage');
     Route::post('/search-list-adjustment', [SearchController::class, 'search_list_adjustment'])->name('search-list-adjustment');
+    Route::post('/search-list-purchasedpricehistory', [SearchController::class, 'search_list_purchasedpricehistory'])->name('search-list-purchasedpricehistory');
+    Route::post('/search-list-distribute', [SearchController::class, 'search_list_distribute'])->name('search-list-distribute');
+    Route::post('/search-purchase-detail', [SearchController::class, 'search_purchase_detail'])->name('search-purchase-detail');
 
     Route::get('/search-reset', [SearchController::class, 'search_reset'])->name('search-reset');
     Route::get('/damage-search-reset', [SearchController::class, 'damage_search_reset'])->name('damage-search-reset');
     Route::get('/adjustment-search-reset', [SearchController::class, 'adjustment_search_reset'])->name('adjustment-search-reset');
+    Route::get('/purchasedpricehistory-search-reset', [SearchController::class, 'purchasedpricehistory_search_reset'])->name('purchasedpricehistory-search-reset');
+    Route::get('/purchase-search-reset', [SearchController::class, 'purchase_search_reset'])->name('purchase-search-reset');
+    Route::get('/distribute-search-reset', [SearchController::class, 'distribute_search_reset'])->name('distribute-search-reset');
+    Route::get('/search-purchase', [SearchController::class, 'search_purchase'])->name('search-purchase');
     
     // Route::resource('distribute/{id}', DistributeController::class);
     // Route::get('product', [ProductController::class, 'index'])->name('product');
@@ -166,11 +176,15 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/delete-dis-product/{id}', [ProductsController::class,'delete_dis_product']);
     Route::get('/delete-outdis-product/{id}', [ProductsController::class,'delete_outletdistirbute_product']);
     // Route::get('test', [TestController::class,'index'])->name('test.search');
+
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
     Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
     Route::get('report/outletstockoverview',[ReportController::class,'outletstockoverviewReport'])->name('report.outletstockoverview');
+    Route::post('outletstockoverview-search',[ReportController::class,'search'])->name('outletstockoverview.search');
+    Route::get('outletstockoverview-reset',[ReportController::class,'reset'])->name('outletstockoverview.reset');
     // Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
     Route::get('report/outletdistributeproduct/{id}',[OutletDistributeController::class,'show'])->name('outletdistribute.show');
+
     Route::get('products-export',[ReportController::class, 'exportProduct'])->name('product.export');
     Route::get('damage-export',[DamageController::class, 'exportDamage'])->name('damage.export');
     Route::get('adjustment-export',[AdjustmentController::class, 'exportAdjustment'])->name('adjustment.export');
@@ -178,6 +192,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('outletstockoverview-sample-export',[OutletStockOverviewController::class, 'exportSampleOutletstockoverview'])->name('outletstockoverview.sample-export');
     Route::post('outletstockoverview-import',[OutletStockOverviewController::class, 'importOutletstockoverview'])->name('outletstockoverview.import');
     Route::get('outletstockhistory-export',[OutletStockHistoryController::class, 'exportOutletstockhistory'])->name('outletstockhistory.export');
+    Route::post('outletstockhistory-search',[OutletStockHistoryController::class, 'search'])->name('outletstockhistory.search');
+    Route::get('outletstockhistory-reset',[OutletStockHistoryController::class, 'reset'])->name('outletstockhistory.reset');
 
     Route::get('checkoutletstockhistory',[OutletStockHistoryController::class, 'checkoutletstockhistory'])->name('checkoutletstockhistory');
     Route::get('checkoutletstockoverview',[OutletStockOverviewController::class, 'checkoutletstockoverview'])->name('checkoutletstockoverview');
@@ -200,10 +216,16 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('updateoutletlevelphysicalqty',[OutletLevelOverviewController::class,'updateoutletlevelphysicalqty'])->name('updateoutletlevelphysicalqty');
     Route::get('outletlevelopeningqty-sample-export',[OutletLevelOverviewController::class, 'exportSampleOutletlevelopeningqty'])->name('outletlevelopeningqty.sample-export');
     Route::post('outletlevelopeningqty-import',[OutletLevelOverviewController::class, 'importOutletlevelopeningqty'])->name('outletlevelopeningqty.import');
+
+    Route::get('purchaseAdd-sample-export',[PurchaseController::class, 'exportSamplePurchaseAdd'])->name('purchaseAdd.sample-export');
+    Route::post('purchaseAdd-import',[PurchaseController::class, 'importPurchaseAdd'])->name('purchaseAdd.import');
+  
     Route::get('getoutletItem',[OutletStockOverviewController::class,'getoutletItem'])->name('getoutletItem');
     Route::get('outletleveloverview-export',[OutletLevelOverviewController::class,'export'])->name('outletleveloverview.export');
     Route::post('outletleveloverview-search',[SearchController::class,'outletlevelverviewSearch'])->name('outletleveloverview.search');
     Route::get('outletleveloverview-reset',[SearchController::class,'resetOutletleveloverview'])->name('outletleveloverview.reset');
+    
+    Route::get('get-machine',[MachineController::class,'getMachineByOutletId'])->name('get-machine');
 
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');

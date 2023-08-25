@@ -15,8 +15,20 @@ class PurchasedPriceHistoryController extends Controller
               ['name' => 'Purchased Price']
         ];
 
-        $purchased_price_histories = PurchasedPriceHistory::with('variation')->get();
+        $from_date = session()->get(PURCHASEEDPRICEHISTORY_FROMDATE_FILTER);
+        $to_date = session()->get(PURCHASEEDPRICEHISTORY_TODATE_FILTER);
 
+        // return $from_date;
+
+        $purchased_price_histories = PurchasedPriceHistory::with('variation')
+        ->when($from_date, function ($query) use ($from_date) {
+            return $query->where('received_date', '>=', $from_date);
+        })
+        ->when($to_date, function ($query) use ($to_date) {
+            return $query->where('received_date', '<=', $to_date);
+        })->get();
+
+        // return $purchased_price_histories;
         return view('purchasedpricehistory.index',compact('purchased_price_histories', 'breadcrumbs'));
     }
 

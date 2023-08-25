@@ -29,7 +29,7 @@
             @method('PATCH')
             <div class="row mb-3">
                 <div class="col-md-6">
-                    {!! Form::label('outletId', 'Outlet ID *', ['class' => 'form-label']) !!}
+                    {!! Form::label('outletId', 'Outlet ID', ['class' => 'form-label']) !!}
                     {!! Form::text('outletId', $outlet->outlet_id, ['class' => 'form-control', 'id' => 'outletId']) !!}
                 </div>
                 <div class="col-md-6">
@@ -46,7 +46,7 @@
                         'id' => 'contry',
                     ]) !!}
                 </div> --}}
-                <div class="col-md-4">
+                <div class="col-md-6">
                     {!! Form::label('city', 'City', ['class' => 'form-label']) !!}
                     {!! Form::select('city', $cities, $outlet->city, [
                         'placeholder' => 'Choose',
@@ -55,7 +55,7 @@
                         'aria-label' => 'Default select example',
                     ]) !!}
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     {!! Form::label('state', 'State', ['class' => 'form-label']) !!}
                     {!! Form::select('state', $states, $outlet->state, [
                         'placeholder' => 'Choose',

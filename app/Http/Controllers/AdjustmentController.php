@@ -167,8 +167,7 @@ class AdjustmentController extends Controller
 
         $adjustments = Adjustment::when($from_date, function ($query) use ($from_date) {
             return $query->where('date', '>=', $from_date);
-        })
-        ->when($to_date, function ($query) use ($to_date) {
+        })->when($to_date, function ($query) use ($to_date) {
             return $query->where('date', '<=', $to_date);
         })->when($adj_no, function ($query) use ($adj_no) {
             return $query->where('adj_no', '=', $adj_no);

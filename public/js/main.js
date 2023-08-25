@@ -156,12 +156,13 @@ function increaseValue(button, purchasedPrice, variant_qty) {
         ".subtotal"
       );
 
-    priceTotal.textContent = subtotal;
+    priceTotal.textContent = subtotal.toLocaleString();
   } else {
     input.value = variant_qty;
   }
   var total = calculateTotal();
-  $("#total").html(total);
+  var numberformattotal = total.toLocaleString();
+  $("#total").html(numberformattotal);
 }
 
 function decreaseValue(button, purchasedPrice, variant_qty) {
@@ -177,9 +178,10 @@ function decreaseValue(button, purchasedPrice, variant_qty) {
       ".subtotal"
     );
 
-  priceTotal.textContent = subtotal;
+  priceTotal.textContent = subtotal.toLocaleString();
   var total = calculateTotal();
-  $("#total").html(total);
+  var numberformattotal = total.toLocaleString();
+  $("#total").html(numberformattotal);
 }
 
 $(document).on("focusout", ".number-box", function () {
@@ -206,7 +208,8 @@ function calculateTotal() {
   var total = 0;
   if (subtotal_arr.length > 0) {
     subtotal_arr.each(function () {
-      var subtotal = parseInt($(this).text());
+      // var subtotal = parseInt();
+      var subtotal = parseFloat($(this).text().replace(/,/g, ""));
       total += subtotal; // Add subtotal to the sum
     });
   }
@@ -382,6 +385,56 @@ outletdsButton.on("click", function (event) {
   // $(searchInput).focusout(function () {
   //   searchInput.removeClass("is-invalid");
   // });
+});
+
+var purchasebutton = $("#purchasebutton");
+
+purchasebutton.on("click", function (event) {
+  var grn_no = $("#grn_no");
+  var received_date = $("#received_date");
+  var country = $("#country");
+  var tableValue = $("#show_Product .purchase_itemTable tbody tr");
+  var errorBox = $(".errorbox");
+
+  if (
+    grn_no.val() &&
+    received_date.val() &&
+    country.val() &&
+    tableValue.length > 0
+  ) {
+    $(this).submit();
+  } else {
+    event.preventDefault();
+
+    if (errorBox.html() === "") {
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    } else {
+      errorBox.html("");
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    }
+
+    if (grn_no.val() === "") {
+      errorBox.append("GRN number is required.<br/>");
+    }
+    if (received_date.val() === "") {
+      errorBox.append("Received Date is required.<br/>");
+    }
+    if (country.val() === "") {
+      errorBox.append("Country is required.<br/>");
+    }
+    if (tableValue.length === 0) {
+      errorBox.append("Product item is required.<br/>");
+    }
+    $(window).scrollTop(0);
+  }
 });
 
 // issue create submit button
@@ -849,5 +902,45 @@ document.addEventListener("DOMContentLoaded", function () {
       // Replace the following line with your desired action:
       event.submit();
     }
+  });
+});
+
+$("#outlet-dropdown").on("change", function () {
+  var idOutlet = this.value;
+  // console.log(idOutlet);
+  // $("#machine-id").html("");
+  $.ajax({
+    url: "/get-machine/",
+    type: "GET",
+    data: {
+      id: idOutlet,
+    },
+    success: function (result) {
+      $("#machine-dropdown").html('<option value="">Choose...</option>');
+      $.each(result, function (key, value) {
+        $("#machine-dropdown").append(
+          '<option value="' + value.id + '">' + value.name + "</option>"
+        );
+      });
+    },
+  });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  var idOutlet = $("#outlet-dropdown").val();
+  $.ajax({
+    url: "/get-machine/",
+    type: "GET",
+    data: {
+      id: idOutlet,
+    },
+    success: function (result) {
+      $("#machine-dropdown").html('<option value="">Choose...</option>');
+      $.each(result, function (key, value) {
+        $("#machine-dropdown").append(
+          '<option value="' + value.id + '">' + value.name + "</option>"
+        );
+      });
+    },
   });
 });

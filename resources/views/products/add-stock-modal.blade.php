@@ -13,23 +13,36 @@
                     @csrf
                     <div class="row">
                         <div class="col-lg-6">
+                            <label for="item_code">Item Code</label>
                             <input type="text" class="form-control" value="{{ $variation->item_code }}" disabled>
                         </div>
                         <div class="col-lg-6">
-                            <input type="text" class="form-control" placeholder="Enter New Point" name="points">
+                            <label for="points">New Point</label>
+                            <input type="number" class="form-control" name="points">
                         </div>
                         <div class="col-lg-6 my-2">
-                            <input type="text" class="form-control" placeholder="Enter New Ticket" name="tickets">
+                            <label for="tickets">New Ticket</label>
+                            <input type="number" class="form-control" name="tickets">
                         </div>
                         <div class="col-lg-6 my-2">
-                            <input type="text" class="form-control" placeholder="Enter New Kyat" name="kyat">
+                            <label for="kyat">New Kyat</label>
+                            <input type="number" class="form-control" name="kyat">
                         </div>
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" placeholder="Enter New Purchased Price"
-                                name="purchased_price">
+                        <div class="col-lg-6 my-2">
+                            <label for="purchased_price">New Purchased Price</label>
+                            <input type="number" class="form-control" name="purchased_price">
                         </div>
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" placeholder="Enter New Qty" name="new_qty">
+                        <div class="col-lg-6 my-2">
+                            <label for="new_qty">New Qty</label>
+                            <input type="number" class="form-control" name="new_qty">
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <label for="grn_no">Grn No</label>
+                            <input type="text" class="form-control" name="grn_no">
+                        </div>
+                        <div class="col-lg-6 my-2">
+                            <label for="received_date">Received Date</label>
+                            <input type="date" class="form-control" name="received_date">
                         </div>
                     </div>
                 </form>

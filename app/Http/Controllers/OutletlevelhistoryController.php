@@ -24,16 +24,8 @@ class OutletlevelhistoryController extends Controller
         }
         
         $outlets = getOutlets();
-        $all_outlets = Outlets::all();
         
-        if($request->outlet){
-            $id = $request->outlet;
-        }else{
-            $id = MAINOUTLETID;
-        }
-        $histories = OutletlevelHistory::where('outlet_id', $id)->get();
-        
-        return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets','all_outlets'));
+        return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets'));
     }
 
     public function export(){
