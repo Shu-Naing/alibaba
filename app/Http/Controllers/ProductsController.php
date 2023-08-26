@@ -35,7 +35,7 @@ class ProductsController extends Controller
         ];
 
         // $products = Variation::with('product','product.brand','product.category','product.unit')->get();
-        $products = Product::with('brand','category','unit')->get();
+        $products = Product::with('brand','category','unit')->orderBy('products.created_at', 'desc')->get();
 
             // return $products;
     
@@ -58,6 +58,7 @@ class ProductsController extends Controller
 
         public function store(Request $request)
     {
+        // return "hello";
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|unique:products',
             'category_id' => 'required',
@@ -70,7 +71,7 @@ class ProductsController extends Controller
             'expired_date' => 'required',
             'variations' => 'required|array',
             'variations.*.size_variant_value' => 'required',
-            'variations.*.grn_no' => 'required|unique:variations',
+            // 'variations.*.grn_no' => 'required|unique:variations',
             'variations.*.received_qty' => 'required',
             'variations.*.alert_qty' => 'required',
             'variations.*.item_code' => 'required|unique:variations',
@@ -82,9 +83,9 @@ class ProductsController extends Controller
         ],
 
         [
-            'variations.*.grn_no.unique' => 'GRN No must be unique.',
+            // 'variations.*.grn_no.unique' => 'GRN No must be unique.',
             'variations.*.size_variant_value.required' => 'The Size Variant field is required.',
-            'variations.*.grn_no.required' => 'The Grn no field is required.',
+            // 'variations.*.grn_no.required' => 'The Grn no field is required.',
             'variations.*.received_qty.required' => 'The received quantity is required.',
             'variations.*.alert_qty.required' => 'The alert quantity is required.',
             'variations.*.item_code.required' => 'The item code is required.',
@@ -148,7 +149,7 @@ private function createVariation(Product $product, array $variationData)
     $variation = new Variation([
         'product_id' => $product->id,
         'size_variant_value' => $variationData['size_variant_value'],
-        'grn_no' => $variationData['grn_no'],
+        // 'grn_no' => $variationData['grn_no'],
         'alert_qty' => $variationData['alert_qty'],
         'item_code' => $variationData['item_code'],
         'purchased_price' => $variationData['purchased_price'],

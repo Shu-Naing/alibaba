@@ -88,7 +88,7 @@
                             <span class="text-danger error" id="country_error"></span>
                         </div>
                         <div class="col-lg-4">
-                            {{ Form::label('sku', 'SKU', ['class' => 'form-label', 'id' => 'sku_label']) }}
+                            {{ Form::label('sku', 'Product Code', ['class' => 'form-label', 'id' => 'sku_label']) }}
                             {{ Form::text('sku', null, ['class' => 'form-control', 'id' => 'sku', 'placeholder' => 'SKU']) }}
                             <span class="text-danger error" id="sku_error"></span>
                         </div>
@@ -126,19 +126,19 @@
                             {{ Form::select('variations[0][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(), null, ['class' => 'form-control', 'id'=> 'variations_0_size_variant_value']) }}
                             <span class="text-danger error" id="variations_0_size_variant_value_error"></span>
                         </div>
-                        <div class="col-lg-3">
+                        <!-- <div class="col-lg-3">
                             {{ Form::label('grn_no', 'GRN NO', ['class' => 'form-label', 'id' => 'variations_0_grn_no_label']) }}
                             {{ Form::text('variations[0][grn_no]', null, ['class' => 'form-control', 'id' => 'variations_0_grn_no', 'placeholder' => 'GRN NO']) }}
                             <span class="text-danger error" id="variations_0_grn_no_error"></span>
-                        </div>
+                        </div> -->
                         <div class="col-lg-3">
                             {{ Form::label('received_qty', 'Received Qty', ['class' => 'form-label' ,'id' => 'variations_0_received_qty_label' ]) }}
-                            {{ Form::text('variations[0][received_qty]', null, ['class' => 'form-control', 'id' => 'variations_0_received_qty', 'placeholder' => 'Received Quantity']) }}
+                            {{ Form::number('variations[0][received_qty]', null, ['class' => 'form-control', 'id' => 'variations_0_received_qty', 'placeholder' => 'Received Quantity']) }}
                             <span class="text-danger error" id="variations_0_received_qty_error"></span>
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('alert_qty', 'Alert Qty', ['class' => 'form-label' , 'id' => 'variations_0_alert_qty_label' ]) }}
-                            {{ Form::text('variations[0][alert_qty]', null, ['class' => 'form-control', 'id' => 'variations_0_alert_qty', 'placeholder' => 'Alert Quantity']) }}
+                            {{ Form::number('variations[0][alert_qty]', null, ['class' => 'form-control', 'id' => 'variations_0_alert_qty', 'placeholder' => 'Alert Quantity']) }}
                             <span class="text-danger error" id="variations_0_alert_qty_error"></span>
                         </div>
                         <div class="col-lg-3">
@@ -148,22 +148,22 @@
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('points', 'Points', ['class' => 'form-label', 'id' => 'variations_0_points_label']) }}
-                            {{ Form::text('variations[0][points]', null, ['class' => 'form-control', 'id' => 'variations_0_points', 'placeholder' => 'Points']) }}
+                            {{ Form::number('variations[0][points]', null, ['class' => 'form-control', 'id' => 'variations_0_points', 'placeholder' => 'Points']) }}
                             <span class="text-danger error" id="variations_0_points_error"></span>
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('tickets', 'Tickets', ['class' => 'form-label', 'id' => 'variations_0_tickets_label']) }}
-                            {{ Form::text('variations[0][tickets]', null, ['class' => 'form-control', 'id' => 'variations_0_tickets', 'placeholder' => 'Tickets']) }}
+                            {{ Form::number('variations[0][tickets]', null, ['class' => 'form-control', 'id' => 'variations_0_tickets', 'placeholder' => 'Tickets']) }}
                             <span class="text-danger error" id="variations_0_tickets_error"></span>
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('kyat', 'Kyat', ['class' => 'form-label', 'id' => 'variations_0_kyat_label']) }}
-                            {{ Form::text('variations[0][kyat]', null, ['class' => 'form-control', 'id' => 'variations_0_kyat', 'placeholder' => 'Kyat']) }}
+                            {{ Form::number('variations[0][kyat]', null, ['class' => 'form-control', 'id' => 'variations_0_kyat', 'placeholder' => 'Kyat']) }}
                             <span class="text-danger error" id="variations_0_kyat_error"></span>
                         </div>
                         <div class="col-lg-4">
                             {{ Form::label('purchased_price', 'Purchased Price', ['class' => 'form-label' , 'id' => 'variations_0_purchased_price_label']) }}
-                            {{ Form::text('variations[0][purchased_price]', null, ['class' => 'form-control', 'id' => 'variations_0_purchased_price', 'placeholder' => 'Purchased Price']) }}
+                            {{ Form::number('variations[0][purchased_price]', null, ['class' => 'form-control', 'id' => 'variations_0_purchased_price', 'placeholder' => 'Purchased Price']) }}
                             <span class="text-danger error" id="variations_0_purchased_price_error"></span>
                         </div>
                         <div class="col-lg-4">
@@ -220,18 +220,13 @@
                             <span class="text-danger error" id="variations_${variationCount}_size_variant_value_error"></span>
                         </div>
                         <div class="col-lg-3">
-                            {{ Form::label('grn_no', 'GRN NO', ['class' => 'form-label', 'id' => 'variations_${variationCount}_grn_no_label']) }}
-                            {{ Form::text('variations[${variationCount}][grn_no]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_grn_no', 'placeholder' => 'GRN NO']) }}
-                            <span class="text-danger error" id="variations_${variationCount}_grn_no_error"></span>
-                        </div>
-                        <div class="col-lg-3">
                             {{ Form::label('received_qty', 'Received Qty', ['class' => 'form-label' ,'id' => 'variations_${variationCount}_received_qty_label' ]) }}
-                            {{ Form::text('variations[${variationCount}][received_qty]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_received_qty', 'placeholder' => 'Received Quantity']) }}
+                            {{ Form::number('variations[${variationCount}][received_qty]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_received_qty', 'placeholder' => 'Received Quantity']) }}
                             <span class="text-danger error" id="variations_${variationCount}_received_qty_error"></span>
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('alert_qty', 'Alert Qty', ['class' => 'form-label' , 'id' => 'variations_${variationCount}_alert_qty_label' ]) }}
-                            {{ Form::text('variations[${variationCount}][alert_qty]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_alert_qty', 'placeholder' => 'Alert Quantity']) }}
+                            {{ Form::number('variations[${variationCount}][alert_qty]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_alert_qty', 'placeholder' => 'Alert Quantity']) }}
                             <span class="text-danger error" id="variations_${variationCount}_alert_qty_error"></span>
                         </div>
                         <div class="col-lg-3">
@@ -241,22 +236,22 @@
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('points', 'Points', ['class' => 'form-label', 'id' => 'variations_${variationCount}_points_label']) }}
-                            {{ Form::text('variations[${variationCount}][points]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_points', 'placeholder' => 'Points']) }}
+                            {{ Form::number('variations[${variationCount}][points]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_points', 'placeholder' => 'Points']) }}
                             <span class="text-danger error" id="variations_${variationCount}_points_error"></span>
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('tickets', 'Tickets', ['class' => 'form-label', 'id' => 'variations_${variationCount}_tickets_label']) }}
-                            {{ Form::text('variations[${variationCount}][tickets]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_tickets', 'placeholder' => 'Tickets']) }}
+                            {{ Form::number('variations[${variationCount}][tickets]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_tickets', 'placeholder' => 'Tickets']) }}
                             <span class="text-danger error" id="variations_${variationCount}_tickets_error"></span>
                         </div>
                         <div class="col-lg-3">
                             {{ Form::label('kyat', 'Kyat', ['class' => 'form-label', 'id' => 'variations_${variationCount}_kyat_label']) }}
-                            {{ Form::text('variations[${variationCount}][kyat]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_kyat', 'placeholder' => 'Kyat']) }}
+                            {{ Form::number('variations[${variationCount}][kyat]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_kyat', 'placeholder' => 'Kyat']) }}
                             <span class="text-danger error" id="variations_${variationCount}_kyat_error"></span>
                         </div>
                         <div class="col-lg-4">
                             {{ Form::label('purchased_price', 'Purchased Price', ['class' => 'form-label' , 'id' => 'variations_${variationCount}_purchased_price_label']) }}
-                            {{ Form::text('variations[${variationCount}][purchased_price]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_purchased_price', 'placeholder' => 'Purchased Price']) }}
+                            {{ Form::number('variations[${variationCount}][purchased_price]', null, ['class' => 'form-control', 'id' => 'variations_${variationCount}_purchased_price', 'placeholder' => 'Purchased Price']) }}
                             <span class="text-danger error" id="variations_${variationCount}_purchased_price_error"></span>
                         </div>
                         <div class="col-lg-4">

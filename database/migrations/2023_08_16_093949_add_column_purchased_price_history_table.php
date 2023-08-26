@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('purchased_price_histories', function (Blueprint $table) {
             $table->string('grn_no')->nullable()->after('quantity');
-            $table->string('received_date')->after('grn_no');
+            $table->date('received_date')->after('grn_no');
         });
     }
 
