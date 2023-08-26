@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('purchased_price_histories', function (Blueprint $table) {
-            $table->string('grn_no')->nullable()->after('quantity');
-            $table->date('received_date')->after('grn_no');
+            $table->string('grn_no')->nullable()->after('quantity')->nullable();
+            $table->date('received_date')->after('grn_no')->nullable();
         });
     }
 

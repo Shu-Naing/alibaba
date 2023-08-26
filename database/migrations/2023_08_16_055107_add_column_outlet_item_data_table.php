@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('outlet_item_data', function (Blueprint $table) {
-            $table->string('grn_no')->nullable()->after('quantity');
-            $table->string('received_date')->after('grn_no');
+            $table->string('grn_no')->nullable()->after('quantity')->nullabel();
+            $table->string('received_date')->after('grn_no')->nullable();
         });
     }
 
