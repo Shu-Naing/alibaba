@@ -107,6 +107,7 @@ class ProductsImport implements ToModel,WithHeadingRow
                 'tickets' => $variation->tickets,
                 'kyat' => $variation->kyat,
                 'quantity' => $row['received_qty'],
+                'received_date' => $row['received_date'],
                 'created_by' => $created_by,
             ]
         );
