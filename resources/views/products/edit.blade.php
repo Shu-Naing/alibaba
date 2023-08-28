@@ -55,75 +55,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card p-3">
-                        {{-- <div class="row g-2">
-                            <div class="col-lg-4">
-                                {{ Form::label('product_name', 'Product Name', ['class' => 'form-label', 'id' => 'product_name_label']) }}
-                                {{ Form::text('product_name', null, ['class' => 'form-control', 'id' => 'product_name', 'placeholder' => 'Product Name']) }}
-                                <span class="text-danger error" id="product_name_error"></span>
-                            </div>
-                            <div class="col-lg-4">
-                                {{ Form::label('category_id', 'Category', ['class' => 'form-label', 'id' => 'category_id_label']) }}
-                                {{ Form::select('category_id', ['' => 'Choose Category'] + $categories->pluck('category_name', 'id')->toArray(), null, ['class' => 'form-control']) }}
-                                <span class="text-danger error" id="category_id_error"></span>
-                            </div>
-                            <div class="col-lg-4">
-                                {{ Form::label('brand_id', 'Brand', ['class' => 'form-label'. ($errors->has('brand_id') ? ' text-danger' : '')]) }}
-                                {{ Form::select('brand_id', ['' => 'Choose Brand'] + $brands->pluck('brand_name', 'id')->toArray(), null, ['class' => 'form-control' . ($errors->has('brand_id') ? ' is-invalid' : '')]) }}
-                                @error('brand_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-4">
-                                {{ Form::label('unit_id', 'Unit', ['class' => 'form-label'. ($errors->has('unit_id') ? ' text-danger' : '')]) }}
-                                {{ Form::select('unit_id', ['' => 'Choose Unit'] + $units->pluck('name', 'id')->toArray(), null, ['class' => 'form-control' . ($errors->has('unit_id') ? ' is-invalid' : '')]) }}
-                                @error('unit_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-4">
-                                {{ Form::label('company_name', 'Company Name', ['class' => 'form-label'. ($errors->has('company_name') ? ' text-danger' : '')]) }}
-                                {{ Form::text('company_name', null, ['class' => 'form-control' . ($errors->has('company_name') ? ' is-invalid' : ''), 'id' => 'company_name', 'placeholder' => 'Company Name']) }}
-                                @error('company_name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-4">
-                                {{ Form::label('country', 'Country', ['class' => 'form-label'. ($errors->has('country') ? ' text-danger' : '')]) }}
-                                {{ Form::text('country', null, ['class' => 'form-control' . ($errors->has('country') ? ' is-invalid' : ''), 'id' => 'country', 'placeholder' => 'Country']) }}
-                                @error('country')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <div class="col-lg-4">
-                                {{ Form::label('sku', 'SKU', ['class' => 'form-label'. ($errors->has('sku') ? ' text-danger' : '')]) }}
-                                {{ Form::text('sku', null, ['class' => 'form-control' . ($errors->has('sku') ? ' is-invalid' : ''), 'id' => 'sku', 'placeholder' => 'SKU']) }}
-                                @error('sku')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        
-                            <div class="col-lg-4">
-                                {{ Form::label('received_date', 'Received Date', ['class' => 'form-label'. ($errors->has('received_date') ? ' text-danger' : '')]) }}
-                                {{ Form::date('received_date', null, ['class' => 'form-control' . ($errors->has('received_date') ? ' is-invalid' : ''), 'id' => 'received_date']) }}
-                                @error('received_date')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                    
-                            <div class="col-lg-4">
-                                {{ Form::label('expired_date', 'Expired Date', ['class' => 'form-label'. ($errors->has('expired_date') ? ' text-danger' : '')]) }}
-                                {{ Form::date('expired_date', null, ['class' => 'form-control' . ($errors->has('expired_date') ? ' is-invalid' : ''), 'id' => 'expired_date']) }}
-                                @error('expired_date')
-                                    <span class="text-danger">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="col-lg-12">
-                                {{ Form::label('description', 'Product Description', ['class' => 'form-label', 'id' => 'description']) }}
-                                {!! Form::textarea('description', null, ['cols' => '30', 'rows' => '5', 'class' => 'form-control']) !!}
-                                <span class="text-danger error" id="description_error"></span>
-                            </div>
-                        </div> --}}
+                       
                         <div class="row g-2">
                             <div class="col-lg-4">
                                 {{ Form::label('product_name', 'Product Name', ['class' => 'form-label', 'id' => 'product_name_label']) }}
@@ -156,9 +88,9 @@
                                 <span class="text-danger error" id="country_error"></span>
                             </div>
                             <div class="col-lg-4">
-                                {{ Form::label('sku', 'SKU', ['class' => 'form-label', 'id' => 'sku_label']) }}
-                                {{ Form::text('sku', null, ['class' => 'form-control', 'id' => 'sku', 'placeholder' => 'SKU']) }}
-                                <span class="text-danger error" id="sku_error"></span>
+                                {{ Form::label('product_code', 'Product Code', ['class' => 'form-label', 'id' => 'product_code_label']) }}
+                                {{ Form::text('product_code', null, ['class' => 'form-control', 'id' => 'product_code', 'placeholder' => 'Product Code']) }}
+                                <span class="text-danger error" id="product_code_error"></span>
                             </div>
                             <div class="col-lg-4">
                                 {{ Form::label('received_date', 'Received Date', ['class' => 'form-label', 'id' => 'received_date_label']) }}
@@ -266,7 +198,6 @@
                         <td>
                             {!! Form::text('variations[' . $index . '][barcode]', $variation->barcode, [
                                 'class' => 'form-control inputbarcode',
-                                'required',
                                 'style' => 'width: 100px',
                             ]) !!}
                         </td>
@@ -298,6 +229,8 @@
    
 @endsection
 
+
+
 @section('scripts')
     <script>
         function removeVariation(variation_no) {
@@ -305,29 +238,34 @@
             $('#variation_' + variation_no).remove();
         }
 
-        function addStockBtn(variation_id){
+        // function addStockBtn(variation_id){
                
-            var addStockForm = $('#addStockForm'+variation_id);
-            // var url = 'products-add-stock/'+variation_id;
-            $.ajax({
-                url: addStockForm.attr('action'),
-                type: addStockForm.attr('method'),
-                _token : "{{ csrf_token() }}",
-                data: addStockForm.serialize(),
-                success : function(response) {
+        //     var addStockForm = $('#addStockForm'+variation_id);
+        //     // var url = 'products-add-stock/'+variation_id;
+        //     $.ajax({
+        //         url: addStockForm.attr('action'),
+        //         type: addStockForm.attr('method'),
+        //         _token : "{{ csrf_token() }}",
+        //         data: addStockForm.serialize(),
+        //         success : function(response) {
 
-                    console.log(response);
-                    location.reload();
+        //             console.log(response);
+        //             location.reload();
 
-                },
-                error: function(e){
-                    console.log("asd");
-                    console.log(e.responseText);
-                }
-            });
-        }
+        //         },
+        //         error: function(e){
+        //             console.log("asd");
+        //             console.log(e.responseText);
+        //         }
+        //     });
+        // }
+
+        // $(document).ready(function() {
+           
+        // });      
 
         $(document).ready(function() {
+
             function bindImagePreviewClickEvent() {
                 $('.imagePreview').off('click').on('click', function() {
                     $(this).siblings('.fileInput').click();
@@ -363,15 +301,11 @@
                         </td>
                         <td>
                             <img class="imagePreview" src="{{ asset('assets/images/dummy-post-horisontal.jpg') }}" alt="Old Image">
-                            <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]">
+                            <input class="fileInput" type="file" style="display: none;" name="variations[${variationCount}][image]" accept="image/*">
                         </td>
                         <td>
                             {{ Form::select('variations[${variationCount}][size_variant_value]', ['' => 'Choose Size Variant'] + $sizeVariants->pluck('value', 'id')->toArray(),null , ['class' => 'form-control', 'id' => 'variations_${variationCount}_size_variant_value']) }}
                             <span class="text-danger error" id="variations_${variationCount}_size_variant_value_error"></span>
-                        </td>
-                        <td>
-                            {{ Form::text('variations[${variationCount}][grn_no]', null, ['class' => 'form-control' , 'id' => 'variations_${variationCount}_grn_no']) }}
-                            <span class="text-danger error" id="variations_${variationCount}_grn_no_error"></span>
                         </td>
                         <td>
                             {!! Form::text('variations[${variationCount}][points]', null, [
@@ -413,12 +347,10 @@
                         <td>
                                 {!! Form::text('variations[${variationCount}][barcode]', null, [
                                     'class' => 'form-control',
-                                    'required',
+                                   
                                 ]) !!}
-                            </td>
-                        <td>
-                            
-                        </td>
+                           
+                      
                         </td>
                        
                         <td>
@@ -438,9 +370,8 @@
                 bindFileInputChangeEvent();
 
             });
-        });      
 
-        $(document).ready(function() {
+
             $("#productEditForm").on('submit', function(event) {
                 event.preventDefault();
                 var productEditForm = $(this);
@@ -459,7 +390,7 @@
                     contentType: false,
                     success: function(response) {
                         // console.log(response.message);
-
+                        location.reload();
                         // Show success message on the page
                         var successMessage = $(
                                 '<div class="alert alert-success alert-dismissible fade show" role="alert">' +

@@ -119,8 +119,8 @@
                                     alt="{{ $outlet_item->variation->item_code }}">
                                 <span
                                     class="mt-2 pb-0 fw-bold" style="font-size: 18px;color: #000;">{{ $outlet_item->variation->product->product_name }}</span>
-                                <small class="mb-3">{{ $outlet_item->variation->item_code }} . Size{{ $outlet_item->variation->select }} :
-                                    {{ $outlet_item->variation->value }}S</small>
+                                <small class="mb-3">{{ $outlet_item->variation->item_code }} . Size :
+                                    {{ $outlet_item->variation->sizeVariant->value }}</small>
                                 
                                
                                 

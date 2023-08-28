@@ -71,7 +71,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Product Name</th>
-                    <th>SKU</th>
+                    <th>Product Code</th>
                     <th>Description</th>
                     <th>Brand</th>
                     <th>Category</th>
@@ -92,7 +92,7 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $product->product_name }}</td>
-                        <td>{{ $product->sku }}</td>
+                        <td>{{ $product->product_code }}</td>
                         <td>{{ $product->description }}</td>
                         <td>{{ $product->brand->brand_name }}</td>
                         <td>{{ $product->category->category_name }}</td>

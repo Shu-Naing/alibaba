@@ -66,7 +66,7 @@ class ProductsController extends Controller
             'unit_id' => 'required',
             'company_name' => 'required',
             'country' => 'required',
-            'sku' => 'required|unique:products',
+            'product_code' => 'required|unique:products',
             'received_date' => 'required',
             'expired_date' => 'required',
             'variations' => 'required|array',
@@ -112,9 +112,9 @@ class ProductsController extends Controller
 
             $outletItems = $this->createOutletItems($variation);
 
-            $outletItemData = $this->createOutletItemData($variation, $outletItems, $variationData);
+            $outletItemData = $this->createOutletItemData($variation, $outletItems, $variationData,$product);
 
-            $purchasedPriceHistory = $this->createPurchasedPriceHistory($variation, $variationData);
+            $purchasedPriceHistory = $this->createPurchasedPriceHistory($variation, $variationData,$product);
         }
 
         // return redirect()->route('products.create')->with('success', 'Product created successfully');
@@ -132,7 +132,7 @@ private function createProduct(Request $request)
         'category_id' => $request->category_id,
         'company_name' => $request->company_name,
         'country' => $request->country,
-        'sku' => $request->sku,
+        'product_code' => $request->product_code,
         'received_date' => $request->received_date,
         'expired_date' => $request->expired_date,
         'description' => $request->description,
@@ -180,7 +180,7 @@ private function createOutletItems(Variation $variation)
     return $outletItems;
 }
 
-private function createOutletItemData(Variation $variation,OutletItem $outletItems,array $variationData)
+private function createOutletItemData(Variation $variation,OutletItem $outletItems,array $variationData,Product $product)
 {
     $outletItemData = new OutletItemData([
         'outlet_item_id' =>  $outletItems->id,
@@ -189,6 +189,7 @@ private function createOutletItemData(Variation $variation,OutletItem $outletIte
         'tickets' => $variation->tickets,
         'kyat' => $variation->kyat,
         'quantity' => $variationData['received_qty'],
+        'received_date' => $product->received_date,
         'created_by' => Auth::user()->id,
     ]);
 
@@ -197,7 +198,7 @@ private function createOutletItemData(Variation $variation,OutletItem $outletIte
     return $outletItemData;
 }
 
-private function createPurchasedPriceHistory(Variation $variation, array $variationData)
+private function createPurchasedPriceHistory(Variation $variation, array $variationData,Product $product)
 {
     $purchasedPriceHistory = new PurchasedPriceHistory([
         'variation_id' => $variation->id,
@@ -206,6 +207,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         'tickets' => $variation->tickets,
         'kyat' => $variation->kyat,
         'quantity' => $variationData['received_qty'],
+        'received_date' => $product->received_date,
         'created_by' => Auth::user()->id,
     ]);
 
@@ -281,7 +283,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
 
     public function update(Request $request,$product_id){
-        
+
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|unique:products,product_name,'.$product_id,
             "category_id" => "required",
@@ -289,26 +291,22 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             "unit_id" => "required",
             "company_name" => "required",
             "country" => "required",
-            'sku' => 'required|unique:products,sku,'.$product_id,
+            'product_code' => 'required|unique:products,product_code,'.$product_id,
             "received_date" => "required",
             "expired_date" => "required",
             'variations' => 'required|array',
             'variations.*.size_variant_value' => 'required',
-            'variations.*.grn_no' => 'required|unique:variations,grn_no,'.$product_id.',product_id',
             'variations.*.received_qty' => 'required',
             'variations.*.alert_qty' => 'required',
             'variations.*.item_code' => 'required|unique:variations,item_code,'.$product_id.',product_id',
             'variations.*.points' => 'required',
             'variations.*.tickets' => 'required',
             'variations.*.kyat' => 'required',
-            'variations.*.barcode' => 'required',
             'variations.*.purchased_price' => 'required',
         ],
 
         [
-            'variations.*.grn_no.unique' => 'GRN No must be unique.',
             'variations.*.size_variant_value.required' => 'The Size Variant field is required.',
-            'variations.*.grn_no.required' => 'The Grn no field is required.',
             'variations.*.received_qty.required' => 'The received quantity is required.',
             'variations.*.alert_qty.required' => 'The alert quantity is required.',
             'variations.*.item_code.required' => 'The item code is required.',
@@ -316,7 +314,6 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'variations.*.points.required' => 'The points are required.',
             'variations.*.tickets.required' => 'The tickets are required.',
             'variations.*.kyat.required' => 'The kyat is required.',
-            'variations.*.barcode.required' => 'The barcode is required.',
             'variations.*.purchased_price.required' => 'The purchased price is required.',
         ]
     
@@ -334,7 +331,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'unit_id' => $request->unit_id,
             'company_name' => $request->company_name,
             'country' => $request->country,
-            'sku' => $request->sku,
+            'product_code' => $request->product_code,
             'received_date' => $request->received_date,
             'expired_date' => $request->expired_date,
             'description' => $request->description,
@@ -351,7 +348,6 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 'product_id' => $product_id,
                 'item_code' =>$variation['item_code'],
                 'size_variant_value' => $variation['size_variant_value'],
-                'grn_no' => $variation['grn_no'],
                 'points' => $variation['points'],
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
@@ -407,6 +403,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
                 'purchased_price' => $variation['purchased_price'],
+                'received_date' => $request->received_date,
                 'updated_by' => Auth::user()->id,
             ];
 
@@ -428,7 +425,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 'points' => $variation['points'],
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
-                
+                'received_date' => $request->received_date,
                 'updated_by' => Auth::user()->id,
            ];
 
@@ -700,17 +697,26 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
 
         // return $request;
+
+       
         $file = $request->file('file');
 
         $images = $request->file('images');
 
-        foreach ($images as $image) {
-           
-            $imageName = $image->getClientOriginalName();
-            $image->storeAs('public/variations', $imageName);
-        }
 
-        Excel::import(new ProductsImport, $file);
+        if(isset($images)){
+            foreach ($images as $image) {
+           
+                $imageName = $image->getClientOriginalName();
+                $image->storeAs('public/variations', $imageName);
+            }
+        }
+       
+
+        if(isset($file)){
+            Excel::import(new ProductsImport, $file);
+        }
+        
 
         return redirect()->back()->with('success', 'Products imported successfully.');
     }

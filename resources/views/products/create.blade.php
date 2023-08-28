@@ -23,13 +23,13 @@
                             <div class="col-lg-3 col-sm-12 d-flex align-items-center gap-2">
                                 <label for="file" class="form-label">File: </label>
                                 <div>
-                                    <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                    <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                                 </div>
                             </div>
                             <div class="col-lg-3 col-sm-12 d-flex align-items-center gap-2">
                                 <label for="images" class="form-label">Images: </label>
                                 <div>
-                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple required/>
+                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple/>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-12">
@@ -88,9 +88,9 @@
                             <span class="text-danger error" id="country_error"></span>
                         </div>
                         <div class="col-lg-4">
-                            {{ Form::label('sku', 'Product Code', ['class' => 'form-label', 'id' => 'sku_label']) }}
-                            {{ Form::text('sku', null, ['class' => 'form-control', 'id' => 'sku', 'placeholder' => 'SKU']) }}
-                            <span class="text-danger error" id="sku_error"></span>
+                            {{ Form::label('product_code', 'Product Code', ['class' => 'form-label', 'id' => 'product_code_label']) }}
+                            {{ Form::text('product_code', null, ['class' => 'form-control', 'id' => 'product_code', 'placeholder' => 'Produc Code']) }}
+                            <span class="text-danger error" id="product_code_error"></span>
                         </div>
                         <div class="col-lg-4">
                             {{ Form::label('received_date', 'Received Date', ['class' => 'form-label', 'id' => 'received_date_label']) }}
