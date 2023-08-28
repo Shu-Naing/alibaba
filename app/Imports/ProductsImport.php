@@ -96,6 +96,8 @@ class ProductsImport implements ToModel,WithHeadingRow
                 'points' => $variation->points,
                 'tickets' => $variation->tickets,
                 'kyat' => $variation->kyat,
+                'grn_no' => $row['grn_no'],
+                'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
                 'quantity' => $row['received_qty'],
                 'created_by' => $created_by,
         ]);
@@ -107,7 +109,8 @@ class ProductsImport implements ToModel,WithHeadingRow
                 'tickets' => $variation->tickets,
                 'kyat' => $variation->kyat,
                 'quantity' => $row['received_qty'],
-                'received_date' => $row['received_date'],
+                'grn_no' => $row['grn_no'],
+                'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
                 'created_by' => $created_by,
             ]
         );
