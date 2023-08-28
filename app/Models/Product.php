@@ -21,6 +21,7 @@ class Product extends Model
         'country',
         'received_date',
         'expired_date',
+        'grn_no',
         'status',
         'created_by',
         'updated_by'
