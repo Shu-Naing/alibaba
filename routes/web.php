@@ -154,6 +154,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
     Route::get('/get-product-lists',[ProductsController::class,'get_product_lists']);
+    Route::get('/get-product-lists-puchase',[ProductsController::class,'get_product_lists_purchase']);
     Route::get('/get-outletdistir-product-lists',[ProductsController::class,'get_outletdistir_product_lists']);
     Route::get('/get-outletdistir-issue-lists',[ProductsController::class,'get_outletdistir_issue_lists']);
 

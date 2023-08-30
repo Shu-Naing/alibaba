@@ -2,7 +2,7 @@
 @section('cardtitle')
     <i class="bi bi-person-fill"></i>
     <span class="loginUser">Welcome, <?php $userName = Auth::user();
-    echo $userName->username; ?></span>
+     if($userName) echo $userName->username; ?></span>
 @endsection
 
 @section('cardbody')

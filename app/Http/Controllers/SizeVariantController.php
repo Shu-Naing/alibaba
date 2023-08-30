@@ -18,7 +18,7 @@ class SizeVariantController extends Controller
         $breadcrumbs = [
             ['name' => 'Size Variants']
         ];
-        $data = SizeVariant::orderBy('id','DESC')->paginate(5);
+        $data = SizeVariant::orderBy('id','DESC')->get();
 
         return view('size-variants.index',compact('data','breadcrumbs'));
     }
