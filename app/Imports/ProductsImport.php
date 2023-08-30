@@ -115,12 +115,6 @@ class ProductsImport implements ToModel,WithHeadingRow
             ]
         );
 
-        return $product;
-       
-    }
-
-
- 
-
-    
+        return $product;  
+    }    
 }

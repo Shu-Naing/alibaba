@@ -706,7 +706,7 @@ function calculateTotal() {
 }
 
 if (document.getElementById("searchInputPurchase")) {
-  $.get("/get-product-lists", function (data, status) {
+  $.get("/get-product-lists-puchase", function (data, status) {
     // console.log(data);
     if (status == "success") {
       let productArr = [];
