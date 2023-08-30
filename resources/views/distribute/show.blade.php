@@ -25,11 +25,11 @@
             </div>
         @endif     
             <div class="row p-4">
-                <div class="col col-sm-3 col-lg-2 fw-bold">Date: <span class="text-danger">{{$distribute['distribute']->id}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">Date: <span class="text-danger">{{$distribute['distribute']->date}}</span></div>
                 <div class="col col-sm-3 col-lg-3 fw-bold">Reference No: <span class="text-danger">{{$distribute['distribute']->reference_No}}</span></div>
                 <div class="col col-sm-3 col-lg-3 fw-bold">From Outlet: <span class="text-danger">{{$outlets[$distribute['distribute']->from_outlet]}}</span></div>
                 <div class="col col-sm-3 col-lg-2 fw-bold">To Outlet: <span class="text-danger">{{$outlets[$distribute['distribute']->to_outlet]}}</span></div>
-                <div class="col col-sm-3 col-lg-2 fw-bold">Created By: <span class="text-danger">{{$distribute['distribute']->created_by}}</span></div>
+                <div class="col col-sm-3 col-lg-2 fw-bold">Prepared By: <span class="text-danger">{{$users[$distribute['distribute']->created_by]}}</span></div>
             </div>
             <table class="table table-bordered text-center shadow rounded">
                 <thead>
@@ -54,7 +54,7 @@
                             <td><img class="product-img" src="{{ asset('storage/' . $distribute_product->image) }}" alt="{{ $distribute_product->image }}"></td>
                             <td>{{$distribute_product->value}}</td>
                             <td>{{ number_format($distribute_product->purchased_price, 0, '', ',') }}</td>                           
-                            <td>{{$distribute_product->quantity}}</td>
+                            <td style="width: 150px;">{!! Form::text('reference_No', $distribute_product->quantity, ['class' => 'form-control text-center', 'id' => 'disprod_quantity', 'disabled' => $distribute['distribute']->status == 2 ? 'disabled' : null, 'data-id' => $distribute_product->id  ]) !!}</td>
                             <td>{{ number_format($distribute_product->subtotal, 0, '', ',') }} </td>
                         </tr>
 

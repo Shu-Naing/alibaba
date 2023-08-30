@@ -370,6 +370,17 @@
                             </a>
                         </li>
                         @endcan
+                        
+                        @can('report.bodanddepartment')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('report.bodanddepartment')}}"
+                                class="nav-link sidebar-link {{ Route::is('report.bodanddepartment') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">BOD & Department </span>
+                            </a>
+                        </li>
+                        @endcan
+
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('outletlevelhistory.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('outletlevelhistory.index') ? 'active' : '' }}">

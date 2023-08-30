@@ -28,7 +28,7 @@ class PosController extends Controller
         $search_key = $request->get('key');
         if($request->has('filter') && $request->has('key')){
             if($request->get('filter') === 'kyat'){
-                $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
+                $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
                     $query->whereNotNull('kyat')
                     ->where('kyat','!=', 0 )
                     ->where('item_code', 'like', '%' . $search_key . '%');
@@ -37,7 +37,7 @@ class PosController extends Controller
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'points'){
-                $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
+                $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
                     $query->whereNotNull('points')
                     ->where('points','!=', 0 )
                     ->where('item_code', 'like', '%' . $search_key . '%');
@@ -46,7 +46,7 @@ class PosController extends Controller
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'tickets'){
-                $outlet_items = OutletItem::whereHas('variation', function ($query) use ($search_key) {
+                $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
                     $query->whereNotNull('tickets')
                     ->where('tickets','!=', 0 )
                     ->where('item_code', 'like', '%' . $search_key . '%');
@@ -57,21 +57,21 @@ class PosController extends Controller
             }
          }elseif($request->has('filter') && !$request->has('key')){
             if($request->get('filter') === 'kyat'){
-                $outlet_items = OutletItem::whereHas('variation', function ($query) {
+                $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
                     $query->whereNotNull('kyat')->where('kyat','!=', 0 );
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'points'){
-                $outlet_items = OutletItem::whereHas('variation', function ($query) {
+                $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
                     $query->whereNotNull('points')->where('points','!=', 0 );
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
                 ->get();
             }elseif($request->get('filter') === 'tickets'){
-                $outlet_items = OutletItem::whereHas('variation', function ($query) {
+                $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
                     $query->whereNotNull('tickets')->where('tickets','!=', 0 );
                 })
                 ->with('variation.product')
@@ -81,7 +81,7 @@ class PosController extends Controller
          }else{
             Session::forget('pos-success');
             Session::forget('pos-id');
-            $outlet_items = OutletItem::with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
+            $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
          }
 
         

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Outlets;
 use App\Models\Variation;
+use App\Models\distributes;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Models\OutletStockOverview;
@@ -107,5 +108,69 @@ class ReportController extends Controller
         session()->forget('OUTLET_STOCK_OVERVIEW_OUTLET_FILTER');
         session()->forget('OUTLET_STOCK_OVERVIEW_MACHINE_FILTER');
         return redirect()->route('report.outletstockoverview');
+    }
+
+    public function bodanddepartmentReport(){
+
+        $breadcrumbs = [
+            // ['name' => 'Outlets', 'url' => route('distribute.index')],
+            ['name' => 'Bod & Department Report']
+        ];
+
+        $outlets = getOutlets(true);
+        $tooutlets = [BODID => 'BOD', DEPID => 'Department'];
+        // return $outlets;
+        $sizeVariants = getSizeVariants();
+        $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
+        $to_outlet = session()->get(PD_TOOUTLET_FILTER);
+        $item_code = session()->get(PD_ITEMCODE_FILTER);
+        $from_date = session()->get(PD_FROMDATE_FILTER);
+        $to_date = session()->get(PD_TODATE_FILTER);
+        $size_variant = session()->get(PD_SIZEVARIANT_FILTER);
+        $purchase_price = session()->get(PD_PURCHASEPRICE_FILTER);
+        $vouncher_no = session()->get(PD_VOUNCHERNO_FILTER);
+
+        $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
+        ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
+        ->join('variations','variations.id','=','distribute_products.variant_id')
+        ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value');
+
+        if($from_outlet){
+            $distributes = $distributes->where('from_outlet', $from_outlet);        
+        }
+
+        if($to_outlet){
+            $distributes = $distributes->where('to_outlet', $to_outlet);
+        }
+
+        if($item_code){
+            $distributes = $distributes->where('item_code', $item_code);
+        }
+
+        if($from_date){
+            $distributes = $distributes->where('date', '>=', $from_date);
+        }
+
+        if($to_date){
+            $distributes = $distributes->where('date', '<=', $to_date);
+        }
+
+        if($size_variant){
+            $distributes = $distributes->where('size_variants.id', $size_variant);
+        }
+
+        if($purchase_price){
+            $distributes = $distributes->where('distribute_products.purchased_price', $purchase_price);
+        }
+
+        if($vouncher_no){
+            $distributes = $distributes->where('vouncher_no', $vouncher_no);
+        }
+
+        $distributes = $distributes->whereIn('to_outlet', [BODID, DEPID])->get();
+
+        // return $distributes;
+
+        return view('reports.bodanddepartment',compact('breadcrumbs','distributes','outlets', 'tooutlets', 'sizeVariants'));
     }
 }
