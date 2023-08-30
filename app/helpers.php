@@ -23,8 +23,8 @@ use App\Models\OutletItemData;
     define('RECIEVE_TYPE', 'R');
     define('ISSUE_TYPE', 'I');
     define('MAINOUTLETID', 1);
-    define('BODID', 6);
-    define('DEPID', 7);
+    define('BODID', 2);
+    define('DEPID', 3);
 
     define('DESTORYDONATION', '1');
     define('DISPOSAL', '2');
