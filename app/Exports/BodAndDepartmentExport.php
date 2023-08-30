@@ -10,12 +10,13 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 
-class ListDistributeDetailExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize,WithEvents
+class BodAndDepartmentExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize,WithEvents
 {
 
-    function __construct($distributes,$outlets){
+    function __construct($distributes,$outlets, $tooutlets){
         $this->distributes = $distributes;
         $this->outlets = $outlets;
+        $this->tooutlets = $tooutlets;
     }
 
     public function headings(): array
@@ -50,7 +51,7 @@ class ListDistributeDetailExport implements FromCollection, WithHeadings, WithMa
            $distribute->reference_No,
            $distribute->vouncher_no,
            $this->outlets[$distribute->from_outlet],
-           $this->outlets[$distribute->to_outlet],
+           $this->tooutlets[$distribute->to_outlet],
            $distribute->item_code,
             '',
            $distribute->value,

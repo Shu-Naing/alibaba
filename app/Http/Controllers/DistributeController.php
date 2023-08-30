@@ -15,6 +15,7 @@ use App\Models\OutletlevelHistory;
 use App\Models\OutletLevelOverview;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ListDistributeDetailExport;
+use App\Exports\BodAndDepartmentExport;
 
 class DistributeController extends Controller
 {
@@ -49,7 +50,7 @@ class DistributeController extends Controller
         })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
         ->when($status, function ($query) use ($status) {
             return $query->where('status', '=', $status);
-        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+        })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         ->get();
 
         // return $distributes;
@@ -281,8 +282,9 @@ class DistributeController extends Controller
             ['name' => 'Detail Distribute Products']
         ];
         $outlets = getOutlets();
+        $users = getUser();
         $distribute_data = distributes::find($id);
-        $distribute_products_data = distributes::select('distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
+        $distribute_products_data = distributes::select('distribute_products.id', 'distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
         ->join('variations','variations.id','=','distribute_products.variant_id')
         ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value')
@@ -290,9 +292,9 @@ class DistributeController extends Controller
         ->get();
 
         $distribute['distribute'] = $distribute_data;
-        $distribute['distribute_products_data'] = $distribute_products_data;        
+        $distribute['distribute_products_data'] = $distribute_products_data;
 
-        return view('distribute.show',compact('distribute','breadcrumbs','outlets'));
+        return view('distribute.show',compact('distribute','breadcrumbs','outlets', 'users'));
     }
 
    
@@ -480,11 +482,17 @@ class DistributeController extends Controller
             ['name' => 'Outlets', 'url' => route('distribute.index')],
             ['name' => 'Distribute Detail']
         ];
-        $outlets = getOutlets();
+        $outlets = getOutlets(true);
+        // return $outlets;
+        $sizeVariants = getSizeVariants();
         $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
         $to_outlet = session()->get(PD_TOOUTLET_FILTER);
         $item_code = session()->get(PD_ITEMCODE_FILTER);
-        $date = session()->get(PD_DATE_FILTER);
+        $from_date = session()->get(PD_FROMDATE_FILTER);
+        $to_date = session()->get(PD_TODATE_FILTER);
+        $size_variant = session()->get(PD_SIZEVARIANT_FILTER);
+        $purchase_price = session()->get(PD_PURCHASEPRICE_FILTER);
+        $vouncher_no = session()->get(PD_VOUNCHERNO_FILTER);
 
         $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
@@ -503,23 +511,47 @@ class DistributeController extends Controller
             $distributes = $distributes->where('item_code', $item_code);
         }
 
-        if($date){
-            $distributes = $distributes->whereDate('date',$date);
+        if($from_date){
+            $distributes = $distributes->where('date', '>=', $from_date);
         }
-     
-        $distributes = $distributes->get();
 
-        return view('distribute.listdistributedetail',compact('breadcrumbs','distributes','outlets'));
+        if($to_date){
+            $distributes = $distributes->where('date', '<=', $to_date);
+        }
+
+        if($size_variant){
+            $distributes = $distributes->where('size_variants.id', $size_variant);
+        }
+
+        if($purchase_price){
+            $distributes = $distributes->where('distribute_products.purchased_price', $purchase_price);
+        }
+
+        if($vouncher_no){
+            $distributes = $distributes->where('vouncher_no', $vouncher_no);
+        }
+
+        $distributes = $distributes->whereNotIn('to_outlet', [BODID, DEPID]);
+
+        $distributes = $distributes->whereNotIn('from_outlet', [BODID, DEPID])->get();
+
+        return view('distribute.listdistributedetail',compact('breadcrumbs','distributes','outlets', 'sizeVariants'));
     }
 
 
     public function distributeDetailExport(){
 
-        $outlets = getOutlets();
+        $outlets = getOutlets(true);
+        // return $outlets;
+        $sizeVariants = getSizeVariants();
         $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
         $to_outlet = session()->get(PD_TOOUTLET_FILTER);
         $item_code = session()->get(PD_ITEMCODE_FILTER);
-        $date = session()->get(PD_DATE_FILTER);
+        $from_date = session()->get(PD_FROMDATE_FILTER);
+        $to_date = session()->get(PD_TODATE_FILTER);
+        $size_variant = session()->get(PD_SIZEVARIANT_FILTER);
+        $purchase_price = session()->get(PD_PURCHASEPRICE_FILTER);
+        $vouncher_no = session()->get(PD_VOUNCHERNO_FILTER);
 
         $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
         ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
@@ -538,12 +570,101 @@ class DistributeController extends Controller
             $distributes = $distributes->where('item_code', $item_code);
         }
 
-        if($date){
-            $distributes = $distributes->whereDate('date',$date);
+        if($from_date){
+            $distributes = $distributes->where('date', '>=', $from_date);
         }
-     
-        $distributes = $distributes->get();
+
+        if($to_date){
+            $distributes = $distributes->where('date', '<=', $to_date);
+        }
+
+        if($size_variant){
+            $distributes = $distributes->where('size_variants.id', $size_variant);
+        }
+
+        if($purchase_price){
+            $distributes = $distributes->where('distribute_products.purchased_price', $purchase_price);
+        }
+
+        if($vouncher_no){
+            $distributes = $distributes->where('vouncher_no', $vouncher_no);
+        }
+
+        $distributes = $distributes->whereNotIn('to_outlet', [BODID, DEPID]);
+
+        $distributes = $distributes->whereNotIn('from_outlet', [BODID, DEPID])->get();
 
         return Excel::download(new ListDistributeDetailExport($distributes,$outlets), 'distribute-detail.xlsx');
     }
+
+    public function bodanddepartmentExport(){
+
+        $outlets = getOutlets(true);
+        $tooutlets = [BODID => 'BOD', DEPID => 'Department'];
+        // return $outlets;
+        $sizeVariants = getSizeVariants();
+        $from_outlet = session()->get(PD_FROMOUTLET_FILTER);
+        $to_outlet = session()->get(PD_TOOUTLET_FILTER);
+        $item_code = session()->get(PD_ITEMCODE_FILTER);
+        $from_date = session()->get(PD_FROMDATE_FILTER);
+        $to_date = session()->get(PD_TODATE_FILTER);
+        $size_variant = session()->get(PD_SIZEVARIANT_FILTER);
+        $purchase_price = session()->get(PD_PURCHASEPRICE_FILTER);
+        $vouncher_no = session()->get(PD_VOUNCHERNO_FILTER);
+
+        $distributes = distributes::select('distributes.*','distribute_products.quantity','distribute_products.purchased_price','distribute_products.subtotal','variations.item_code','variations.image','size_variants.value')
+        ->join('distribute_products','distributes.id','=','distribute_products.distribute_id')
+        ->join('variations','variations.id','=','distribute_products.variant_id')
+        ->join('size_variants' , 'size_variants.id', '=', 'variations.size_variant_value');
+
+        if($from_outlet){
+            $distributes = $distributes->where('from_outlet', $from_outlet);        
+        }
+
+        if($to_outlet){
+            $distributes = $distributes->where('to_outlet', $to_outlet);
+        }
+
+        if($item_code){
+            $distributes = $distributes->where('item_code', $item_code);
+        }
+
+        if($from_date){
+            $distributes = $distributes->where('date', '>=', $from_date);
+        }
+
+        if($to_date){
+            $distributes = $distributes->where('date', '<=', $to_date);
+        }
+
+        if($size_variant){
+            $distributes = $distributes->where('size_variants.id', $size_variant);
+        }
+
+        if($purchase_price){
+            $distributes = $distributes->where('distribute_products.purchased_price', $purchase_price);
+        }
+
+        if($vouncher_no){
+            $distributes = $distributes->where('vouncher_no', $vouncher_no);
+        }
+
+        $distributes = $distributes->whereIn('to_outlet', [BODID, DEPID])->get();
+
+        return Excel::download(new BodAndDepartmentExport($distributes,$outlets, $tooutlets), 'bodanddepartment.xlsx');
+    }
+
+    public function updatedistributeproductdetailqty (Request $request) {
+        // return 'helo';
+        $distributeProduct = DistributeProducts::find($request->id);
+        $subtotal = $distributeProduct->purchased_price * $request->qty;
+        // return $distributeProduct;
+        if ($distributeProduct) {
+            $distributeProduct->update([
+                'quantity' => $request->qty,
+                'subtotal' => $subtotal
+            ]);
+        }
+        return "sucees data";
+    } 
 }

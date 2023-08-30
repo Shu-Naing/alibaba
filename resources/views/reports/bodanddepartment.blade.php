@@ -37,7 +37,7 @@
         @endphp
         
         {!! Form::open([
-            'route' => 'search-list-distribute-detail',
+            'route' => 'search-bodanddepartment',
             'method' => 'post',
             'class' => 'p-4 rounded border shadow-sm mb-5',
         ]) !!}  
@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-md-2">
                     {!! Form::label('toOutlet', 'To Outlet', ['class' => 'form-label']) !!}
-                    {!! Form::select('toOutlet', $outlets, $to_outlet, ['placeholder'=>'Choose..','class' => 'form-control', 'id' => 'toOutlet']) !!}
+                    {!! Form::select('toOutlet', $tooutlets, $to_outlet, ['placeholder'=>'Choose..','class' => 'form-control', 'id' => 'toOutlet']) !!}
                 </div>
                 <div class="col-md-2">
                     {!! Form::label('itemCode', 'Item Code', ['class' => 'form-label']) !!}
@@ -77,8 +77,8 @@
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-blue ms-2">Search</button>
-                    <a href="{{route('search-reset')}}" class="btn btn-blue ms-2">Reset</a>
-                    <a href="{{ route('distribute-detail-export') }}" class="btn btn-blue ms-2">Export to Excel</a>
+                    <a href="{{route('bodanddepartment-reset')}}" class="btn btn-blue ms-2">Reset</a>
+                    <a href="{{ route('bodanddepartment-export') }}" class="btn btn-blue ms-2">Export to Excel</a>
                 </div>
             </div>
         {!! Form::close() !!}
@@ -122,8 +122,8 @@
                             <td>{{$distribute->date}}</td>
                             <td>{{$distribute->reference_No}}</td>
                             <td>{{$distribute->vouncher_no}}</td>
-                            <td>{{$outlets[$distribute->from_outlet]}}</td>
-                            <td>{{$outlets[$distribute->to_outlet]}}</td>
+                            <td>{{isset($outlets[$distribute->from_outlet]) ? $outlets[$distribute->from_outlet] : ''}}</td>
+                            <td>{{isset($tooutlets[$distribute->to_outlet]) ? $tooutlets[$distribute->to_outlet] : '' }}</td>
                             <td>{{$distribute->item_code}}</td>
                             <td><img class="product-img" src="{{ asset('storage/' . $distribute->image) }}" alt="{{ $distribute->image }}"></td>
                             <td>{{$distribute->value}}</td>

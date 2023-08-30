@@ -253,7 +253,11 @@ class SearchController extends Controller
         session()->put(PD_FROMOUTLET_FILTER, $request->fromOutlet);
         session()->put(PD_TOOUTLET_FILTER, $request->toOutlet);
         session()->put(PD_ITEMCODE_FILTER, $request->itemCode);
-        session()->put(PD_DATE_FILTER, $request->date);
+        session()->put(PD_FROMDATE_FILTER, $request->fromDate);
+        session()->put(PD_TODATE_FILTER, $request->toDate);
+        session()->put(PD_SIZEVARIANT_FILTER, $request->sizeVariant);
+        session()->put(PD_PURCHASEPRICE_FILTER, $request->purchasePrice);
+        session()->put(PD_VOUNCHERNO_FILTER, $request->vouncherNo);
         
         return redirect()->route('listdistributedetail');
     }
@@ -264,6 +268,11 @@ class SearchController extends Controller
             PD_TOOUTLET_FILTER,
             PD_ITEMCODE_FILTER,
             PD_DATE_FILTER,
+            PD_FROMDATE_FILTER,
+            PD_TODATE_FILTER,
+            PD_SIZEVARIANT_FILTER,
+            PD_PURCHASEPRICE_FILTER,
+            PD_VOUNCHERNO_FILTER,
             DA_FROMDATE_FILTER,
             DA_TODATE_FILTER,
             DA_VOUCHERNO_FILTER,
@@ -282,6 +291,36 @@ class SearchController extends Controller
         session()->put(DA_OUTLETID_FILTER, $request->outletId);
         session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
         return redirect()->route('damage.index');
+    }
+
+    public function search_bodanddepartment(Request $request) {
+       
+        session()->start();
+        session()->put(PD_FROMOUTLET_FILTER, $request->fromOutlet);
+        session()->put(PD_TOOUTLET_FILTER, $request->toOutlet);
+        session()->put(PD_ITEMCODE_FILTER, $request->itemCode);
+        session()->put(PD_FROMDATE_FILTER, $request->fromDate);
+        session()->put(PD_TODATE_FILTER, $request->toDate);
+        session()->put(PD_SIZEVARIANT_FILTER, $request->sizeVariant);
+        session()->put(PD_PURCHASEPRICE_FILTER, $request->purchasePrice);
+        session()->put(PD_VOUNCHERNO_FILTER, $request->vouncherNo);
+        
+        return redirect()->route('report.bodanddepartment');
+    }
+
+    public function bodanddepartment_reset() {
+        session()->forget([
+            PD_FROMOUTLET_FILTER,
+            PD_TOOUTLET_FILTER,
+            PD_ITEMCODE_FILTER,
+            PD_DATE_FILTER,
+            PD_FROMDATE_FILTER,
+            PD_TODATE_FILTER,
+            PD_SIZEVARIANT_FILTER,
+            PD_PURCHASEPRICE_FILTER,
+            PD_VOUNCHERNO_FILTER,
+        ]);
+        return redirect()->route('report.bodanddepartment');
     }
 
     public function damage_search_reset() {
