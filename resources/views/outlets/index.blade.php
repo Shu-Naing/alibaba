@@ -46,8 +46,8 @@
                     <tr>
                         <td>{{ ++$i }}</td>
                         <td>{{ $outlet->name }}</td>
-                        <td>{{ $cities[$outlet->city] }}</td>
-                        <td>{{ $states[$outlet->state] }}</td>
+                        <td>{{ isset($cities[$outlet->city]) ? $cities[$outlet->city] : '' }}</td>
+                        <td>{{ isset($states[$outlet->state]) ? $states[$outlet->state] : '' }}</td>
                         <!-- <td>{{ $outlet->category_name }}</td> -->
                         <td class="d-flex gap-5">
                             <a class="text-decoration-underline"

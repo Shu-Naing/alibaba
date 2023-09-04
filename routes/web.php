@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('distribute', DistributeController::class);
     Route::get('listdistributedetail', [DistributeController::class, 'listdistributedetail'])->name('listdistributedetail');
     Route::get('distribute-detail-export',[DistributeController::class, 'distributeDetailExport'])->name('distribute-detail-export');
+    Route::get('bodanddepartment-export',[DistributeController::class, 'bodanddepartmentExport'])->name('bodanddepartment-export');
     Route::get('/distribute-preview/{distribute_id}',[DistributeController::class, 'preview'])->name('distribute.preview');
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     Route::resource('outletstockhistory', OutletStockHistoryController::class);
@@ -111,6 +112,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
     Route::get('/search-outlet-issue', [SearchController::class, 'search_outlet_issue'])->name('search-outlet-issue');
     Route::post('/search-list-distribute-detail', [SearchController::class, 'search_list_distribute_detail'])->name('search-list-distribute-detail');
+    Route::post('/search-bodanddepartment', [SearchController::class, 'search_bodanddepartment'])->name('search-bodanddepartment');
     Route::post('/search-list-damage', [SearchController::class, 'search_list_damage'])->name('search-list-damage');
     Route::post('/search-list-adjustment', [SearchController::class, 'search_list_adjustment'])->name('search-list-adjustment');
     Route::post('/search-list-purchasedpricehistory', [SearchController::class, 'search_list_purchasedpricehistory'])->name('search-list-purchasedpricehistory');
@@ -118,6 +120,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::post('/search-purchase-detail', [SearchController::class, 'search_purchase_detail'])->name('search-purchase-detail');
 
     Route::get('/search-reset', [SearchController::class, 'search_reset'])->name('search-reset');
+    Route::get('/bodanddepartment-reset', [SearchController::class, 'bodanddepartment_reset'])->name('bodanddepartment-reset');
     Route::get('/damage-search-reset', [SearchController::class, 'damage_search_reset'])->name('damage-search-reset');
     Route::get('/adjustment-search-reset', [SearchController::class, 'adjustment_search_reset'])->name('adjustment-search-reset');
     Route::get('/purchasedpricehistory-search-reset', [SearchController::class, 'purchasedpricehistory_search_reset'])->name('purchasedpricehistory-search-reset');
@@ -151,6 +154,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
     Route::get('/get-product-lists',[ProductsController::class,'get_product_lists']);
+    Route::get('/get-product-lists-puchase',[ProductsController::class,'get_product_lists_purchase']);
     Route::get('/get-outletdistir-product-lists',[ProductsController::class,'get_outletdistir_product_lists']);
     Route::get('/get-outletdistir-issue-lists',[ProductsController::class,'get_outletdistir_issue_lists']);
 
@@ -180,6 +184,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('report/products',[ReportController::class,'productReport'])->name('report.products');
     Route::get('report/machine',[ReportController::class,'machineReport'])->name('report.machine');
     Route::get('report/outletstockoverview',[ReportController::class,'outletstockoverviewReport'])->name('report.outletstockoverview');
+    Route::get('report/bodanddepartment',[ReportController::class,'bodanddepartmentReport'])->name('report.bodanddepartment');
     Route::post('outletstockoverview-search',[ReportController::class,'search'])->name('outletstockoverview.search');
     Route::get('outletstockoverview-reset',[ReportController::class,'reset'])->name('outletstockoverview.reset');
     // Route::get('report/outletdistributeproduct',[OutletDistributeController::class,'index'])->name('outletdistribute.index');
@@ -226,6 +231,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('outletleveloverview-reset',[SearchController::class,'resetOutletleveloverview'])->name('outletleveloverview.reset');
     
     Route::get('get-machine',[MachineController::class,'getMachineByOutletId'])->name('get-machine');
+
+    Route::get('updatedistributeproductdetailqty',[DistributeController::class,'updatedistributeproductdetailqty'])->name('updatedistributeproductdetailqty');
 
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');

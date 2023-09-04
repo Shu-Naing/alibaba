@@ -296,6 +296,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             "expired_date" => "required",
             'variations' => 'required|array',
             'variations.*.size_variant_value' => 'required',
+            // 'variations.*.grn_no' => 'required|unique:variations,grn_no,'.$product_id.',product_id',
             'variations.*.received_qty' => 'required',
             'variations.*.alert_qty' => 'required',
             'variations.*.item_code' => 'required|unique:variations,item_code,'.$product_id.',product_id',
@@ -306,7 +307,9 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         ],
 
         [
+            // 'variations.*.grn_no.unique' => 'GRN No must be unique.',
             'variations.*.size_variant_value.required' => 'The Size Variant field is required.',
+            // 'variations.*.grn_no.required' => 'The Grn no field is required.',
             'variations.*.received_qty.required' => 'The received quantity is required.',
             'variations.*.alert_qty.required' => 'The alert quantity is required.',
             'variations.*.item_code.required' => 'The item code is required.',
@@ -348,6 +351,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 'product_id' => $product_id,
                 'item_code' =>$variation['item_code'],
                 'size_variant_value' => $variation['size_variant_value'],
+                // 'grn_no' => $variation['grn_no'],
                 'points' => $variation['points'],
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
@@ -721,6 +725,21 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         return redirect()->back()->with('success', 'Products imported successfully.');
     }
 
+    public function get_product_lists_purchase(){
+        // return $request->fromOutletId;
+    $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+                ->join("products", "variations.product_id", "=", "products.id")
+                ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
+                ->get();
+
+    $product_arr = array();
+
+    foreach($product as $row){ 
+        $product_arr[$row->id] = $row->item_code.' ('.$row->product_name.')';           
+    }
+    return $product_arr;
+}
     
 
    

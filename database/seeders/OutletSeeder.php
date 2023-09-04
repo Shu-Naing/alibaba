@@ -19,10 +19,26 @@ class OutletSeeder extends Seeder
     {
 
         Outlets::create([
-            'outlet_id' => 1000000,
+            'outlet_id' => MAINOUTLETID,
             'name' => 'Main Outlet',
-            'city' => '1',
-            'state' => '1',
+            'city' => '',
+            'state' => '',
+            'created_by' => 1,
+        ]);
+
+        Outlets::create([
+            'outlet_id' => BODID,
+            'name' => 'BOD',
+            'city' => '',
+            'state' => '',
+            'created_by' => 1,
+        ]);
+        
+        Outlets::create([
+            'outlet_id' => DEPID,
+            'name' => 'Department',
+            'city' => '',
+            'state' => '',
             'created_by' => 1,
         ]);
     }

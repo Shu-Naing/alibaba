@@ -9,6 +9,8 @@ use App\Models\OutletItemData;
     use App\Models\Counter;    
     use App\Models\OutletItem; 
     use App\Models\MachineVariant;    
+    use App\Models\SizeVariant;    
+    use App\Models\User;    
 
     define('DS_REJECT', '0');
     define('DS_PENDING', '1');
@@ -21,6 +23,8 @@ use App\Models\OutletItemData;
     define('RECIEVE_TYPE', 'R');
     define('ISSUE_TYPE', 'I');
     define('MAINOUTLETID', 1);
+    define('BODID', 2);
+    define('DEPID', 3);
 
     define('DESTORYDONATION', '1');
     define('DISPOSAL', '2');
@@ -34,6 +38,11 @@ use App\Models\OutletItemData;
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
     define('PD_ITEMCODE_FILTER', 'PD_ITEMCODE_FILTER');
     define('PD_DATE_FILTER', 'PD_DATE_FILTER');
+    define('PD_FROMDATE_FILTER', 'PD_FROMDATE_FILTER');
+    define('PD_TODATE_FILTER', 'PD_TODATE_FILTER');
+    define('PD_SIZEVARIANT_FILTER', 'PD_SIZEVARIANT_FILTER');
+    define('PD_PURCHASEPRICE_FILTER', 'PD_PURCHASEPRICE_FILTER');
+    define('PD_VOUNCHERNO_FILTER', 'PD_VOUNCHERNO_FILTER');
 
     define('DA_FROMDATE_FILTER', 'DA_FROMDATE_FILTER');
     define('DA_TODATE_FILTER', 'DA_TODATE_FILTER');
@@ -71,10 +80,15 @@ use App\Models\OutletItemData;
     define('OUTLET_STOCK_OVERVIEW_MACHINE_FILTER','OUTLET_STOCK_OVERVIEW_MACHINE_FILTER');
     
 
-    function getOutlets(){
-        
-        $Outlets = Outlets::get();
+    function getOutlets($isbod = false){
 
+        if($isbod == true) {
+            $excludedIds = [BODID, DEPID];
+            $Outlets = Outlets::whereNotIn('id', $excludedIds)->get();
+        } else {
+            $Outlets = Outlets::get();
+        }
+        
         $Outlets_arr = array();
 
         foreach($Outlets as $row){
@@ -93,6 +107,30 @@ use App\Models\OutletItemData;
             $Machines_arr[$row->id] = $row->name;
         }
         return $Machines_arr;
+    }
+
+    function getUser(){
+        
+        $user = User::all();
+
+        $user_arr = array();
+
+        foreach($user as $row){
+            $user_arr[$row->id] = $row->name;
+        }
+        return $user_arr;
+    }
+    
+    function getSizeVariants(){
+        
+        $SizeVariants = SizeVariant::all();
+
+        $SizeVariants_arr = array();
+
+        foreach($SizeVariants as $row){
+            $SizeVariants_arr[$row->id] = $row->value;
+        }
+        return $SizeVariants_arr;
     }
 
     function getMachinesWithOutletID($id){

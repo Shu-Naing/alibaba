@@ -944,3 +944,22 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   });
 });
+
+// distribute product details quantity input box edit start
+$("#disprod_quantity").on("focusout", function () {
+  var qty = $(this).val();
+  var id = $(this).data("id");
+  $.ajax({
+    url: "/updatedistributeproductdetailqty/",
+    type: "GET",
+    data: {
+      id,
+      qty,
+    },
+    success: function (response) {
+      // console.log(response);
+      location.reload();
+    },
+  });
+});
+// distribute product details quantity input box edit end
