@@ -319,7 +319,7 @@
 
 
             // Update Item
-            $('.qty').on('change keydown', function(event) {
+            $('.qty').on('change keydown keyup', function(event) {
                 if (event.type === 'keydown' && event.key !== 'Enter') {
                     return; // Ignore keydown events that are not the Enter key
                 }
@@ -349,6 +349,7 @@
                     success: function(response) {
                         // Handle the success response
                         // location.href = location.href;
+                        location.reload();
                         console.log(response);
                     },
                     error: function(xhr) {
