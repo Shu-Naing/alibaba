@@ -23,13 +23,13 @@
                             <div class="col-lg-3 col-sm-12 d-flex align-items-center gap-2">
                                 <label for="file" class="form-label">File: </label>
                                 <div>
-                                    <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" required />
+                                    <input type="file" class="form-control" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                                 </div>
                             </div>
                             <div class="col-lg-3 col-sm-12 d-flex align-items-center gap-2">
                                 <label for="images" class="form-label">Images: </label>
                                 <div>
-                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple required/>
+                                    <input type="file" class="form-control" name="images[]" accept="image/*" multiple/>
                                 </div>
                             </div>
                             <div class="col-lg-4 col-sm-12">

@@ -963,3 +963,69 @@ $("#disprod_quantity").on("focusout", function () {
   });
 });
 // distribute product details quantity input box edit end
+
+// purchase details conutry input box edit start
+$("#purchase-detail-country").on("change", function () {
+  var idCountry = this.value;
+  var grn_no = $(this).data("id-grn");
+  var received_date = $(this).data("id-received-date");
+
+  // alert(received_date);
+  // console.log(idOutlet);
+  // $("#machine-id").html("");
+  $.ajax({
+    url: "/purchasedetailcountry/",
+    type: "GET",
+    data: {
+      idCountry,
+      grn_no,
+      received_date,
+    },
+    success: function (result) {
+      console.log(result);
+    },
+  });
+});
+// purchase details conutry input box edit end
+
+// purchase add Purchased Price, Qty input change edit total start
+// var subtotal_arr = $(".subtotal");
+// var total = 0;
+// if (subtotal_arr.length > 0) {
+//   subtotal_arr.each(function () {
+//     // var subtotal = parseInt();
+//     var subtotal = parseFloat($(this).text().replace(/,/g, ""));
+//     total += subtotal; // Add subtotal to the sum
+//   });
+// }
+
+// return total;
+$(document).on("focusout", ".purchasedPrice, .purchaseQuantity", function () {
+  var purchasedPrice = $(this).closest("tr").find(".purchasedPrice").val();
+  var qty = $(this).closest("tr").find(".purchaseQuantity").val();
+  var total = $(this).closest("tr").find(".purchaseTotal");
+
+  var calcuTotal = purchasedPrice * qty;
+  total.html(calcuTotal);
+});
+
+// purchase add Purchased Price, Qty input change edit total end
+
+// $(document).on("focusout", ".number-box", function () {
+//   var value = $(this).val();
+//   var dataId_arr = $(this).data("id");
+//   var purchasedPrice = dataId_arr[0];
+//   var variant_qty = dataId_arr[1];
+
+//   if (value < 0) {
+//     $(this).val(1);
+//     value = 1;
+//   } else if (value > variant_qty) {
+//     $(this).val(variant_qty);
+//     value = variant_qty;
+//   }
+//   var subtotal = value * purchasedPrice;
+//   $(this).closest("tr").find("td:eq(4)").text(subtotal);
+//   var total = calculateTotal();
+//   $("#total").html(total);
+// });

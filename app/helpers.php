@@ -308,7 +308,7 @@ use App\Models\OutletItemData;
     if(!function_exists('outlet_item_data')){
         function outlet_item_data($outlet_id,$variation_id){
             $outlet_item = OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$variation_id)->first();
-
+            
             $outlet_item_data = OutletItemData::where('outlet_item_id',$outlet_item->id)
             ->where('quantity','>',0)
             ->orderBy('created_at', 'asc')->first();

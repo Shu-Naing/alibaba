@@ -305,6 +305,15 @@
                 </li>
                 @endcan
 
+                @can('sell.index')
+                <li class="nav-item nav-small-cap">
+                    <a href="{{ route('sell.index') }}" 
+                        class="nav-link sidebar-link align-middle {{ Route::is('sell.index') ? 'active' : '' }}">
+                        <i class="fs-4 bi bi-receipt"></i>
+                        <span class="d-none d-sm-inline">Sell</span></a>
+                </li>
+                @endcan
+
                 @can('stockalert.index')
                 <li class="nav-item nav-small-cap">
                     <a href="{{ route('stockalert.index') }}" 

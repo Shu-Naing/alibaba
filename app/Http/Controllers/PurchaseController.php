@@ -70,36 +70,40 @@ class PurchaseController extends Controller
             'quantity' => 'required',
         ]);
 
-        $outlet_item_id = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id',$request->variation_id)->first();
-        // return $outlet_item_id;
+        foreach($request->variationId as $id) {
+            $outlet_item_id = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id', $id)->first();
+            $total = $request->purchased_price[$id] * $request->quantity[$id];
+            // return $outlet_item_id;
 
-        if ($outlet_item_id) {
-            OutletItemData::create([
-                'outlet_item_id' => $outlet_item_id->id,
-                'points' => $request->points,
-                'tickets' => $request->tickets,
-                'kyat' => $request->kyat,
-                'purchased_price' => $request->purchased_price,
-                'quantity' => $request->quantity,
-                'grn_no' => $request->grn_no,
-                'received_date' => $request->received_date,
-                'country' => $request->country,
-                'created_by' => Auth::user()->id,
-            ]);
+            if ($outlet_item_id) {
+                OutletItemData::create([
+                    'outlet_item_id' => $outlet_item_id->id,
+                    'points' => $request->points[$id],
+                    'tickets' => $request->tickets[$id],
+                    'kyat' => $request->kyat[$id],
+                    'purchased_price' => $request->purchased_price[$id],
+                    'quantity' => $request->quantity[$id],
+                    'grn_no' => $request->grn_no,
+                    'received_date' => $request->received_date,
+                    'country' => $request->country,
+                    'created_by' => Auth::user()->id,
+                ]);
 
-            PurchasedPriceHistory::create([
-                'variation_id' => $request->variation_id,
-                'purchased_price' => $request->purchased_price,
-                'points' => $request->points,
-                'tickets' => $request->tickets,
-                'kyat' => $request->kyat,
-                'quantity' => $request->quantity,
-                'grn_no' => $request->grn_no,
-                'received_date' => $request->received_date,
-                'created_by' => Auth::user()->id,
-            ]);
-        } else {
-            return redirect()->back()->with('errorPurchase', 'Item is require, You need to add item.');
+                PurchasedPriceHistory::create([
+                    'variation_id' =>  $id,
+                    'purchased_price' => $request->purchased_price[$id],
+                    'points' => $request->points[$id],
+                    'tickets' => $request->tickets[$id],
+                    'kyat' => $request->kyat[$id],
+                    'quantity' => $request->quantity[$id],
+                    'grn_no' => $request->grn_no,
+                    'total' => $total,
+                    'received_date' => $request->received_date,
+                    'created_by' => Auth::user()->id,
+                ]);
+            } else {
+                return redirect()->back()->with('errorPurchase', 'Item is require, You need to add item.');
+            }
         }
 
         return redirect()->back()->with('success', 'Products imported successfully.');
@@ -202,5 +206,20 @@ class PurchaseController extends Controller
         // return $purchaseItems;
         
         return Excel::download(new PurchaseExport($purchaseItems), 'purchase.xlsx');
+    }
+
+    public function purchasedetailcountry(Request $request)
+    {   
+        $country =  $request->idCountry;
+        $grn_no = $request->grn_no;
+        $received_date = $request->received_date;
+        $outlet_item_data = OutletItemData::where('grn_no', $grn_no)->where('received_date', $received_date)->get();
+        
+        if($outlet_item_data) {
+            foreach ($outlet_item_data as $item) {
+                $item->update(['country' => $country]);
+            }
+        }
+        return "you update country is success";
     }
 }
