@@ -48,9 +48,9 @@
         {!! Form::close() !!}
 
         <div class="row p-4">
-            <div class="col col-sm-3 col-lg-4 fw-bold">GRN No: <span class="text-danger">{{$purchaseItems[0]->grn_no}}</span></div>
-            <div class="col col-sm-3 col-lg-4 fw-bold">Received Date: <span class="text-danger">{{$purchaseItems[0]->received_date}}</span></div>
-            <div class="col col-sm-3 col-lg-4 fw-bold">Country: <span class="text-danger">{{$countries[$purchaseItems[0]->country]}}</span></div>
+            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">GRN No: <span class="text-danger">{{$purchaseItems[0]->grn_no}}</span></div>
+            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Received Date: <span class="text-danger">{{$purchaseItems[0]->received_date}}</span></div>
+            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Country: {!! Form::select('country', $countries, $purchaseItems[0]->country, ['class' => 'form-control ms-2', 'id' => 'purchase-detail-country', 'data-id-grn' => $purchaseItems[0]->grn_no, 'data-id-received-date' => $purchaseItems[0]->received_date ]) !!}</div>
         </div>
         <table class="table table-bordered text-center shadow rounded">
             <thead>

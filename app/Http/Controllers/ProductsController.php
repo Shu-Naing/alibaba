@@ -619,6 +619,29 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         $result = $distributeProducts->delete();
     }
 
+     public function get_damage_product_lists(Request $request){
+            // return $request->fromOutletId;
+        $outletId = $request->outletId;
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+                    ->join("products", "variations.product_id", "=", "products.id")
+                    ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                    ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
+                    ->where("outlet_item_data.quantity", ">", 0);
+                    if($outletId) {
+                       $product = $product->where("outlet_items.outlet_id", "=", $outletId);
+                    }
+
+                    // ->latest("outlet_item_data.created_at")
+        $product = $product->get();
+
+        $product_arr = array();
+
+        foreach($product as $row){ 
+            $product_arr[$row->id] = $row->item_code.' ('.$row->product_name.')';           
+        }
+        return $product_arr;
+    }
+
     // public function get_outletdistir_product_lists(Request $request) {
     //    $fromOutletId = $request->fromOutletId;
     //     $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
@@ -696,22 +719,29 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         return Excel::download(new ProductsSampleExport(), 'products.xlsx');
     }
 
-    public function importProduct(Request $request){
+    public function importProduct(Request $request){        
 
-
+        // $images = $request->file('images');
         // return $request;
-        $file = $request->file('file');
 
-        $images = $request->file('images');
-
-        foreach ($images as $image) {
-           
-            $imageName = $image->getClientOriginalName();
-            $image->storeAs('public/variations', $imageName);
+        if($request->file('file')) {
+            $file = $request->file('file');
+            Excel::import(new ProductsImport, $file);
         }
 
-        Excel::import(new ProductsImport, $file);
+        if($request->file('images')) {
+            $images = $request->file('images');
+            
+            foreach ($images as $image) {
+                $imageName = $image->getClientOriginalName();
+                $image->storeAs('public/variations', $imageName);
+                // $variant = Variation::where('item_code', trim($imageName))->first();
+                // $variant->update(['image' => 'variations/'. trim($imageName)]);
+            }
+        }
 
+        
+        
         return redirect()->back()->with('success', 'Products imported successfully.');
     }
 

@@ -105,6 +105,7 @@
                             <th scope="col">Kyat</th>
                             <th scope="col">Purchased Price</th>
                             <th scope="col">Qty</th>
+                            <th scope="col">Total</th>
                             <th scope="col">Action</th>
                         </tr>
                     </thead>

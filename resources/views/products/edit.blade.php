@@ -468,8 +468,9 @@
                                 );
 
                                 $('.breadcrumbBox').after(successMessage);
-                            window.scrollTo(0, 0);
-                            $('#productEditForm')[0].reset();
+                            	// window.scrollTo(0, 0);
+                            	// $('#productEditForm')[0].reset();
+                                location.reload();
 
                         // You can also perform other actions after successful update, if needed.
 

@@ -12,12 +12,7 @@ class Damage extends Model
         'date',
         'voucher_no',
         'outlet_id',
-        'item_code',
         'description',
-        'quantity',
-        'ticket',
-        'original_cost',
-        'amount_ks',
         'reason',
         'name',
         'amount',
@@ -25,8 +20,8 @@ class Damage extends Model
         'error',
         'distination',
         'damage_no',
-        'column1',
+        'column1',                    
         'created_by',
-        'updated_by'
+        'updated_by',
     ];
 }

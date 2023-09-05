@@ -34,6 +34,7 @@ use App\Http\Controllers\OutletLevelOverviewController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\SellController;
 
 
 /*
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::resource('adjustment', AdjustmentController::class);
     Route::resource('damage', DamageController::class);
     Route::resource('purchase', PurchaseController::class);
+    Route::resource('sell', SellController::class);
     Route::get('purchase-detail-export/{grn_no}',[PurchaseController::class, 'purchaseDetailExport'])->name('purchase-detail-export');
     // Route::resource('issue-products', IssueProductController::class);
 
@@ -157,6 +159,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/get-product-lists-puchase',[ProductsController::class,'get_product_lists_purchase']);
     Route::get('/get-outletdistir-product-lists',[ProductsController::class,'get_outletdistir_product_lists']);
     Route::get('/get-outletdistir-issue-lists',[ProductsController::class,'get_outletdistir_issue_lists']);
+    Route::get('/get-damage-product-lists',[ProductsController::class,'get_damage_product_lists']);
 
     Route::get('/sellingprice/{id}/deactivate', [SellingPriceGroupController::class, 'deactivate'])
     ->name('sellingprice.deactivate');
@@ -233,6 +236,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('get-machine',[MachineController::class,'getMachineByOutletId'])->name('get-machine');
 
     Route::get('updatedistributeproductdetailqty',[DistributeController::class,'updatedistributeproductdetailqty'])->name('updatedistributeproductdetailqty');
+
+    Route::get('purchasedetailcountry',[PurchaseController::class,'purchasedetailcountry'])->name('purchasedetailcountry');
 
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');
