@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Pos;
 use App\Models\Temp;
+use App\Models\Outlets;
 use App\Models\PosItem;
 use App\Models\Product;
 use App\Models\Variation;
 use App\Models\OutletItem;
-use App\Models\PosItemsAlert;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\PosItemsAlert;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -25,6 +26,7 @@ class PosController extends Controller
 
         $pos_id = $request->session()->get('pos-id');
         $user_outlet_id = Auth::user()->outlet->id;
+        $outlet_name = Outlets::where('id',$user_outlet_id)->value('name');
         $search_key = $request->get('key');
         if($request->has('filter') && $request->has('key')){
             if($request->get('filter') === 'kyat'){
@@ -94,7 +96,7 @@ class PosController extends Controller
  
         // return $outlet_items;
        
-        return view('pos.index',compact('outlet_items','temps','pos_items', 'breadcrumbs'));
+        return view('pos.index',compact('outlet_items','temps','pos_items', 'breadcrumbs','outlet_name'));
     }
     
 

@@ -41,7 +41,7 @@
         .pos-table td,
         th {
             padding: 3px 0px;
-            text-align: center;
+           
         }
 
         .pos-total td {
@@ -254,39 +254,86 @@
 
                 {{-- Invoice --}}
                 @if (count($pos_items) != 0)
-                    <div class="card border py-3 @if (!session()->has('pos-success')) d-none @endif">
-                        <h2 class="text-center fw-bolder m-0 p-0">Alibaba</h2>
-                        <h6 class="text-center fw-bolder">Amusement</h6>
-                        <div class="text-center">
-                            <span class="fw-bold d-block">Invoice No : {{ $pos_items[0]->pos->invoice_no }}</span>
-                            <span class="fw-bold d-block">Payment : {{ $pos_items[0]->pos->payment_type }}</span>
-                            <span class="fw-bold d-block">Date : {{ date('d-m-y') }}</span>
+                    <div class="card  border py-3 @if (!session()->has('pos-success')) d-none @endif">
+                       
+                        <div class=" mx-auto" style="width: 40%;">
+                            <img src="{{ asset('images/logo_1.png') }}" alt="" class="w-100">
                         </div>
-                        <hr class="dash">
-                        <table class="pos-table">
-                            <tr>
-                                <th>Item Code</th>
-                                <th>QTY</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                            </tr>
-                            @php $pos_total = 0 ;@endphp
-                            @foreach ($pos_items as $pos_item)
+                        
+                        <div class="text-center mt-5">
+                            <h3>{{ $outlet_name }} (STORE)</h2>
+                            <div class="fw-bolder fs-5 my-3">Invoice</div>
+                        </div>
+
+                       
+
+                        <div class="row px-5">
+                            <hr class="dash">
+                            <div class="col-lg-12 d-flex justify-content-between">
+                                <div class="fw-bolder">Invoice No.</div>
+                                <div>{{ $pos_items[0]->pos->invoice_no }}</div>
+                            </div>
+                            @php
+                                 $formattedCreatedAt = \Carbon\Carbon::parse($pos_items[0]->pos->created_at)->format('m/d/Y h:i A');
+                            @endphp
+                            <div class="col-lg-12 d-flex justify-content-between">
+                                <div class="fw-bolder">Date</div>
+                                <div>{{ $formattedCreatedAt }}</div>
+                            </div>
+                            <div class="col-lg-12 d-flex justify-content-between">
+                                <div class="fw-bolder">Customer</div>
+                                <div>Walk-In Customer</div>
+                            </div>
+
+                            <table class="pos-table mt-4">
                                 <tr>
-                                    <td>{{ $pos_item->variation->item_code }}</td>
-                                    <td>{{ $pos_item->quantity }}</td>
-                                    <td>{{ $pos_item->variation_value }}</td>
-                                    <td>{{ $pos_item->variation_value * $pos_item->quantity }}</td>
+                                    <th style="text-align: start"># Product</th>
+                                    <th style="text-align: center">QTY</th>
+                                    <th style="text-align: center">Amount</th>
+                                    <th style="text-align: end">Subtotal</th>
                                 </tr>
-                                @php $pos_total += $pos_item->variation_value * $pos_item->quantity @endphp
-                            @endforeach
-                            <tr class="dash">
-                                <td>Total</td>
-                                <td></td>
-                                <td></td>
-                                <td>{{ $pos_total }}</td>
-                            </tr>
-                        </table>
+                                @php 
+                                    $pos_total = 0 ;
+                                    $no = 1;
+                                @endphp
+                                @foreach ($pos_items as $pos_item)
+                                    <tr class="dash">
+                                        <td style="text-align: start">{{ $no++ }}   {{ $pos_item->variation->item_code }}</td>
+                                        <td style="text-align: center">{{ $pos_item->quantity }}</td>
+                                        <td style="text-align: center">{{ $pos_item->variation_value }}</td>
+                                        <td style="text-align: end">{{ $pos_item->variation_value * $pos_item->quantity }}</td>
+                                    </tr>
+                                    @php $pos_total += $pos_item->variation_value * $pos_item->quantity @endphp
+                                @endforeach
+                                <tr class="dash" style="text-align: end;">
+                                    <td colspan="2">Total Qty:</td>
+                                    <td colspan="2">{{ count($pos_items) }}</td>
+                                </tr>
+                                <tr style="text-align: end;">
+                                    <td colspan="2">SubTotal:</td>
+                                    <td colspan="2">{{ $pos_total }}</td>
+                                </tr>
+                                <tr style="text-align: end;">
+                                    <td colspan="2">Total:</td>
+                                    <td colspan="2">{{ $pos_total }}</td>
+                                </tr>
+                                <tr style="text-align: end;">
+                                    <td colspan="2">{{ ucwords(request()->get('filter')) }}:</td>
+                                    <td colspan="2">{{ $pos_total }}</td>
+                                </tr>
+                                <tr style="text-align: end;">
+                                    <td colspan="2">Total Paid:</td>
+                                    <td colspan="2">{{ $pos_total }}</td>
+                                </tr>
+                                <tr class="dash">
+                                    <td colspan="4">Thank you for coming to us.</td>
+                                </tr>
+                            </table>
+                        </div>
+                        {{-- <hr class="dash">
+                        <div>
+                            Thank you for coming to us.
+                        </div> --}}
                     </div>
                     @if (session()->has('pos-success'))
                         <div class="row d-flex d-print-none">

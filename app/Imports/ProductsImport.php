@@ -55,9 +55,10 @@ class ProductsImport implements ToModel,WithHeadingRow
 
         $product = Product::firstOrCreate(
             ['product_name' => $row['product_name']],
-            ['sku' => $row['sku'], 
+            ['product_code' => $row['product_code'], 
              'brand_id' => $brand->id , 'category_id' => $category->id ,
               'unit_id' => $unit->id ,'company_name' => $row['company_name'],
+              'description' => $row['description'],
               'country' => $row['country'], 
               'expired_date' =>  \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['expired_date']),
               'received_date' =>\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
@@ -70,7 +71,6 @@ class ProductsImport implements ToModel,WithHeadingRow
             [
             'product_id' => $product->id,
             'size_variant_value' => $SizeVariant->id,
-            'grn_no' => $row['grn_no'],
             'alert_qty' => $row['alert_qty'],
             'purchased_price' => $row['purchased_price'],
             'image' => 'variations/'. $row['image_name'],
@@ -96,7 +96,6 @@ class ProductsImport implements ToModel,WithHeadingRow
                 'points' => $variation->points,
                 'tickets' => $variation->tickets,
                 'kyat' => $variation->kyat,
-                'grn_no' => $row['grn_no'],
                 'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
                 'quantity' => $row['received_qty'],
                 'created_by' => $created_by,
@@ -109,7 +108,6 @@ class ProductsImport implements ToModel,WithHeadingRow
                 'tickets' => $variation->tickets,
                 'kyat' => $variation->kyat,
                 'quantity' => $row['received_qty'],
-                'grn_no' => $row['grn_no'],
                 'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
                 'created_by' => $created_by,
             ]

@@ -422,27 +422,19 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 OutletItemData::create($outletItemData);
            }
 
-
-           $purchasedPriceHistory = [
-                'variation_id' => $variation_data->id,
-                'purchased_price' => $variation['purchased_price'],
-                'points' => $variation['points'],
-                'tickets' => $variation['tickets'],
-                'kyat' => $variation['kyat'],
-                'received_date' => $request->received_date,
-                'updated_by' => Auth::user()->id,
-           ];
-
-
-           $purchased_price_history = PurchasedPriceHistory::where('variation_id',$variation_data->id)->first();
-           if (isset($purchased_price_history)){
-                // $purchased_price_history = PurchasedPriceHistory::where('variation_id',$variation_data->id)->latest('created_at')->first();
-                $purchased_price_history->update($purchasedPriceHistory);
-           }else{
-            $purchasedPriceHistory['quantity'] = $variation['received_qty'];
-                $purchasedPriceHistory['created_by'] = Auth::user()->id;
-                 PurchasedPriceHistory::create($purchasedPriceHistory);
-           }
+           $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
+            ['variation_id' => $variation_data->id,
+            'purchased_price' => $variation['purchased_price'],
+            'points' => $variation['points'],
+            'tickets' => $variation['tickets'],
+            'kyat' => $variation['kyat'],
+           ],
+           [
+            'quantity' => $variation['received_qty'],
+            'received_date' => $request->received_date,
+            'created_by' => Auth::user()->id,
+           ]
+        );
 
           
         }
