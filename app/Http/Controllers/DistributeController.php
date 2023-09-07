@@ -73,6 +73,7 @@ class DistributeController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        // return $data;
         $item_arr = [];
 
             $this->validate($request, [
@@ -322,136 +323,143 @@ class DistributeController extends Controller
     public function update(Request $request, $id)
     {
         $distribute = distributes::find($id);
-        if($distribute->status !== 2 ){
+        $errorItem = []; 
+        if($distribute->status !== DS_APPROVE ){
             $distribute->updated_by = Auth::user()->id;
+            
             if($request->status == 'approve'){
                 $distribute->status = DS_APPROVE;
                 $distribute_products = DistributeProducts::where('distribute_id',$distribute->id)->get();
                 foreach($distribute_products as $distribute_product){
                     $item_code = Variation::where('id',$distribute_product->variant_id)->value('item_code');
                     $fromOutletItemData = outlet_item_data($distribute->from_outlet,$distribute_product->variant_id);
-                    OutletlevelHistory::create([
-                        'outlet_id' => $distribute->from_outlet,
-                        'type' => ISSUE_TYPE,
-                        'quantity' => $distribute_product->quantity,
-                        'item_code' => $item_code,
-                        'branch' => $distribute->to_outlet,
-                        'date' => $distribute->date,
-                        'remark' => $distribute->remark,
-                        'created_by' => Auth::user()->id,
-                        'remark' => $distribute->remark,
-                    ]);
-    
-                    OutletlevelHistory::create([
-                        'outlet_id' => $distribute->to_outlet,
-                        'type' => RECIEVE_TYPE,
-                        'quantity' => $distribute_product->quantity,
-                        'item_code' => $item_code,
-                        'branch' => $distribute->from_outlet,
-                        'date' => $distribute->date,
-                        'remark' => $distribute->remark,
-                        'created_by' => Auth::user()->id,
-                        'remark' => $distribute->remark,
-                    ]);
-
-                    $outletitem = OutletItem::where('outlet_id',$distribute->to_outlet)->where('variation_id',$distribute_product->variant_id)->first();
-                    if($outletitem){
-                        $outletitem->updated_by = Auth::user()->id;
-                        $outletitem->update();
-    
-                        OutletItemData::create([
-                            'outlet_item_id' => $outletitem->id,
-                            'purchased_price' => $fromOutletItemData->purchased_price,
-                            'points' => $fromOutletItemData->points,
-                            'tickets' => $fromOutletItemData->tickets,
-                            'kyat' => $fromOutletItemData->kyat, 
+                    if( ($fromOutletItemData->quantity - $distribute_product->quantity) >= 0 ) {
+                        OutletlevelHistory::create([
+                            'outlet_id' => $distribute->from_outlet,
+                            'type' => ISSUE_TYPE,
                             'quantity' => $distribute_product->quantity,
+                            'item_code' => $item_code,
+                            'branch' => $distribute->to_outlet,
+                            'date' => $distribute->date,
+                            'remark' => $distribute->remark,
                             'created_by' => Auth::user()->id,
+                            'remark' => $distribute->remark,
                         ]);
-                    }else{
-                        $outlet_item = OutletItem::create([
+        
+                        OutletlevelHistory::create([
                             'outlet_id' => $distribute->to_outlet,
-                            'variation_id' => $distribute_product->variant_id,
-                            'created_by' => Auth::user()->id,
-                        ]);
-    
-                        OutletItemData::create([
-                            'outlet_item_id' => $outlet_item->id,
-                            'purchased_price' => $fromOutletItemData->purchased_price,
-                            'points' => $fromOutletItemData->points,
-                            'tickets' => $fromOutletItemData->tickets,
-                            'kyat' => $fromOutletItemData->kyat, 
+                            'type' => RECIEVE_TYPE,
                             'quantity' => $distribute_product->quantity,
+                            'item_code' => $item_code,
+                            'branch' => $distribute->from_outlet,
+                            'date' => $distribute->date,
+                            'remark' => $distribute->remark,
                             'created_by' => Auth::user()->id,
+                            'remark' => $distribute->remark,
                         ]);
-                    }
 
-                    $fromOutletItemData->quantity = $fromOutletItemData->quantity - $distribute_product->quantity;
-                    $fromOutletItemData->update();
+                        $outletitem = OutletItem::where('outlet_id',$distribute->to_outlet)->where('variation_id',$distribute_product->variant_id)->first();
+                        if($outletitem){
+                            $outletitem->updated_by = Auth::user()->id;
+                            $outletitem->update();
+        
+                            OutletItemData::create([
+                                'outlet_item_id' => $outletitem->id,
+                                'purchased_price' => $fromOutletItemData->purchased_price,
+                                'points' => $fromOutletItemData->points,
+                                'tickets' => $fromOutletItemData->tickets,
+                                'kyat' => $fromOutletItemData->kyat, 
+                                'quantity' => $distribute_product->quantity,
+                                'created_by' => Auth::user()->id,
+                            ]);
+                        }else{
+                            $outlet_item = OutletItem::create([
+                                'outlet_id' => $distribute->to_outlet,
+                                'variation_id' => $distribute_product->variant_id,
+                                'created_by' => Auth::user()->id,
+                            ]);
+        
+                            OutletItemData::create([
+                                'outlet_item_id' => $outlet_item->id,
+                                'purchased_price' => $fromOutletItemData->purchased_price,
+                                'points' => $fromOutletItemData->points,
+                                'tickets' => $fromOutletItemData->tickets,
+                                'kyat' => $fromOutletItemData->kyat, 
+                                'quantity' => $distribute_product->quantity,
+                                'created_by' => Auth::user()->id,
+                            ]);
+                        }
 
-                    $month = date('m', strtotime($distribute->date));
-                    $year = date('Y', strtotime($request->date));
-                    $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
-                    ->where('outlet_id', $distribute->from_outlet)
-                    ->whereMonth('date', $month)
-                    ->whereYear('date', $year)
-                    ->where('item_code',$item_code)->first();
+                        $fromOutletItemData->quantity = $fromOutletItemData->quantity - $distribute_product->quantity;
+                        $fromOutletItemData->update();
 
-                    if($outletleveloverview){ 
-                        $issued_qty = $outletleveloverview->issued_qty + $distribute_product->quantity;    
-                        $input = [];
-                        $input['issued_qty'] = $issued_qty;
-                        $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
-                        $input['updated_by'] = Auth::user()->id;
-                        $outletleveloverview->update($input);
+                        $month = date('m', strtotime($distribute->date));
+                        $year = date('Y', strtotime($request->date));
+                        $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                        ->where('outlet_id', $distribute->from_outlet)
+                        ->whereMonth('date', $month)
+                        ->whereYear('date', $year)
+                        ->where('item_code',$item_code)->first();
+
+                        if($outletleveloverview){ 
+                            $issued_qty = $outletleveloverview->issued_qty + $distribute_product->quantity;    
+                            $input = [];
+                            $input['issued_qty'] = $issued_qty;
+                            $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
+                            $input['updated_by'] = Auth::user()->id;
+                            $outletleveloverview->update($input);
+                        }else {
+                            $input = [];
+                            $input['date'] = $distribute->date;
+                            $input['outlet_id'] = $distribute->from_outlet;
+                            $input['item_code'] = $item_code;
+                            $input['issued_qty'] = $distribute_product->quantity;
+                            $input['balance'] = (0 + 0) - $distribute_product->quantity;
+                            $input['created_by'] = Auth::user()->id;
+                            OutletLevelOverview::create($input);
+                        }
+                        // from outlet for outletleveloverview end
+
+                        // to outlet for outletleveloverview start
+                        $month = date('m', strtotime($distribute->date));
+                        $year = date('Y', strtotime($request->date));
+                        $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                        ->where('outlet_id', $distribute->to_outlet)
+                        ->whereMonth('date', $month)
+                        ->whereYear('date', $year)
+                        ->where('item_code',$item_code)->first();
+
+                        if($outletleveloverview){     
+                            $input = [];
+                            $input['receive_qty'] = $outletleveloverview->receive_qty + $distribute_product->quantity;
+                            $input['balance'] = ($outletleveloverview->opening_qty + $input['receive_qty']) - $outletleveloverview->issued_qty;
+                            $input['updated_by'] = Auth::user()->id;
+                            $outletleveloverview->update($input);
+                        }else {
+                            $input = [];
+                            $input['date'] = $distribute->date;
+                            $input['outlet_id'] = $distribute->to_outlet;
+                            $input['item_code'] = $item_code;
+                            $input['receive_qty'] = $distribute_product->quantity;
+                            $input['balance'] = $distribute_product->quantity;
+                            $input['created_by'] = Auth::user()->id;
+                            OutletLevelOverview::create($input);
+                        }
                     }else {
-                        $input = [];
-                        $input['date'] = $distribute->date;
-                        $input['outlet_id'] = $distribute->from_outlet;
-                        $input['item_code'] = $item_code;
-                        $input['issued_qty'] = $distribute_product->quantity;
-                        $input['balance'] = (0 + 0) - $distribute_product->quantity;
-                        $input['created_by'] = Auth::user()->id;
-                        OutletLevelOverview::create($input);
-                    }
-                // from outlet for outletleveloverview end
-
-                // to outlet for outletleveloverview start
-                    $month = date('m', strtotime($distribute->date));
-                    $year = date('Y', strtotime($request->date));
-                    $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
-                    ->where('outlet_id', $distribute->to_outlet)
-                    ->whereMonth('date', $month)
-                    ->whereYear('date', $year)
-                    ->where('item_code',$item_code)->first();
-
-                    if($outletleveloverview){     
-                        $input = [];
-                        $input['receive_qty'] = $outletleveloverview->receive_qty + $distribute_product->quantity;
-                        $input['balance'] = ($outletleveloverview->opening_qty + $input['receive_qty']) - $outletleveloverview->issued_qty;
-                        $input['updated_by'] = Auth::user()->id;
-                        $outletleveloverview->update($input);
-                    }else {
-                        $input = [];
-                        $input['date'] = $distribute->date;
-                        $input['outlet_id'] = $distribute->to_outlet;
-                        $input['item_code'] = $item_code;
-                        $input['receive_qty'] = $distribute_product->quantity;
-                        $input['balance'] = $distribute_product->quantity;
-                        $input['created_by'] = Auth::user()->id;
-                        OutletLevelOverview::create($input);
+                        $errorItem[] = $item_code;
                     }
                 }
+                    
 
             }else{
                 $distribute->status = DS_REJECT;  
             }
            
-        }
+        } 
         $distribute->updated_by = Auth::user()->id;
         $distribute->update();
 
-        return response()->json(['message' => 'Success']);
+        return response()->json(['message' => 'Success', 'errorItem' => $errorItem]);
         
     }
 

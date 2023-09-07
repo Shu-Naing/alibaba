@@ -18,6 +18,7 @@ class PurchasedPriceHistory extends Model
         'quantity',
         'grn_no',
         'received_date',
+        'total',
         'created_by',
         'updated_by'
        

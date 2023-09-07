@@ -23,7 +23,10 @@
             <div>
                 {{ Session::get('error') }}
             </div>
-        @endif     
+        @endif
+
+            <div id="errorItem"></div>  
+
             <div class="row p-4">
                 <div class="col col-sm-3 col-lg-2 fw-bold">Date: <span class="text-danger">{{$distribute['distribute']->date}}</span></div>
                 <div class="col col-sm-3 col-lg-3 fw-bold">Reference No: <span class="text-danger">{{$distribute['distribute']->reference_No}}</span></div>
@@ -54,7 +57,7 @@
                             <td><img class="product-img" src="{{ asset('storage/' . $distribute_product->image) }}" alt="{{ $distribute_product->image }}"></td>
                             <td>{{$distribute_product->value}}</td>
                             <td>{{ number_format($distribute_product->purchased_price, 0, '', ',') }}</td>                           
-                            <td style="width: 150px;">{!! Form::text('reference_No', $distribute_product->quantity, ['class' => 'form-control text-center', 'id' => 'disprod_quantity', 'disabled' => $distribute['distribute']->status == 2 ? 'disabled' : null, 'data-id' => $distribute_product->id  ]) !!}</td>
+                            <td style="width: 150px;">{!! Form::text('reference_No', $distribute_product->quantity, ['class' => 'form-control text-center', 'id' => 'disprod_quantity', 'disabled' => $distribute['distribute']->status == 2 ? 'disabled' : null, 'data-id' => $distribute_product->id, ]) !!}</td>
                             <td>{{ number_format($distribute_product->subtotal, 0, '', ',') }} </td>
                         </tr>
 
@@ -74,8 +77,8 @@
 
             <div class="mr-0 my-5">
                 <a class="btn btn-blue" href="{{ route('distribute.index') }}">Back</a>
-                <button class="btn btn-success" onclick="updateStatus('approve','<?php echo $distribute['distribute']->id ?>');" @if($distribute['distribute']->status == 2) disabled @endif>Approve</button>
-                <button class="btn btn-danger" onclick="updateStatus('reject',<?php echo $distribute['distribute']->id ?>);"  @if($distribute['distribute']->status == 2) disabled @endif>Reject</button>
+                <button id="approvept" class="btn btn-success" onclick="updateStatus('approve','<?php echo $distribute['distribute']->id ?>');" @if($distribute['distribute']->status == 2) disabled @endif>Approve</button>
+                <button id="rejectpt" class="btn btn-danger" onclick="updateStatus('reject',<?php echo $distribute['distribute']->id ?>);"  @if($distribute['distribute']->status == 2) disabled @endif>Reject</button>
                 
                 <a class="btn btn-info" href="{{route('distribute.preview',$distribute['distribute']->id)}}">Preview</a>
             </div>
@@ -97,8 +100,18 @@
             },
             success: function(response) {
                 
-                console.log(response);
-                window.location.reload();
+                console.log(response.errorItem);
+                // window.location.reload();
+                if(response.errorItem) {
+                    $.each(response.errorItem, function (key, value) {
+                        $("#errorItem").append(
+                            '<div class="alert alert-warning">' + value + ' is out of stock </div>'
+                        );
+                    });
+                }
+
+                document.getElementById('approvept').disabled = true;
+                document.getElementById('rejectpt').disabled = true;
               
 
             },
@@ -106,7 +119,7 @@
                 console.error(xhr.responseText);
                
             }
-        });
+        });   
           
     }
 </script>

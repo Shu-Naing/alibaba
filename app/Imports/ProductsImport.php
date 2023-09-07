@@ -73,7 +73,7 @@ class ProductsImport implements ToModel,WithHeadingRow
             'size_variant_value' => $SizeVariant->id,
             'alert_qty' => $row['alert_qty'],
             'purchased_price' => $row['purchased_price'],
-            'image' => 'variations/'. $row['image_name'],
+            'image' => 'variations/'. trim($row['image_name']).'.JPG',
             'points' => $row['point'],
             'tickets' => $row['ticket'],
             'kyat' => $row['kyat'],

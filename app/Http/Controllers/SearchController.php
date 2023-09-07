@@ -415,28 +415,31 @@ class SearchController extends Controller
         ->first();
         // return $outletItemData;
 
+        $total = $outletItemData->purchased_price * $outletItemData->quantity;
+
         $html .= '
                 <tr data-id="'.$variantId.'">
                     <td class="align-middle" style="text-align: left;">
                         '.$outletItemData->item_code.'
-                        <input type="hidden" class="form-control" name="variation_id" id="variation_id" value='.$variantId.'>
+                        <input type="hidden" class="form-control" name="variationId[]" id="variation_id" value='.$variantId.'>
                     </td>
                     <td class="align-middle" style="text-align: left;">
                         
-                        <input type="number" class="form-control" name="tickets" id="tickets" value='.$outletItemData->tickets.'>
+                        <input type="number" class="form-control" name="tickets['.$variantId.']" id="tickets" value='.$outletItemData->tickets.'>
                     </td>
                     <td class="align-middle">
-                        <input type="number" class="form-control" name="points" id="points" value='.$outletItemData->points.'>
+                        <input type="number" class="form-control" name="points['.$variantId.']" id="points" value='.$outletItemData->points.'>
                     </td>
                     <td class="align-middle">
-                        <input type="number" class="form-control" name="kyat" id="kyat" value='.$outletItemData->kyat.'>
+                        <input type="number" class="form-control" name="kyat['.$variantId.']" id="kyat" value='.$outletItemData->kyat.'>
                     </td>
                     <td class="align-middle">
-                        <input type="number" class="form-control" name="purchased_price" id="purchased_price" value='.$outletItemData->purchased_price.'>
+                        <input type="number" class="form-control purchasedPrice" name="purchased_price['.$variantId.']" value='.$outletItemData->purchased_price.'>
                     </td>
                     <td class="align-middle">
-                        <input type="number" class="form-control" name="quantity" id="quantity" value='.$outletItemData->quantity.'>
+                        <input type="number" class="form-control purchaseQuantity" name="quantity['.$variantId.']" value='.$outletItemData->quantity.'>
                     </td>
+                    <td class="purchaseTotal">'.$total.'</td>
                     <td class="align-middle"><a href="javascript:void(0)" onclick="deleteDisValue(this)" class="text-danger deleteBox">Delete</a></td>
                 </tr>
         ';
@@ -445,7 +448,7 @@ class SearchController extends Controller
         // $response['total'] = $total;
         // $response['html'] = $html;
 
-        // return json_encode($html);
+        // return json_encode($response);
         return $html;
     }
 

@@ -111,7 +111,7 @@ class PosController extends Controller
        }
 
        
-        $product_value = get_product_value($variation_id,'points');
+        $product_value = get_product_value($variation_id, $request->payment_type);
         
         $user_id = Auth::user()->id;
         $outlet_id = Auth::user()->outlet->id;
