@@ -5,15 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Damage_items extends Model
+class DamageItems extends Model
 {
     use HasFactory;
     public $fillable = [
+        'damage_id',
         'item_code',
         'ticket',
-        'amount_ks',
         'quantity',
-        'original_cost',
+        'point',
+        'kyat',
+        'purchase_price',
+        'total',
+        'reason',
         'created_by',
         'updated_by',
     ];

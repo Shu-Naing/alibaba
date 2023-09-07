@@ -10,17 +10,13 @@ class Damage extends Model
     use HasFactory;
     public $fillable = [
         'date',
-        'voucher_no',
         'outlet_id',
-        'description',
-        'reason',
         'name',
         'amount',
         'action',
         'error',
         'distination',
-        'damage_no',
-        'column1',                    
+        'damage_no',                   
         'created_by',
         'updated_by',
     ];
