@@ -53,6 +53,7 @@
                     <th>Kyat</th>
                     <th>Purchased Price</th>
                     <th>Quantity</th>
+                    <th>Total</th>
                     <th>GRN No</th>
                     <th>Purchase Date</th>
                     <th>Etry Date</th>
@@ -69,6 +70,7 @@
                     <td>{{ $purchased_price_history->kyat }}</td>
                     <td>{{ $purchased_price_history->purchased_price }}</td>
                     <td>{{ $purchased_price_history->quantity }}</td>
+                    <td>{{ $purchased_price_history->total }}</td>
                     <td>{{ $purchased_price_history->grn_no }}</td>
                     <td>{{ $purchased_price_history->received_date }}</td>
                     <td>{{ date('d-m-y',strtotime($purchased_price_history->created_at)) }}</td>

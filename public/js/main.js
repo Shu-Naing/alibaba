@@ -988,18 +988,6 @@ $("#purchase-detail-country").on("change", function () {
 });
 // purchase details conutry input box edit end
 
-// purchase add Purchased Price, Qty input change edit total start
-// var subtotal_arr = $(".subtotal");
-// var total = 0;
-// if (subtotal_arr.length > 0) {
-//   subtotal_arr.each(function () {
-//     // var subtotal = parseInt();
-//     var subtotal = parseFloat($(this).text().replace(/,/g, ""));
-//     total += subtotal; // Add subtotal to the sum
-//   });
-// }
-
-// return total;
 $(document).on("focusout", ".purchasedPrice, .purchaseQuantity", function () {
   var purchasedPrice = $(this).closest("tr").find(".purchasedPrice").val();
   var qty = $(this).closest("tr").find(".purchaseQuantity").val();
@@ -1009,23 +997,24 @@ $(document).on("focusout", ".purchasedPrice, .purchaseQuantity", function () {
   total.html(calcuTotal);
 });
 
-// purchase add Purchased Price, Qty input change edit total end
+function generatedamagecode(outlet_id) {
+  $.ajax({
+    url: "/generatedamagecode",
+    type: "GET",
+    data: {
+      outlet_id,
+    },
+    success: function (response) {
+      $("#damage_no").val(response);
+    },
+    error: function () {
+      console.log("you got error ");
+    },
+  });
+}
 
-// $(document).on("focusout", ".number-box", function () {
-//   var value = $(this).val();
-//   var dataId_arr = $(this).data("id");
-//   var purchasedPrice = dataId_arr[0];
-//   var variant_qty = dataId_arr[1];
-
-//   if (value < 0) {
-//     $(this).val(1);
-//     value = 1;
-//   } else if (value > variant_qty) {
-//     $(this).val(variant_qty);
-//     value = variant_qty;
-//   }
-//   var subtotal = value * purchasedPrice;
-//   $(this).closest("tr").find("td:eq(4)").text(subtotal);
-//   var total = calculateTotal();
-//   $("#total").html(total);
-// });
+$("#demage_outlet_id").change(function () {
+  var selectedOption = $(this).find("option:selected");
+  var outletName = selectedOption.text();
+  generatedamagecode(outletName);
+});

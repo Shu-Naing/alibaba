@@ -607,7 +607,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         }
     }
 
-     public function delete_dis_product($id) {
+    public function delete_dis_product($id) {
         // return $id;
         $distributeProducts = DistributeProducts::find($id); 
         if ($distributeProducts) {
@@ -619,7 +619,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         $result = $distributeProducts->delete();
     }
 
-     public function get_damage_product_lists(Request $request){
+    public function get_damage_product_lists(Request $request){
             // return $request->fromOutletId;
         $outletId = $request->outletId;
         $product = Variation::select("variations.id", "products.product_name", "variations.item_code")

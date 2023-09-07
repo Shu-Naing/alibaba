@@ -73,7 +73,7 @@ class PurchaseController extends Controller
         foreach($request->variationId as $id) {
             $outlet_item_id = OutletItem::where('outlet_id', MAIN_INV_ID)->where('variation_id', $id)->first();
             $total = $request->purchased_price[$id] * $request->quantity[$id];
-            // return $outlet_item_id;
+            // return $total;
 
             if ($outlet_item_id) {
                 OutletItemData::create([
@@ -125,13 +125,15 @@ class PurchaseController extends Controller
 
         $item_code = session()->get(PURCHASE_ITEMCODE_FILTER);
 
-        $purchaseItems = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id' )
+        $purchaseItems = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
         ->join('variations', 'variations.id', '=', 'outlet_items.variation_id')
         ->where('grn_no', $id)
         ->when($item_code, function ($query) use ($item_code) {
             return $query->where('variations.item_code', '=', $item_code);
         })
         ->get();
+
+        // return $purchaseItems;
         return view('purchase.show', compact('purchaseItems', 'breadcrumbs'));
     }
 

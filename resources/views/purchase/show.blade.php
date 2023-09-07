@@ -61,6 +61,7 @@
                     <th scope="col">Kyat</th>
                     <th scope="col">Purchased Price</th>
                     <th scope="col">Qty</th>
+                    <th scope="col">Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -73,6 +74,7 @@
                         <td>{{$purchaseItem->kyat}}</td>
                         <td>{{$purchaseItem->purchased_price}}</td>
                         <td>{{$purchaseItem->quantity}}</td>
+                        <td>{{$purchaseItem->purchased_price * $purchaseItem->quantity}}</td>
                     </tr>
 
                 @endforeach              

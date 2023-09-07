@@ -111,6 +111,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     // Route::get('/outlet-machine-item', [OutletStockOverviewController::class, 'getOutletMachineItem'])->name('outletmachineitem');
 
     Route::get('/search', [SearchController::class, 'search'])->name('search');
+    Route::get('/search-damage', [SearchController::class, 'search_damage'])->name('search-damage');
     Route::get('/search-outlet-distributes', [SearchController::class, 'search_outlet_distributes'])->name('search-outlet-distributes');
     Route::get('/search-outlet-issue', [SearchController::class, 'search_outlet_issue'])->name('search-outlet-issue');
     Route::post('/search-list-distribute-detail', [SearchController::class, 'search_list_distribute_detail'])->name('search-list-distribute-detail');
@@ -238,6 +239,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('updatedistributeproductdetailqty',[DistributeController::class,'updatedistributeproductdetailqty'])->name('updatedistributeproductdetailqty');
 
     Route::get('purchasedetailcountry',[PurchaseController::class,'purchasedetailcountry'])->name('purchasedetailcountry');
+
+    Route::get('generatedamagecode',[DamageController::class,'demageGenerateCode'])->name('generatedamagecode');
 
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');

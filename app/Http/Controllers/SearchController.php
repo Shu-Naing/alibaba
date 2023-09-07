@@ -247,6 +247,64 @@ class SearchController extends Controller
         // return "success data";
     }
 
+    public function search_damage (Request $request) 
+    {
+        // return "hello";
+        $html = '';
+        $variant_qty = 0;
+        $variantId = $request->variant_id;
+        $outlet = $request->outlet;
+        
+        $variant_product = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
+        ->join('variations', 'variations.id', 'outlet_items.variation_id')
+        ->join('products', 'products.id', 'variations.product_id')
+        ->where('variations.id', $variantId)
+        ->where('outlet_items.outlet_id', $outlet)
+        ->orderBy('outlet_item_data.created_at','desc')->first();
+
+        $total = $variant_product->purchased_price;
+
+        $html .= '
+                <tr data-id="'.$variantId.'">
+                    <td class="align-middle" style="text-align: left;">
+                        '.$variant_product->product_name.'
+                    </td>
+                    <td class="align-middle" style="text-align: left;">
+                        '.$variant_product->item_code.'
+                    </td>
+                    <td class="align-middle" style="text-align: left;">
+                        '.$variant_product->points.'
+                    </td>
+                    <td class="align-middle" style="text-align: left;">
+                        '.$variant_product->tickets.'
+                    </td>
+                    <td class="align-middle" style="text-align: left;">
+                        '.$variant_product->kyat.'
+                    </td>
+                    <td class="align-middle" style="text-align: left;">
+                        '.$variant_product->purchased_price.'
+                    </td>
+                    <td class="align-middle">
+                       <input type="number" name="quantity['.$variant_product->variation_id.']" class="" id="" min="1" value="1">
+                    </td>
+                    <td class="align-middle">'.$total.'</td>
+                    <td class="align-middle">
+                        <input type="textarea" name="reason['.$variant_product->variation_id.']" value="" row="2" class="" id="">
+                        <input type="hidden" name="variation_id[]" value="'.$variant_product->variation_id.'" row="2" class="" id="">
+                        <input type="hidden" name="item_code['.$variant_product->variation_id.']" value="'.$variant_product->item_code.'" class="" id="">
+                        <input type="hidden" name="points['.$variant_product->variation_id.']" value="'.$variant_product->points.'" class="" id="">
+                        <input type="hidden" name="tickets['.$variant_product->variation_id.']" value="'.$variant_product->tickets.'" class="" id="">
+                        <input type="hidden" name="kyat['.$variant_product->variation_id.']" value="'.$variant_product->kyat.'" class="" id="">
+                        <input type="hidden" name="purchase_price['.$variant_product->variation_id.']" value="'.$variant_product->purchased_price.'" class="" id="">
+                        <input type="hidden" name="total['.$variant_product->variation_id.']" value="'.$total.'" class="" id="">
+                    </td>
+                    <td class="align-middle"><a href="javascript:void(0)" onclick="deleteDisValue(this)" class="text-danger deleteBox">Delete</a></td>
+                </tr>
+        ';
+        
+        return $html;
+    }
+
     public function search_list_distribute_detail(Request $request) {
        
         session()->start();
@@ -275,7 +333,7 @@ class SearchController extends Controller
             PD_VOUNCHERNO_FILTER,
             DA_FROMDATE_FILTER,
             DA_TODATE_FILTER,
-            DA_VOUCHERNO_FILTER,
+            DA_DAMAGE_FILTER,
             DA_OUTLETID_FILTER,
             DA_ITEMCODE_FILTER,
         ]);
@@ -287,7 +345,7 @@ class SearchController extends Controller
         session()->start();
         session()->put(DA_FROMDATE_FILTER, $request->fromDate);
         session()->put(DA_TODATE_FILTER, $request->toDate);
-        session()->put(DA_VOUCHERNO_FILTER, $request->voucherNo);
+        session()->put(DA_DAMAGE_FILTER, $request->damage_no);
         session()->put(DA_OUTLETID_FILTER, $request->outletId);
         session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
         return redirect()->route('damage.index');
@@ -327,7 +385,7 @@ class SearchController extends Controller
         session()->forget([
             DA_FROMDATE_FILTER,
             DA_TODATE_FILTER,
-            DA_VOUCHERNO_FILTER,
+            DA_DAMAGE_FILTER,
             DA_OUTLETID_FILTER,
             DA_ITEMCODE_FILTER,
         ]);
