@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SellController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\IssueController;
@@ -14,10 +15,13 @@ use App\Http\Controllers\DamageController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\MachineController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SelectBoxController;
 use App\Http\Controllers\AdjustmentController;
 use App\Http\Controllers\CategoriesController;
@@ -33,8 +37,6 @@ use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletLevelOverviewController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\SellController;
 
 
 /*
@@ -241,5 +243,10 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');
+
+    //New Set Up section
+
+    Route::resource('countries', CountryController::class);
+    Route::resource('companies', CompanyController::class);
 });
 

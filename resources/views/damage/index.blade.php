@@ -109,7 +109,7 @@
                         <td>{{ date("M",strtotime($damage->date)) }}</td>
                         <td>{{ $damage->date }}</td>
                         <td>{{ $damage->voucher_no }}</td>
-                        <td>{{ $outlets[$damage->outlet_id] }}</td>
+                        <td>{{ get_outlet_name($damage->outlet_id) }}</td>
                         <td>{{ $damage->item_code }}</td>
                         <td>{{ $damage->description }}</td>
                         <td>{{ $damage->quantity }}</td>
