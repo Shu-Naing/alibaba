@@ -693,10 +693,9 @@ if (document.getElementById("outletissue_searchInput")) {
 }
 
 if (document.getElementById("damagesearchInput")) {
-  $("#open_outlet_id").change(function () {
+  $("#demage_outlet_id").change(function () {
     var outletId = $(this).children(":selected").val();
     $("#show_Product table tbody").html("");
-    $("#total").html(0);
 
     // console.log("hello" + outletId);
 
@@ -704,7 +703,7 @@ if (document.getElementById("damagesearchInput")) {
       "/get-damage-product-lists",
       { outletId: outletId },
       function (data, status) {
-        console.log(data);
+        // console.log(data);
         if (status == "success") {
           let productArr = [];
           product = Object.keys(data).map((key) => {
@@ -717,7 +716,7 @@ if (document.getElementById("damagesearchInput")) {
           // var distributedId = $("#distributedId").val();
           function resultGet(res, id) {
             $.ajax({
-              url: "/search",
+              url: "/search-damage",
               type: "GET",
               data: {
                 // distributed_id: distributedId,
@@ -725,23 +724,22 @@ if (document.getElementById("damagesearchInput")) {
                 outlet: outletId,
               },
               success: function (response) {
-                var tablehaveItem = $("#show_Product table tbody tr");
-                var res = JSON.parse(response);
+                // console.log(response);
+                var tablehaveItem = $("#show_Product table tbody");
                 var errorBox = $(".errorbox");
                 if (
                   $('#ds_itemTable tbody tr[data-id="' + id + '"]').length === 0
                 ) {
+                  // console.log("item does not exist");
                   // Item does not exist, add it to the table
-                  $("#show_Product table tbody").append(res.html);
-                  var total = calculateTotal();
-                  var numberformattotal = total.toLocaleString();
-                  $("#total").html(numberformattotal);
+                  $("#show_Product table tbody").append(response);
 
                   errorBox.html("").removeClass("alert alert-danger");
                   if (tablehaveItem.css("background-color", "#fee7e1")) {
                     tablehaveItem.css("background-color", "");
                   }
                 } else {
+                  // console.log("item is exit");
                   if (tablehaveItem.css("background-color", "#fee7e1")) {
                     tablehaveItem.css("background-color", "");
                   }
@@ -782,7 +780,7 @@ if (document.getElementById("damagesearchInput")) {
             });
           }
           autocomplete(
-            document.getElementById("searchInput"),
+            document.getElementById("damagesearchInput"),
             productArr,
             resultGet
           );

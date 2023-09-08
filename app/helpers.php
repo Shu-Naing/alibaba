@@ -46,7 +46,7 @@ use App\Models\OutletItemData;
 
     define('DA_FROMDATE_FILTER', 'DA_FROMDATE_FILTER');
     define('DA_TODATE_FILTER', 'DA_TODATE_FILTER');
-    define('DA_VOUCHERNO_FILTER', 'DA_VOUCHERNO_FILTER');
+    define('DA_DAMAGE_FILTER', 'DA_DAMAGE_FILTER');
     define('DA_OUTLETID_FILTER', 'DA_OUTLETID_FILTER');
     define('DA_ITEMCODE_FILTER', 'DA_ITEMCODE_FILTER');
     
@@ -323,8 +323,6 @@ use App\Models\OutletItemData;
         // return view('distribute.create', compact('data'));
         // return redirect()->route('distribute.create');    
     }
-
-
 
     if(!function_exists('outlet_item_data')){
         function outlet_item_data($outlet_id,$variation_id){

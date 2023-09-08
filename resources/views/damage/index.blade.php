@@ -31,7 +31,7 @@
             $from_date = session()->get(DA_FROMDATE_FILTER);
             $to_date = session()->get(DA_TODATE_FILTER);
             $outlet_id = session()->get(DA_OUTLETID_FILTER);
-            $voucherNo = session()->get(DA_VOUCHERNO_FILTER);
+            $damage_no = session()->get(DA_DAMAGE_FILTER);
             $itemCode = session()->get(DA_ITEMCODE_FILTER);
         @endphp
 
@@ -51,8 +51,8 @@
                     {{ Form::date('toDate', $to_date, ['class' => 'form-control']) }}
                 </div>
                 <div class="col-md-2">
-                    {!! Form::label('voucherNo', 'Voucher No', ['class' => 'form-label']) !!}
-                    {{ Form::text('voucherNo', $voucherNo, ['class' => 'form-control']) }}
+                    {!! Form::label('damage_no', 'Damage No', ['class' => 'form-label']) !!}
+                    {{ Form::text('damage_no', $damage_no, ['class' => 'form-control']) }}
                 </div>
                 <div class="col-md-2">
                     {!! Form::label('outletId', 'Location', ['class' => 'form-label']) !!}
@@ -81,22 +81,21 @@
                     <th>No</th>
                     <th>Month</th>
                     <th>Date</th>
-                    <th>Voucher No</th>
+                    <th>Damage No</th>
                     <th>Location</th>
                     <th>Product Code</th>
-                    <th>Description</th>
-                    <th>Qty</th>
+                    <th>Point</th>
                     <th>Ticket</th>
-                    <th>Original Cost</th>
-                    <th>Amount (ks)</th>
+                    <th>Kyat</th>
+                    <th>Purchase Price</th>
+                    <th>Qty</th>
+                    <th>Total Amount</th>
                     <th>Reason</th>
                     <th>Name</th>
                     <th>Compensation Amount</th>
                     <th>Action</th>
                     <th>Error</th>
                     <th>Distination</th>
-                    <th>Damage No</th>
-                    <th>Column1</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,22 +107,26 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ date("M",strtotime($damage->date)) }}</td>
                         <td>{{ $damage->date }}</td>
-                        <td>{{ $damage->voucher_no }}</td>
-                        <td>{{ get_outlet_name($damage->outlet_id) }}</td>
+
+                      
+                       
+
+                        <td>{{ $damage->damage_no }}</td>
+                         <td>{{ get_outlet_name($damage->outlet_id) }}</td>
+
                         <td>{{ $damage->item_code }}</td>
-                        <td>{{ $damage->description }}</td>
-                        <td>{{ $damage->quantity }}</td>
+                        <td>{{ $damage->point }}</td>
                         <td>{{ $damage->ticket }}</td>
-                        <td>{{ $damage->original_cost }}</td>
-                        <td>{{ $damage->amount_ks }}</td>
+                        <td>{{ $damage->kyat }}</td>
+                        <td>{{ $damage->purchase_price }}</td>
+                        <td>{{ $damage->quantity }}</td>
+                        <td>{{ $damage->total }}</td>
                         <td>{{ $damage->reason }}</td>
                         <td>{{ $damage->name }}</td>
                         <td>{{ $damage->amount }}</td>
                         <td>{{ $action[$damage->action] }}</td>
                         <td>{{ $damage->error }}</td>
                         <td>{{ $distination[$damage->distination] }}</td>
-                        <td>{{ $damage->damage_no }}</td>
-                        <td>{{ $damage->column1 }}</td>
                     </tr>
                 @endforeach
             </tbody>
