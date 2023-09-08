@@ -23,7 +23,9 @@ class AdjustmentController extends Controller
             ['name' => 'Adjustments']
         ];
 
-        $outlets = getOutlets();
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+        $outlets = getFromOutlets();
         // $adjustments = Adjustment::all();
 
         $from_date = session()->get(ADJ_FROMDATE_FILTER);
@@ -44,6 +46,9 @@ class AdjustmentController extends Controller
         })->when($item_code, function ($query) use ($item_code) {
             return $query->where('item_code', '=', $item_code);
         })
+        ->when($login_user_role == 'Outlet', function ($query) use ($login_user_outlet_id){
+            return $query->where('outlet_id', '=', $login_user_outlet_id);
+        })
         ->get();
         return view('adjustment.index', compact('breadcrumbs', 'adjustments', 'outlets'));
     }
@@ -60,7 +65,7 @@ class AdjustmentController extends Controller
               ['name' => 'Create']
         ];
 
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
         return view('adjustment.create', compact('breadcrumbs', 'outlets'));
     }
 
@@ -157,7 +162,7 @@ class AdjustmentController extends Controller
     // excel exprot
     public function exportAdjustment()
     {
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
 
         $from_date = session()->get(ADJ_FROMDATE_FILTER);
         $to_date = session()->get(ADJ_TODATE_FILTER);
