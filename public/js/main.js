@@ -593,68 +593,6 @@ function deleteOutDisValue(disPdID) {
   });
 }
 
-// $("#machine").on("change", function () {
-//   var machineId = $(this).val();
-//   // console.log(machineId);
-//   // Make an AJAX request to retrieve the item code data
-//   $.ajax({
-//     url: "outlet-machine-item", // Replace with the appropriate Laravel route
-//     method: "GET",
-//     data: {
-//       machineId: machineId,
-//     },
-//     success: function (response) {
-//       var itemCodeSelect = $("#item_code");
-//       itemCodeSelect.empty(); // Clear existing options
-
-//       if (response.itemCodes && response.itemCodes.length > 0) {
-//         $.each(response.itemCodes, function (index, itemCode) {
-//           itemCodeSelect.append(
-//             $("<option>", {
-//               value: itemCode,
-//               text: itemCode,
-//             })
-//           );
-//         });
-//       }
-//     },
-//     error: function (xhr, status, error) {
-//       console.error(error);
-//     },
-//   });
-// });
-
-// function addOpeiningItemCode() {
-//   var item_code = $("#item_code").find(":selected").val();
-
-//   console.log("addOpeiningItemCode", item_codes);
-//   $.ajax({
-//     url: "/search-item-code",
-//     type: "GET",
-//     data: {
-//       item_code: item_code,
-//     },
-//     success: function (response) {
-//       let result = "";
-//       // response.forEach((data) => {
-//       //   result += `<div><a href='edit/${data.id}'>${data.product_name}</a></div>`;
-//       // });
-//       console.log(response);
-//       $("#opening_items_div").html(response);
-//       // $("#searchResults").append(result);
-//     },
-//   });
-// }
-
-// end
-
-// var typingTimer;
-// var doneTypingInterval = 500; // milliseconds
-
-// $("#searchInput").on("input", function () {
-//   clearTimeout(typingTimer);
-//   typingTimer = setTimeout(doneTyping, doneTypingInterval);
-// });
 
 // hamburger menu
 $(".hamburger").on("click", function () {
@@ -1017,4 +955,14 @@ $("#demage_outlet_id").change(function () {
   var selectedOption = $(this).find("option:selected");
   var outletName = selectedOption.text();
   generatedamagecode(outletName);
+});
+
+$(document).on("focusout", ".damageQuantity", function () {
+  var damagePrice = $(this).closest("tr").find(".damagePrice").val();
+  var qty = $(this).closest("tr").find(".damageQuantity").val();
+  var total = $(this).closest("tr").find(".damageTotal");
+  console.log(total);
+  var calcuTotal = damagePrice * qty;
+  total.html(calcuTotal);
+  total.val(calcuTotal);
 });

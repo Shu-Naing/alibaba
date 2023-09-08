@@ -38,18 +38,19 @@
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-md-4">
-                        {!! Form::label('damage_no', 'Damage No', array('class' => 'form-label'.($errors->has('damage_no') ? ' text-danger' : ''))) !!}
-                        {{ Form::text('damage_no', null, ['class' => 'form-control' . ($errors->has('damage_no') ? ' is-invalid' : ''), 'id' => 'damage_no']) }}
-                        @error('damage_no')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    
                     <div class="col-md-4">
                         {!! Form::label('outlet_id', 'Outlet Id', array('class' => 'form-label'. ($errors->has('outlet_id') ? ' text-danger' : ''))) !!}
                         {!! Form::select('outlet_id', $outlets, null, array('placeholder' => 'Choose outlets...', 'class' => 'form-control' . ($errors->has('outlet_id') ? ' is-invalid' : ''),'id'=>'demage_outlet_id')) !!}
                         @error('outlet_id')
                             <span class="text-danger">{{ $message }}</span> 
+                        @enderror
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::label('damage_no', 'Damage No', array('class' => 'form-label'.($errors->has('damage_no') ? ' text-danger' : ''))) !!}
+                        {{ Form::text('damage_no', null, ['class' => 'form-control' . ($errors->has('damage_no') ? ' is-invalid' : ''), 'id' => 'damage_no','readonly']) }}
+                        @error('damage_no')
+                            <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-4">

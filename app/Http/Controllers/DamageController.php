@@ -30,14 +30,10 @@ class DamageController extends Controller
 
         $roles = [];
         $user = Auth::user();
-        // return $user->roles;
+
         foreach($user->roles as $row) {
             $roles[] = $row->name;
         }
-        // return $roles;
-        
-
-
         $damages = Damage::join('damage_items', 'damage_items.damage_id', 'damages.id')
         ->when($from_date, function ($query) use ($from_date) {
             return $query->where('date', '>=', $from_date);
@@ -169,7 +165,15 @@ class DamageController extends Controller
         $outlet_id = session()->get(DA_OUTLETID_FILTER);
         $item_code = session()->get(DA_ITEMCODE_FILTER);
 
-        $damages = Damage::when($from_date, function ($query) use ($from_date) {
+        $roles = [];
+        $user = Auth::user();
+        
+        foreach($user->roles as $row) {
+            $roles[] = $row->name;
+        }
+
+        $damages = Damage::join('damage_items', 'damage_items.damage_id', 'damages.id')
+        ->when($from_date, function ($query) use ($from_date) {
             return $query->where('date', '>=', $from_date);
         })
         ->when($to_date, function ($query) use ($to_date) {
@@ -180,9 +184,11 @@ class DamageController extends Controller
             return $query->where('outlet_id', '=', $outlet_id);
         })->when($item_code, function ($query) use ($item_code) {
             return $query->where('item_code', '=', $item_code);
+        })->when(in_array('outlet', $roles), function ($query) use ($user) {
+            return $query->where('outlet_id', $user->outlet_id);
         })
         ->get();
-        
+
         return Excel::download(new DamagesExport($damages), 'damages.xlsx');
     }
 
@@ -202,6 +208,6 @@ class DamageController extends Controller
     
         $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
 
-        return 'D-'.$newString.$date.$counter;   
+        return 'D-'.$newString.'-'.$date.$counter;   
     }
 }

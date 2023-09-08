@@ -72,7 +72,6 @@
                     <th>ID</th>
                     <th>Product Name</th>
                     <th>SKU</th>
-                    <th>Description</th>
                     <th>Brand</th>
                     <th>Category</th>
                     <th>Unit</th>
@@ -93,7 +92,6 @@
                         <td>{{ $no++ }}</td>
                         <td>{{ $product->product_name }}</td>
                         <td>{{ $product->sku }}</td>
-                        <td>{{ $product->description }}</td>
                         <td>{{ $product->brand->brand_name }}</td>
                         <td>{{ $product->category->category_name }}</td>
                         <td>{{ $product->unit->name }}</td>
