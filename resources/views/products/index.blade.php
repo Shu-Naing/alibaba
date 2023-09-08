@@ -71,7 +71,12 @@
                 <tr>
                     <th>ID</th>
                     <th>Product Name</th>
+<<<<<<< HEAD
                     <th>SKU</th>
+=======
+                    <th>Product Code</th>
+                    {{-- <th>Description</th> --}}
+>>>>>>> 3f76386da3e2c5b280dbdeeabc1e30aa3244bbf7
                     <th>Brand</th>
                     <th>Category</th>
                     <th>Unit</th>
@@ -91,7 +96,12 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $product->product_name }}</td>
+<<<<<<< HEAD
                         <td>{{ $product->sku }}</td>
+=======
+                        <td>{{ $product->product_code }}</td>
+                        {{-- <td>{{ $product->description }}</td> --}}
+>>>>>>> 3f76386da3e2c5b280dbdeeabc1e30aa3244bbf7
                         <td>{{ $product->brand->brand_name }}</td>
                         <td>{{ $product->category->category_name }}</td>
                         <td>{{ $product->unit->name }}</td>

@@ -107,8 +107,13 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ date("M",strtotime($damage->date)) }}</td>
                         <td>{{ $damage->date }}</td>
+
+                      
+                       
+
                         <td>{{ $damage->damage_no }}</td>
-                        <td>{{ $outlets[$damage->outlet_id] }}</td>
+                         <td>{{ get_outlet_name($damage->outlet_id) }}</td>
+
                         <td>{{ $damage->item_code }}</td>
                         <td>{{ $damage->point }}</td>
                         <td>{{ $damage->ticket }}</td>

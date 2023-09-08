@@ -21,7 +21,11 @@ class DamageController extends Controller
         $breadcrumbs = [
               ['name' => 'Damage']
         ];
-        $outlets = getOutlets();
+
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
+        $outlets = getFromOutlets();
         $from_date = session()->get(DA_FROMDATE_FILTER);
         $to_date = session()->get(DA_TODATE_FILTER);
         $damage_no= session()->get(DA_DAMAGE_FILTER);
@@ -49,6 +53,9 @@ class DamageController extends Controller
         })->when(in_array('outlet', $roles), function ($query) use ($user) {
             return $query->where('outlet_id', $user->outlet_id);
         })
+        ->when($login_user_role == 'Outlet', function ($query) use ($login_user_outlet_id){
+            return $query->where('outlet_id', '=', $login_user_outlet_id);
+        })
         ->get();
 
         // return $from_date;
@@ -66,7 +73,7 @@ class DamageController extends Controller
               ['name' => 'Damage', 'url' => route('damage.index')],
               ['name' => 'Create']
         ];
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
         return view('damage.create', compact('breadcrumbs', 'outlets'));
     }
 

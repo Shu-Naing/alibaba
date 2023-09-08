@@ -69,10 +69,13 @@ class ReportController extends Controller
               ['name' => 'Outlet Stock Overview Report']
         ];
 
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
         $outlet_id = session()->get(OUTLET_STOCK_OVERVIEW_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_OVERVIEW_MACHINE_FILTER);
 
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
         $machines = getMachines();
 
         $outletstockoverviews = OutletStockOverview::select('outlet_stock_overviews.*', 'machines.name')
@@ -83,6 +86,10 @@ class ReportController extends Controller
         }
         if($machine_id) {
             $outletstockoverviews = $outletstockoverviews->where('outlet_stock_overviews.machine_id', $machine_id);
+        }
+
+        if($login_user_role == 'Outlet'){
+            $outletstockoverviews = $outletstockoverviews->where('outlet_stock_overviews.outlet_id', $login_user_outlet_id);
         }
 
         $outletstockoverviews = $outletstockoverviews->get();

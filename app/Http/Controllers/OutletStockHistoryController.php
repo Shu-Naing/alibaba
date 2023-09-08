@@ -16,6 +16,9 @@ class OutletStockHistoryController extends Controller
             ['name' => 'Distribute Products']
         ];
 
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
         $outlet_id = session()->get(OUTLET_STOCK_HISTORY_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_HISTORY_MACHINE_FILTER);
 
@@ -31,10 +34,14 @@ class OutletStockHistoryController extends Controller
         if($machine_id) {
             $histories = $histories->where('machines.id', $machine_id);
         }
+
+        if($login_user_role == 'Outlet'){
+            $histories = $histories->where('outlets.id', $login_user_outlet_id);
+        }
                     
         $histories = $histories->get();
         // return $histories;
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
         $machines = getMachines();
 
         return view('outletstockhistory.index',compact('histories','breadcrumbs', 'outlets', 'machines'));
