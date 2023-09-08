@@ -13,20 +13,34 @@ use App\Imports\OutletleveloverviewsImport;
 class OutletLevelOverviewController extends Controller
 {
     public function index() {
+
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
          $outletleveloverview = OutletLevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
          ->where('outlet_level_overviews.outlet_id', '>', 1);
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
             $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
         }
-        $outletleveloverview = $outletleveloverview->get();        
-        $outlets = Outlets::all();
+        if($login_user_role == 'Outlet'){
+            $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',$login_user_outlet_id);
+        }
+        
+        $outletleveloverview = $outletleveloverview->get();
+        
+        if($login_user_role == 'Outlet'){
+            $outlets = Outlets::where('outlet_id',$login_user_outlet_id)->get();
+        }else{
+            $outlets = Outlets::all();
+        }
+        
         // return $outlets;
         return view("outletleveloverview.index", compact('outletleveloverview','outlets'));
 
     }
 
     public function create() {
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
         return view("outletleveloverview.create", compact('outlets'));
     }
 

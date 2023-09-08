@@ -15,15 +15,22 @@ class OutletlevelhistoryController extends Controller
               ['name' => 'Outlet Level History']
         ];
 
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
         $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
 
-        if($outlet_id){
+        
+
+        if($login_user_role == 'Outlet'){
+            $histories = OutletlevelHistory::where('outlet_id',$login_user_outlet_id)->get();
+        }
+        elseif($outlet_id){
             $histories = OutletlevelHistory::where('outlet_id',$outlet_id)->get();
         }else{
             $histories = OutletlevelHistory::all();
         }
         
-        $outlets = getOutlets();
+        $outlets = getFromOutlets();
         
         return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets'));
     }
