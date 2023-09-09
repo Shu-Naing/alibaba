@@ -29,7 +29,7 @@
             <div class="row mb-3 g-3">
                 <div class="col-md-6 col-sm-6">
                     {{ Form::label('adj_no', 'Adj No *', ['class' => 'form-label' . ($errors->has('adj_no') ? ' text-danger' : '')]) }}
-                    {{ Form::text('adj_no', null, ['class' => 'form-control' . ($errors->has('adj_no') ? ' is-invalid' : ''), 'id' => 'adj_no', 'placeholder' => 'Adjustment No']) }}
+                    {{ Form::text('adj_no', null, ['class' => 'form-control' . ($errors->has('adj_no') ? ' is-invalid' : ''), 'id' => 'adj_no', 'placeholder' => 'Adjustment No', 'readonly']) }}
                     @error('adj_no')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

@@ -185,4 +185,22 @@ class AdjustmentController extends Controller
         
         return Excel::download(new AdjustmentsExport($outlets, $adjustments), 'adjustments.xlsx');
     }
+
+    public function adjGenerateCode(Request $request) {
+        $date = date("dmY"); 
+        $outletName = $request->outlet_id;
+        $newString = str_replace(" ", "-", $outletName);
+        $counter = 1;
+        $data = Adjustment::orderBy('created_at', 'desc')->value('adj_no');
+
+        if($data) {
+            $lastThreeChars = substr($data, -3);
+            $counter = intval($lastThreeChars);
+            $counter++;
+        }
+    
+        $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
+
+        return 'D-'.$newString.'-'.$date.$counter;      
+    }
 }
