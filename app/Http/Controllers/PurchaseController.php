@@ -125,12 +125,13 @@ class PurchaseController extends Controller
 
         $item_code = session()->get(PURCHASE_ITEMCODE_FILTER);
 
-        $purchaseItems = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
+        $purchaseItems = OutletItemData::select('outlet_item_data.*', 'variations.item_code')->join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
         ->join('variations', 'variations.id', '=', 'outlet_items.variation_id')
-        ->where('grn_no', $id)
+        ->where('outlet_item_data.grn_no', $id)
         ->when($item_code, function ($query) use ($item_code) {
             return $query->where('variations.item_code', '=', $item_code);
         })
+        ->orderBy('outlet_item_data.created_at', 'desc')
         ->get();
 
         // return $purchaseItems;
@@ -181,6 +182,9 @@ class PurchaseController extends Controller
         // return $request;
 
         $file = $request->file('file');
+        // $model = new PurchaseAddImport();
+        // $data = Excel::toArray($model, $file);
+        // return  $data;
 
         try {
             Excel::import(new PurchaseAddImport, $file);

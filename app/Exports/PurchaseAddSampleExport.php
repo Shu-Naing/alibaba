@@ -18,8 +18,7 @@ class PurchaseAddSampleExport implements WithHeadings , ShouldAutoSize
             'Point', 
             'Kyat', 
             'Purchased Price', 
-            'Qty', 
-            'Action',
+            'Qty',
         ];
     }
 }
