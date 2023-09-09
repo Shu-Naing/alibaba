@@ -997,6 +997,22 @@ $(document).on("focusout", ".purchasedPrice, .purchaseQuantity", function () {
   total.html(calcuTotal);
 });
 
+// function generatedamagecode(outlet_id) {
+//   $.ajax({
+//     url: "/generatedamagecode",
+//     type: "GET",
+//     data: {
+//       outlet_id,
+//     },
+//     success: function (response) {
+//       $("#damage_no").val(response);
+//     },
+//     error: function () {
+//       console.log("you got error ");
+//     },
+//   });
+// }
+
 function generatedamagecode(outlet_id) {
   $.ajax({
     url: "/generatedamagecode",
@@ -1017,4 +1033,26 @@ $("#demage_outlet_id").change(function () {
   var selectedOption = $(this).find("option:selected");
   var outletName = selectedOption.text();
   generatedamagecode(outletName);
+});
+
+function generateadjcode(outlet_id) {
+  $.ajax({
+    url: "/generateadjcode",
+    type: "GET",
+    data: {
+      outlet_id,
+    },
+    success: function (response) {
+      $("#adj_no").val(response);
+    },
+    error: function () {
+      console.log("you got error ");
+    },
+  });
+}
+
+$("#open_outlet_id").change(function () {
+  var selectedOption = $(this).find("option:selected");
+  var outletName = selectedOption.text();
+  generateadjcode(outletName);
 });

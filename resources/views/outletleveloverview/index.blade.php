@@ -50,6 +50,10 @@
                     <th>Outlet</th>
                     <th>Date</th>
                     <th>Item Code</th>
+                    <th>Point</th>
+                    <th>Ticket</th>
+                    <th>Kyat</th>
+                    <th>Purchase Price</th>
                     <th>Opening Qty</th>
                     <th>Received Qty</th>
                     <th>Issued Qty</th>
@@ -69,6 +73,10 @@
                         <td>{{ $outlevel->name }}</td>
                         <td>{{ $outlevel->date }}</td>
                         <td>{{ $outlevel->item_code }}</td>
+                        <td>{{ $outlevel->points }}</td>
+                        <td>{{ $outlevel->tickets }}</td>
+                        <td>{{ $outlevel->kyat }}</td>
+                        <td>{{ $outlevel->purchased_price }}</td>
                         <td>{{ $outlevel->opening_qty }}</td>
                         <td>{{ $outlevel->receive_qty }}</td>
                         <td>{{ $outlevel->issued_qty }}</td>

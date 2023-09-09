@@ -242,6 +242,8 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('generatedamagecode',[DamageController::class,'demageGenerateCode'])->name('generatedamagecode');
 
+    Route::get('generateadjcode',[AdjustmentController::class,'adjGenerateCode'])->name('generateadjcode');
+
     // Route::get('test',[TestController::class,'test'])->name('test');
     // Route::post('testform',[TestController::class,'testform'])->name('testform');
 });

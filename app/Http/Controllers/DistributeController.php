@@ -83,7 +83,7 @@ class DistributeController extends Controller
                 'to_outlet' =>'required',
             ]);
             $input = $request->only('date', 'reference_No', 'from_outlet', 'to_outlet','remark');
-            $input['voucher_no'] = str_replace(' ','-',get_outlet_name($request->from_outlet)) . '-' . $request->reference_No;
+            $input['vouncher_no'] = str_replace(' ','-',get_outlet_name($request->from_outlet)) . '-' . $request->reference_No;
             $input['status'] = DS_PENDING;
             $input['created_by'] = Auth::user()->id;
 

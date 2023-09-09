@@ -202,6 +202,6 @@ class DamageController extends Controller
     
         $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
 
-        return 'D-'.$newString.$date.$counter;   
+        return 'D-'.$newString.'-'.$date.$counter;   
     }
 }
