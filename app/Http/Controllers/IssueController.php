@@ -126,7 +126,7 @@ class IssueController extends Controller
                     'remark' => $request->remark,
                     'created_by' => Auth::user()->id,
                 ]);
-                $month = date('m', strtotime($request->date));                    
+                $month = date('n', strtotime($request->date));                    
                 $year = date('Y', strtotime($request->date));                    
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                 ->where('outlet_id', $request->from_outlet)
@@ -156,6 +156,7 @@ class IssueController extends Controller
 
             return redirect()->back()->with('success', 'issue created successfully');
         } else {
+            $machines = getMachines();
             foreach($item_arr as $key => $value){                
                 $variation = Variation::where('item_code', $key)->first();
                 $fromOutletItemData = outlet_item_data($request->from_outlet,$variation->id);
@@ -208,7 +209,7 @@ class IssueController extends Controller
                    'type' => RECIEVE_TYPE,
                    'quantity' => $value,
                    'item_code' => $key,
-                   'branch' => $request->to_machine,
+                   'branch' => $machines[$request->to_machine],
                    'date' => $request->date,
                    'remark' => $request->remark,
                    'created_by' => Auth::user()->id,
@@ -216,7 +217,7 @@ class IssueController extends Controller
                 // return "success outlevelhistory";
 
                 // from outlet for outletleveloverview start
-                    $month = date('m', strtotime($request->date));
+                    $month = date('n', strtotime($request->date));
                     $year = date('Y', strtotime($request->date));
                     $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                     ->where('outlet_id', $request->from_outlet)
@@ -240,7 +241,7 @@ class IssueController extends Controller
                         $input['created_by'] = Auth::user()->id;
                         OutletLevelOverview::create($input);
                     }
-                    $month = date('m', strtotime($request->date));   
+                    $month = date('n', strtotime($request->date));   
                     $year = date('Y', strtotime($request->date));                 
                     $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
                     ->where('outlet_id', $request->from_outlet)
@@ -429,7 +430,7 @@ class IssueController extends Controller
                 $input['created_by'] = Auth::user()->id;
                 OutletStockHistory::create($input);  
                 
-                $month = date('m', strtotime($request->date));
+                $month = date('n', strtotime($request->date));
                 $year = date('Y', strtotime($request->date));
                 $variant = Variation::find($row->variant_id);
                 $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')

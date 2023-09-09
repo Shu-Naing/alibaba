@@ -64,6 +64,7 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Date</th>
                     <th>Machine Name</th>
                     <th>Item Code</th>
                     <th>Point</th>
@@ -86,6 +87,7 @@
                 @foreach ($outletstockoverviews as $outletstockoverview)
                     <tr>
                         <td>{{ ++$i }}</td>
+                        <td>{{date('Y-M',strtotime($outletstockoverview->date))}}</td>
                         <td>{{ $outletstockoverview->name }}</td>
                         <td>{{ $outletstockoverview->item_code }}</td>
                         <th>{{ $outletstockoverview->points }}</th>

@@ -37,7 +37,7 @@ class DistributeController extends Controller
         $status = session()->get(DISTRIBUT_STATUS_FILTER);
 
         
-        $outlets = getOutlets();
+        $outlets = getOutlets(true);
         $distributes = distributes::when($from_date, function ($query) use ($from_date) {
             return $query->where('date', '>=', $from_date);
         })
@@ -58,8 +58,7 @@ class DistributeController extends Controller
         })
         ->when($login_user_role == 'Outlet', function ($query) use ($login_user_outlet_id){
             return $query->where('from_outlet', '=', $login_user_outlet_id)->orWhere('to_outlet', '=', $login_user_outlet_id);
-        })
-        
+        })    
         ->get();
         
         // return $distributes;
@@ -72,7 +71,7 @@ class DistributeController extends Controller
               ['name' => 'Distribute', 'url' => route('distribute.index')],
               ['name' => 'Create']
         ];
-        $from_outlets = getFromOutlets();
+        $from_outlets = getFromOutlets(true);
         $outlets = getOutlets();
         $latestRef = distributes::orderBy('created_at', 'desc')->value('reference_No');
         $generatedRef = refGenerateCode($latestRef);
@@ -176,6 +175,7 @@ class DistributeController extends Controller
     {
         $distribute = distributes::find($id);
         $errorItem = []; 
+        $outlets = getOutlets();
         if($distribute->status !== DS_APPROVE ){
             $distribute->updated_by = Auth::user()->id;
             
@@ -191,7 +191,7 @@ class DistributeController extends Controller
                             'type' => ISSUE_TYPE,
                             'quantity' => $distribute_product->quantity,
                             'item_code' => $item_code,
-                            'branch' => $distribute->to_outlet,
+                            'branch' => $outlets[$distribute->to_outlet],
                             'date' => $distribute->date,
                             'remark' => $distribute->remark,
                             'created_by' => Auth::user()->id,
@@ -203,7 +203,7 @@ class DistributeController extends Controller
                             'type' => RECIEVE_TYPE,
                             'quantity' => $distribute_product->quantity,
                             'item_code' => $item_code,
-                            'branch' => $distribute->from_outlet,
+                            'branch' => $outlets[$distribute->from_outlet],
                             'date' => $distribute->date,
                             'remark' => $distribute->remark,
                             'created_by' => Auth::user()->id,
@@ -245,8 +245,8 @@ class DistributeController extends Controller
                         $fromOutletItemData->quantity = $fromOutletItemData->quantity - $distribute_product->quantity;
                         $fromOutletItemData->update();
 
-                        $month = date('m', strtotime($distribute->date));
-                        $year = date('Y', strtotime($request->date));
+                        $month = date('n', strtotime($distribute->date));
+                        $year = date('Y', strtotime($distribute->date));
                         $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                         ->where('outlet_id', $distribute->from_outlet)
                         ->whereMonth('date', $month)
@@ -273,8 +273,8 @@ class DistributeController extends Controller
                         // from outlet for outletleveloverview end
 
                         // to outlet for outletleveloverview start
-                        $month = date('m', strtotime($distribute->date));
-                        $year = date('Y', strtotime($request->date));
+                        $month = date('n', strtotime($distribute->date));
+                        $year = date('Y', strtotime($distribute->date));
                         $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
                         ->where('outlet_id', $distribute->to_outlet)
                         ->whereMonth('date', $month)

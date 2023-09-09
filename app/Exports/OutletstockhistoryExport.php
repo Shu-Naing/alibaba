@@ -52,7 +52,7 @@ class OutletstockhistoryExport implements FromCollection, WithHeadings,  WithMap
     {
         $data = [
             ++$this->no,
-            $outlethistories->machine_name,
+            ($outlethistories->machine_name == null) ? $outlethistories->outlet_name . ' (Counter)' : $outlethistories->machine_name,
             $outlethistories->date,
             $outlethistories->item_code,
             $outlethistories->quantity,

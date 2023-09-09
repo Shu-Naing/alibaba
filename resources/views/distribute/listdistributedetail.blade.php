@@ -122,8 +122,8 @@
                             <td>{{$distribute->date}}</td>
                             <td>{{$distribute->reference_No}}</td>
                             <td>{{$distribute->vouncher_no}}</td>
-                            {{-- <td>{{$outlets[$distribute->from_outlet]}}</td>
-                            <td>{{$outlets[$distribute->to_outlet]}}</td> --}}
+                            <td>{{isset($outlets[$distribute->from_outlet])? $outlets[$distribute->from_outlet] : ''}}</td>
+                            <td>{{isset($outlets[$distribute->to_outlet]) ? $outlets[$distribute->to_outlet] : ''}}</td>
                             <td>{{$distribute->item_code}}</td>
                             <td><img class="product-img" src="{{ asset('storage/' . $distribute->image) }}" alt="{{ $distribute->image }}"></td>
                             <td>{{$distribute->value}}</td>

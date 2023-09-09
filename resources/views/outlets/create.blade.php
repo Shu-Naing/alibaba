@@ -40,7 +40,7 @@
         @csrf
         <div class="row mb-3">
             <div class="col-md-6">
-                {!! Form::label('outletId', 'Outlet ID *', ['class' => 'form-label']) !!}
+                {!! Form::label('outletId', 'Outlet ID', ['class' => 'form-label']) !!}
                 {!! Form::text('outlet_id', null, ['class' => 'form-control', 'id' => 'outletId']) !!}
             </div>
             <div class="col-md-6">

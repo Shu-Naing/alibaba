@@ -98,9 +98,7 @@
             data: {
                 status : status,
             },
-            success: function(response) {
-                
-                console.log(response.errorItem);
+            success: function(response) {                
                 // window.location.reload();
                 if(response.errorItem) {
                     $.each(response.errorItem, function (key, value) {

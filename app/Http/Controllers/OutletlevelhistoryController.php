@@ -18,9 +18,7 @@ class OutletlevelhistoryController extends Controller
 
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
-        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
-
-        
+        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);        
 
         if($login_user_role == 'Outlet'){
             $histories = OutletlevelHistory::where('outlet_id',$login_user_outlet_id)->get();
@@ -28,28 +26,35 @@ class OutletlevelhistoryController extends Controller
         elseif($outlet_id){
             $histories = OutletlevelHistory::where('outlet_id',$outlet_id)->get();
         }else{
-            $histories = OutletlevelHistory::all();
+            $histories = OutletlevelHistory::where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID)->get();
         }
         
-        $outlets = getFromOutlets();
+        $outlets = getFromOutlets(true);
         
         return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets'));
     }
 
     public function export(){
-        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);        
 
-        if($outlet_id){
+        if($login_user_role == 'Outlet'){
+            $histories = OutletlevelHistory::where('outlet_id',$login_user_outlet_id)->get();
+        }
+        else if($outlet_id){
             $histories = OutletlevelHistory::where('outlet_id',$outlet_id)->get();
         }else{
-            $histories = OutletlevelHistory::all();
+            $histories = OutletlevelHistory::where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID)->get();
         }
+
         $types = [
             RECIEVE_TYPE => 'Recieved',
             ISSUE_TYPE => 'Issued'
         ];
         // return $histories;
         $outlets = getOutlets();
+
         return Excel::download(new OutletLevelHistoryExport($histories,$outlets,$types), 'outlet-level-history.xlsx');
     }
 

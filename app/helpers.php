@@ -98,16 +98,21 @@ use App\Models\OutletItemData;
     }
 
 
-    function getFromOutlets(){
+    function getFromOutlets($isbod = false){
 
         $login_user_role = Auth::user()->roles[0]->name; 
     
         $login_user_outlet_id = Auth::user()->outlet_id;
 
-        if($login_user_role == 'Outlet') {
-            $Outlets = Outlets::where('outlet_id',$login_user_outlet_id)->get();
+        if($login_user_role === 'Outlet') {
+            $Outlets = Outlets::where('id',$login_user_outlet_id)->get();
         }else{
-            $Outlets = Outlets::get();
+            if($isbod == true) {
+                $excludedIds = [BODID, DEPID];
+                $Outlets = Outlets::whereNotIn('id', $excludedIds)->get();
+            } else {
+                $Outlets = Outlets::get();
+            }
         }
         
         $Outlets_arr = array();
@@ -128,6 +133,18 @@ use App\Models\OutletItemData;
             $Machines_arr[$row->id] = $row->name;
         }
         return $Machines_arr;
+    }
+
+    function getCounters(){
+        
+        $counter = Counter::all();
+
+        $counter_arr = array();
+
+        foreach($counter as $row){
+            $counter_arr[$row->id] = $row->name;
+        }
+        return $counter_arr;
     }
 
     function getUser(){
@@ -296,7 +313,13 @@ use App\Models\OutletItemData;
 
     if(!function_exists('get_outlet_name')){
         function get_outlet_name($outlet_id){
-           $outlet_name = Outlets::where('id',$outlet_id)->value('name');
+            if($outlet_id == 0){
+                $outlet_name = 'Counter';
+            }else if($outlet_id == -1) {
+                $outlet_name = 'Machine';
+            }else{
+                $outlet_name = Outlets::where('id',$outlet_id)->value('name');
+            }
             return $outlet_name;
         }
     }

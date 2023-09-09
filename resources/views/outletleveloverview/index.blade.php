@@ -5,6 +5,10 @@
     echo $userName->username; ?></span>
 @endsection
 
+@php
+    $outlet = session()->get(OUTLET_LEVEL_OVERVIEW_FILTER);
+@endphp
+
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
@@ -32,7 +36,7 @@
             <div class="row mb-3 g-3">
                 <div class="col-md-3">
                     {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
-                    {{ Form::select('outlet_id', ['' => 'Choose Outlet'] + $outlets->pluck('name', 'id')->toArray(), null, ['class' => 'form-control']) }}
+                    {{ Form::select('outlet_id', $outlets, $outlet, ['placeholder'=>'Choose ','class' => 'form-control']) }}
     
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
@@ -47,8 +51,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Outlet</th>
                     <th>Date</th>
+                    <th>Outlet</th>
                     <th>Item Code</th>
                     <th>Point</th>
                     <th>Ticket</th>
@@ -70,8 +74,8 @@
                 @foreach ($outletleveloverview as $outlevel)
                     <tr>
                         <td>{{++$i}}</td>
+                        <td>{{ date('Y-M',strtotime($outlevel->date)) }}</td>
                         <td>{{ $outlevel->name }}</td>
-                        <td>{{ $outlevel->date }}</td>
                         <td>{{ $outlevel->item_code }}</td>
                         <td>{{ $outlevel->points }}</td>
                         <td>{{ $outlevel->tickets }}</td>

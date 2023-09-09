@@ -59,30 +59,13 @@ class OutletController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            // 'outlet_id' => 'required|unique:outlets',
-            'name' => 'required',
-            // 'city' => 'required',
-            // 'state' => 'required',
-            
+            'name' => 'required',            
         ]);
-
-        // return $request;
-
-        // $outlet = new Outlets();
-        // $outlet->outlet_id = $request->outlet_id;
-        // $outlet->name = $request->name;
-        // $outlet->city = $request->city;
-        // $outlet->state = $request->state;
-        // $outlet->country = $request->country;
-        // $outlet->created_by = Auth::id();
-        // $outlet->update_by = Auth::id();
-        // $outlet->save();
+        
         $inputs = $request->all();
         $inputs['created_by'] = Auth::user()->id;
         $outletofid = Outlets::create($inputs);
-        // return $outletofid;
-        // return $outletofid->outlet_id;
-
+       
         $input = [];
         $input['outlet_id'] = $outletofid->id;
         $input['name'] = $outletofid->name.'_counter';
@@ -133,11 +116,7 @@ class OutletController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            // 'outletId' => 'required',
-            'name' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            
+            'name' => 'required',            
         ]);
 
         $outlet = Outlets::findorFail($id);
@@ -145,8 +124,6 @@ class OutletController extends Controller
         $outlet->name = $request->name;
         $outlet->city = $request->city;
         $outlet->state = $request->state;
-        // $outlet->country = $request->country;
-        // $outlet->created_by = Auth::id();
         $outlet->updated_by = Auth::id();
         $outlet->save();
 
