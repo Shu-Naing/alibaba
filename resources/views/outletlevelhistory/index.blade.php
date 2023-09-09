@@ -59,12 +59,12 @@
                 @foreach ($histories as $history)                    
                     <tr>
                         <td>{{++$i}}</td>
-                        <td>{{ $outlets[$history->outlet_id] }}</td> 
+                        <td>{{ get_outlet_name($history->outlet_id) }}</td> 
                         <td>{{ $history->date }}</td>
                         <td>{{ $history->item_code }}</td>
                         <td>{{ $history->quantity }}</td>
                         <td>{{ $types[$history->type] }}</td>
-                        <td>{{ $outlets[$history->branch] }}</td>
+                        <td>{{ get_outlet_name($history->branch) }}</td>
                         <td>{{ $history->remark }}</td>              
                         <td class="text-center"><input class="form-check-input mt-0 outletlevelhistory-check" type="checkbox" value="{{ $history->id }}" aria-label="Checkbox for following text input" {{ ($history->is_check == 1) ? 'checked' : '' }} /></td>              
                     </tr>
