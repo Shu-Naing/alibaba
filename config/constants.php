@@ -17,6 +17,8 @@
             '1' => 'Myanmar',
             '2' => 'China',
             '3' => 'Korea',
+            '4' => 'Japan',
+            '5' => 'USA',
         ],
         'cities' => [
             '1' => 'Pabedan',

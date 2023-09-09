@@ -23,6 +23,7 @@ class PurchaseAddImport implements ToModel,WithHeadingRow
     */
     public function model(array $row)
     {   
+        // return $row;
         // $date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']);
         $variation_id = Variation::where('item_code', $row['item_code'])->value('id');
 
@@ -38,8 +39,8 @@ class PurchaseAddImport implements ToModel,WithHeadingRow
                 'purchased_price' => $row['purchased_price'],
                 'quantity' => $row['qty'],
                 'grn_no' => $row['grn_no'],
-                'received_date' => $row['received_date'],
-                'country' => $row['country'],
+                'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
+                'country' => array_search($row['country'],config('constants.countries')),
                 'created_by' => Auth::user()->id,
             ]);
 
@@ -51,7 +52,7 @@ class PurchaseAddImport implements ToModel,WithHeadingRow
                 'kyat' => $row['kyat'],
                 'quantity' => $row['qty'],
                 'grn_no' => $row['grn_no'],
-                'received_date' => $row['received_date'],
+                'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
                 'created_by' => Auth::user()->id,
             ]);
         }

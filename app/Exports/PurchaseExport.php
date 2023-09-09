@@ -19,11 +19,7 @@ class PurchaseExport implements FromCollection, WithHeadings, WithMapping, Shoul
 
         $this->purchaseItems = $purchaseItems;
         $this->no = 0;
-        $this->country = [
-            '1' => 'Myanmar',
-            '2' => 'China',
-            '3' => 'Korea',
-        ];
+        $this->country = config('constants.countries');
     }
 
     public function headings(): array
