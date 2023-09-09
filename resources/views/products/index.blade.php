@@ -62,12 +62,8 @@
             <a class="btn btn-blue" href="{{ route('products.create') }}">Add +</a>
         </div>
         <!-- Display the list of products -->
-
-
-
         <table id="table_id">
             <thead>
-                
                 <tr>
                     <th>ID</th>
                     <th>Product Name</th>
@@ -88,8 +84,7 @@
                 @php
                     $no = 1;
                 @endphp
-                @foreach ($products as $product)
-                    
+                @foreach ($products as $product)                    
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $product->product_name }}</td>
@@ -113,7 +108,5 @@
                 @endforeach
             </tbody>
         </table>
-
-
     </div>
 @endsection

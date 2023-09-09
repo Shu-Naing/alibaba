@@ -93,6 +93,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
 
     Route::get('distribute/{id}/{from_outlet}/edit', [DistributeController::class, 'edit'])->name('distribute.edit');
 
+    // machine is issue so that outlet is recieve
     Route::get('/issue', [IssueController::class, 'index'])->name('issue.index');
     Route::get('/issue/{id}/create', [IssueController::class, 'create'])->name('issue.create');
     Route::post('/issue', [IssueController::class, 'store'])->name('issue.store');
@@ -100,6 +101,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::patch('/issue/{id}', [IssueController::class, 'update'])->name('issue.update');
     Route::get('/issue/{id}', [IssueController::class, 'show'])->name('issue.show');
 
+    // machine is recieve so that outlet is issue 
     Route::get('/outletdistribute', [OutletDistributeController::class, 'index'])->name('outletdistribute.index');
     Route::get('/outletdistribute/{id}/create', [OutletDistributeController::class, 'create'])->name('outletdistribute.create');
     Route::post('/outletdistribute', [OutletDistributeController::class, 'store'])->name('outletdistribute.store');

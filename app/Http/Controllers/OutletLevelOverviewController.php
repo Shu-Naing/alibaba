@@ -11,14 +11,16 @@ use App\Exports\OutletLevelOverviewExport;
 use App\Exports\OutletleveloverviewSampleExport;
 use App\Imports\OutletleveloverviewsImport;
 class OutletLevelOverviewController extends Controller
+
 {
     public function index() {
 
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
 
-         $outletleveloverview = OutletLevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id')
-         ->where('outlet_level_overviews.outlet_id', '>', 1);
+         $outletleveloverview = OutletLevelOverview::join('outlets', 'outlets.id', '=', 'outlet_level_overviews.outlet_id');
+         
+
         if(session()->get(OUTLET_LEVEL_OVERVIEW_FILTER)){
             $outletleveloverview = $outletleveloverview->where('outlet_level_overviews.outlet_id',session()->get(OUTLET_LEVEL_OVERVIEW_FILTER));
         }
