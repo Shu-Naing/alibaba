@@ -11,6 +11,7 @@ use App\Models\OutletStockOverview;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use App\Exports\OutletstockoverviewsExport;
+use Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller

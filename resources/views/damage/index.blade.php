@@ -124,9 +124,9 @@
                         <td>{{ $damage->reason }}</td>
                         <td>{{ $damage->name }}</td>
                         <td>{{ $damage->amount }}</td>
-                        <td>{{ $action[$damage->action] }}</td>
+                        <td>{{ isset($action[$damage->action]) ? $action[$damage->action] : '' }}</td>
                         <td>{{ $damage->error }}</td>
-                        <td>{{ $distination[$damage->distination] }}</td>
+                        <td>{{ isset($distination[$damage->distination]) ? $distination[$damage->distination] : '' }}</td>
                     </tr>
                 @endforeach
             </tbody>

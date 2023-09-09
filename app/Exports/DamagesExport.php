@@ -13,22 +13,13 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class DamagesExport implements FromCollection, WithHeadings, WithMapping, ShouldAutoSize
 {
     function __construct($damages){
-        $actions = [
-            DESTORYDONATION => 'destroy donation',
-            DISPOSAL => 'disposal',
-            REUSE => 'reuse'
-        ];
 
-        $distinations = [
-            TOYSUPER => 'toy super',
-            STORE => 'store',
-            COUNTER => 'counter'
-        ];
 
         $this->damages = $damages;
         $this->no = 0;
-        $this->actions = $actions;
-        $this->distinations = $distinations;
+        $this->actions = config('constants.action');
+        $this->distinations = config('constants.distination');
+        $this->outlet_id = getOutlets();
     }
 
     public function headings(): array
@@ -37,22 +28,21 @@ class DamagesExport implements FromCollection, WithHeadings, WithMapping, Should
             'No',
             'Month',
             'Date',
-            'Voucher No',
+            'Damage No',
             'Location',
             'Product Code',
-            'Description',
-            'Quantity',
+            'Point',
             'Ticket',
-            'Original Cost',
-            'Amount (ks)',
+            'Kyat',
+            'Purchase Price',
+            'Quantity',
+            'Total Amount',
             'Reason',
             'Name',
             'Compensation Amount',
             'Action',
             'Error',
             'Distination',
-            'Damage No',
-            'column1',
         ];
       
         return $headings;
@@ -73,22 +63,21 @@ class DamagesExport implements FromCollection, WithHeadings, WithMapping, Should
             ++$this->no,
             date("M",strtotime($damages->date)),
             $damages->date,
-            $damages->voucher_no,
-            $damages->outlet_id,
+            $damages->damage_no,
+            $this->outlet_id[$damages->outlet_id],
             $damages->item_code,
-            $damages->description,
-            $damages->quantity,
+            $damages->point,
             $damages->ticket,
-            $damages->original_cost,
-            $damages->amount_ks,
+            $damages->kyat,
+            $damages->purchase_price,
+            $damages->quantity,
+            $damages->total,
             $damages->reason,
             $damages->name,
             $damages->amount,
-            $this->actions[$damages->action],
+            isset($this->actions[$damages->action]) ? $this->actions[$damages->action] : '',
             $damages->error,
-            $this->distinations[$damages->distination],
-            $damages->damage_no,
-            $damages->column1,
+            isset($this->distinations[$damages->distination]) ? $this->distinations[$damages->distination] : ''
         ];
 
         return $data;

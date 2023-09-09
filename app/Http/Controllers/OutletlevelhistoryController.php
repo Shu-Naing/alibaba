@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OutletlevelHistory;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OutletLevelHistoryExport;
+use Auth;
 
 class OutletlevelhistoryController extends Controller
 {

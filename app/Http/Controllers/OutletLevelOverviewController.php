@@ -13,6 +13,7 @@ use App\Imports\OutletleveloverviewsImport;
 use App\Exports\OutletleveloverviewSampleExport;
 
 class OutletLevelOverviewController extends Controller
+
 {
     public function index() {
         $login_user_role = Auth::user()->roles[0]->name;
