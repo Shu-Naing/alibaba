@@ -115,8 +115,7 @@ class CreateAdminUserSeeder extends Seeder
             'distribute.show',
             'distribute.update',
             'search-list-distribute', 
-
-
+            'distribute-search-reset'
         ];
 
         $posUserPermissions = [

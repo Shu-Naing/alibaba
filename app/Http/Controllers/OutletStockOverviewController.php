@@ -59,7 +59,7 @@ class OutletStockOverviewController extends Controller
             'opening_qty' => 'required',
         ]);
 
-        $month = date('m', strtotime($request->date));
+        $month = date('n', strtotime($request->date));
         $year = date('Y', strtotime($request->date));
         $outletstockoverview = OutletStockOverview::select('outlet_stock_overviews.*')
         ->where('outlet_id', $request->outlet_id)

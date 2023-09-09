@@ -81,7 +81,7 @@
                 @foreach ($histories as $history)                    
                     <tr>
                         <td>{{++$i}}</td>
-                        <td>{{ $history->machine_name }}</td>  
+                        <td>{{ ( $history->machine_name == null ) ? $history->outlet_name .' (Counter)' : $history->machine_name}}</td>  
                         <td>{{ $history->date }}</td>
                         <td>{{ $history->item_code }}</td>
                         <td>{{ $history->quantity }}</td>

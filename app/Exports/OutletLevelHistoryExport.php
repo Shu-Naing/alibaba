@@ -44,7 +44,7 @@ class OutletLevelHistoryExport implements FromCollection, WithHeadings, WithMapp
             $history->item_code,
             $history->quantity,
             $this->types[$history->type],
-            $this->outlets[$history->branch],
+            $history->branch,
             $history->remark,
             $history->is_check == 1 ? 'Yes' : 'No',
         ];

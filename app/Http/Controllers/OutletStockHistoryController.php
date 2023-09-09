@@ -23,11 +23,11 @@ class OutletStockHistoryController extends Controller
         $machine_id = session()->get(OUTLET_STOCK_HISTORY_MACHINE_FILTER);
 
         $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.short_name as unit_name')
-                    ->leftjoin('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
-                    ->leftjoin('products', 'products.id', '=', 'variations.product_id')
-                    ->leftjoin('units', 'units.id', '=', 'products.unit_id')
+                    ->join('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
+                    ->join('products', 'products.id', '=', 'variations.product_id')
+                    ->join('units', 'units.id', '=', 'products.unit_id')
                     ->leftjoin('machines', 'machines.id', '=', 'outlet_stock_histories.machine_id')
-                    ->leftjoin('outlets', 'outlets.id', '=', 'outlet_stock_histories.outlet_id');
+                    ->join('outlets', 'outlets.id', '=', 'outlet_stock_histories.outlet_id');
         if($outlet_id) {
             $histories = $histories->where('outlets.id', $outlet_id);
         }
@@ -41,20 +41,37 @@ class OutletStockHistoryController extends Controller
                     
         $histories = $histories->get();
         // return $histories;
-        $outlets = getFromOutlets();
+        $outlets = getFromOutlets(true);
         $machines = getMachines();
 
         return view('outletstockhistory.index',compact('histories','breadcrumbs', 'outlets', 'machines'));
     }
 
     public function exportOutletstockhistory() {
+        
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+        $outlet_id = session()->get(OUTLET_STOCK_HISTORY_OUTLET_FILTER);
+        $machine_id = session()->get(OUTLET_STOCK_HISTORY_MACHINE_FILTER);
+
         $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.short_name as unit_name')
-                    ->leftjoin('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
-                    ->leftjoin('products', 'products.id', '=', 'variations.product_id')
-                    ->leftjoin('units', 'units.id', '=', 'products.unit_id')
+                    ->join('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
+                    ->join('products', 'products.id', '=', 'variations.product_id')
+                    ->join('units', 'units.id', '=', 'products.unit_id')
                     ->leftjoin('machines', 'machines.id', '=', 'outlet_stock_histories.machine_id')
-                    ->leftjoin('outlets', 'outlets.id', '=', 'outlet_stock_histories.outlet_id')
-                    ->get();
+                    ->join('outlets', 'outlets.id', '=', 'outlet_stock_histories.outlet_id');
+        if($outlet_id) {
+            $histories = $histories->where('outlets.id', $outlet_id);
+        }
+        if($machine_id) {
+            $histories = $histories->where('machines.id', $machine_id);
+        }
+
+        if($login_user_role == 'Outlet'){
+            $histories = $histories->where('outlets.id', $login_user_outlet_id);
+        }
+                    
+        $histories = $histories->get();
         // return $histories;
         return Excel::download(new OutletstockhistoryExport($histories), 'outletstockhistory.xlsx');
     }

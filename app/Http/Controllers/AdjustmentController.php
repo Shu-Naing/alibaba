@@ -25,7 +25,7 @@ class AdjustmentController extends Controller
 
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
-        $outlets = getFromOutlets();
+        $outlets = getFromOutlets(true);
         // $adjustments = Adjustment::all();
 
         $from_date = session()->get(ADJ_FROMDATE_FILTER);
@@ -65,7 +65,7 @@ class AdjustmentController extends Controller
               ['name' => 'Create']
         ];
 
-        $outlets = getFromOutlets();
+        $outlets = getFromOutlets(true);
         return view('adjustment.create', compact('breadcrumbs', 'outlets'));
     }
 
@@ -162,8 +162,7 @@ class AdjustmentController extends Controller
     // excel exprot
     public function exportAdjustment()
     {
-        $outlets = getFromOutlets();
-
+        $outlets = getFromOutlets(true);
         $from_date = session()->get(ADJ_FROMDATE_FILTER);
         $to_date = session()->get(ADJ_TODATE_FILTER);
         $adj_no= session()->get(ADJ_ADJNO_FILTER);
