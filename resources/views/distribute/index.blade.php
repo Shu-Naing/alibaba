@@ -91,8 +91,8 @@
                     <tr>
                         <td>{{$distribute->date}}</td>
                         <td>{{$distribute->reference_No}}</td>
-                        <td>{{$outlets[$distribute->from_outlet]}}</td>
-                        <td>{{$outlets[$distribute->to_outlet]}}</td>
+                        <td>{{get_outlet_name($distribute->from_outlet)}}</td>
+                        <td>{{get_outlet_name($distribute->to_outlet)}}</td>
                         <td>{{ $distribute->vouncher_no }}</td>
                         <td class="
                             @if($distribute->status == '2') text-success 

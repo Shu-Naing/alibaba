@@ -97,6 +97,27 @@ use App\Models\OutletItemData;
         return $Outlets_arr;
     }
 
+
+    function getFromOutlets(){
+
+        $login_user_role = Auth::user()->roles[0]->name; 
+    
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
+        if($login_user_role == 'Outlet') {
+            $Outlets = Outlets::where('outlet_id',$login_user_outlet_id)->get();
+        }else{
+            $Outlets = Outlets::get();
+        }
+        
+        $Outlets_arr = array();
+
+        foreach($Outlets as $row){
+            $Outlets_arr[$row->id] = $row->name;
+        }
+        return $Outlets_arr;
+    }
+
     function getMachines(){
         
         $Machines = Machines::all();
@@ -319,6 +340,7 @@ use App\Models\OutletItemData;
             return $outlet_item_data;
         }
     }
+
 
 
 ?>

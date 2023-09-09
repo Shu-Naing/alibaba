@@ -27,7 +27,11 @@ class OutletController extends Controller
         // $outlets = Outlets::join('categories', 'categories.outlet_id', '=', 'outlets.id')
         //     ->select('outlets.id', 'outlets.name', 'outlets.city', 'outlets.state', 'categories.category_name')
         //     ->get();
-        $outlets = Outlets::where('id','>',3)->get();
+        if(Auth::user()->roles[0]->name == 'Outlet'){
+            $outlets = Outlets::where('id',Auth::user()->outlet_id)->get();
+        }else{
+            $outlets = Outlets::where('id','>',3)->get();
+        }
         // $outlets = Outlets::with('categories')->first();
         return view('outlets.index', compact('breadcrumbs', 'outlets'));
     }

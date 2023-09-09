@@ -66,7 +66,7 @@ class ProductsController extends Controller
             'unit_id' => 'required',
             'company_name' => 'required',
             'country' => 'required',
-            'sku' => 'required|unique:products',
+            'product_code' => 'required|unique:products',
             'received_date' => 'required',
             'expired_date' => 'required',
             'variations' => 'required|array',
@@ -112,9 +112,9 @@ class ProductsController extends Controller
 
             $outletItems = $this->createOutletItems($variation);
 
-            $outletItemData = $this->createOutletItemData($variation, $outletItems, $variationData);
+            $outletItemData = $this->createOutletItemData($variation, $outletItems, $variationData,$product);
 
-            $purchasedPriceHistory = $this->createPurchasedPriceHistory($variation, $variationData);
+            $purchasedPriceHistory = $this->createPurchasedPriceHistory($variation, $variationData,$product);
         }
 
         // return redirect()->route('products.create')->with('success', 'Product created successfully');
@@ -132,7 +132,7 @@ private function createProduct(Request $request)
         'category_id' => $request->category_id,
         'company_name' => $request->company_name,
         'country' => $request->country,
-        'sku' => $request->sku,
+        'product_code' => $request->product_code,
         'received_date' => $request->received_date,
         'expired_date' => $request->expired_date,
         'description' => $request->description,
@@ -180,7 +180,7 @@ private function createOutletItems(Variation $variation)
     return $outletItems;
 }
 
-private function createOutletItemData(Variation $variation,OutletItem $outletItems,array $variationData)
+private function createOutletItemData(Variation $variation,OutletItem $outletItems,array $variationData,Product $product)
 {
     $outletItemData = new OutletItemData([
         'outlet_item_id' =>  $outletItems->id,
@@ -189,6 +189,7 @@ private function createOutletItemData(Variation $variation,OutletItem $outletIte
         'tickets' => $variation->tickets,
         'kyat' => $variation->kyat,
         'quantity' => $variationData['received_qty'],
+        'received_date' => $product->received_date,
         'created_by' => Auth::user()->id,
     ]);
 
@@ -197,7 +198,7 @@ private function createOutletItemData(Variation $variation,OutletItem $outletIte
     return $outletItemData;
 }
 
-private function createPurchasedPriceHistory(Variation $variation, array $variationData)
+private function createPurchasedPriceHistory(Variation $variation, array $variationData,Product $product)
 {
     $purchasedPriceHistory = new PurchasedPriceHistory([
         'variation_id' => $variation->id,
@@ -206,6 +207,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
         'tickets' => $variation->tickets,
         'kyat' => $variation->kyat,
         'quantity' => $variationData['received_qty'],
+        'received_date' => $product->received_date,
         'created_by' => Auth::user()->id,
     ]);
 
@@ -281,7 +283,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
 
     public function update(Request $request,$product_id){
-        
+
         $validator = Validator::make($request->all(), [
             'product_name' => 'required|unique:products,product_name,'.$product_id,
             "category_id" => "required",
@@ -289,7 +291,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             "unit_id" => "required",
             "company_name" => "required",
             "country" => "required",
-            'sku' => 'required|unique:products,sku,'.$product_id,
+            'product_code' => 'required|unique:products,product_code,'.$product_id,
             "received_date" => "required",
             "expired_date" => "required",
             'variations' => 'required|array',
@@ -301,7 +303,6 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'variations.*.points' => 'required',
             'variations.*.tickets' => 'required',
             'variations.*.kyat' => 'required',
-            'variations.*.barcode' => 'required',
             'variations.*.purchased_price' => 'required',
         ],
 
@@ -316,7 +317,6 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'variations.*.points.required' => 'The points are required.',
             'variations.*.tickets.required' => 'The tickets are required.',
             'variations.*.kyat.required' => 'The kyat is required.',
-            'variations.*.barcode.required' => 'The barcode is required.',
             'variations.*.purchased_price.required' => 'The purchased price is required.',
         ]
     
@@ -334,7 +334,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
             'unit_id' => $request->unit_id,
             'company_name' => $request->company_name,
             'country' => $request->country,
-            'sku' => $request->sku,
+            'product_code' => $request->product_code,
             'received_date' => $request->received_date,
             'expired_date' => $request->expired_date,
             'description' => $request->description,
@@ -407,6 +407,7 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 'tickets' => $variation['tickets'],
                 'kyat' => $variation['kyat'],
                 'purchased_price' => $variation['purchased_price'],
+                'received_date' => $request->received_date,
                 'updated_by' => Auth::user()->id,
             ];
 
@@ -421,27 +422,19 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
                 OutletItemData::create($outletItemData);
            }
 
-
-           $purchasedPriceHistory = [
-                'variation_id' => $variation_data->id,
-                'purchased_price' => $variation['purchased_price'],
-                'points' => $variation['points'],
-                'tickets' => $variation['tickets'],
-                'kyat' => $variation['kyat'],
-                
-                'updated_by' => Auth::user()->id,
-           ];
-
-
-           $purchased_price_history = PurchasedPriceHistory::where('variation_id',$variation_data->id)->first();
-           if (isset($purchased_price_history)){
-                // $purchased_price_history = PurchasedPriceHistory::where('variation_id',$variation_data->id)->latest('created_at')->first();
-                $purchased_price_history->update($purchasedPriceHistory);
-           }else{
-            $purchasedPriceHistory['quantity'] = $variation['received_qty'];
-                $purchasedPriceHistory['created_by'] = Auth::user()->id;
-                 PurchasedPriceHistory::create($purchasedPriceHistory);
-           }
+           $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
+            ['variation_id' => $variation_data->id,
+            'purchased_price' => $variation['purchased_price'],
+            'points' => $variation['points'],
+            'tickets' => $variation['tickets'],
+            'kyat' => $variation['kyat'],
+           ],
+           [
+            'quantity' => $variation['received_qty'],
+            'received_date' => $request->received_date,
+            'created_by' => Auth::user()->id,
+           ]
+        );
 
           
         }

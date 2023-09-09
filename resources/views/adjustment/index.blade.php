@@ -96,7 +96,7 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ $adjustment->adj_no }}</td>
                         <td>{{ $adjustment->date }}</td>
-                        <td>{{ $outlets[$adjustment->outlet_id] }}</td>
+                        <td>{{ get_outlet_name($adjustment->outlet_id) }}</td>
                         <td>{{ $adjustment->item_code }}</td>
                         <td>{{ $adjustment->adjustment_qty }}</td>
                         <td>{{ $adjustment->remark }}</td>

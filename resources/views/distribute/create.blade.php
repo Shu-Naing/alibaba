@@ -53,7 +53,7 @@
                     
                     <div class="col-md-4">
                         {!! Form::label('from_outlet', 'From (Outlet)', ['class' => 'form-label']) !!}
-                        {!! Form::select('from_outlet', $outlets, null, [
+                        {!! Form::select('from_outlet', $from_outlets, null, [
                             'placeholder' => 'Choose From outlets',
                             'class' => 'form-control',
                             'id' => 'fromOutlet',
