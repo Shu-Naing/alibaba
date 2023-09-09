@@ -66,6 +66,10 @@
                     <th>No</th>
                     <th>Machine Name</th>
                     <th>Item Code</th>
+                    <th>Point</th>
+                    <th>Ticket</th>
+                    <th>Kyat</th>
+                    <th>Purchase Price</th>
                     <th>Opening Qty</th>
                     <th>Received Qty</th>
                     <th>Issued Qty</th>
@@ -84,6 +88,10 @@
                         <td>{{ ++$i }}</td>
                         <td>{{ $outletstockoverview->name }}</td>
                         <td>{{ $outletstockoverview->item_code }}</td>
+                        <th>{{ $outletstockoverview->points }}</th>
+                        <th>{{ $outletstockoverview->tickets }}</th>
+                        <th>{{ $outletstockoverview->kyat }}</th>
+                        <th>{{ $outletstockoverview->purchased_price }}</th>
                         <td>{{ $outletstockoverview->opening_qty }}</td>
                         <td>{{ $outletstockoverview->receive_qty }}</td>
                         <td>{{ $outletstockoverview->issued_qty }}</td>
