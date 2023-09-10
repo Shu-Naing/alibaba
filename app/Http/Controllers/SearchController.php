@@ -362,11 +362,13 @@ class SearchController extends Controller
         $html = '';
         $variantId = $request->variant_id;
 
-        $outletItemData = OutletItemData::join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
+        $outletItemData = OutletItemData::select('outlet_item_data.points','outlet_item_data.tickets','outlet_item_data.kyat','outlet_item_data.purchased_price','variations.item_code')->join('outlet_items', 'outlet_items.id', '=', 'outlet_item_data.outlet_item_id')
         ->join('variations', 'variations.id', '=', 'outlet_items.variation_id')
+        ->where('outlet_items.outlet_id',MAINOUTLETID)
         ->where('outlet_items.variation_id', $variantId)
-        ->first();
-        // return $outletItemData;
+        ->orderBy('outlet_item_data.id','desc')->first();
+
+      
 
         $total = $outletItemData->purchased_price * $outletItemData->quantity;
 
@@ -390,7 +392,7 @@ class SearchController extends Controller
                         <input type="number" class="form-control purchasedPrice" name="purchased_price['.$variantId.']" value='.$outletItemData->purchased_price.'>
                     </td>
                     <td class="align-middle">
-                        <input type="number" class="form-control purchaseQuantity" name="quantity['.$variantId.']" value='.$outletItemData->quantity.'>
+                        <input type="number" class="form-control purchaseQuantity" name="quantity['.$variantId.']" value="0">
                     </td>
                     <td class="purchaseTotal">'.$total.'</td>
                     <td class="align-middle"><a href="javascript:void(0)" onclick="deleteDisValue(this)" class="text-danger deleteBox">Delete</a></td>

@@ -818,6 +818,8 @@ if (document.getElementById("searchInputPurchase")) {
         });
       });
 
+      console.log('so',productArr);
+
       // var distributedId = $("#distributedId").val();
       function resultGet(res, id) {
         $.ajax({
@@ -827,7 +829,7 @@ if (document.getElementById("searchInputPurchase")) {
             variant_id: id,
           },
           success: function (response) {
-            // console.log(response);
+           
             var errorBox = $(".errorbox");
             var tablehaveItem = $("#show_Product table tbody tr");
             // var res = JSON.parse(response);
@@ -854,4 +856,45 @@ if (document.getElementById("searchInputPurchase")) {
       console.log(status);
     }
   });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+if (document.getElementById("item_code")) {
+ 
+$('#open_outlet_id').change(function() {
+  var outletId = $(this).val();
+
+  // Your existing code to fetch data based on outletId
+  $.ajax({
+      url: '/get-product-lists',
+      method: 'GET',
+      data: { outlet_id: outletId },
+      success: function(data) {
+
+        let productArr = Object.keys(data).map((key) => {
+          return {
+            id: key,
+            title: data[key],
+          };
+      });
+
+
+      console.log(productArr);
+    
+      },
+      error: function(xhr, textStatus, errorThrown) {
+          console.error('Error: ' + textStatus, errorThrown);
+      }
+  });
+});
 }
