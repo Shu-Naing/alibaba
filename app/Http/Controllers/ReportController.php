@@ -8,6 +8,7 @@ use App\Models\distributes;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
 use App\Models\OutletStockOverview;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Session;
 use App\Exports\OutletstockoverviewsExport;
@@ -19,6 +20,10 @@ class ReportController extends Controller
         $breadcrumbs = [
             ['name' => 'Report Products', 'url' => route('report.products')],
         ];
+
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
         $received_date = session()->get(PD_RECEIVED_DATE_FILTER);
 
         if( $received_date){
@@ -34,7 +39,12 @@ class ReportController extends Controller
 
         // return $reports;
         // return $reports;
-        $outlets = Outlets::with('machines')->where('id','!=',1)->get();
+
+        if($login_user_role == 'Outlet'){
+            $outlets = Outlets::with('machines')->where('id',$login_user_outlet_id)->get();
+        }else{
+            $outlets = Outlets::with('machines')->where('id','!=',1)->get();
+        }
         // return $outlets;
         return view('reports.products',compact("reports","outlets", 'breadcrumbs'));
     }
