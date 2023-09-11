@@ -83,6 +83,9 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('purchase.*',function($view){      
             $view->with('countries',config('constants.countries'));          
         });
+        view()->composer('sell.*',function($view){      
+            $view->with('payment_types',config('constants.payment_types'));          
+        });
         
     }
 }

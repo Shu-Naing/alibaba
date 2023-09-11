@@ -9,6 +9,7 @@ use App\Models\PosItem;
 use App\Models\Product;
 use App\Models\Variation;
 use App\Models\OutletItem;
+use App\Models\OutletLevelOverview;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PosItemsAlert;
@@ -85,8 +86,6 @@ class PosController extends Controller
             Session::forget('pos-id');
             $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
          }
-
-        
         
         $user_id = Auth::user()->id;
         $temps = Temp::with('variation','variation.product')->where('created_by',$user_id)->get();
@@ -136,13 +135,7 @@ class PosController extends Controller
            }else{
             return response()->json(['message' => 'Product Not Found !', 'status' => 'fail']);
            }
-        // }
-        
-        
-        
     }
-
-    
 
     public function updateItemPos(Request $request){
         // return $request;
@@ -182,22 +175,50 @@ class PosController extends Controller
         $pos->save();
 
         foreach($temps as $temp){
-            $pos_item = new PosItem;
-            $pos_item->pos_id = $pos->id;
-            $pos_item->variation_id = $temp->variation_id;
-            $pos_item->quantity = $temp->quantity;
-            $pos_item->variation_value = $temp->variation_value;
-            $pos_item->save();
+            $input = [];
+            $input['pos_id'] = $pos->id;
+            $input['variation_id'] = $temp->variation_id;
+            $input['quantity'] = $temp->quantity;
+            $input['variation_value'] = $temp->variation_value;
+            $pos_item = Pos::create($input);
 
             // OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$temp->variation_id)->decrement('quantity', $temp->quantity);
             $outletItemData = outlet_item_data($outlet_id,$temp->variation_id);
             $outletItemData->quantity = $outletItemData->quantity - $temp->quantity;
             $outletItemData->update();
+
+            $month = date('n',strtotime($pos_item->created_at));
+            $year = date('Y',strtotime($pos_item->created_at));
+
+            $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+            ->join('variations','variations.item_code','outlet_level_overviews.item_code')
+            ->where('outlet_level_overviews.outlet_id',$outlet_id)
+            ->where('variations.id',$temp->variation_id)
+            ->whereMonth('date',$month)
+            ->whereYear('date',$year)->first();
+
+            if($outletleveloverview){ 
+                $issued_qty = $outletleveloverview->issued_qty + $temp->quantity;    
+                $input = [];
+                $input['issued_qty'] = $issued_qty;
+                $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
+                $input['updated_by'] = Auth::user()->id;
+                $outletleveloverview->update($input);
+            }else {
+                $item_code = Variation::select('id')->where('id', $temp->variation_id)->value('id');
+                $input = [];
+                $input['date'] = $pos_item->created_at;
+                $input['outlet_id'] = $outlet_id;
+                $input['item_code'] = $item_code;
+                $input['issued_qty'] = $temp->quantity;
+                $input['balance'] = (0 + 0) - $temp->quantity;
+                $input['created_by'] = Auth::user()->id;
+                OutletLevelOverview::create($input);
+            }
         }
 
         Temp::where('created_by',$user_id)->delete();
-        
-        // Session::forget('pos-success');
+
         session()->put('pos-success',true);
         session()->put('pos-id',$pos->id);
         return response()->json(['message' => 'Pos added successfully']);

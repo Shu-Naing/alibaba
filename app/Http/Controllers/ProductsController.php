@@ -740,19 +740,34 @@ private function createPurchasedPriceHistory(Variation $variation, array $variat
 
     public function get_product_lists_purchase(){
         // return $request->fromOutletId;
-    $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
-                ->join("products", "variations.product_id", "=", "products.id")
-                ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
-                ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
-                ->get();
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+                    ->join("products", "variations.product_id", "=", "products.id")
+                    ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                    ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
+                    ->get();
 
-    $product_arr = array();
+        $product_arr = array();
 
-    foreach($product as $row){ 
-        $product_arr[$row->id] = $row->item_code.' ('.$row->product_name.')';           
+        foreach($product as $row){ 
+            $product_arr[$row->id] = $row->item_code.' ('.$row->product_name.')';           
+        }
+        return $product_arr;
     }
-    return $product_arr;
-}
+
+    public function get_product_lists_adjustment(){
+        $product = Variation::select("variations.id", "products.product_name", "variations.item_code")
+                    ->join("products", "variations.product_id", "=", "products.id")
+                    ->join("outlet_items", "outlet_items.variation_id", "=", "variations.id")
+                    ->join("outlet_item_data","outlet_item_data.outlet_item_id","=","outlet_items.id")
+                    ->get();
+
+        $product_arr = array();
+
+        foreach($product as $row){ 
+            $product_arr[$row->id] = $row->item_code;           
+        }
+        return $product_arr;
+    }
     
 
    
