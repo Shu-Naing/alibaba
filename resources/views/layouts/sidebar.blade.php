@@ -296,6 +296,15 @@
                                     </a>
                                 </li>
                             @endcan
+                            @can('report.price-changed-history')
+                                <li class="w-100 sidebar-item">
+                                    <a href="{{ route('report.price-changed-history') }}"
+                                        class="nav-link sidebar-link {{ Route::is('report.price-changed-history') ? 'active' : '' }}">
+                                        <hr>
+                                        <span class="d-none d-sm-inline">Changed Price History</span>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endif
