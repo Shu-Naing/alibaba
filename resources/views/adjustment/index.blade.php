@@ -85,6 +85,7 @@
                     <th>Product Code</th>
                     <th>Qty</th>
                     <th>Remark</th>
+                    <th>Type</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,6 +101,7 @@
                         <td>{{ $adjustment->item_code }}</td>
                         <td>{{ $adjustment->adjustment_qty }}</td>
                         <td>{{ $adjustment->remark }}</td>
+                        <td>{{ $adjustment_types[$adjustment->type] }}</td>
                     </tr>
                 @endforeach
             </tbody>

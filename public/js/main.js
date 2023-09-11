@@ -1060,9 +1060,17 @@ deButton.on("click", function (event) {
       // fromOutletInput.addClass("is-invalid");
       errorBox.append("From damage no field is required.<br/>");
     }
-    if (toOutletInput.val() === "") {
+    if (name.val() === "") {
       // toOutletInput.addClass("is-invalid");
-      errorBox.append("To outlet field is required.<br/>");
+      errorBox.append("To name field is required.<br/>");
+    }
+    if (name.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("To name field is required.<br/>");
+    }
+    if (name.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("To name field is required.<br/>");
     }
     if (tableValue.length === 0) {
       // searchInput.addClass("is-invalid");
