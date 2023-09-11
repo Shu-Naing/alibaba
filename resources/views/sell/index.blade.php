@@ -88,7 +88,7 @@
                 @foreach ($posSellLists as $posSellList)
                     <tr>
                         <td>{{ ++$i }}</td>
-                        <td>{{ $outlets[$posSellList->outlet_id]}}
+                        <td>{{ isset($outlets[$posSellList->outlet_id]) ? $outlets[$posSellList->outlet_id]: '' }}
                         <td>{{ $posSellList->invoice_no }}</td>
                         <td>{{ $posSellList->quantity}}</td>
                         <td>{{ $posSellList->total }}</td>

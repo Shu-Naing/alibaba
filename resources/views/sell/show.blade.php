@@ -26,9 +26,9 @@
         @endif
 
         <div class="row p-4">
-            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Invoice No: <span class="text-danger ms-2"> {{$sellDetailLists[0]->invoice_no}}</span></div>
-            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Payment type: <span class="text-danger ms-2"> {{$sellDetailLists[0]->payment_type}}</span></div>
-            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Total: <span class="text-danger ms-2"> {{$sellDetailLists[0]->total}}</span></div>
+            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Invoice No: <span class="text-danger ms-2"> {{$sell->invoice_no}}</span></div>
+            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Payment type: <span class="text-danger ms-2"> {{$sell->payment_type}}</span></div>
+            <div class="col col-sm-3 col-lg-4 fw-bold d-flex align-items-center">Total: <span class="text-danger ms-2"> {{$sell->total}}</span></div>
         </div>
         <table class="table table-bordered text-center shadow rounded">
             <thead>

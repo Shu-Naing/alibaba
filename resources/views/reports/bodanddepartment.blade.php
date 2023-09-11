@@ -115,6 +115,7 @@
                         <th scope="col">Quantity</th>
                         <th scope="col">Remark</th>
                         <th scope="col">Sub Total</th>
+                        <th scope="col">Remark</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,6 +133,7 @@
                             <td>{{$distribute->quantity}}</td>
                             <td>{{$distribute->remark}}</td>
                             <td>{{$distribute->subtotal}}</td>
+                            <td>{{$distribute->remark}}</td>
                         </tr>
                     @endforeach                    
                 </tbody>
