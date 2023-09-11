@@ -169,6 +169,9 @@ class AdjustmentController extends Controller
         $outlet_id = session()->get(ADJ_OUTLETID_FILTER);
         $item_code = session()->get(ADJ_ITEMCODE_FILTER);
 
+        $login_user_role = Auth::user()->roles[0]->name;
+        $login_user_outlet_id = Auth::user()->outlet_id;
+
         $adjustments = Adjustment::when($from_date, function ($query) use ($from_date) {
             return $query->where('date', '>=', $from_date);
         })->when($to_date, function ($query) use ($to_date) {
@@ -179,6 +182,9 @@ class AdjustmentController extends Controller
             return $query->where('outlet_id', '=', $outlet_id);
         })->when($item_code, function ($query) use ($item_code) {
             return $query->where('item_code', '=', $item_code);
+        })
+        ->when($login_user_role == 'Outlet', function ($query) use ($login_user_outlet_id){
+            return $query->where('outlet_id', '=', $login_user_outlet_id);
         })
         ->get();
         
@@ -200,6 +206,6 @@ class AdjustmentController extends Controller
     
         $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
 
-        return 'D-'.$newString.'-'.$date.$counter;      
+        return 'A-'.$newString.'-'.$date.$counter;  
     }
 }

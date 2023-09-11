@@ -15,4 +15,9 @@ class Pos extends Model
         'created_by',
         'updated_by'       
     ];
+
+    public function pos_items()
+    {
+        return $this->hasMany(PosItem::class,'pos_id');
+    }
 }

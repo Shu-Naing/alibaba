@@ -28,6 +28,13 @@
         @csrf
             <div class="row mb-3 g-3">
                 <div class="col-md-6 col-sm-6">
+                    {!! Form::label('outlet_id', 'Outlet Id *', array('class' => 'form-label'. ($errors->has('outlet_id') ? ' text-danger' : ''))) !!}
+                    {!! Form::select('outlet_id', $outlets, null, array('placeholder' => 'Choose From outlets', 'class' => 'form-control' . ($errors->has('outlet_id') ? ' is-invalid' : ''),'id'=>'open_outlet_id')) !!}
+                    @error('outlet_id')
+                        <span class="text-danger">{{ $message }}</span> 
+                    @enderror
+                </div>
+                <div class="col-md-6 col-sm-6">
                     {{ Form::label('adj_no', 'Adj No *', ['class' => 'form-label' . ($errors->has('adj_no') ? ' text-danger' : '')]) }}
                     {{ Form::text('adj_no', null, ['class' => 'form-control' . ($errors->has('adj_no') ? ' is-invalid' : ''), 'id' => 'adj_no', 'placeholder' => 'Adjustment No', 'readonly']) }}
                     @error('adj_no')
@@ -41,13 +48,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="col-md-6 col-sm-6">
-                    {!! Form::label('outlet_id', 'Outlet Id', array('class' => 'form-label'. ($errors->has('outlet_id') ? ' text-danger' : ''))) !!}
-                    {!! Form::select('outlet_id', $outlets, null, array('placeholder' => 'Choose From outlets', 'class' => 'form-control' . ($errors->has('outlet_id') ? ' is-invalid' : ''),'id'=>'open_outlet_id')) !!}
-                    @error('outlet_id')
-                        <span class="text-danger">{{ $message }}</span> 
-                    @enderror
-                </div>
+                
                 <div class="col-md-6 col-sm-6 position-relative">
                     {!! Form::label('item_code', 'Product Code', array('class' => 'form-label'.($errors->has('item_code') ? ' text-danger' : ''))) !!}
                     {{ Form::text('item_code', null, ['class' => 'form-control' . ($errors->has('item_code') ? ' is-invalid' : ''), 'id' => 'item_code', 'placeholder' => 'Product Code']) }}

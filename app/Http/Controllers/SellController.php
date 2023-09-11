@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pos;
+use App\Models\PosItem;
 use App\Exports\SellExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Auth;
@@ -24,7 +25,7 @@ class SellController extends Controller
 
         $auth_id = Auth::user()->id;
 
-        $posSellLists = Pos::select('*','users.outlet_id','users.name',DB::raw('sum(pos_items.quantity) as quantity'))
+        $posSellLists = Pos::select('pos.*','users.outlet_id','users.name',DB::raw('sum(pos_items.quantity) as quantity'))
         ->join('users','users.id','pos.created_by')
         ->join('pos_items','pos.id','pos_items.pos_id');
 
@@ -51,9 +52,8 @@ class SellController extends Controller
 
         $posSellLists = $posSellLists->where('invoice_no','<>','')->groupBy('pos.id')->get();
 
-        $outlets = getOutlets(true);
+        $outlets = getFromOutlets(true);
 
-        // return $posLists;
         return view('sell.index', compact('breadcrumbs', 'posSellLists','outlets'));
     }
 
@@ -91,15 +91,14 @@ class SellController extends Controller
             ['name' => 'Detail']
         ];
 
-        $sellDetailLists = Pos::join('pos_items', 'pos_items.pos_id', '=', 'pos.id')
-        ->join('variations', 'variations.id', 'pos_items.variation_id')
-        ->join('products', 'products.id', 'variations.product_id')
-        ->where('pos.id', '=', $id)
-        ->get();
-        // return $sellDetailLists;
-        // return $sellDetailLists[0]->invoice_no;
+        $sell = Pos::find($id);
 
-        return view('sell.show', compact('breadcrumbs', 'sellDetailLists'));
+        $sellDetailLists = PosItem::join('variations', 'variations.id', 'pos_items.variation_id')
+        ->join('products', 'products.id', 'variations.product_id')
+        ->where('pos_items.pos_id', '=', $id)
+        ->get();
+
+        return view('sell.show', compact('breadcrumbs','sell', 'sellDetailLists'));
     }
 
     /**

@@ -114,6 +114,7 @@
                         <th scope="col">Purchase Price:</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Sub Total</th>
+                        <th scope="col">Remark</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -130,6 +131,7 @@
                             <td>{{$distribute->purchased_price}}</td>                           
                             <td>{{$distribute->quantity}}</td>
                             <td>{{$distribute->subtotal}}</td>
+                            <td>{{$distribute->remark}}</td>
                         </tr>
                     @endforeach                    
                 </tbody>

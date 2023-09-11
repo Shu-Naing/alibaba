@@ -84,6 +84,7 @@
                     <th>Location</th>
                     <th>Product Code</th>
                     <th>Qty</th>
+                    <th>Type</th>
                     <th>Remark</th>
                 </tr>
             </thead>
@@ -99,6 +100,7 @@
                         <td>{{ get_outlet_name($adjustment->outlet_id) }}</td>
                         <td>{{ $adjustment->item_code }}</td>
                         <td>{{ $adjustment->adjustment_qty }}</td>
+                        <td>{{ $adjustment_types[$adjustment->type] }}</td>
                         <td>{{ $adjustment->remark }}</td>
                     </tr>
                 @endforeach
