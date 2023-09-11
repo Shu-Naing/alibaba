@@ -83,6 +83,7 @@ use App\Models\OutletItemData;
     define('SELL_PAYMENTTYPE_FILTER', 'SELL_PAYMENTTYPE_FILTER');
     define('SELL_FROMDATE_FILTER','SELL_FROMDATE_FILTER'); 
     define('SELL_TODATE_FILTER','SELL_TODATE_FILTER'); 
+    define('SELL_OUTLETID_FILTER','SELL_OUTLETID_FILTER'); 
     
 
     function getOutlets($isbod = false){
@@ -366,6 +367,23 @@ use App\Models\OutletItemData;
             }
 
             return $outlet_item_data;
+        }
+    }
+
+    function is_outlet_user(){
+        $role_arr = [];
+        $roles = Auth::user()->roles;
+
+        if($roles){
+            foreach($roles as $role){
+                $role_arr[] = $role->name;
+            }
+        }
+
+        if(in_array('Outlet', $role_arr)){
+            return true;
+        }else{
+            return false;
         }
     }
 
