@@ -375,6 +375,7 @@ input.number {
 .custom-btn:active {
   background-color: var(--primary-color) !important;
 }
+
 /* delete modal box comfirm btn end */
 .thead-primary th {
   color: #fff;
@@ -388,4 +389,14 @@ input.number {
   z-index: 2;
   padding: 1rem;
   cursor: pointer;
+}
+
+.autocomplete-items-adj {
+  position: absolute;
+  z-index: 1;  
+  border: 1px solid #eaeaea;    
+  left: 7px;
+  border-radius: 10px;
+  max-height: 250px;
+  overflow-y: auto;
 }

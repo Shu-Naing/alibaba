@@ -53,5 +53,10 @@
             STORE => 'store',
             COUNTER => 'counter'
         ],
+        'payment_types' => [
+            'points' => 'Points',
+            'tickets' => 'Tickets',
+            'kyat' => 'Kyat'
+        ]
     ];
 ?>

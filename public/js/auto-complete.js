@@ -124,7 +124,7 @@ function autocompleteorg(inp, arr) {
     /*create a DIV element that will contain the items (values):*/
     a = document.createElement("DIV");
     a.setAttribute("id", this.id + "autocomplete-list");
-    a.setAttribute("class", "autocomplete-items");
+    a.setAttribute("class", "autocomplete-items autocomplete-items-adj");
     /*append the DIV element as a child of the autocomplete container:*/
     this.parentNode.appendChild(a);
     /*for each item in the array...*/
@@ -229,7 +229,7 @@ function autocomplete(inp, arr, callback) {
     this.parentNode.appendChild(a);
 
     var count = 0; // Keep track of displayed suggestions
-    for (i = 0; i < arr.length && count < 5; i++) {
+    for (i = 0; i < arr.length && count < 10; i++) {
       // Limit to 5 suggestions
       if (
         arr[i].title.substr(0, val.length).toUpperCase() == val.toUpperCase()
@@ -859,42 +859,36 @@ if (document.getElementById("searchInputPurchase")) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 if (document.getElementById("item_code")) {
  
-$('#open_outlet_id').change(function() {
-  var outletId = $(this).val();
+  $('#open_outlet_id').change(function() {
+    var outletId = $(this).val();
 
-  // Your existing code to fetch data based on outletId
-  $.ajax({
-      url: '/get-product-lists',
-      method: 'GET',
-      data: { outlet_id: outletId },
-      success: function(data) {
+    // Your existing code to fetch data based on outletId
+      $.ajax({
+          url: '/get-product-lists-adjustment',
+          method: 'GET',
+          data: { outlet_id: outletId },
+          success: function(data) {
 
-        let productArr = Object.keys(data).map((key) => {
-          return {
-            id: key,
-            title: data[key],
-          };
+            let productArr = Object.keys(data).map((key) => {
+              return {
+                id: key,
+                title: data[key],
+              };
+          });
+
+          autocompleteorg(
+            document.getElementById("item_code"),
+            productArr
+          );          
+        
+          },
+          error: function(xhr, textStatus, errorThrown) {
+              console.error('Error: ' + textStatus, errorThrown);
+          }
       });
 
-
-      console.log(productArr);
-    
-      },
-      error: function(xhr, textStatus, errorThrown) {
-          console.error('Error: ' + textStatus, errorThrown);
-      }
+      
   });
-});
 }
