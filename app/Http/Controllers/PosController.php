@@ -38,6 +38,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'points'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
@@ -47,6 +48,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'tickets'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
@@ -56,6 +58,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }
          }elseif($request->has('filter') && !$request->has('key')){
@@ -65,6 +68,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'points'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
@@ -72,6 +76,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'tickets'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
@@ -79,12 +84,17 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }
          }else{
             Session::forget('pos-success');
             Session::forget('pos-id');
-            $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
+            $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')
+            ->with('variation', 'variation.product')
+            ->where('outlet_id', $user_outlet_id)
+            ->groupBy('outlet_item_id') // Group by outlet_id to get unique entries
+            ->get();
          }
         
         $user_id = Auth::user()->id;
