@@ -1,3 +1,5 @@
+const { start } = require("@popperjs/core");
+
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -593,7 +595,6 @@ function deleteOutDisValue(disPdID) {
   });
 }
 
-
 // hamburger menu
 $(".hamburger").on("click", function () {
   $(".left-sidebar").toggleClass("sidebar-close");
@@ -1004,3 +1005,70 @@ $("#open_outlet_id").change(function () {
   var outletName = selectedOption.text();
   generateadjcode(outletName);
 });
+
+// damage validation start
+var deButton = $("#demagebutton");
+deButton.on("click", function (event) {
+  var dateInput = $("#date");
+  var demageOutletId = $("#demage_outlet_id");
+  var damageNo = $("#damage_no");
+  var name = $("#name");
+  var amount = $("#amount");
+  var openAction = $("#open_action");
+  var error = $("#error");
+  var openDistination = $("#open_distination");
+  var tableValue = $("#show_Product .detable tbody tr");
+  var searchInput = $("#searchInput");
+  var errorBox = $(".errorbox");
+  if (
+    dateInput.val() &&
+    demageOutletId.val() &&
+    damageNo.val() &&
+    name.val() &&
+    amount.val() &&
+    openAction.val() &&
+    error.val() &&
+    openDistination.val() &&
+    tableValue.length > 0
+  ) {
+    $(this).submit();
+  } else {
+    event.preventDefault();
+    if (errorBox.html() === "") {
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    } else {
+      errorBox.html("");
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    }
+    if (dateInput.val() === "") {
+      // dateInput.addClass("is-invalid");
+      errorBox.append("The date field is required.<br/>");
+    }
+    if (demageOutletId.val() === "") {
+      // referenceInput.addClass("is-invalid");
+      errorBox.append("The date outlet id field is required.<br/>");
+    }
+    if (damageNo.val() === "") {
+      // fromOutletInput.addClass("is-invalid");
+      errorBox.append("From damage no field is required.<br/>");
+    }
+    if (toOutletInput.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("To outlet field is required.<br/>");
+    }
+    if (tableValue.length === 0) {
+      // searchInput.addClass("is-invalid");
+      errorBox.append("Product item is required.<br/>");
+    }
+    $(window).scrollTop(0);
+  }
+});
+// damage validation end
