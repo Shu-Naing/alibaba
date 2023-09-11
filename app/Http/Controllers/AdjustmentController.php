@@ -206,6 +206,6 @@ class AdjustmentController extends Controller
     
         $counter = str_pad($counter, 3, 0, STR_PAD_LEFT);
 
-        return 'A-'.$newString.'-'.$date.$counter;  
+        return 'A-'.$newString.'-'.$date.$counter;
     }
 }

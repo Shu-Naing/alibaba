@@ -7,13 +7,16 @@ use App\Models\Variation;
 use App\Models\distributes;
 use Illuminate\Http\Request;
 use App\Exports\ProductsExport;
+use Illuminate\Support\Facades\DB;
 use App\Models\OutletStockOverview;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\PurchasedPriceHistory;
 use Illuminate\Support\Facades\Session;
+use App\Exports\PriceChangedHistoryExport;
 use App\Exports\OutletstockoverviewsExport;
 
-use Illuminate\Support\Facades\DB;
+
 
 class ReportController extends Controller
 {
@@ -260,4 +263,68 @@ class ReportController extends Controller
 
         return view('reports.bodanddepartment',compact('breadcrumbs','distributes','outlets', 'tooutlets', 'sizeVariants'));
     }
+
+
+
+    function priceChangeHistory(){
+        $breadcrumbs = [
+            ['name' => 'List Price Changed History', 'url' => route('report.price-changed-history')],
+        ];
+
+        $received_date = session()->get(PCH_RECEIVED_DATE_FILTER);
+        $item_code = session()->get(PCH_ITEM_CODE_FILTER);
+
+        $price_changed_histories = PurchasedPriceHistory::select('purchased_price_histories.variation_id','purchased_price_histories.points','purchased_price_histories.tickets',
+        'purchased_price_histories.kyat','purchased_price_histories.purchased_price','variations.item_code',DB::raw('MAX(received_date) as received_date'))
+        ->join('variations','purchased_price_histories.variation_id','=','variations.id')
+        ->groupBy('purchased_price_histories.variation_id')
+        ->groupBy('purchased_price_histories.points')
+        ->groupBy('purchased_price_histories.tickets')
+        ->groupBy('purchased_price_histories.kyat')
+        ->groupBy('purchased_price_histories.purchased_price');
+
+            if($received_date){
+            $price_changed_histories = $price_changed_histories->where('purchased_price_histories.received_date',$received_date); 
+        }
+
+        if($item_code){
+            $variation_id = Variation::where('item_code',$item_code)->value('id');
+            $price_changed_histories= $price_changed_histories->where('purchased_price_histories.variation_id',$variation_id); 
+        }
+
+        $price_changed_histories= $price_changed_histories->get();
+       
+        return view('reports.price-changed-history',compact('breadcrumbs','price_changed_histories'));
+    }
+
+
+    function priceChangeHistoryExport(){
+
+        $received_date = session()->get(PCH_RECEIVED_DATE_FILTER);
+        $item_code = session()->get(PCH_ITEM_CODE_FILTER);
+
+        $price_changed_histories = PurchasedPriceHistory::select('purchased_price_histories.variation_id','purchased_price_histories.points','purchased_price_histories.tickets',
+        'purchased_price_histories.kyat','purchased_price_histories.purchased_price','variations.item_code',DB::raw('MAX(received_date) as received_date'))
+        ->join('variations','purchased_price_histories.variation_id','=','variations.id')
+        ->groupBy('purchased_price_histories.variation_id')
+        ->groupBy('purchased_price_histories.points')
+        ->groupBy('purchased_price_histories.tickets')
+        ->groupBy('purchased_price_histories.kyat')
+        ->groupBy('purchased_price_histories.purchased_price');
+
+            if($received_date){
+            $price_changed_histories = $price_changed_histories->where('purchased_price_histories.received_date',$received_date); 
+        }
+
+        if($item_code){
+            $variation_id = Variation::where('item_code',$item_code)->value('id');
+            $price_changed_histories= $price_changed_histories->where('purchased_price_histories.variation_id',$variation_id); 
+        }
+
+        $price_changed_histories= $price_changed_histories->get();
+       
+        return Excel::download(new PriceChangedHistoryExport($price_changed_histories), 'price_changed_histories.xlsx');
+    }
 }
+
+
