@@ -175,12 +175,13 @@ class PosController extends Controller
         $pos->save();
 
         foreach($temps as $temp){
-            $input = [];
-            $input['pos_id'] = $pos->id;
-            $input['variation_id'] = $temp->variation_id;
-            $input['quantity'] = $temp->quantity;
-            $input['variation_value'] = $temp->variation_value;
-            $pos_item = Pos::create($input);
+
+            $pos_item = new PosItem;
+            $pos_item->pos_id = $pos->id;
+            $pos_item->variation_id = $temp->variation_id;
+            $pos_item->quantity = $temp->quantity;
+            $pos_item->variation_value = $temp->variation_value;
+            $pos_item->save();
 
             // OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$temp->variation_id)->decrement('quantity', $temp->quantity);
             $outletItemData = outlet_item_data($outlet_id,$temp->variation_id);
