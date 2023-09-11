@@ -33,9 +33,6 @@
             width: 60px;
             height: 60px;
         }
-
-
-
         .dataTables_filter {
             text-align: left !important;
             float: left !important;

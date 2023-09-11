@@ -12,10 +12,11 @@ use App\Models\OutletStockOverview;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\PurchasedPriceHistory;
-
 use Illuminate\Support\Facades\Session;
 use App\Exports\PriceChangedHistoryExport;
 use App\Exports\OutletstockoverviewsExport;
+
+
 
 class ReportController extends Controller
 {

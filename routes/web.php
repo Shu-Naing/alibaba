@@ -134,11 +134,11 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/purchase-search-reset', [SearchController::class, 'purchase_search_reset'])->name('purchase-search-reset');
     Route::get('/distribute-search-reset', [SearchController::class, 'distribute_search_reset'])->name('distribute-search-reset');
     Route::get('/search-purchase', [SearchController::class, 'search_purchase'])->name('search-purchase');
+
+    Route::post('/sell-search', [SellController::class, 'search'])->name('sell-search');
+    Route::get('/sell-search-reset', [SellController::class, 'reset'])->name('sell-search-reset');
+    Route::get('sell-export',[SellController::class, 'sellExport'])->name('sell-export');
     
-    // Route::resource('distribute/{id}', DistributeController::class);
-    // Route::get('product', [ProductController::class, 'index'])->name('product');
-
-
     //proudcts excel-export
     Route::get('products-list',[ProductsController::class, 'listProduct'])->name('products.list');
     Route::post('products-add-stock/{variation_id}',[ProductsController::class, 'addStock'])->name('products.add-stock');
@@ -161,6 +161,7 @@ Route::group(['middleware' => ['auth','permission']], function() {
     Route::get('/edit', [SelectBoxController::class, 'edit']);
 
     Route::get('/get-product-lists',[ProductsController::class,'get_product_lists']);
+    Route::get('/get-product-lists-adjustment',[ProductsController::class,'get_product_lists_adjustment']);
     Route::get('/get-product-lists-puchase',[ProductsController::class,'get_product_lists_purchase']);
     Route::get('/get-outletdistir-product-lists',[ProductsController::class,'get_outletdistir_product_lists']);
     Route::get('/get-outletdistir-issue-lists',[ProductsController::class,'get_outletdistir_issue_lists']);

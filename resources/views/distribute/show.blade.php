@@ -107,11 +107,8 @@
                         );
                     });
                 }
-
                 document.getElementById('approvept').disabled = true;
                 document.getElementById('rejectpt').disabled = true;
-              
-
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);

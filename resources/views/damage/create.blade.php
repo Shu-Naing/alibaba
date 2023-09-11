@@ -101,7 +101,7 @@
             </div>
 
             <div id="show_Product">
-                <table class="table table-bordered text-center shadow rounded dstable" id='ds_itemTable'>
+                <table class="table table-bordered text-center shadow rounded detable" id='ds_itemTable'>
                     <thead>
                         <tr>
                             <th scope="col" style="width: 30%;">Product Name</th>
