@@ -48,7 +48,7 @@
                         <span class="text-danger">{{ $message }}</span> 
                     @enderror
                 </div>
-                <div class="col-md-6 col-sm-6">
+                <div class="col-md-6 col-sm-6 position-relative">
                     {!! Form::label('item_code', 'Product Code', array('class' => 'form-label'.($errors->has('item_code') ? ' text-danger' : ''))) !!}
                     {{ Form::text('item_code', null, ['class' => 'form-control' . ($errors->has('item_code') ? ' is-invalid' : ''), 'id' => 'item_code', 'placeholder' => 'Product Code']) }}
                     @error('item_code')

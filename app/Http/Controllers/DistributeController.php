@@ -123,9 +123,7 @@ class DistributeController extends Controller
         }
         
         return redirect()->back()->with('success','Distribute created successfully.');
-    }
-
-    
+    }    
     public function show($id)
     {
         $distribute = [];
@@ -147,9 +145,7 @@ class DistributeController extends Controller
         $distribute['distribute_products_data'] = $distribute_products_data;
 
         return view('distribute.show',compact('distribute','breadcrumbs','outlets', 'users'));
-    }
-
-   
+    }   
     public function edit($id,$from_outlet)
     {
         $breadcrumbs = [
@@ -169,7 +165,6 @@ class DistributeController extends Controller
         }
         return view('distribute.edit', compact('distribute','outlets', 'distribute_products', 'variant_qty', 'breadcrumbs'));
     }
-
    
     public function update(Request $request, $id)
     {

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pos;
+use App\Exports\SellExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SellController extends Controller
 {
@@ -18,7 +20,22 @@ class SellController extends Controller
               ['name' => 'Sell']
         ];
 
-        $posSellLists = Pos::all();
+        $posSellLists = Pos::select('*');
+
+        if(session()->get(SELL_INVOICE_FILTER)){
+            $posSellLists = $posSellLists->where('invoice_no',session()->get(SELL_INVOICE_FILTER));
+        } 
+        if(session()->get(SELL_PAYMENTTYPE_FILTER)){
+            $posSellLists = $posSellLists->where('payment_type',session()->get(SELL_PAYMENTTYPE_FILTER));
+        } 
+        if(session()->get(SELL_FROMDATE_FILTER)){
+            $posSellLists = $posSellLists->whereDate('created_at','>=',session()->get(SELL_FROMDATE_FILTER));
+        } 
+        if(session()->get(SELL_TODATE_FILTER)){
+            $posSellLists = $posSellLists->whereDate('created_at','<=',session()->get(SELL_TODATE_FILTER));
+        }
+
+        $posSellLists = $posSellLists->where('invoice_no','<>','')->get();
 
         // return $posLists;
         return view('sell.index', compact('breadcrumbs', 'posSellLists'));
@@ -102,4 +119,50 @@ class SellController extends Controller
     {
         //
     }
+
+    public function search(Request $request){
+        session()->start();
+        session()->put(SELL_INVOICE_FILTER, $request->invoice_id);
+        session()->put(SELL_PAYMENTTYPE_FILTER, $request->payment_type);
+        session()->put(SELL_FROMDATE_FILTER, $request->from_date);
+        session()->put(SELL_TODATE_FILTER, $request->to_date);
+
+        return redirect()->route('sell.index');
+    }
+
+    public function reset(){
+        session()->forget([
+            SELL_INVOICE_FILTER, 
+            SELL_PAYMENTTYPE_FILTER, 
+            SELL_FROMDATE_FILTER, 
+            SELL_TODATE_FILTER,           
+        ]);
+        return redirect()->route('sell.index');
+    }
+
+    public function sellExport()
+    {
+        $posSellLists = Pos::select('*');
+
+        if(session()->get(SELL_INVOICE_FILTER)){
+            $posSellLists = $posSellLists->where('invoice_no',session()->get(SELL_INVOICE_FILTER));
+        } 
+        if(session()->get(SELL_PAYMENTTYPE_FILTER)){
+            $posSellLists = $posSellLists->where('payment_type',session()->get(SELL_PAYMENTTYPE_FILTER));
+        } 
+        if(session()->get(SELL_FROMDATE_FILTER)){
+            $posSellLists = $posSellLists->whereDate('created_at','>=',session()->get(SELL_FROMDATE_FILTER));
+        } 
+        if(session()->get(SELL_TODATE_FILTER)){
+            $posSellLists = $posSellLists->whereDate('created_at','<=',session()->get(SELL_TODATE_FILTER));
+        }
+
+        $posSellLists = $posSellLists->where('invoice_no','<>','')->get();
+
+        // return $purchaseItems;
+        
+        return Excel::download(new SellExport($posSellLists), 'sell.xlsx');
+    }
+
+    
 }
