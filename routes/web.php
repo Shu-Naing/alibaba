@@ -51,18 +51,20 @@ use App\Http\Controllers\PurchasedPriceHistoryController;
 */
   
 Route::get('/', function () {
-    if(Auth::user() != null) {
+    if(Auth::check()) {
         return redirect()->route('home');
     }else {
         return view('auth.login');
     }
 });
+
+// Route::get('login', LoginController::class, );
   
 Auth::routes();
   
-Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::group(['middleware' => ['auth','permission']], function() {
+Route::group(['middleware' => ['auth','permission', 'web', 'checkSessionTimeout']], function() {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     

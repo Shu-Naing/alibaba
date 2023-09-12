@@ -1,4 +1,4 @@
-const { start } = require("@popperjs/core");
+// const { start } = require("@popperjs/core");
 
 $.ajaxSetup({
   headers: {
