@@ -43,16 +43,16 @@
             '2' => 'Loss'
         ],
         
-        'action' => [
-            DESTORYDONATION => 'destroy donation',
-            DISPOSAL => 'disposal',
-            REUSE => 'reuse'
-        ],
-        'distination' => [
-            TOYSUPER => 'toy super',
-            STORE => 'store',
-            COUNTER => 'counter'
-        ],
+        // 'action' => [
+        //     DESTORYDONATION => 'destroy donation',
+        //     DISPOSAL => 'disposal',
+        //     REUSE => 'reuse'
+        // ],
+        // 'distination' => [
+        //     TOYSUPER => 'toy super',
+        //     STORE => 'store',
+        //     COUNTER => 'counter'
+        // ],
         'payment_types' => [
             'points' => 'Points',
             'tickets' => 'Tickets',

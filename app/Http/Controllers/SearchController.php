@@ -242,7 +242,7 @@ class SearchController extends Controller
         session()->put(DA_TODATE_FILTER, $request->toDate);
         session()->put(DA_DAMAGE_FILTER, $request->damage_no);
         session()->put(DA_OUTLETID_FILTER, $request->outletId);
-        session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
+        // session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
         return redirect()->route('damage.index');
     }
 
@@ -462,6 +462,21 @@ class SearchController extends Controller
         ]);
         return redirect()->route('report.price-changed-history');
     }
+
+    function mainInvOutletOverviewSearch(Request $request){
+        session()->start();
+        session()->put(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER, $request->date);
+
+        return redirect()->route('main-outletleveloverview.index');
+    }
+
+    function mainInvOutletOverviewReset(){
+        session()->forget([
+            MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER,
+        ]);
+        return redirect()->route('main-outletleveloverview.index');
+    }
+
     
     
 }

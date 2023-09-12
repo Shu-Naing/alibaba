@@ -68,8 +68,6 @@ class OutletLevelOverviewController extends Controller
         $categories = getCategories();
         $units = getUnits();
         $size_variants = getSizeVariants();
-        
-        // return $outlets;
         return view("outletleveloverview.index", compact('outletleveloverview','outlets','categories','units','size_variants'));
 
     }

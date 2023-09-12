@@ -4,6 +4,8 @@ use Illuminate\Support\Str;
 
 return [
 
+    // 'lifetime' => 1,
+
     /*
     |--------------------------------------------------------------------------
     | Default Session Driver
@@ -31,9 +33,9 @@ return [
     |
     */
 
-    'lifetime' => env('SESSION_LIFETIME', 120),
+    'lifetime' => env('SESSION_LIFETIME', 5),
 
-    'expire_on_close' => false,
+    'expire_on_close' => true,
 
     /*
     |--------------------------------------------------------------------------

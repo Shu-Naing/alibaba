@@ -19,7 +19,7 @@ class DamageController extends Controller
     public function index()
     {
         $breadcrumbs = [
-              ['name' => 'Damage']
+              ['name' => 'Demage']
         ];
 
         $login_user_role = Auth::user()->roles[0]->name;
@@ -38,8 +38,7 @@ class DamageController extends Controller
         foreach($user->roles as $row) {
             $roles[] = $row->name;
         }
-        $damages = Damage::join('damage_items', 'damage_items.damage_id', 'damages.id')
-        ->when($from_date, function ($query) use ($from_date) {
+        $damages = Damage::when($from_date, function ($query) use ($from_date) {
             return $query->where('date', '>=', $from_date);
         })
         ->when($to_date, function ($query) use ($to_date) {
@@ -70,7 +69,7 @@ class DamageController extends Controller
     public function create()
     {
         $breadcrumbs = [
-              ['name' => 'Damage', 'url' => route('damage.index')],
+              ['name' => 'Demage', 'url' => route('damage.index')],
               ['name' => 'Create']
         ];
         $outlets = getFromOutlets(true);
@@ -93,7 +92,7 @@ class DamageController extends Controller
             'damage_no' => 'required|unique:damages',
         ]);
 
-        $inputs = $request->only('date', 'outlet_id', 'name', 'amount', 'action', 'error', 'distination', 'damage_no');
+        $inputs = $request->only('date', 'outlet_id', 'name', 'error', 'distination', 'damage_no');
         $inputs['created_by'] = Auth::user()->id;
         $damage = Damage::create($inputs);
 
@@ -136,7 +135,18 @@ class DamageController extends Controller
      */
     public function edit($id)
     {
-        //
+        // return $id;
+        $breadcrumbs = [
+            ['name' => 'Demage', 'url' => route('damage.index')],
+            ['name' => 'Detail & Edit']
+        ];
+        $outlets = getFromOutlets(true);
+        $damages = Damage::findorFail($id);
+        $damage_items = DamageItems::where('damage_id', $id)->get();
+        
+        // return $damage_items;
+        // return $from_date;
+        return view('damage.edit', compact('breadcrumbs', 'damages', 'damage_items', 'outlets'));
     }
 
     /**
@@ -148,7 +158,15 @@ class DamageController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // return $request;
+        $damage = Damage::where('id',$id)->first();
+        if($damage) {
+            $input = $request->all();
+            $input['updated_by'] = Auth::user()->id;
+            $damage->update($input);
+        }
+        
+        return redirect()->route('damage.index')->with('success', 'issue created successfully');
     }
 
     /**

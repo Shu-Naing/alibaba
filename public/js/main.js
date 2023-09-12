@@ -1,3 +1,5 @@
+// const { start } = require("@popperjs/core");
+
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -593,7 +595,6 @@ function deleteOutDisValue(disPdID) {
   });
 }
 
-
 // hamburger menu
 $(".hamburger").on("click", function () {
   $(".left-sidebar").toggleClass("sidebar-close");
@@ -1003,6 +1004,84 @@ $("#open_outlet_id").change(function () {
   var selectedOption = $(this).find("option:selected");
   var outletName = selectedOption.text();
   generateadjcode(outletName);
-  
+});
 
+var deButton = $("#demagebutton");
+deButton.on("click", function (event) {
+  var dateInput = $("#date");
+  var demageOutletId = $("#demage_outlet_id");
+  var damageNo = $("#damage_no");
+  var name = $("#name");
+  // var amount = $("#amount");
+  // var openAction = $("#open_action");
+  var error = $("#error");
+  var openDistination = $("#open_distination");
+  var tableValue = $("#show_Product .detable tbody tr");
+  var errorBox = $(".errorbox");
+  if (
+    dateInput.val() &&
+    demageOutletId.val() &&
+    damageNo.val() &&
+    name.val() &&
+    // amount.val() &&
+    // openAction.val() &&
+    error.val() &&
+    openDistination.val() &&
+    tableValue.length > 0
+  ) {
+    $(this).submit();
+  } else {
+    event.preventDefault();
+    if (errorBox.html() === "") {
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    } else {
+      errorBox.html("");
+      errorBox
+        .append(
+          "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
+        )
+        .addClass("alert alert-danger");
+    }
+    if (dateInput.val() === "") {
+      // dateInput.addClass("is-invalid");
+      errorBox.append("Date field is required.<br/>");
+    }
+    if (demageOutletId.val() === "") {
+      // referenceInput.addClass("is-invalid");
+      errorBox.append("Outlet field is required.<br/>");
+    }
+    if (damageNo.val() === "") {
+      // fromOutletInput.addClass("is-invalid");
+      errorBox.append("Damage No field is required.<br/>");
+    }
+    if (name.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("Name field is required.<br/>");
+    }
+    // if (amount.val() === "") {
+    //   // toOutletInput.addClass("is-invalid");
+    //   errorBox.append("Compensation Amount field is required.<br/>");
+    // }
+    // if (openAction.val() === "") {
+    //   // toOutletInput.addClass("is-invalid");
+    //   errorBox.append("Action field is required.<br/>");
+    // }
+    if (error.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("Error field is required.<br/>");
+    }
+    if (openDistination.val() === "") {
+      // toOutletInput.addClass("is-invalid");
+      errorBox.append("Distination field is required.<br/>");
+    }
+    if (tableValue.length === 0) {
+      // searchInput.addClass("is-invalid");
+      errorBox.append("Product item is required.<br/>");
+    }
+    $(window).scrollTop(0);
+  }
 });
