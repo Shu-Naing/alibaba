@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 // const { start } = require("@popperjs/core");
 
-=======
->>>>>>> bdddc75580df5c2456553ec5c79affa4c0f4334b
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -597,7 +594,6 @@ function deleteOutDisValue(disPdID) {
     },
   });
 }
-
 
 // hamburger menu
 $(".hamburger").on("click", function () {
