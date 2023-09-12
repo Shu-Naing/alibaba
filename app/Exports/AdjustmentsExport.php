@@ -17,7 +17,7 @@ class AdjustmentsExport implements FromCollection, WithHeadings, WithMapping, Sh
     */
     function __construct($outlets, $adjustments){
 
-        $this->outlets = $outlets;
+        $this->outlets = getOutlets();
         $this->adjustments = $adjustments;
         $this->no = 0;
     }

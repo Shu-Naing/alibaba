@@ -386,6 +386,13 @@ class DistributeController extends Controller
             $distributes = $distributes->where('vouncher_no', $vouncher_no);
         }
 
+        $auth_outlet = Auth::user()->outlet_id;
+
+        if(is_outlet_user()){
+            $distributes = $distributes->orWhere('to_outlet', $auth_outlet);
+            $distributes = $distributes->orwhere('from_outlet', $auth_outlet);
+        }
+
         $distributes = $distributes->whereNotIn('to_outlet', [BODID, DEPID]);
 
         $distributes = $distributes->whereNotIn('from_outlet', [BODID, DEPID])->get();

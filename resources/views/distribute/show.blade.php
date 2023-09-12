@@ -77,8 +77,8 @@
 
             <div class="mr-0 my-5">
                 <a class="btn btn-blue" href="{{ route('distribute.index') }}">Back</a>
-                <button id="approvept" class="btn btn-success" onclick="updateStatus('approve','<?php echo $distribute['distribute']->id ?>');" @if($distribute['distribute']->status == 2) disabled @endif>Approve</button>
-                <button id="rejectpt" class="btn btn-danger" onclick="updateStatus('reject',<?php echo $distribute['distribute']->id ?>);"  @if($distribute['distribute']->status == 2) disabled @endif>Reject</button>
+                <button id="approvept" class="btn btn-success" onclick="updateStatus('approve','<?php echo $distribute['distribute']->id ?>');" @if($distribute['distribute']->status == 2 || $distribute['distribute']->status == 0) disabled @endif>Approve</button>
+                <button id="rejectpt" class="btn btn-danger" onclick="updateStatus('reject',<?php echo $distribute['distribute']->id ?>);"  @if($distribute['distribute']->status == 2 || $distribute['distribute']->status == 0) disabled @endif>Reject</button>
                 
                 <a class="btn btn-info" href="{{route('distribute.preview',$distribute['distribute']->id)}}">Preview</a>
             </div>
@@ -107,11 +107,8 @@
                         );
                     });
                 }
-
                 document.getElementById('approvept').disabled = true;
                 document.getElementById('rejectpt').disabled = true;
-              
-
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);

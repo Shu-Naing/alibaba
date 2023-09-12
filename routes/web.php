@@ -256,7 +256,12 @@ Route::group(['middleware' => ['auth','permission', 'web', 'checkSessionTimeout'
 
     //New Set Up section
 
-    Route::resource('countries', CountryController::class);
-    Route::resource('companies', CompanyController::class);
+    // Route::resource('countries', CountryController::class);
+    // Route::resource('companies', CompanyController::class);
+
+    Route::get('report/price-changed-history',[ReportController::class,'priceChangeHistory'])->name('report.price-changed-history');
+    Route::get('price-changed-history-export',[ReportController::class,'priceChangeHistoryExport'])->name('price-changed-history.export');
+    Route::post('price-changed-history-search',[SearchController::class,'priceChangeHistorySearch'])->name('price-changed-history.search');
+    Route::get('price-changed-history-reset',[SearchController::class,'priceChangeHistoryReset'])->name('price-changed-history.reset');
 });
 

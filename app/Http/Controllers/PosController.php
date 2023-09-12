@@ -38,6 +38,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'points'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
@@ -47,6 +48,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'tickets'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) use ($search_key) {
@@ -56,6 +58,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }
          }elseif($request->has('filter') && !$request->has('key')){
@@ -65,6 +68,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'points'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
@@ -72,6 +76,7 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }elseif($request->get('filter') === 'tickets'){
                 $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->whereHas('variation', function ($query) {
@@ -79,12 +84,17 @@ class PosController extends Controller
                 })
                 ->with('variation.product')
                 ->where('outlet_id', $user_outlet_id)
+                ->groupBy('outlet_item_id')
                 ->get();
             }
          }else{
             Session::forget('pos-success');
             Session::forget('pos-id');
-            $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')->with('variation','variation.product')->where('outlet_id',$user_outlet_id)->get();
+            $outlet_items = OutletItem::join('outlet_item_data', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')
+            ->with('variation', 'variation.product')
+            ->where('outlet_id', $user_outlet_id)
+            ->groupBy('outlet_item_id') // Group by outlet_id to get unique entries
+            ->get();
          }
         
         $user_id = Auth::user()->id;
@@ -175,12 +185,13 @@ class PosController extends Controller
         $pos->save();
 
         foreach($temps as $temp){
-            $input = [];
-            $input['pos_id'] = $pos->id;
-            $input['variation_id'] = $temp->variation_id;
-            $input['quantity'] = $temp->quantity;
-            $input['variation_value'] = $temp->variation_value;
-            $pos_item = Pos::create($input);
+
+            $pos_item = new PosItem;
+            $pos_item->pos_id = $pos->id;
+            $pos_item->variation_id = $temp->variation_id;
+            $pos_item->quantity = $temp->quantity;
+            $pos_item->variation_value = $temp->variation_value;
+            $pos_item->save();
 
             // OutletItem::where('outlet_id',$outlet_id)->where('variation_id',$temp->variation_id)->decrement('quantity', $temp->quantity);
             $outletItemData = outlet_item_data($outlet_id,$temp->variation_id);

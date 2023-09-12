@@ -29,6 +29,7 @@
             $payment_type = session()->get(SELL_PAYMENTTYPE_FILTER); 
             $from_date = session()->get(SELL_FROMDATE_FILTER); 
             $to_date = session()->get(SELL_TODATE_FILTER);
+            $outlet_id = session()->get(SELL_OUTLETID_FILTER);
         @endphp
 
         {!! Form::open([
@@ -53,6 +54,10 @@
                 <div class="col-md-2">
                     {!! Form::label('payment_type', 'Payment Type', ['class' => 'form-label']) !!}
                     {!! Form::select('payment_type', $payment_types, $payment_type, ['placeholder'=>'Choose..','class' => 'form-control']) !!}
+                </div>  
+                <div class="col-md-2">
+                    {!! Form::label('outlet_id', 'Outlet ID', ['class' => 'form-label']) !!}
+                    {!! Form::select('outlet_id', $outlets, $outlet_id, ['placeholder'=>'Choose..','class' => 'form-control']) !!}
                 </div>               
                 
                 <div class="col-md-4 d-flex align-items-end">
@@ -66,9 +71,12 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>Outlet</th>
                     <th>Invoice No</th>
+                    <th>Total Qty</th>
                     <th>Total</th>
                     <th>Payment Type</th>
+                    <th>User</th>
                     <th>Invoice Date</th>
                     <th>Action</th>
                 </tr>
@@ -80,9 +88,12 @@
                 @foreach ($posSellLists as $posSellList)
                     <tr>
                         <td>{{ ++$i }}</td>
+                        <td>{{ isset($outlets[$posSellList->outlet_id]) ? $outlets[$posSellList->outlet_id]: '' }}
                         <td>{{ $posSellList->invoice_no }}</td>
+                        <td>{{ $posSellList->quantity}}</td>
                         <td>{{ $posSellList->total }}</td>
                         <td>{{ $posSellList->payment_type }}</td>
+                        <td>{{ $posSellList->name}}</td>
                         <td>{{ $posSellList->created_at}}</td>
                         <td><a href="{{ route('sell.show',$posSellList->id) }}" class="mx-2">View</a></td>
                     </tr>

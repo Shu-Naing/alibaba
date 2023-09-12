@@ -16,7 +16,7 @@
             height: 60px;
         }
         input[type='search'],label{
-            display:none;
+           margin-bottom:5px;
         }
     </style>
 @endsection

@@ -15,6 +15,7 @@ class SellExport implements FromCollection, WithHeadings, WithMapping, ShouldAut
     function __construct($posSellLists){
         $this->posSellLists = $posSellLists;
         $this->no = 0;
+        $this->outlets = getOutlets();
         $this->payment_types = config('constants.payment_types');
     }
 
@@ -22,9 +23,12 @@ class SellExport implements FromCollection, WithHeadings, WithMapping, ShouldAut
     {
         $headings = [
             'No',
+            'Outlet',
             'Invoice No',
+            'Total Qty',
             'Total',
             'Payment Type',
+            'User',
             'Invoice Date'            
         ];
       
@@ -42,9 +46,12 @@ class SellExport implements FromCollection, WithHeadings, WithMapping, ShouldAut
     {
         $data = [
             ++$this->no,
+            $this->outlets[$posSellList->outlet_id],
             $posSellList->invoice_no,
+            $posSellList->quantity,
             $posSellList->total,
             $posSellList->payment_type,
+            $posSellList->name,
             $posSellList->created_at
         ];
 

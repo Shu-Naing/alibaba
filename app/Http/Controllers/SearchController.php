@@ -446,6 +446,22 @@ class SearchController extends Controller
         ]);
         return redirect()->route('distribute.index');
     }
+
+
+    function priceChangeHistorySearch(Request $request){
+        session()->start();
+        session()->put(PCH_ITEM_CODE_FILTER, $request->item_code);
+        session()->put(PCH_RECEIVED_DATE_FILTER, $request->received_date);
+        return redirect()->route('report.price-changed-history');
+    }
+
+    function priceChangeHistoryReset(){
+        session()->forget([
+            PCH_ITEM_CODE_FILTER,
+            PCH_RECEIVED_DATE_FILTER
+        ]);
+        return redirect()->route('report.price-changed-history');
+    }
     
     
 }
