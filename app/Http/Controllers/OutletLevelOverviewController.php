@@ -61,6 +61,8 @@ class OutletLevelOverviewController extends Controller
         }else{
             $outlets = getOutlets(true);
         }
+
+        // return $outletleveloverview;
         
         // return $outlets;
         return view("outletleveloverview.index", compact('outletleveloverview','outlets'));

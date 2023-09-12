@@ -462,6 +462,21 @@ class SearchController extends Controller
         ]);
         return redirect()->route('report.price-changed-history');
     }
+
+    function mainInvOutletOverviewSearch(Request $request){
+        session()->start();
+        session()->put(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER, $request->date);
+
+        return redirect()->route('main-outletleveloverview.index');
+    }
+
+    function mainInvOutletOverviewReset(){
+        session()->forget([
+            MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER,
+        ]);
+        return redirect()->route('main-outletleveloverview.index');
+    }
+
     
     
 }
