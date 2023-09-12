@@ -28,13 +28,13 @@ use App\Models\OutletItemData;
     define('BODID', 2);
     define('DEPID', 3);
 
-    define('DESTORYDONATION', '1');
-    define('DISPOSAL', '2');
-    define('REUSE', '3');
+    // define('DESTORYDONATION', '1');
+    // define('DISPOSAL', '2');
+    // define('REUSE', '3');
     
-    define('TOYSUPER', '1');
-    define('STORE', '2');
-    define('COUNTER', '3');
+    // define('TOYSUPER', '1');
+    // define('STORE', '2');
+    // define('COUNTER', '3');
 
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
@@ -86,7 +86,9 @@ use App\Models\OutletItemData;
     define('SELL_PAYMENTTYPE_FILTER', 'SELL_PAYMENTTYPE_FILTER');
     define('SELL_FROMDATE_FILTER','SELL_FROMDATE_FILTER'); 
     define('SELL_TODATE_FILTER','SELL_TODATE_FILTER'); 
-    define('SELL_OUTLETID_FILTER','SELL_OUTLETID_FILTER'); 
+    define('SELL_OUTLETID_FILTER','SELL_OUTLETID_FILTER');
+    
+    define('MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER','MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER');
     
 
     function getOutlets($isbod = false){
