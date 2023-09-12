@@ -13,10 +13,11 @@
                 @include('breadcrumbs')
             </div>
         </div>
-{{-- 
+        
         @php
-            $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
-        @endphp --}}
+            $received_date = session()->get(PCH_RECEIVED_DATE_FILTER);
+            $item_code = session()->get(PCH_ITEM_CODE_FILTER);
+        @endphp 
 
         {!! Form::open([
             'route' => 'price-changed-history.search',
@@ -27,11 +28,11 @@
             <div class="row mb-3 g-3">
                 <div class="col-md-3">
                     {!! Form::label('item_code', 'Item Code', ['class' => 'form-label']) !!}
-                    {{ Form::text('item_code', null, ['class' => 'form-control']) }}
+                    {{ Form::text('item_code', $item_code, ['class' => 'form-control']) }}
                 </div>
                 <div class="col-md-3">
                     {!! Form::label('received_date', 'Received Date', ['class' => 'form-label']) !!}
-                    {{ Form::date('received_date', null, ['class' => 'form-control']) }}
+                    {{ Form::date('received_date', $received_date, ['class' => 'form-control']) }}
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-blue ms-2">Search</button>
