@@ -63,7 +63,7 @@ Route::get('/', function () {
 Auth::routes();
   
 
-Route::group(['middleware' => ['auth','permission', 'web', 'checkSessionTimeout']], function() {
+Route::group(['middleware' => ['auth','permission', 'web']], function() {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);

@@ -20,7 +20,8 @@ class PermissionMiddleware
         $authGuard = app('auth')->guard($guard);
 
         if ($authGuard->guest()) {
-            throw UnauthorizedException::notLoggedIn();
+            return redirect('/');
+            // throw UnauthorizedException::notLoggedIn();
         }
 
         if (! is_null($permission)) {
@@ -42,6 +43,7 @@ class PermissionMiddleware
             }
         }
 
-        throw UnauthorizedException::forPermissions($permissions);
+        return redirect('/home');
+        // throw UnauthorizedException::forPermissions($permissions);
     }
 }

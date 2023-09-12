@@ -8,7 +8,7 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">Create Damage</h4>
+            <h4 class="fw-bolder mb-3">Create Demage</h4>
             <div>
                 @include('breadcrumbs')
             </div>
@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-md-4">
                         {!! Form::label('damage_no', 'Damage No', array('class' => 'form-label'.($errors->has('damage_no') ? ' text-danger' : ''))) !!}
-                        {{ Form::text('damage_no', null, ['class' => 'form-control' . ($errors->has('damage_no') ? ' is-invalid' : ''), 'id' => 'damage_no','readonly']) }}
+                        {{ Form::text('damage_no', null, ['class' => 'form-control' . ($errors->has('damage_no') ? ' is-invalid' : ''), 'id' => 'damage_no']) }}
                         @error('damage_no')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -62,14 +62,14 @@
                     </div>
                     <div class="col-md-4">
                         {!! Form::label('amount', 'Compensation Amount', ['class' => 'form-label'.($errors->has('amount') ? ' text-danger' : '')]) !!}
-                        {!! Form::number('amount', null, ['class' => 'form-control'. ($errors->has('amount') ? ' is-invalid' : ''), 'id' => 'amount']) !!}
+                        {!! Form::number('amount', null, ['class' => 'form-control'. ($errors->has('amount') ? ' is-invalid' : ''), 'id' => 'amount', (is_outlet_user()) ? '' : 'disabled']) !!}
                         @error('amount')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-4">
                         {!! Form::label('action', 'Action', array('class' => 'form-label'. ($errors->has('action') ? ' text-danger' : ''))) !!}
-                        {!! Form::select('action', $action, null, array('placeholder' => 'Choose...', 'class' => 'form-control' . ($errors->has('action') ? ' is-invalid' : ''),'id'=>'open_action')) !!}
+                        {!! Form::text('action', null, array('class' => 'form-control' . ($errors->has('action') ? ' is-invalid' : ''),'id'=>'open_action', (is_outlet_user()) ? '' : 'disabled')) !!}
                         @error('action')
                             <span class="text-danger">{{ $message }}</span> 
                         @enderror
@@ -83,7 +83,7 @@
                     </div>
                     <div class="col-md-4">
                         {!! Form::label('distination', 'Distination', array('class' => 'form-label'. ($errors->has('distination') ? ' text-danger' : ''))) !!}
-                        {!! Form::select('distination', $distination, null, array('placeholder' => 'Choose...', 'class' => 'form-control' . ($errors->has('distination') ? ' is-invalid' : ''),'id'=>'open_distination')) !!}
+                        {!! Form::text('distination', null, array('class' => 'form-control' . ($errors->has('distination') ? ' is-invalid' : ''),'id'=>'open_distination')) !!}
                         @error('distination')
                             <span class="text-danger">{{ $message }}</span> 
                         @enderror

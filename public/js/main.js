@@ -1013,20 +1013,19 @@ deButton.on("click", function (event) {
   var demageOutletId = $("#demage_outlet_id");
   var damageNo = $("#damage_no");
   var name = $("#name");
-  var amount = $("#amount");
-  var openAction = $("#open_action");
+  // var amount = $("#amount");
+  // var openAction = $("#open_action");
   var error = $("#error");
   var openDistination = $("#open_distination");
   var tableValue = $("#show_Product .detable tbody tr");
-  var searchInput = $("#searchInput");
   var errorBox = $(".errorbox");
   if (
     dateInput.val() &&
     demageOutletId.val() &&
     damageNo.val() &&
     name.val() &&
-    amount.val() &&
-    openAction.val() &&
+    // amount.val() &&
+    // openAction.val() &&
     error.val() &&
     openDistination.val() &&
     tableValue.length > 0
@@ -1050,27 +1049,35 @@ deButton.on("click", function (event) {
     }
     if (dateInput.val() === "") {
       // dateInput.addClass("is-invalid");
-      errorBox.append("The date field is required.<br/>");
+      errorBox.append("Date field is required.<br/>");
     }
     if (demageOutletId.val() === "") {
       // referenceInput.addClass("is-invalid");
-      errorBox.append("The date outlet id field is required.<br/>");
+      errorBox.append("Outlet field is required.<br/>");
     }
     if (damageNo.val() === "") {
       // fromOutletInput.addClass("is-invalid");
-      errorBox.append("From damage no field is required.<br/>");
+      errorBox.append("Damage No field is required.<br/>");
     }
     if (name.val() === "") {
       // toOutletInput.addClass("is-invalid");
-      errorBox.append("To name field is required.<br/>");
+      errorBox.append("Name field is required.<br/>");
     }
-    if (name.val() === "") {
+    // if (amount.val() === "") {
+    //   // toOutletInput.addClass("is-invalid");
+    //   errorBox.append("Compensation Amount field is required.<br/>");
+    // }
+    // if (openAction.val() === "") {
+    //   // toOutletInput.addClass("is-invalid");
+    //   errorBox.append("Action field is required.<br/>");
+    // }
+    if (error.val() === "") {
       // toOutletInput.addClass("is-invalid");
-      errorBox.append("To name field is required.<br/>");
+      errorBox.append("Error field is required.<br/>");
     }
-    if (name.val() === "") {
+    if (openDistination.val() === "") {
       // toOutletInput.addClass("is-invalid");
-      errorBox.append("To name field is required.<br/>");
+      errorBox.append("Distination field is required.<br/>");
     }
     if (tableValue.length === 0) {
       // searchInput.addClass("is-invalid");

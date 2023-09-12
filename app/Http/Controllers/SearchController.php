@@ -242,7 +242,7 @@ class SearchController extends Controller
         session()->put(DA_TODATE_FILTER, $request->toDate);
         session()->put(DA_DAMAGE_FILTER, $request->damage_no);
         session()->put(DA_OUTLETID_FILTER, $request->outletId);
-        session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
+        // session()->put(DA_ITEMCODE_FILTER, $request->itemCode);
         return redirect()->route('damage.index');
     }
 
