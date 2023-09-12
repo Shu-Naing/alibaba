@@ -45,6 +45,10 @@
                     <th>Outlet</th>
                     <th>Date</th>
                     <th>Item Code</th>
+                    <th>Image</th>
+                    <th>Size</th>
+                    <th>Unit</th>
+                    <th>Category</th>
                     <th>Quantity</th>
                     <th>Recieved/Issued</th>
                     <th>Branch</th>                    
@@ -62,6 +66,10 @@
                         <td>{{ get_outlet_name($history->outlet_id) }}</td> 
                         <td>{{ $history->date }}</td>
                         <td>{{ $history->item_code }}</td>
+                        <td> <img src = "{{asset('storage/' . $history->image)}}" alt="images"/></td>                        
+                        <td>{{ isset($size_variants[$history->size_variant_value]) ? $size_variants[$history->size_variant_value] : ''}}
+                        <td>{{ isset($units[$history->unit_id]) ? $units[$history->unit_id] : ''}}
+                        <td>{{ isset($categories[$history->category_id]) ? $categories[$history->category_id] : ''}}
                         <td>{{ $history->quantity }}</td>
                         <td>{{ $types[$history->type] }}</td>
                         <td>{{ $history->branch }}</td>

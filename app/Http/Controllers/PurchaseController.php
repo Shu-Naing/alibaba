@@ -11,7 +11,10 @@ use App\Exports\PurchaseAddExport;
 use App\Imports\PurchaseAddImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\PurchasedPriceHistory;
+use App\Models\Variation;
+use App\Models\OutletLevelOverview;
 use App\Exports\PurchaseAddSampleExport;
+
 
 class PurchaseController extends Controller
 {
@@ -75,6 +78,8 @@ class PurchaseController extends Controller
             $total = $request->purchased_price[$id] * $request->quantity[$id];
             // return $total;
 
+            $item_code = Variation::select('item_code')->where('id',$id)->value('item_code');
+
             if ($outlet_item_id) {
                 OutletItemData::create([
                     'outlet_item_id' => $outlet_item_id->id,
@@ -101,6 +106,36 @@ class PurchaseController extends Controller
                     'received_date' => $request->received_date,
                     'created_by' => Auth::user()->id,
                 ]);
+
+                $month = date('n',strtotime($request->received_date));
+                $year = date('Y',strtotime($request->received_date));
+
+                // add main inv balance when do purchase
+                $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                ->join('variations','variations.item_code','outlet_level_overviews.item_code')
+                ->where('outlet_level_overviews.outlet_id',MAIN_INV_ID) 
+                ->where('variations.id',$id)
+                ->whereMonth('date',$month)
+                ->whereYear('date',$year)->first();
+
+                if($outletleveloverview){ 
+                    $received_qty = $outletleveloverview->receive_qty + $request->quantity[$id];    
+                    $input = [];
+                    $input['receive_qty'] = $received_qty;
+                    $input['balance'] = ($outletleveloverview->opening_qty + $received_qty) - $outletleveloverview->issued_qty;
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletleveloverview->update($input);
+                }else {                
+                    $input = [];
+                    $input['date'] = $request->received_date;
+                    $input['outlet_id'] = MAIN_INV_ID;
+                    $input['item_code'] = $item_code;
+                    $input['receive_qty'] = $request->quantity[$id];
+                    $input['balance'] = (0 + 0) - $request->quantity[$id];
+                    $input['created_by'] = Auth::user()->id;
+                    OutletLevelOverview::create($input);
+                }
+
             } else {
                 return redirect()->back()->with('errorPurchase', 'Item is require, You need to add item.');
             }

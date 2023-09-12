@@ -11,6 +11,8 @@ use App\Models\OutletItemData;
     use App\Models\MachineVariant;    
     use App\Models\SizeVariant;    
     use App\Models\User;    
+    use App\Models\Categories;
+    use App\Models\Units;
 
     define('DS_REJECT', '0');
     define('DS_PENDING', '1');
@@ -388,6 +390,30 @@ use App\Models\OutletItemData;
         }
     }
 
+    function getCategories(){
+        $categories_arr = [];
 
+        $categories = Categories::all();
+        if($categories){
+            foreach($categories as $category){
+                $categories_arr[$category->id] = $category->category_name;
+            }
+        }
+
+        return $categories_arr;
+    }
+
+    function getUnits(){
+        $units_arr = [];
+
+        $units = Units::all();
+        if($units){
+            foreach($units as $unit){
+                $units_arr[$unit->id] = $unit->name;
+            }
+        }
+
+        return $units_arr;
+    }
 
 ?>
