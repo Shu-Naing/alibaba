@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 // const { start } = require("@popperjs/core");
 
+=======
+>>>>>>> bdddc75580df5c2456553ec5c79affa4c0f4334b
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -595,6 +598,7 @@ function deleteOutDisValue(disPdID) {
   });
 }
 
+
 // hamburger menu
 $(".hamburger").on("click", function () {
   $(".left-sidebar").toggleClass("sidebar-close");
@@ -1006,7 +1010,6 @@ $("#open_outlet_id").change(function () {
   generateadjcode(outletName);
 });
 
-// damage validation start
 var deButton = $("#demagebutton");
 deButton.on("click", function (event) {
   var dateInput = $("#date");
@@ -1086,4 +1089,3 @@ deButton.on("click", function (event) {
     $(window).scrollTop(0);
   }
 });
-// damage validation end

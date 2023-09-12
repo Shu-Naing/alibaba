@@ -37,6 +37,7 @@ use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletLevelOverviewController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
+use App\Http\Controllers\MainOutletLevelOverviewController;
 
 
 /*
@@ -84,6 +85,7 @@ Route::group(['middleware' => ['auth','permission', 'web']], function() {
     Route::resource('outlet-stock-overview', OutletStockOverviewController::class);
     Route::resource('outletstockhistory', OutletStockHistoryController::class);
     Route::resource('outletleveloverview', OutletLevelOverviewController::class);
+    
     Route::resource('size-variant', SizeVariantController::class);
     Route::resource('stockalert', PosItemAlertController::class);
     Route::resource('adjustment', AdjustmentController::class);
@@ -263,5 +265,11 @@ Route::group(['middleware' => ['auth','permission', 'web']], function() {
     Route::get('price-changed-history-export',[ReportController::class,'priceChangeHistoryExport'])->name('price-changed-history.export');
     Route::post('price-changed-history-search',[SearchController::class,'priceChangeHistorySearch'])->name('price-changed-history.search');
     Route::get('price-changed-history-reset',[SearchController::class,'priceChangeHistoryReset'])->name('price-changed-history.reset');
+
+    
+    Route::get('main-outletleveloverview',[MainOutletLevelOverviewController::class,'index'])->name('main-outletleveloverview.index');
+    Route::get('main-outletleveloverview-export',[MainOutletLevelOverviewController::class,'export'])->name('main-outletleveloverview.export');
+    Route::post('main-outletleveloverview-search',[SearchController::class,'mainInvOutletOverviewSearch'])->name('main-outletleveloverview.search');
+    Route::get('main-outletleveloverview-reset',[SearchController::class,'mainInvOutletOverviewReset'])->name('main-outletleveloverview.reset');
 });
 

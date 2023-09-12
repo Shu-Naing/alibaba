@@ -296,6 +296,15 @@
                                     </a>
                                 </li>
                             @endcan
+                            @can('report.price-changed-history')
+                                <li class="w-100 sidebar-item">
+                                    <a href="{{ route('report.price-changed-history') }}"
+                                        class="nav-link sidebar-link {{ Route::is('report.price-changed-history') ? 'active' : '' }}">
+                                        <hr>
+                                        <span class="d-none d-sm-inline">Changed Price History</span>
+                                    </a>
+                                </li>
+                            @endcan
                         </ul>
                     </li>
                 @endif
@@ -394,6 +403,16 @@
                                 class="nav-link sidebar-link {{ Route::is('outletleveloverview.index') ? 'active' : '' }}">
                                 <hr>
                                 <span class="d-none d-sm-inline text-wrap">Outlet Stock Overview (Store)</span>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('main-outletleveloverview.index')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('main-outletleveloverview.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('main-outletleveloverview.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Main Inventory Outlet Stock Overview</span>
                             </a>
                         </li>
                         @endcan
