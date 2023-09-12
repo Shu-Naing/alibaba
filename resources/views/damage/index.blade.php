@@ -8,7 +8,7 @@
 @section('cardbody')
     <div class="container-fluid main-content mb-5">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">List Damages</h4>
+            <h4 class="fw-bolder mb-3">List Demages</h4>
             <div>
                 @include('breadcrumbs')
             </div>
@@ -58,10 +58,10 @@
                     {!! Form::label('outletId', 'Location', ['class' => 'form-label']) !!}
                     {!! Form::select('outletId',$outlets, $outlet_id, ['placeholder'=>'Choose..','class' => 'form-control', 'id' => 'outletId']) !!}
                 </div>
-                <div class="col-md-2">
+                <!-- <div class="col-md-2">
                     {!! Form::label('itemCode', 'Product Code', ['class' => 'form-label']) !!}
                     {{ Form::text('itemCode', $itemCode, ['class' => 'form-control']) }}
-                </div>
+                </div> -->
                 
                 <div class="col-md-2 d-flex align-items-end">
                     <button type="submit" class="btn btn-blue ms-2">Search</button>
@@ -83,19 +83,20 @@
                     <th>Date</th>
                     <th>Damage No</th>
                     <th>Location</th>
-                    <th>Product Code</th>
-                    <th>Point</th>
-                    <th>Ticket</th>
-                    <th>Kyat</th>
-                    <th>Purchase Price</th>
-                    <th>Qty</th>
-                    <th>Total Amount</th>
-                    <th>Reason</th>
+                    <!-- <th>Product Code</th> -->
+                    <!-- <th>Point</th> -->
+                    <!-- <th>Ticket</th> -->
+                    <!-- <th>Kyat</th> -->
+                    <!-- <th>Purchase Price</th> -->
+                    <!-- <th>Qty</th> -->
+                    <!-- <th>Total Amount</th> -->
+                    <!-- <th>Reason</th> -->
                     <th>Name</th>
                     <th>Compensation Amount</th>
                     <th>Action</th>
                     <th>Error</th>
                     <th>Distination</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -108,20 +109,21 @@
                         <td>{{ date("M",strtotime($damage->date)) }}</td>
                         <td>{{ $damage->date }}</td>
                         <td>{{ $damage->damage_no }}</td>
-                         <td>{{ get_outlet_name($damage->outlet_id) }}</td>
-                        <td>{{ $damage->item_code }}</td>
+                        <td>{{ get_outlet_name($damage->outlet_id) }}</td>
+                        <!-- <td>{{ $damage->item_code }}</td>
                         <td>{{ $damage->point }}</td>
                         <td>{{ $damage->ticket }}</td>
                         <td>{{ $damage->kyat }}</td>
                         <td>{{ $damage->purchase_price }}</td>
                         <td>{{ $damage->quantity }}</td>
                         <td>{{ $damage->total }}</td>
-                        <td>{{ $damage->reason }}</td>
+                        <td>{{ $damage->reason }}</td> -->
                         <td>{{ $damage->name }}</td>
                         <td>{{ $damage->amount }}</td>
-                        <td>{{ isset($action[$damage->action]) ? $action[$damage->action] : '' }}</td>
+                        <td>{{ isset($damage->action) ? $damage->action : '' }}</td>
                         <td>{{ $damage->error }}</td>
-                        <td>{{ isset($distination[$damage->distination]) ? $distination[$damage->distination] : '' }}</td>
+                        <td>{{ isset($damage->distination) ? $damage->distination : '' }}</td>
+                        <td><a href="{{ route('damage.edit',$damage->id) }}" class="mx-2">View</a></td>
                     </tr>
                 @endforeach
             </tbody>

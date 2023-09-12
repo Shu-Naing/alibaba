@@ -44,7 +44,6 @@ class PermissionMiddleware
         }
 
         return redirect('/home');
-
         // throw UnauthorizedException::forPermissions($permissions);
     }
 }

@@ -26,7 +26,8 @@ class TestController extends Controller
 
     public function test()
     {
-        return view('testing.test');
+        dd('This is a test.');
+        // return view('testing.test');
     }
 
     public function testform(Request $request)
