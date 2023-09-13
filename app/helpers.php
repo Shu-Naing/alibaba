@@ -11,6 +11,8 @@ use App\Models\OutletItemData;
     use App\Models\MachineVariant;    
     use App\Models\SizeVariant;    
     use App\Models\User;    
+    use App\Models\Categories;
+    use App\Models\Units;
 
     define('DS_REJECT', '0');
     define('DS_PENDING', '1');
@@ -25,14 +27,8 @@ use App\Models\OutletItemData;
     define('MAINOUTLETID', 1);
     define('BODID', 2);
     define('DEPID', 3);
-
-    // define('DESTORYDONATION', '1');
-    // define('DISPOSAL', '2');
-    // define('REUSE', '3');
-    
-    // define('TOYSUPER', '1');
-    // define('STORE', '2');
-    // define('COUNTER', '3');
+    define('ADJ_RECIEVE','1');
+    define('ADJ_LOSS','2');
 
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');
@@ -96,6 +92,9 @@ use App\Models\OutletItemData;
     define('SELL_OUTLETID_FILTER','SELL_OUTLETID_FILTER');
     
     define('MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER','MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER');
+    define('MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER','MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER');
+
+    
     
 
     function getOutlets($isbod = false){
@@ -399,6 +398,30 @@ use App\Models\OutletItemData;
         }
     }
 
+    function getCategories(){
+        $categories_arr = [];
 
+        $categories = Categories::all();
+        if($categories){
+            foreach($categories as $category){
+                $categories_arr[$category->id] = $category->category_name;
+            }
+        }
+
+        return $categories_arr;
+    }
+
+    function getUnits(){
+        $units_arr = [];
+
+        $units = Units::all();
+        if($units){
+            foreach($units as $unit){
+                $units_arr[$unit->id] = $unit->name;
+            }
+        }
+
+        return $units_arr;
+    }
 
 ?>

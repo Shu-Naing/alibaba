@@ -17,7 +17,6 @@ class ProductsSampleExport implements WithHeadings , ShouldAutoSize{
             'Product Name',
             'Image Name',
             'Barcode',
-            'Product Code',
             'Description',
             'Point',
             'Ticket',

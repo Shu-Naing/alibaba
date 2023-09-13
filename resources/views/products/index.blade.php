@@ -64,9 +64,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Product Name</th>
-                    <th>SKU</th>
-                    <th>Product Code</th>
-                    <th>Product Code</th>
+                    <td>Item Code</th>
+                    <td>Image</th>
                     <th>Brand</th>
                     <th>Category</th>
                     <th>Unit</th>
@@ -85,9 +84,8 @@
                     <tr>
                         <td>{{ $no++ }}</td>
                         <td>{{ $product->product_name }}</td>
-                        <td>{{ $product->sku }}</td>
-                        <td>{{ $product->product_code }}</td>
-                        <td>{{ $product->product_code }}</td>
+                        <td>{{ isset($product->variations) ? $product->variations[0]->item_code : '' }}</td>                        
+                        <td><img src="{{ isset($product->variations) ? asset('storage/' . $product->variations[0]->image) : '' }}" alt="image"></td>
                         <td>{{ $product->brand->brand_name }}</td>
                         <td>{{ $product->category->category_name }}</td>
                         <td>{{ $product->unit->name }}</td>

@@ -42,13 +42,10 @@ class ReportController extends Controller
             ->with('sizeVariant')->get();
         }
 
-        // return $reports;
-        // return $reports;
-
         if($login_user_role == 'Outlet'){
             $outlets = Outlets::with('machines')->where('id',$login_user_outlet_id)->get();
         }else{
-            $outlets = Outlets::with('machines')->where('id','!=',1)->get();
+            $outlets = Outlets::with('machines')->where('id','!=',DEPID)->where('id','!=',BODID)->where('id','!=',MAINOUTLETID)->get();
         }
         // return $outlets;
         return view('reports.products',compact("reports","outlets", 'breadcrumbs'));
@@ -100,10 +97,13 @@ class ReportController extends Controller
             'oso.*',
             'oi.id as outlet_item_id',
             'oid.points','oid.tickets','oid.kyat','oid.purchased_price',
-            'machines.name'
+            'machines.name',
+            'variations.image','variations.size_variant_value',
+            'products.unit_id','products.category_id'
         )
         ->join('machines', 'machines.id', '=', 'oso.machine_id')
         ->join('variations', 'variations.item_code', '=', 'oso.item_code')
+        ->join('products', 'products.id', '=', 'variations.product_id')
         ->join('outlet_items as oi', 'oi.variation_id', '=', 'variations.id')
         ->join(DB::raw('(SELECT oid1.*
                         FROM outlet_item_data oid1
@@ -139,8 +139,13 @@ class ReportController extends Controller
         }
 
         $outletstockoverviews = $outletstockoverviews->get();
+
+        $size_variants = getSizeVariants();
+        $units = getUnits();
+        $categories = getCategories();
        
-        return view('reports.outletstockoverview', compact('outletstockoverviews', 'breadcrumbs', 'outlets', 'machines'));
+        return view('reports.outletstockoverview', compact('outletstockoverviews', 'breadcrumbs', 'outlets', 'machines','size_variants','units',
+    'categories'));
     }
     
     public function exportOutletstockoverview() {

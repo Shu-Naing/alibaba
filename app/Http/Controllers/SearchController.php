@@ -487,6 +487,20 @@ class SearchController extends Controller
         return redirect()->route('main-outletleveloverview.index');
     }
 
+    function mainOutletlevelhistorySearch(Request $request){
+        session()->start();
+        session()->put(MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER, $request->date);
+
+        return redirect()->route('main-outletlevelhistory.index');
+    }
+
+    function mainOutletlevelhistoryReset(){
+        session()->forget([
+            MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER,
+        ]);
+        return redirect()->route('main-outletlevelhistory.index');
+    }
+
     
     
 }
