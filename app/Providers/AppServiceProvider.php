@@ -78,7 +78,7 @@ class AppServiceProvider extends ServiceProvider
         });
         view()->composer('damage.*',function($view){      
             $view->with('action',config('constants.action'));           
-            $view->with('distination',config('constants.distination'));           
+            $view->with('distination',config('constants.distination'));          
         });
         view()->composer('purchase.*',function($view){      
             $view->with('countries',config('constants.countries'));          

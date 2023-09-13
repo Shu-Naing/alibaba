@@ -89,6 +89,8 @@ class ReportController extends Controller
 
         $outlet_id = session()->get(OUTLET_STOCK_OVERVIEW_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_OVERVIEW_MACHINE_FILTER);
+        $from_date = session()->get(OUTLET_STOCK_OVERVIEW_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_STOCK_OVERVIEW_TO_DATE_FILTER);
 
         $outlets = getFromOutlets(true);
         $machines = getMachines();
@@ -124,6 +126,12 @@ class ReportController extends Controller
         }
         if($machine_id) {
             $outletstockoverviews = $outletstockoverviews->where('oso.machine_id', $machine_id);
+        }
+        if($from_date) {
+            $outletstockoverviews = $outletstockoverviews->where('oso.date', '>=', $from_date);
+        }
+        if($to_date) {
+            $outletstockoverviews = $outletstockoverviews->where('oso.date', '<=', $to_date);
         }
 
         if($login_user_role == 'Outlet'){
@@ -141,6 +149,8 @@ class ReportController extends Controller
 
         $outlet_id = session()->get(OUTLET_STOCK_OVERVIEW_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_OVERVIEW_MACHINE_FILTER);
+        $from_date = session()->get(OUTLET_STOCK_OVERVIEW_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_STOCK_OVERVIEW_TO_DATE_FILTER);
 
         $outlets = getFromOutlets(true);
         $machines = getMachines();
@@ -177,6 +187,12 @@ class ReportController extends Controller
         if($machine_id) {
             $outletstockoverviews = $outletstockoverviews->where('oso.machine_id', $machine_id);
         }
+        if($from_date) {
+            $outletstockoverviews = $outletstockoverviews->where('oso.date', '>=', $from_date);
+        }
+        if($to_date) {
+            $outletstockoverviews = $outletstockoverviews->where('oso.date', '<=', $to_date);
+        }
 
         if($login_user_role == 'Outlet'){
             $outletstockoverviews = $outletstockoverviews->where('oso.outlet_id', $login_user_outlet_id);
@@ -188,15 +204,20 @@ class ReportController extends Controller
     }
 
     public function search(Request $request){
+        // return $request;
         session()->start();
         session()->put('OUTLET_STOCK_OVERVIEW_OUTLET_FILTER', $request->outlet_id);
         session()->put('OUTLET_STOCK_OVERVIEW_MACHINE_FILTER', $request->machine_id);
+        session()->put('OUTLET_STOCK_OVERVIEW_FROM_DATE_FILTER', $request->fromDate);
+        session()->put('OUTLET_STOCK_OVERVIEW_TO_DATE_FILTER', $request->toDate);
         return redirect()->route('report.outletstockoverview');
     }
 
     public function reset(){
         session()->forget('OUTLET_STOCK_OVERVIEW_OUTLET_FILTER');
         session()->forget('OUTLET_STOCK_OVERVIEW_MACHINE_FILTER');
+        session()->forget('OUTLET_STOCK_OVERVIEW_FROM_DATE_FILTER');
+        session()->forget('OUTLET_STOCK_OVERVIEW_TO_DATE_FILTER');
         return redirect()->route('report.outletstockoverview');
     }
 
@@ -275,7 +296,7 @@ class ReportController extends Controller
         $item_code = session()->get(PCH_ITEM_CODE_FILTER);
 
         $price_changed_histories = PurchasedPriceHistory::select('purchased_price_histories.variation_id','purchased_price_histories.points','purchased_price_histories.tickets',
-        'purchased_price_histories.kyat','purchased_price_histories.purchased_price','variations.item_code',DB::raw('MAX(received_date) as received_date'))
+        'purchased_price_histories.kyat','purchased_price_histories.purchased_price','variations.item_code','purchased_price_histories.created_at',DB::raw('MAX(received_date) as received_date'))
         ->join('variations','purchased_price_histories.variation_id','=','variations.id')
         ->groupBy('purchased_price_histories.variation_id')
         ->groupBy('purchased_price_histories.points')

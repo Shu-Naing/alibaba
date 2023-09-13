@@ -52,6 +52,7 @@
                     <th>Ticket</th>
                     <th>Kyat</th>
                     <th>Received Date</th>                    
+                    <th>Changed Date</th>                    
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@
                         <td>{{ $price_changed_history->tickets }}</td>
                         <td>{{ $price_changed_history->kyat }}</td>
                         <td>{{ $price_changed_history->received_date }}</td>
+                        <td>{{ $price_changed_history->created_at->format('Y-m-d') }}</td>
                     </tr>
                 @endforeach
             </tbody>

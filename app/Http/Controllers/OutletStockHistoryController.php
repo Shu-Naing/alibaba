@@ -21,6 +21,8 @@ class OutletStockHistoryController extends Controller
 
         $outlet_id = session()->get(OUTLET_STOCK_HISTORY_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_HISTORY_MACHINE_FILTER);
+        $from_date = session()->get(OUTLET_STOCK_HISTORY_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_STOCK_HISTORY_TO_DATE_FILTER);
 
         $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.short_name as unit_name')
                     ->join('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
@@ -33,6 +35,12 @@ class OutletStockHistoryController extends Controller
         }
         if($machine_id) {
             $histories = $histories->where('machines.id', $machine_id);
+        }
+        if($from_date) {
+            $histories = $histories->where('outlet_stock_histories.date', '>=', $from_date);
+        }
+        if($to_date) {
+            $histories = $histories->where('outlet_stock_histories.date', '<=', $to_date);
         }
 
         if($login_user_role == 'Outlet'){
@@ -53,6 +61,8 @@ class OutletStockHistoryController extends Controller
         $login_user_outlet_id = Auth::user()->outlet_id;
         $outlet_id = session()->get(OUTLET_STOCK_HISTORY_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_HISTORY_MACHINE_FILTER);
+        $from_date = session()->get(OUTLET_STOCK_HISTORY_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_STOCK_HISTORY_TO_DATE_FILTER);
 
         $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.short_name as unit_name')
                     ->join('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
@@ -65,6 +75,12 @@ class OutletStockHistoryController extends Controller
         }
         if($machine_id) {
             $histories = $histories->where('machines.id', $machine_id);
+        }
+        if($from_date) {
+            $histories = $histories->where('outlet_stock_histories.date', '>=', $from_date);
+        }
+        if($to_date) {
+            $histories = $histories->where('outlet_stock_histories.date', '<=', $to_date);
         }
 
         if($login_user_role == 'Outlet'){
@@ -93,15 +109,20 @@ class OutletStockHistoryController extends Controller
     }
 
     public function search(Request $request){
+        // return $request;
         session()->start();
         session()->put('OUTLET_STOCK_HISTORY_OUTLET_FILTER', $request->outlet_id);
         session()->put('OUTLET_STOCK_HISTORY_MACHINE_FILTER', $request->machine_id);
+        session()->put('OUTLET_STOCK_HISTORY_FROM_DATE_FILTER', $request->fromDate);
+        session()->put('OUTLET_STOCK_HISTORY_TO_DATE_FILTER', $request->toDate);
         return redirect()->route('outletstockhistory.index');
     }
 
     public function reset(){
         session()->forget('OUTLET_STOCK_HISTORY_OUTLET_FILTER');
         session()->forget('OUTLET_STOCK_HISTORY_MACHINE_FILTER');
+        session()->forget('OUTLET_STOCK_HISTORY_FROM_DATE_FILTER');
+        session()->forget('OUTLET_STOCK_HISTORY_TO_DATE_FILTER');
         return redirect()->route('outletstockhistory.index');
     }
 }
