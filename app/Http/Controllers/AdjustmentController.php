@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Outlets;
 use App\Models\Adjustment;
 use App\Models\OutletItemData;
-use Auth;
+use App\Models\OutletLevelOverview;
 use App\Exports\AdjustmentsExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Auth;
 
 class AdjustmentController extends Controller
 {
@@ -89,7 +90,7 @@ class AdjustmentController extends Controller
 
         $inputs = $request->all();
         $inputs['created_by'] = Auth::user()->id;
-        Adjustment::create($inputs);
+        $adjustment = Adjustment::create($inputs);
 
         $outlet_item_data = OutletItemData::select('outlet_item_data.id','outlet_item_data.quantity')
         ->join('outlet_items', 'outlet_item_data.outlet_item_id', '=', 'outlet_items.id')
@@ -101,10 +102,68 @@ class AdjustmentController extends Controller
         ->first();
 
         if ($outlet_item_data) {
-            if($request->type === '1') {
+            if($request->type == ADJ_RECIEVE) {
+
                 $updateQuantity = $outlet_item_data->quantity + intval($request->adjustment_qty);
+
+                // update outlet stock overview
+                $month = date('n',strtotime($adjustment->date));
+                $year = date('Y',strtotime($adjustment->date));
+
+                $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                ->where('outlet_id',$request->outlet_id)
+                ->where('item_code',$request->item_code)
+                ->whereMonth('date',$month)
+                ->whereYear('date',$year)->first();
+
+                if($outletleveloverview){ 
+                    $receive_qty = $outletleveloverview->receive_qty + $request->adjustment_qty;    
+                    $input = [];
+                    $input['receive_qty'] = $receive_qty;
+                    $input['balance'] = ($outletleveloverview->opening_qty + $receive_qty) - $outletleveloverview->issued_qty;
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletleveloverview->update($input);
+                }else {                
+                    $input = [];
+                    $input['date'] = $adjustment->date;
+                    $input['outlet_id'] = $outlet_id;
+                    $input['item_code'] = $item_code;
+                    $input['receive_qty'] = $request->adjustment_qty;
+                    $input['balance'] = (0 + 0) - $request->adjustment_qty;
+                    $input['created_by'] = Auth::user()->id;
+                    OutletLevelOverview::create($input);
+                }
             }else {
+
                 $updateQuantity = $outlet_item_data->quantity - intval($request->adjustment_qty);
+
+                // update outlet stock overview (loss so issued)
+                $month = date('n',strtotime($adjustment->date));
+                $year = date('Y',strtotime($adjustment->date));
+
+                $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+                ->where('outlet_id',$request->outlet_id)
+                ->where('item_code',$request->item_code)
+                ->whereMonth('date',$month)
+                ->whereYear('date',$year)->first();
+
+                if($outletleveloverview){ 
+                    $issued_qty = $outletleveloverview->issued_qty + $request->adjustment_qty;    
+                    $input = [];
+                    $input['issued_qty'] = $issued_qty;
+                    $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
+                    $input['updated_by'] = Auth::user()->id;
+                    $outletleveloverview->update($input);
+                }else {                
+                    $input = [];
+                    $input['date'] = $adjustment->date;
+                    $input['outlet_id'] = $outlet_id;
+                    $input['item_code'] = $item_code;
+                    $input['issued_qty'] = $request->adjustment_qty;
+                    $input['balance'] = (0 + 0) - $request->adjustment_qty;
+                    $input['created_by'] = Auth::user()->id;
+                    OutletLevelOverview::create($input);
+                }
             }
 
             $outlet_item_data->update(['quantity' => $updateQuantity]);

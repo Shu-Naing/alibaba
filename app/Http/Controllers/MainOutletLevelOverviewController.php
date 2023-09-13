@@ -38,12 +38,10 @@ class MainOutletLevelOverviewController extends Controller
         if(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)){
             $m = date('n',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
             $y = date('Y',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
-            $main_outletleveloverview = $main_outletleveloverview->whereMonth('oso.date',$m)->whereYear('oso.date',$y);
         }
-                
+
         $main_outletleveloverview = $main_outletleveloverview->whereMonth('oso.date',$m)->whereYear('oso.date',$y)->get();
-        
-        // return $outlets;
+
         return view("main-outletleveloverview.index", compact('main_outletleveloverview'));
 
     }

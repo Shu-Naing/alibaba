@@ -27,14 +27,8 @@ use App\Models\OutletItemData;
     define('MAINOUTLETID', 1);
     define('BODID', 2);
     define('DEPID', 3);
-
-    // define('DESTORYDONATION', '1');
-    // define('DISPOSAL', '2');
-    // define('REUSE', '3');
-    
-    // define('TOYSUPER', '1');
-    // define('STORE', '2');
-    // define('COUNTER', '3');
+    define('ADJ_RECIEVE','1');
+    define('ADJ_LOSS','2');
 
     define('PD_FROMOUTLET_FILTER', 'PD_FROMOUTLET_FILTER');
     define('PD_TOOUTLET_FILTER', 'PD_TOOUTLET_FILTER');

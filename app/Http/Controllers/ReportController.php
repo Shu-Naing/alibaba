@@ -42,13 +42,10 @@ class ReportController extends Controller
             ->with('sizeVariant')->get();
         }
 
-        // return $reports;
-        // return $reports;
-
         if($login_user_role == 'Outlet'){
             $outlets = Outlets::with('machines')->where('id',$login_user_outlet_id)->get();
         }else{
-            $outlets = Outlets::with('machines')->where('id','!=',1)->get();
+            $outlets = Outlets::with('machines')->where('id','!=',DEPID)->where('id','!=',BODID)->where('id','!=',MAINOUTLETID)->get();
         }
         // return $outlets;
         return view('reports.products',compact("reports","outlets", 'breadcrumbs'));
