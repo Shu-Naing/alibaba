@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Damage;
 use App\Models\DamageItems;
+use App\Models\OutletLevelOverview;
 use Illuminate\Http\Request;
 use App\Exports\DamagesExport;
 use Maatwebsite\Excel\Facades\Excel;

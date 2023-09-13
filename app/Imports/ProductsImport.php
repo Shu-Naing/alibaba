@@ -54,21 +54,19 @@ class ProductsImport implements ToModel,WithHeadingRow
         );
 
         $product = Product::firstOrCreate(
-            ['product_name' => $row['product_name']],
-            ['product_code' => $row['product_code'], 
-             'brand_id' => $brand->id , 'category_id' => $category->id ,
+            ['product_name' => $row['product_name'], 
+              'brand_id' => $brand->id , 'category_id' => $category->id ,
               'unit_id' => $unit->id ,'company_name' => $row['company_name'],
               'description' => $row['description'],
               'country' => $row['country'], 
               'expired_date' =>  \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['expired_date']),
               'received_date' =>\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
               'created_by' => $created_by,
-              ]
+            ]
         );
 
-        $variation = Variation::firstOrCreate(
-            ['item_code'  => $row['item_code']],
-            [
+        $variation = Variation::firstOrCreate([
+            'item_code'  => $row['item_code'],
             'product_id' => $product->id,
             'size_variant_value' => $SizeVariant->id,
             'alert_qty' => $row['alert_qty'],
@@ -79,9 +77,7 @@ class ProductsImport implements ToModel,WithHeadingRow
             'kyat' => $row['kyat'],
             'barcode'=> $row['barcode'],
             'created_by' => $created_by,
-        ]);
-
-       
+        ]);       
 
         $outlet_id = Auth::user()->outlet->id;
 
@@ -93,23 +89,23 @@ class ProductsImport implements ToModel,WithHeadingRow
         $outlet_item_data = OutletItemData::firstOrCreate([
             'outlet_item_id' => $outlet_item->id,
             'purchased_price' => $variation->purchased_price,
-                'points' => $variation->points,
-                'tickets' => $variation->tickets,
-                'kyat' => $variation->kyat,
-                'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
-                'quantity' => $row['received_qty'],
-                'created_by' => $created_by,
+            'points' => $variation->points,
+            'tickets' => $variation->tickets,
+            'kyat' => $variation->kyat,
+            'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
+            'quantity' => $row['received_qty'],
+            'created_by' => $created_by,
         ]);
 
-        $purchased_price_history = PurchasedPriceHistory::firstOrCreate(
-            ['variation_id' => $variation->id,
+        $purchased_price_history = PurchasedPriceHistory::firstOrCreate([
+            'variation_id' => $variation->id,
             'purchased_price' => $variation->purchased_price,
-                'points' => $variation->points,
-                'tickets' => $variation->tickets,
-                'kyat' => $variation->kyat,
-                'quantity' => $row['received_qty'],
-                'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
-                'created_by' => $created_by,
+            'points' => $variation->points,
+            'tickets' => $variation->tickets,
+            'kyat' => $variation->kyat,
+            'quantity' => $row['received_qty'],
+            'received_date' => \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($row['received_date']),
+            'created_by' => $created_by,
             ]
         );
 

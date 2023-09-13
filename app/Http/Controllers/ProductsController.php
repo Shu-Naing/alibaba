@@ -35,7 +35,7 @@ class ProductsController extends Controller
         ];
 
         // $products = Variation::with('product','product.brand','product.category','product.unit')->get();
-        $products = Product::with('brand','category','unit')->orderBy('products.created_at', 'desc')->get();
+        $products = Product::with('variations')->with('brand','category','unit')->orderBy('products.created_at', 'desc')->get();
 
             // return $products;
     
