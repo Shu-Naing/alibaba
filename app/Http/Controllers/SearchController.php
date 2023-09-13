@@ -337,24 +337,34 @@ class SearchController extends Controller
     }
     
     public function outletlevelhistorySearch(Request $request){
+        // return $request;
         session()->start();
         session()->put('OUTLET_LEVEL_HISTORY_FILTER', $request->outlet_id);
+        session()->put('OUTLET_LEVEL_HISTORY_FROM_DATE_FILTER', $request->fromDate);
+        session()->put('OUTLET_LEVEL_HISTORY_TO_DATE_FILTER', $request->toDate); 
         return redirect()->route('outletlevelhistory.index');
     }
 
     public function resetOutletlevelhistory(){
         session()->forget('OUTLET_LEVEL_HISTORY_FILTER');
+        session()->forget('OUTLET_LEVEL_HISTORY_FROM_DATE_FILTER');
+        session()->forget('OUTLET_LEVEL_HISTORY_TO_DATE_FILTER');
         return redirect()->route('outletlevelhistory.index');
     }
 
     public function outletlevelverviewSearch(Request $request){
+        // return $request;
         session()->start();
         session()->put('OUTLET_LEVEL_OVERVIEW_FILTER', $request->outlet_id);
+        session()->put('OUTLET_LEVEL_OVERVIEW_FROM_DATE_FILTER', $request->fromDate);
+        session()->put('OUTLET_LEVEL_OVERVIEW_TO_DATE_FILTER', $request->toDate);
         return redirect()->route('outletleveloverview.index');
     }
 
     public function resetOutletleveloverview(){
         session()->forget('OUTLET_LEVEL_OVERVIEW_FILTER');
+        session()->forget('OUTLET_LEVEL_OVERVIEW_FROM_DATE_FILTER');
+        session()->forget('OUTLET_LEVEL_OVERVIEW_TO_DATE_FILTER');
         return redirect()->route('outletleveloverview.index');
     }
 

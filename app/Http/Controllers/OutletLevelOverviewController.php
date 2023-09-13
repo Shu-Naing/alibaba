@@ -18,6 +18,8 @@ class OutletLevelOverviewController extends Controller
     public function index() {
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
+        $from_date = session()->get(OUTLET_LEVEL_OVERVIEW_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_LEVEL_OVERVIEW_TO_DATE_FILTER);
       
         $outletleveloverview = DB::table('outlet_level_overviews as oso')
         ->select(
@@ -49,6 +51,12 @@ class OutletLevelOverviewController extends Controller
         }
         if($login_user_role == 'Outlet'){
             $outletleveloverview = $outletleveloverview->where('oso.outlet_id',$login_user_outlet_id);
+        }
+        if($from_date){
+            $outletleveloverview = $outletleveloverview->where('oso.date', '>=', $from_date);
+        }
+        if($to_date){
+            $outletleveloverview = $outletleveloverview->where('oso.date', '<=', $to_date);
         }
         
         $outletleveloverview = $outletleveloverview->get();
@@ -138,6 +146,8 @@ class OutletLevelOverviewController extends Controller
 
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
+        $from_date = session()->get(OUTLET_LEVEL_OVERVIEW_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_LEVEL_OVERVIEW_TO_DATE_FILTER);
 
         $outletleveloverview = DB::table('outlet_level_overviews as oso')
         ->select(
@@ -166,6 +176,13 @@ class OutletLevelOverviewController extends Controller
         }
         if($login_user_role == 'Outlet'){
             $outletleveloverview = $outletleveloverview->where('oso.outlet_id',$login_user_outlet_id);
+        }
+
+        if($from_date){
+            $outletleveloverview = $outletleveloverview->where('oso.date', '>=', $from_date);
+        }
+        if($to_date){
+            $outletleveloverview = $outletleveloverview->where('oso.date', '<=', $to_date);
         }
         
         $outletleveloverview = $outletleveloverview->get();

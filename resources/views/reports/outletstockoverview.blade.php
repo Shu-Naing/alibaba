@@ -28,6 +28,8 @@
         @php
             $outlet_id = session()->get(OUTLET_STOCK_OVERVIEW_OUTLET_FILTER);
             $machine_id = session()->get(OUTLET_STOCK_OVERVIEW_MACHINE_FILTER);
+            $from_date = session()->get(OUTLET_STOCK_OVERVIEW_FROM_DATE_FILTER);
+            $to_date = session()->get(OUTLET_STOCK_OVERVIEW_TO_DATE_FILTER);
         @endphp
 
         {!! Form::open([
@@ -37,12 +39,20 @@
         ]) !!}  
         @csrf
             <div class="row mb-3 g-3">
-                <div class="col-md-3">
+                <div class="col-md-2">
+                    {!! Form::label('fromDate', 'From Date', ['class' => 'form-label']) !!}
+                    {{ Form::date('fromDate', $from_date, ['class' => 'form-control']) }}
+                </div>
+                <div class="col-md-2">
+                    {!! Form::label('toDate', 'To Date', ['class' => 'form-label']) !!}
+                    {{ Form::date('toDate', $to_date, ['class' => 'form-control']) }}
+                </div>
+                <div class="col-md-2">
                     {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
                     {{ Form::select('outlet_id', $outlets, null, ['placeholder' => 'Choose...', 'class' => 'form-control', 'id' => 'outlet-dropdown']) }}
     
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     {!! Form::label('machine_id', 'Machine', ['class' => 'form-label']) !!}
                     {{ Form::select('machine_id', $machines, null, ['placeholder' => 'Choose...', 'class' => 'form-control', 'id' => 'machine-dropdown']) }}
     

@@ -18,20 +18,32 @@ class OutletlevelhistoryController extends Controller
 
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
-        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);  
+        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
+        $from_date = session()->get(OUTLET_LEVEL_HISTORY_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_LEVEL_HISTORY_TO_DATE_FILTER); 
         
         $histories = OutletlevelHistory::select('outletlevel_histories.*', 'variations.size_variant_value','variations.image','products.unit_id','products.category_id')
         ->join('variations','variations.item_code','outletlevel_histories.item_code')
         ->join('products','products.id','variations.product_id');
+          
+        if($from_date){
+            $histories =  $histories->where('date', '>=', $from_date);
+        }
+
+        if($to_date){
+            $histories =  $histories->where('date', '<=', $to_date);
+        }
 
         if($login_user_role == 'Outlet'){
-            $histories = $histories->where('outlet_id',$login_user_outlet_id)->get();
+            $histories = $histories->where('outlet_id',$login_user_outlet_id);
         }
         elseif($outlet_id){
-            $histories = $histories->where('outlet_id',$outlet_id)->get();
+            $histories = $histories->where('outlet_id',$outlet_id);
         }else{
-            $histories = $histories->where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID)->get();
+            $histories = $histories->where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID);
         }
+
+        $histories = $histories->get();
         
         $outlets = getFromOutlets(true);
         $size_variants = getSizeVariants();
@@ -44,23 +56,39 @@ class OutletlevelhistoryController extends Controller
     public function export(){
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
-        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);        
+        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
+        $from_date = session()->get(OUTLET_LEVEL_HISTORY_FROM_DATE_FILTER);
+        $to_date = session()->get(OUTLET_LEVEL_HISTORY_TO_DATE_FILTER); 
+        
+        $histories = OutletlevelHistory::select('outletlevel_histories.*', 'variations.size_variant_value','variations.image','products.unit_id','products.category_id')
+        ->join('variations','variations.item_code','outletlevel_histories.item_code')
+        ->join('products','products.id','variations.product_id');
+          
+        if($from_date){
+            $histories =  $histories->where('date', '>=', $from_date);
+        }
+
+        if($to_date){
+            $histories =  $histories->where('date', '<=', $to_date);
+        }
 
         if($login_user_role == 'Outlet'){
-            $histories = OutletlevelHistory::where('outlet_id',$login_user_outlet_id)->get();
+            $histories = $histories->where('outlet_id',$login_user_outlet_id);
         }
-        else if($outlet_id){
-            $histories = OutletlevelHistory::where('outlet_id',$outlet_id)->get();
+        elseif($outlet_id){
+            $histories = $histories->where('outlet_id',$outlet_id);
         }else{
-            $histories = OutletlevelHistory::where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID)->get();
+            $histories = $histories->where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID);
         }
+
+        $histories = $histories->get();
 
         $types = [
             RECIEVE_TYPE => 'Recieved',
             ISSUE_TYPE => 'Issued'
         ];
         // return $histories;
-        $outlets = getOutlets();
+        $outlets = getFromOutlets(true);
 
         return Excel::download(new OutletLevelHistoryExport($histories,$outlets,$types), 'outlet-level-history.xlsx');
     }
