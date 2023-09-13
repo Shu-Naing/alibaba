@@ -83,6 +83,9 @@ use App\Models\OutletItemData;
     define('SELL_OUTLETID_FILTER','SELL_OUTLETID_FILTER');
     
     define('MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER','MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER');
+    define('MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER','MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER');
+
+    
     
 
     function getOutlets($isbod = false){

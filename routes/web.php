@@ -37,6 +37,7 @@ use App\Http\Controllers\OutletStockHistoryController;
 use App\Http\Controllers\OutletLevelOverviewController;
 use App\Http\Controllers\OutletStockOverviewController;
 use App\Http\Controllers\PurchasedPriceHistoryController;
+use App\Http\Controllers\MainOutletlevelhistoryController;
 use App\Http\Controllers\MainOutletLevelOverviewController;
 
 
@@ -271,5 +272,11 @@ Route::group(['middleware' => ['auth','permission', 'web']], function() {
     Route::get('main-outletleveloverview-export',[MainOutletLevelOverviewController::class,'export'])->name('main-outletleveloverview.export');
     Route::post('main-outletleveloverview-search',[SearchController::class,'mainInvOutletOverviewSearch'])->name('main-outletleveloverview.search');
     Route::get('main-outletleveloverview-reset',[SearchController::class,'mainInvOutletOverviewReset'])->name('main-outletleveloverview.reset');
+
+
+    Route::get('main-outletlevelhistory',[MainOutletlevelhistoryController::class,'index'])->name('main-outletlevelhistory.index');
+    Route::get('main-outletlevelhistory-export',[MainOutletlevelhistoryController::class,'export'])->name('main-outletlevelhistory.export');
+    Route::post('main-outletlevelhistory-search',[SearchController::class,'mainOutletlevelhistorySearch'])->name('main-outletlevelhistory.search');
+    Route::get('main-outletlevelhistory-reset',[SearchController::class,'mainOutletlevelhistoryReset'])->name('main-outletlevelhistory.reset');
 });
 
