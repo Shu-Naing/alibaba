@@ -14,13 +14,19 @@ class MainOutletlevelhistoryController extends Controller
               ['name' => 'Main Outlet Level History']
         ];
 
+        $m = date('n');
+        $y = date('Y');
+
         $date = session()->get(MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER);        
 
         if($date){
-            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->where('date',$date)->get();
+            $m = date('n',strtotime($date));
+            $y = date('Y',strtotime($date));
+            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->whereMonth('date',$m)->whereYear('date',$y)->get();
         }else{
-            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->get();
+            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->whereMonth('date',$m)->whereYear('date',$y)->get();
         }
+       
 
         $types = [
             RECIEVE_TYPE => 'Recieved',
@@ -33,18 +39,25 @@ class MainOutletlevelhistoryController extends Controller
 
     public function export(){
 
+        $m = date('n');
+        $y = date('Y');
+
         $date = session()->get(MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER);        
 
         if($date){
-            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->where('date',$date)->get();
+            $m = date('n',strtotime($date));
+            $y = date('Y',strtotime($date));
+            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->whereMonth('date',$m)->whereYear('date',$y)->get();
         }else{
-            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->get();
+            $histories = OutletlevelHistory::where('outlet_id',MAIN_INV_ID)->whereMonth('date',$m)->whereYear('date',$y)->get();
         }
+       
 
         $types = [
             RECIEVE_TYPE => 'Recieved',
             ISSUE_TYPE => 'Issued'
         ];
+
 
         $outlets = getOutlets();
     
