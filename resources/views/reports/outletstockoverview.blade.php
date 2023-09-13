@@ -67,6 +67,10 @@
                     <th>Date</th>
                     <th>Machine Name</th>
                     <th>Item Code</th>
+                    <th>Image</th>
+                    <th>Size</th>
+                    <th>Unit</th>
+                    <th>Category</th>
                     <th>Point</th>
                     <th>Ticket</th>
                     <th>Kyat</th>
@@ -90,6 +94,10 @@
                         <td>{{date('Y-M',strtotime($outletstockoverview->date))}}</td>
                         <td>{{ $outletstockoverview->name }}</td>
                         <td>{{ $outletstockoverview->item_code }}</td>
+                        <td> <img src = "{{asset('storage/' . $outletstockoverview->image)}}" alt="images"/></td>                        
+                        <td>{{ isset($size_variants[$outletstockoverview->size_variant_value]) ? $size_variants[$outletstockoverview->size_variant_value] : ''}}
+                        <td>{{ isset($units[$outletstockoverview->unit_id]) ? $units[$outletstockoverview->unit_id] : ''}}
+                        <td>{{ isset($categories[$outletstockoverview->category_id]) ? $categories[$outletstockoverview->category_id] : ''}}
                         <th>{{ $outletstockoverview->points }}</th>
                         <th>{{ $outletstockoverview->tickets }}</th>
                         <th>{{ $outletstockoverview->kyat }}</th>

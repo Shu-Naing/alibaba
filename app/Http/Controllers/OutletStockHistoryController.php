@@ -22,7 +22,7 @@ class OutletStockHistoryController extends Controller
         $outlet_id = session()->get(OUTLET_STOCK_HISTORY_OUTLET_FILTER);
         $machine_id = session()->get(OUTLET_STOCK_HISTORY_MACHINE_FILTER);
 
-        $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.short_name as unit_name')
+        $histories = OutletStockHistory::select('outlet_stock_histories.*','variations.item_code','variations.image','variations.size_variant_value', 'machines.name as machine_name', 'outlets.name as outlet_name', 'units.name as unit_name','products.category_id')
                     ->join('variations', 'variations.id', '=', 'outlet_stock_histories.variant_id')
                     ->join('products', 'products.id', '=', 'variations.product_id')
                     ->join('units', 'units.id', '=', 'products.unit_id')
@@ -43,8 +43,10 @@ class OutletStockHistoryController extends Controller
         // return $histories;
         $outlets = getFromOutlets(true);
         $machines = getMachines();
+        $size_variants = getSizeVariants();
+        $categories = getCategories();
 
-        return view('outletstockhistory.index',compact('histories','breadcrumbs', 'outlets', 'machines'));
+        return view('outletstockhistory.index',compact('histories','breadcrumbs', 'outlets', 'machines','size_variants','categories'));
     }
 
     public function exportOutletstockhistory() {

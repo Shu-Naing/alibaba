@@ -18,20 +18,27 @@ class OutletlevelhistoryController extends Controller
 
         $login_user_role = Auth::user()->roles[0]->name;
         $login_user_outlet_id = Auth::user()->outlet_id;
-        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);        
+        $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);  
+        
+        $histories = OutletlevelHistory::select('outletlevel_histories.*', 'variations.size_variant_value','variations.image','products.unit_id','products.category_id')
+        ->join('variations','variations.item_code','outletlevel_histories.item_code')
+        ->join('products','products.id','variations.product_id');
 
         if($login_user_role == 'Outlet'){
-            $histories = OutletlevelHistory::where('outlet_id',$login_user_outlet_id)->get();
+            $histories = $histories->where('outlet_id',$login_user_outlet_id)->get();
         }
         elseif($outlet_id){
-            $histories = OutletlevelHistory::where('outlet_id',$outlet_id)->get();
+            $histories = $histories->where('outlet_id',$outlet_id)->get();
         }else{
-            $histories = OutletlevelHistory::where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID)->get();
+            $histories = $histories->where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID)->get();
         }
         
         $outlets = getFromOutlets(true);
+        $size_variants = getSizeVariants();
+        $categories = getCategories();
+        $units = getUnits();
         
-        return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets'));
+        return view("outletlevelhistory.index", compact('breadcrumbs', 'histories', 'outlets','size_variants','categories','units'));
     }
 
     public function export(){

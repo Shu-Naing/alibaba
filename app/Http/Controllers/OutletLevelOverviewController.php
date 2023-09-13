@@ -23,10 +23,13 @@ class OutletLevelOverviewController extends Controller
         ->select(
             'oso.*',
             'oid.points','oid.tickets','oid.kyat','oid.purchased_price',
-            'outlets.name'
+            'outlets.name',
+            'products.unit_id','products.category_id',
+            'variations.image','variations.size_variant_value'
         )
         ->join('outlets','outlets.id','oso.outlet_id')
         ->join('variations', 'variations.item_code', '=', 'oso.item_code')
+        ->join('products','products.id','variations.product_id')
         ->join('outlet_items as oi', 'oi.variation_id', '=', 'variations.id')
         ->join(DB::raw('(SELECT oid1.*
                         FROM outlet_item_data oid1
@@ -62,10 +65,12 @@ class OutletLevelOverviewController extends Controller
             $outlets = getOutlets(true);
         }
 
-        // return $outletleveloverview;
+        $categories = getCategories();
+        $units = getUnits();
+        $size_variants = getSizeVariants();
         
         // return $outlets;
-        return view("outletleveloverview.index", compact('outletleveloverview','outlets'));
+        return view("outletleveloverview.index", compact('outletleveloverview','outlets','categories','units','size_variants'));
 
     }
 
