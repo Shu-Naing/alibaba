@@ -8,42 +8,32 @@
 @section('cardbody')
     <div class="container-fluid main-content">
         <div class="breadcrumbBox rounded mb-4">
-            <h4 class="fw-bolder mb-3">List Outlet Level History</h4>
+            <h4 class="fw-bolder mb-3">List Main Outlet Level History</h4>
             <div>
                 @include('breadcrumbs')
             </div>
         </div>
 
         @php
-            $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
-            $from_date = session()->get(OUTLET_LEVEL_HISTORY_FROM_DATE_FILTER);
-            $to_date = session()->get(OUTLET_LEVEL_HISTORY_TO_DATE_FILTER);
+            $outlet_id = session()->get(MAIN_OUTLET_LEVEL_HISTORY_DATE_FILTER);
         @endphp
 
         {!! Form::open([
-            'route' => 'outletlevelhistory.search',
+            'route' => 'main-outletlevelhistory.search',
             'method' => 'post',
             'class' => 'p-4 rounded border shadow-sm mb-5',
         ]) !!}  
         @csrf
             <div class="row mb-3 g-3">
-                <div class="col-md-2">
-                    {!! Form::label('fromDate', 'From Date', ['class' => 'form-label']) !!}
-                    {{ Form::date('fromDate', $from_date, ['class' => 'form-control']) }}
-                </div>
-                <div class="col-md-2">
-                    {!! Form::label('toDate', 'To Date', ['class' => 'form-label']) !!}
-                    {{ Form::date('toDate', $to_date, ['class' => 'form-control']) }}
-                </div>
                 <div class="col-md-3">
-                    {!! Form::label('outlet_id', 'Outlet', ['class' => 'form-label']) !!}
-                    {{ Form::select('outlet_id', $outlets, $outlet_id, ['placeholder' => 'Choose...', 'class' => 'form-control']) }}
+                    {!! Form::label('date', 'Date', ['class' => 'form-label']) !!}
+                    {{ Form::date('date', null ,[ 'class' => 'form-control']) }}
     
                 </div>
                 <div class="col-md-4 d-flex align-items-end">
                     <button type="submit" class="btn btn-blue ms-2">Search</button>
-                    <a href="{{route('outletlevelhistory.reset')}}" class="btn btn-blue ms-2">Reset</a>
-                    <a href="{{ route('outletlevelhistory.export') }}" class="btn btn-blue ms-2">Export to Excel</a>
+                    <a href="{{route('main-outletlevelhistory.reset')}}" class="btn btn-blue ms-2">Reset</a>
+                    <a href="{{ route('main-outletlevelhistory.export') }}" class="btn btn-blue ms-2">Export to Excel</a>
                 </div>
             </div>
         {!! Form::close() !!}
@@ -55,10 +45,6 @@
                     <th>Outlet</th>
                     <th>Date</th>
                     <th>Item Code</th>
-                    <th>Image</th>
-                    <th>Size</th>
-                    <th>Unit</th>
-                    <th>Category</th>
                     <th>Quantity</th>
                     <th>Recieved/Issued</th>
                     <th>Branch</th>                    
@@ -76,10 +62,6 @@
                         <td>{{ get_outlet_name($history->outlet_id) }}</td> 
                         <td>{{ $history->date }}</td>
                         <td>{{ $history->item_code }}</td>
-                        <td> <img src = "{{asset('storage/' . $history->image)}}" alt="images"/></td>                        
-                        <td>{{ isset($size_variants[$history->size_variant_value]) ? $size_variants[$history->size_variant_value] : ''}}
-                        <td>{{ isset($units[$history->unit_id]) ? $units[$history->unit_id] : ''}}
-                        <td>{{ isset($categories[$history->category_id]) ? $categories[$history->category_id] : ''}}
                         <td>{{ $history->quantity }}</td>
                         <td>{{ $types[$history->type] }}</td>
                         <td>{{ $history->branch }}</td>

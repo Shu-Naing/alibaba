@@ -109,9 +109,36 @@ class DamageController extends Controller
             $inputs['quantity'] = $request->quantity[$variationId];
             $inputs['created_by'] = Auth::user()->id;
             // return $inputs;
+
+            // update outlet stock overview (damage so issued)
+            $month = date('n',strtotime($damage->date));
+            $year = date('Y',strtotime($damage->date));
+
+            $outletleveloverview = OutletLevelOverview::select('outlet_level_overviews.*')
+            ->where('outlet_id',$request->outlet_id)
+            ->where('item_code',$request->item_code[$variationId])
+            ->whereMonth('date',$month)
+            ->whereYear('date',$year)->first();
+
+            if($outletleveloverview){ 
+                $issued_qty = $outletleveloverview->issued_qty + $request->quantity[$variationId];    
+                $input = [];
+                $input['issued_qty'] = $issued_qty;
+                $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
+                $input['updated_by'] = Auth::user()->id;
+                $outletleveloverview->update($input);
+            }else {                
+                $input = [];
+                $input['date'] = $damage->date;
+                $input['outlet_id'] = $outlet_id;
+                $input['item_code'] = $request->item_code[$variationId];
+                $input['issued_qty'] = $request->quantity[$variationId];
+                $input['balance'] = (0 + 0) - $request->quantity[$variationId];
+                $input['created_by'] = Auth::user()->id;
+                OutletLevelOverview::create($input);
+            }
             DamageItems::create($inputs);
-        }
-        
+        }        
 
         return redirect()->route('damage.index')->with('success','Damage is created successfully');;
     }

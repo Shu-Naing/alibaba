@@ -39,8 +39,8 @@
             ISSUE_TYPE => 'Issued'
         ],
         'adjustment_types' => [
-            '1' => 'Recieve',
-            '2' => 'Loss'
+            ADJ_RECIEVE => 'Recieve',
+            ADJ_LOSS => 'Loss'
         ],
         
         // 'action' => [

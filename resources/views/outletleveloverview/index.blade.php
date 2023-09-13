@@ -64,6 +64,10 @@
                     <th>Date</th>
                     <th>Outlet</th>
                     <th>Item Code</th>
+                    <th>Image</th>
+                    <th>Size</th>
+                    <th>Unit</th>
+                    <th>Category</th>
                     <th>Point</th>
                     <th>Ticket</th>
                     <th>Kyat</th>
@@ -87,6 +91,10 @@
                         <td>{{ date('Y-M',strtotime($outlevel->date)) }}</td>
                         <td>{{ $outlevel->name }}</td>
                         <td>{{ $outlevel->item_code }}</td>
+                        <td> <img src = "{{asset('storage/' . $outlevel->image)}}" alt="images"/></td>                        
+                        <td>{{ isset($size_variants[$outlevel->size_variant_value]) ? $size_variants[$outlevel->size_variant_value] : ''}}
+                        <td>{{ isset($units[$outlevel->unit_id]) ? $units[$outlevel->unit_id] : ''}}
+                        <td>{{ isset($categories[$outlevel->category_id]) ? $categories[$outlevel->category_id] : ''}}
                         <td>{{ $outlevel->points }}</td>
                         <td>{{ $outlevel->tickets }}</td>
                         <td>{{ $outlevel->kyat }}</td>

@@ -34,8 +34,7 @@ class PermissionMiddleware
             $permission = $request->route()->getName();
 
             $permissions = array($permission);
-        }
-        
+        }        
 
         foreach ($permissions as $permission) {
             if ($authGuard->user()->can($permission)) {

@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Models\Variation;
 use App\Models\OutletItem;
 use App\Models\OutletLevelOverview;
+use App\Models\OutletlevelHistory;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PosItemsAlert;
@@ -186,6 +187,8 @@ class PosController extends Controller
 
         foreach($temps as $temp){
 
+            $item_code = Variation::select('item_code')->where('id', $temp->variation_id)->value('item_code');
+
             $pos_item = new PosItem;
             $pos_item->pos_id = $pos->id;
             $pos_item->variation_id = $temp->variation_id;
@@ -197,6 +200,17 @@ class PosController extends Controller
             $outletItemData = outlet_item_data($outlet_id,$temp->variation_id);
             $outletItemData->quantity = $outletItemData->quantity - $temp->quantity;
             $outletItemData->update();
+
+            //add to outlet stock history (store)
+            OutletlevelHistory::create([
+                'outlet_id' => $outlet_id,
+                'type' => ISSUE_TYPE,
+                'quantity' => $temp->quantity,
+                'item_code' => $item_code,
+                'branch' => 'POS',
+                'date' => $pos_item->created_at,
+                'created_by' => Auth::user()->id
+            ]);
 
             $month = date('n',strtotime($pos_item->created_at));
             $year = date('Y',strtotime($pos_item->created_at));
@@ -215,8 +229,7 @@ class PosController extends Controller
                 $input['balance'] = ($outletleveloverview->opening_qty + $outletleveloverview->receive_qty) - $issued_qty;
                 $input['updated_by'] = Auth::user()->id;
                 $outletleveloverview->update($input);
-            }else {
-                $item_code = Variation::select('id')->where('id', $temp->variation_id)->value('id');
+            }else {                
                 $input = [];
                 $input['date'] = $pos_item->created_at;
                 $input['outlet_id'] = $outlet_id;

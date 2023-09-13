@@ -77,6 +77,10 @@
                     <th>Machine</th>
                     <th>Date</th>
                     <th>Item Code</th>
+                    <th>Image</th>
+                    <th>Size</th>
+                    <th>Unit</th>
+                    <th>Category</th>
                     <th>Quantity</th>
                     <th>Recieved/Issued</th>
                     <th>Branch</th>                    
@@ -94,6 +98,10 @@
                         <td>{{ ( $history->machine_name == null ) ? $history->outlet_name .' (Counter)' : $history->machine_name}}</td>  
                         <td>{{ $history->date }}</td>
                         <td>{{ $history->item_code }}</td>
+                        <td><img src="{{asset('storage/' . $history->image)}}" alt="image"></td>
+                        <td>{{ isset($size_variants[$history->size_variant_value]) ? $size_variants[$history->size_variant_value] : ''}}</td>
+                        <td>{{ $history->unit_name}}</td>
+                        <td>{{ isset($categories[$history->category_id]) ? $categories[$history->category_id] : ''}}</td>
                         <td>{{ $history->quantity }}</td>
                         <td>{{ isset($types[$history->type]) ? $types[$history->type] : ''  }}</td>
                         <td>{{ isset($branch[$history->branch]) ? $branch[$history->branch] : '' }}</td>
