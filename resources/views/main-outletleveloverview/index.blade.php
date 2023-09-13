@@ -6,7 +6,7 @@
 @endsection
 
 @php
-    $outlet = session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER);
+    $date = session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER);
 @endphp
 
 @section('cardbody')
@@ -36,7 +36,7 @@
             <div class="row mb-3 g-3">
                 <div class="col-md-3">
                     {!! Form::label('date', 'Date', ['class' => 'form-label']) !!}
-                    {{ Form::date('date', null, ['class' => 'form-control']) }}
+                    {{ Form::date('date', $date, ['class' => 'form-control']) }}
     
                 </div>
                 <div class="col-md-4 d-flex align-items-end">

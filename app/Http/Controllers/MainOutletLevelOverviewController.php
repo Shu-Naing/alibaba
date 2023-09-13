@@ -10,6 +10,9 @@ use App\Exports\MainOutletleveloverviewExport;
 class MainOutletLevelOverviewController extends Controller
 {
     public function index() {
+
+        $m = date('n');
+        $y = date('Y');
       
         $main_outletleveloverview = DB::table('outlet_level_overviews as oso')
         ->select(
@@ -28,29 +31,26 @@ class MainOutletLevelOverviewController extends Controller
             $join->on('oid.outlet_item_id', '=', 'oi.id');
         })
         ->whereNotNull('oso.item_code')
-        ->where('oso.outlet_id', '!=', BODID)
-        ->where('oso.outlet_id', '!=', DEPID)
         ->where('oso.outlet_id', MAIN_INV_ID)
         ->groupBy('oso.item_code', DB::raw('MONTH(oso.date)'), DB::raw('YEAR(oso.date)'), 'oso.outlet_id')
         ->orderBy('oso.date', 'DESC');
       
         if(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)){
-            $main_outletleveloverview = $main_outletleveloverview->where('oso.date',session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER));
+            $m = date('n',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
+            $y = date('Y',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
         }
-        
-        
-        $main_outletleveloverview = $main_outletleveloverview->get();
-        
-        
 
-        
-        
-        // return $outlets;
+        $main_outletleveloverview = $main_outletleveloverview->whereMonth('oso.date',$m)->whereYear('oso.date',$y)->get();
+
         return view("main-outletleveloverview.index", compact('main_outletleveloverview'));
 
     }
 
     function export(){
+
+        $m = date('n');
+        $y = date('Y');
+
         $main_outletleveloverview = DB::table('outlet_level_overviews as oso')
         ->select(
             'oso.*',
@@ -68,18 +68,17 @@ class MainOutletLevelOverviewController extends Controller
             $join->on('oid.outlet_item_id', '=', 'oi.id');
         })
         ->whereNotNull('oso.item_code')
-        ->where('oso.outlet_id', '!=', BODID)
-        ->where('oso.outlet_id', '!=', DEPID)
         ->where('oso.outlet_id', MAIN_INV_ID)
         ->groupBy('oso.item_code', DB::raw('MONTH(oso.date)'), DB::raw('YEAR(oso.date)'), 'oso.outlet_id')
         ->orderBy('oso.date', 'DESC');
       
         if(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)){
-            $main_outletleveloverview = $main_outletleveloverview->where('oso.date',session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER));
+            $m = date('n',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
+            $y = date('Y',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
+            $main_outletleveloverview = $main_outletleveloverview->whereMonth('oso.date',$m)->whereYear('oso.date',$y);
         }
-        
-        
-        $main_outletleveloverview = $main_outletleveloverview->get();
+                
+        $main_outletleveloverview = $main_outletleveloverview->whereMonth('oso.date',$m)->whereYear('oso.date',$y)->get();
         
         
         return Excel::download(new MainOutletleveloverviewExport($main_outletleveloverview), 'main_inv_outlet_level_overview.xlsx');
