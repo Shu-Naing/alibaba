@@ -39,11 +39,8 @@ class MainOutletLevelOverviewController extends Controller
             $m = date('n',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
             $y = date('Y',strtotime(session()->get(MAIN_OUTLET_LEVEL_OVERVIEW_DATE_FILTER)));
         }
-
         $main_outletleveloverview = $main_outletleveloverview->whereMonth('oso.date',$m)->whereYear('oso.date',$y)->get();
-
         return view("main-outletleveloverview.index", compact('main_outletleveloverview'));
-
     }
 
     function export(){
