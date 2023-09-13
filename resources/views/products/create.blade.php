@@ -88,11 +88,6 @@
                             <span class="text-danger error" id="country_error"></span>
                         </div>
                         <div class="col-lg-4">
-                            {{ Form::label('product_code', 'Product Code', ['class' => 'form-label', 'id' => 'product_code_label']) }}
-                            {{ Form::text('product_code', null, ['class' => 'form-control', 'id' => 'product_code', 'placeholder' => 'Produc Code']) }}
-                            <span class="text-danger error" id="product_code_error"></span>
-                        </div>
-                        <div class="col-lg-4">
                             {{ Form::label('received_date', 'Received Date', ['class' => 'form-label', 'id' => 'received_date_label']) }}
                             {{ Form::date('received_date', null, ['class' => 'form-control', 'id' => 'received_date']) }}
                             <span class="text-danger error" id="received_date_error"></span>
