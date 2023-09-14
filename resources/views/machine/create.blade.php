@@ -28,16 +28,13 @@
             @csrf
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="outlet" class="form-label">Outlet</label>
-                    <select class="form-select" name="outlet" id="outlet" aria-label="Default select example">
-                        <option selected></option>
-                        @if ($outlets)
-                            @foreach ($outlets as $outlet)
-                                <option value="{{ $outlet->id }}">{{ $outlet->name }}</option>
-                            @endforeach
-                        @endif
-                    </select>
-                    <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
+                    <label for="outlet" class="form-label">Outlet *</label>
+                    {!! Form::select('outlet', $outlets, null, [
+                        'placeholder' => 'Choose',
+                        'class' => 'form-control',
+                        'id' => 'outlet',
+                        'aria-label' => 'Default select example',
+                    ]) !!}
                 </div>
                 <div class="col-md-6">
                     <label for="name" class="form-label">Machine Name *</label>
@@ -50,7 +47,6 @@
             </div>
             <div class="text-center">
                 <a class="btn btn-red" href="{{ route('machine.create') }}">Cancel</a>
-                <!-- <button type="submit" class="btn btn-red">Cancel</button> -->
                 <button type="submit" class="btn btn-blue ms-2">Save</button>
             </div>
         </form>

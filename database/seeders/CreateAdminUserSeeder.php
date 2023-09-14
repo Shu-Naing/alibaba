@@ -175,9 +175,6 @@ class CreateAdminUserSeeder extends Seeder
         $posUserPermissions = Permission::whereIn('name', $posUserPermissions)->pluck('id')->all();
 
         $outletUserRole->syncPermissions($outletUserPermissions);
-        $posUserRole->syncPermissions($posUserPermissions);
-
-        
-        
+        $posUserRole->syncPermissions($posUserPermissions);        
     }
 }

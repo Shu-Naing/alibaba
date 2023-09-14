@@ -13,18 +13,16 @@
                 @include('breadcrumbs')
             </div>
         </div>
-
-
         <table id="table_id">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>ID</th>                  
                     <th>Machine Name</th>
-                    <th>Outlet ID</th>
-                    <th>Outlet Name</th>
-                    <th>City</th>
-                    <th>State</th>
+                    <th>Outlet Name</th>                        
+                    <th>Outlet ID</th>                  
                     <th>Country</th>
+                    <th>City</th>
+                    <th>Township</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,37 +31,13 @@
                 @endphp
                 @foreach ($machines as $machine)
                     <tr>
-                        <td>{{ $no++ }}</td>
+                        <td>{{ $no++ }}</td>  
                         <td>{{ $machine->name }}</td>
+                        <td>{{ $machine->outlet->name }}</td>                      
                         <td>{{ $machine->outlet->outlet_id }}</td>
-                        <td>{{ $machine->outlet->name }}</td>
-                        <td>
-                            @if ($machine->outlet->city == 1)
-                                Yangon
-                            @elseif($machine->outlet->city == 2)
-                                Mandalay
-                            @elseif($machine->outlet->city == 3)
-                                Naypyidaw
-                            @endif
-                        </td>
-                        <td>
-                            @if ($machine->outlet->state == 1)
-                                Hledan
-                            @elseif($machine->outlet->state == 2)
-                                Myaynigone
-                            @elseif($machine->outlet->state == 3)
-                                Ahlone
-                            @endif
-                        </td>
-                        <td>
-                            @if ($machine->outlet->country == 1)
-                                Myanmar
-                            @elseif($machine->outlet->country == 2)
-                                China
-                            @elseif($machine->outlet->country == 3)
-                                Korea
-                            @endif
-                        </td>
+                        <td>{{ isset($countries[$machine->country]) ? $countries[$machine->country] : ''}}
+                        <td>{{ isset($cities[$machine->cities]) ? $cities[$machine->cities] : ''}}
+                        <td>{{ isset($state[$machine->state]) ? $state[$machine->state] : ''}}                        
                     </tr>
                 @endforeach
             </tbody>

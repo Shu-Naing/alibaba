@@ -33,8 +33,7 @@
                     <th>No</th>
                     <th>Name</th>
                     <th>City</th>
-                    <th>State</th>
-                    <!-- <th>Category Name</th> -->
+                    <th>Township</th>
                     <th class="w-25">Action</th>
                 </tr>
             </thead>
@@ -48,11 +47,9 @@
                         <td>{{ $outlet->name }}</td>
                         <td>{{ isset($cities[$outlet->city]) ? $cities[$outlet->city] : '' }}</td>
                         <td>{{ isset($states[$outlet->state]) ? $states[$outlet->state] : '' }}</td>
-                        <!-- <td>{{ $outlet->category_name }}</td> -->
                         <td class="d-flex gap-5">
                             <a class="text-decoration-underline"
                                 href="{{ route('outlets.edit', ['outlet' => $outlet->id]) }}">Edit</a>
-                            <!-- <a class="text-decoration-underline" href="">Settings</a> -->
                             <div class="d-flex">
                                 <a class="text-decoration-underline text-nowrap" href="{{ route('outletstockoverview.create', $outlet->id ) }}">Opening Qty</a>/
                                 <a class="text-decoration-underline" href="{{ route('outletdistribute.create', $outlet->id ) }}">Receive</a>/ 
@@ -61,7 +58,6 @@
                             <form action="{{ route('outlets.destroy', $outlet->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <!-- Change this to the desired HTTP method -->
                                 <button type="submit" class="text-muted text-decoration-underline btn btn-link p-0">
                                     @if ($outlet->status == 1)
                                         <span class="text-decoration-underline text-success">Activate</span>

@@ -56,7 +56,7 @@
                     ]) !!}
                 </div>
                 <div class="col-md-6">
-                    {!! Form::label('state', 'State', ['class' => 'form-label']) !!}
+                    {!! Form::label('state', 'Township', ['class' => 'form-label']) !!}
                     {!! Form::select('state', $states, $outlet->state, [
                         'placeholder' => 'Choose',
                         'class' => 'form-control',
