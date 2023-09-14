@@ -114,6 +114,26 @@ use App\Models\OutletItemData;
         return $Outlets_arr;
     }
 
+    
+    function getMachineOutlets($isbod = false){
+
+        if($isbod == true) {
+            $excludedIds = [BODID, DEPID, MAINOUTLETID];
+            $Outlets = Outlets::whereNotIn('id', $excludedIds)->get();
+        } else {
+            $Outlets = Outlets::where('id','<>',MAINOUTLETID)->get();
+        }
+        
+        $Outlets_arr = array();
+
+        foreach($Outlets as $row){
+            $Outlets_arr[$row->id] = $row->name;
+        }
+        return $Outlets_arr;
+    }
+
+
+
 
     function getFromOutlets($isbod = false){
 

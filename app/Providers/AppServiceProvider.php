@@ -52,14 +52,17 @@ class AppServiceProvider extends ServiceProvider
         });
         view()->composer('outlets.*',function($view){      
             $view->with('countries',config('constants.countries'));
-        });
-        view()->composer('outlets.*',function($view){      
             $view->with('cities',config('constants.cities'));
-        });
-        view()->composer('outlets.*',function($view){      
             $view->with('states',config('constants.states'));
             $view->with('types',config('constants.types'));
         });
+        view()->composer('machine.*',function($view){      
+            $view->with('countries',config('constants.countries'));
+            $view->with('cities',config('constants.cities'));
+            $view->with('states',config('constants.states'));
+            $view->with('types',config('constants.types'));
+        });
+
         view()->composer('outletstockhistory.*',function($view){      
             $view->with('types',config('constants.types'));
             $view->with('branch',config('constants.branch'));            
