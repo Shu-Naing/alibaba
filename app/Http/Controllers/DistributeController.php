@@ -126,6 +126,7 @@ class DistributeController extends Controller
     }    
     public function show($id)
     {
+        $login_user_outlet_id = Auth::user()->outlet_id;
         $distribute = [];
         $breadcrumbs = [
             ['name' => 'Reports', 'url' => route('distribute.index')],
@@ -143,6 +144,7 @@ class DistributeController extends Controller
 
         $distribute['distribute'] = $distribute_data;
         $distribute['distribute_products_data'] = $distribute_products_data;
+        $distribute['login_user_outlet_id'] = $login_user_outlet_id;
 
         return view('distribute.show',compact('distribute','breadcrumbs','outlets', 'users'));
     }   

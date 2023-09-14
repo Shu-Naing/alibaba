@@ -896,7 +896,6 @@ $("#disprod_quantity").on("focusout", function () {
       qty,
     },
     success: function (response) {
-      // console.log(response);
       location.reload();
     },
   });
