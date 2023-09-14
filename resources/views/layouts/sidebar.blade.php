@@ -407,16 +407,25 @@
                         </li>
                         @endcan
 
+                        @can('main-outletlevelhistory.index')
+                        <li class="w-100 sidebar-item">
+                            <a href="{{ route('main-outletlevelhistory.index') }}"
+                                class="nav-link sidebar-link {{ Route::is('main-outletlevelhistory.index') ? 'active' : '' }}">
+                                <hr>
+                                <span class="d-none d-sm-inline text-wrap">Main Inv History</span>
+                            </a>
+                        </li>
+                        @endcan
+
                         @can('main-outletleveloverview.index')
                         <li class="w-100 sidebar-item">
                             <a href="{{ route('main-outletleveloverview.index') }}"
                                 class="nav-link sidebar-link {{ Route::is('main-outletleveloverview.index') ? 'active' : '' }}">
                                 <hr>
-                                <span class="d-none d-sm-inline text-wrap">Main Inventory Outlet Stock Overview</span>
+                                <span class="d-none d-sm-inline text-wrap">Main Inv Overview</span>
                             </a>
                         </li>
-                        @endcan
-                      
+                        @endcan                        
                     </ul>
                 </li>
                 @endif

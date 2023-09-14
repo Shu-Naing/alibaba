@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\OutletlevelHistory;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OutletLevelHistoryExport;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class OutletlevelhistoryController extends Controller
@@ -20,12 +21,29 @@ class OutletlevelhistoryController extends Controller
         $login_user_outlet_id = Auth::user()->outlet_id;
         $outlet_id = session()->get(OUTLET_LEVEL_HISTORY_FILTER);
         $from_date = session()->get(OUTLET_LEVEL_HISTORY_FROM_DATE_FILTER);
-        $to_date = session()->get(OUTLET_LEVEL_HISTORY_TO_DATE_FILTER); 
-        
-        $histories = OutletlevelHistory::select('outletlevel_histories.*', 'variations.size_variant_value','variations.image','products.unit_id','products.category_id')
-        ->join('variations','variations.item_code','outletlevel_histories.item_code')
-        ->join('products','products.id','variations.product_id');
-          
+        $to_date = session()->get(OUTLET_LEVEL_HISTORY_TO_DATE_FILTER);        
+       
+        $histories = DB::table('outletlevel_histories as oso')
+        ->select(
+            'oso.*',
+            'outlet_item_data.points',
+            'outlet_item_data.tickets',
+            'outlet_item_data.kyat',
+            'outlet_item_data.purchased_price',
+            'products.unit_id',
+            'products.category_id',
+            'variations.image', // Include the 'variations.image' column here
+            'variations.size_variant_value'
+        )
+        ->join('variations', 'variations.item_code', '=', 'oso.item_code')
+        ->join('outlet_items as oi', 'oi.variation_id', '=', 'variations.id')
+        ->join('products', 'variations.product_id', '=', 'products.id')
+        ->join(DB::raw('(SELECT MAX(id) AS max_id, outlet_item_id,points,tickets,kyat,purchased_price FROM outlet_item_data GROUP BY outlet_item_id) as max_oid'), function ($join) {
+            $join->on('oi.id', '=', 'max_oid.outlet_item_id');
+        })
+        ->join('outlet_item_data','outlet_item_data.id','=','max_oid.max_id')
+        ->groupBy('oso.id');
+
         if($from_date){
             $histories =  $histories->where('date', '>=', $from_date);
         }
@@ -35,13 +53,13 @@ class OutletlevelhistoryController extends Controller
         }
 
         if($login_user_role == 'Outlet'){
-            $histories = $histories->where('outlet_id',$login_user_outlet_id);
+            $histories = $histories->where('oso.outlet_id',$login_user_outlet_id);
         }
-        elseif($outlet_id){
-            $histories = $histories->where('outlet_id',$outlet_id);
-        }else{
-            $histories = $histories->where('outlet_id','!=',BODID)->where('outlet_id','!=',DEPID);
+        else if($outlet_id){
+            $histories = $histories->where('oso.outlet_id',$outlet_id);
         }
+
+        $histories = $histories->where('oso.outlet_id','!=',BODID)->where('oso.outlet_id','!=',DEPID);
 
         $histories = $histories->get();
         

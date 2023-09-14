@@ -59,6 +59,10 @@
                     <th>Size</th>
                     <th>Unit</th>
                     <th>Category</th>
+                    <th>Point</th>
+                    <th>Ticket</th>
+                    <th>Kyat</th>
+                    <th>Purchased Price</th>
                     <th>Quantity</th>
                     <th>Recieved/Issued</th>
                     <th>Branch</th>                    
@@ -80,6 +84,10 @@
                         <td>{{ isset($size_variants[$history->size_variant_value]) ? $size_variants[$history->size_variant_value] : ''}}
                         <td>{{ isset($units[$history->unit_id]) ? $units[$history->unit_id] : ''}}
                         <td>{{ isset($categories[$history->category_id]) ? $categories[$history->category_id] : ''}}
+                        <td>{{ $history->points }}</td>
+                        <td>{{ $history->tickets }}</td>
+                        <td>{{ $history->kyat }}</td>
+                        <td>{{ $history->purchased_price }}</td>
                         <td>{{ $history->quantity }}</td>
                         <td>{{ $types[$history->type] }}</td>
                         <td>{{ $history->branch }}</td>
