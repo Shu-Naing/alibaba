@@ -274,14 +274,10 @@ if (document.getElementById("searchInput")) {
     var fromOutletId = $(this).children(":selected").val();
     $("#show_Product table tbody").html("");
     $("#total").html(0);
-
-    // console.log("hello" + fromOutletId);
-
     $.get(
       "/get-product-lists",
       { fromOutletId: fromOutletId },
       function (data, status) {
-        // console.log(data);
         if (status == "success") {
           let productArr = [];
           product = Object.keys(data).map((key) => {
@@ -302,7 +298,6 @@ if (document.getElementById("searchInput")) {
                 from_outlet: fromOutletId,
               },
               success: function (response) {
-                // console.log(response);
                 var tablehaveItem = $("#show_Product table tbody tr");
                 var res = JSON.parse(response);
                 var errorBox = $(".errorbox");
@@ -346,12 +341,6 @@ if (document.getElementById("searchInput")) {
                     "#fee7e1"
                   );
 
-                  // setTimeout(function () {
-                  //   $('#ds_itemTable tbody tr[data-id="' + id + '"]').removeClass(
-                  //     "border border-warning"
-                  //   );
-                  //   errorBox.html("").removeClass("alert alert-danger");
-                  // }, 10000);
                   // Remove the highlight when clicked
                   $('#ds_itemTable tbody tr[data-id="' + id + '"]').on(
                     "click",
@@ -377,117 +366,14 @@ if (document.getElementById("searchInput")) {
       }
     );
   });
-
-  // var fromOutletId = $("#searchInput").data("id");
-
-  // $.get(
-  //   "/get-product-lists",
-  //   { fromOutletId: fromOutletId },
-  //   function (data, status) {
-  //     console.log(data);
-  //     if (status == "success") {
-  //       let productArr = [];
-  //       product = Object.keys(data).map((key) => {
-  //         productArr.push({
-  //           id: key,
-  //           title: data[key],
-  //         });
-  //       });
-
-  //       var distributedId = $("#distributedId").val();
-  //       function resultGet(res, id) {
-  //         $.ajax({
-  //           url: "/search",
-  //           type: "GET",
-  //           data: {
-  //             distributed_id: distributedId,
-  //             variant_id: id,
-  //             from_outlet: fromOutletId,
-  //           },
-  //           success: function (response) {
-  //             var tablehaveItem = $("#show_Product table tbody tr");
-  //             var res = JSON.parse(response);
-  //             var errorBox = $(".errorbox");
-  //             if ($('#itemTable tbody tr[data-id="' + id + '"]').length === 0) {
-  //               // Item does not exist, add it to the table
-  //               $("#show_Product table tbody").append(res.html);
-  //               var total = calculateTotal();
-  //               $("#total").html(total);
-  //               errorBox.html("").removeClass("alert alert-danger");
-  //               if (tablehaveItem.css("background-color", "#fee7e1")) {
-  //                 tablehaveItem.css("background-color", "");
-  //               }
-  //             } else {
-  //               if (tablehaveItem.css("background-color", "#fee7e1")) {
-  //                 tablehaveItem.css("background-color", "");
-  //               }
-  //               // Item already exists, display an error message or take appropriate action
-  //               if (errorBox.html() === "") {
-  //                 errorBox
-  //                   .append(
-  //                     "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
-  //                   )
-  //                   .addClass("alert alert-danger");
-  //                 errorBox.append("This item is already have.<br/>");
-  //               } else {
-  //                 errorBox.html("");
-  //                 errorBox
-  //                   .append(
-  //                     "<strong>Whoops!</strong> There were some problems with your input.<br><br>"
-  //                   )
-  //                   .addClass("alert alert-danger");
-  //                 errorBox.append("This item is already have.<br/>");
-  //               }
-
-  //               $('#itemTable tbody tr[data-id="' + id + '"]').css(
-  //                 "background-color",
-  //                 "#fee7e1"
-  //               );
-
-  //               // setTimeout(function () {
-  //               //   $('#itemTable tbody tr[data-id="' + id + '"]').removeClass(
-  //               //     "border border-warning"
-  //               //   );
-  //               //   errorBox.html("").removeClass("alert alert-danger");
-  //               // }, 10000);
-  //               // Remove the highlight when clicked
-  //               $('#itemTable tbody tr[data-id="' + id + '"]').on(
-  //                 "click",
-  //                 function () {
-  //                   $(this).css("background-color", "");
-  //                   errorBox.html("").removeClass("alert alert-danger");
-  //                 }
-  //               );
-
-  //               $(window).scrollTop(0);
-  //             }
-  //           },
-  //           error: function (xhr, status, error) {
-  //             alert("An error occurred while adding the product to cart");
-  //             console.log(xhr.responseText);
-  //           },
-  //         });
-  //       }
-  //       autocomplete(
-  //         document.getElementById("searchInput"),
-  //         productArr,
-  //         resultGet
-  //       );
-  //     } else {
-  //       console.log(status);
-  //     }
-  //   }
-  // );
 }
 
 if (document.getElementById("outletdistir_searchInput")) {
   var fromOutletId = $("#outletdistir_searchInput").data("id");
-  // console.log(fromOutletId);
   $.get(
     "/get-product-lists",
     { fromOutletId: fromOutletId },
     function (data, status) {
-      // console.log(data);
       if (status == "success") {
         let productArr = [];
         product = Object.keys(data).map((key) => {
@@ -496,10 +382,6 @@ if (document.getElementById("outletdistir_searchInput")) {
             title: data[key],
           });
         });
-
-        // console.log(productArr);
-        // var outletdistribute_id = $("#outletdistribute_id").val();
-        // console.log(outletdistribute_id, "hello");
         function resultGet(res, id) {
           $.ajax({
             url: "/search",
@@ -551,12 +433,6 @@ if (document.getElementById("outletdistir_searchInput")) {
                   "#fee7e1"
                 );
 
-                // setTimeout(function () {
-                //   $('#outds_itemTable tbody tr[data-id="' + id + '"]').removeClass(
-                //     "border border-warning"
-                //   );
-                //   errorBox.html("").removeClass("alert alert-danger");
-                // }, 10000);
                 // Remove the highlight when clicked
                 $('#outds_itemTable tbody tr[data-id="' + id + '"]').on(
                   "click",
@@ -588,13 +464,11 @@ if (document.getElementById("outletissue_searchInput")) {
     var to_machine = $(this).children(":selected").val();
     $("#show_Product table tbody").html("");
     $("#total").html(0);
-    // console.log(toMachine);
 
     $.get(
       "/get-outletdistir-issue-lists",
       { to_machine: to_machine },
       function (data, status) {
-        // console.log(data);
         if (status == "success") {
           let productArr = [];
           product = Object.keys(data).map((key) => {
@@ -603,16 +477,11 @@ if (document.getElementById("outletissue_searchInput")) {
               title: data[key],
             });
           });
-
-          // console.log(productArr);
-          // var outletdistributed_id = $("#outletdistributed_id").val();
-          // console.log(outletdistribute_id, "hello");
           function resultGet(res, id) {
             $.ajax({
               url: "/search-outlet-issue",
               type: "GET",
               data: {
-                // outlet_distributed_id: outletdistributed_id,
                 variant_id: id,
                 to_machine: to_machine,
               },
@@ -659,12 +528,6 @@ if (document.getElementById("outletissue_searchInput")) {
                     "#fee7e1"
                   );
 
-                  // setTimeout(function () {
-                  //   $('#issue_itemTable tbody tr[data-id="' + id + '"]').removeClass(
-                  //     "border border-warning"
-                  //   );
-                  //   errorBox.html("").removeClass("alert alert-danger");
-                  // }, 10000);
                   // Remove the highlight when clicked
                   $('#issue_itemTable tbody tr[data-id="' + id + '"]').on(
                     "click",
@@ -696,14 +559,10 @@ if (document.getElementById("damagesearchInput")) {
   $("#demage_outlet_id").change(function () {
     var outletId = $(this).children(":selected").val();
     $("#show_Product table tbody").html("");
-
-    // console.log("hello" + outletId);
-
     $.get(
       "/get-damage-product-lists",
       { outletId: outletId },
       function (data, status) {
-        // console.log(data);
         if (status == "success") {
           let productArr = [];
           product = Object.keys(data).map((key) => {
@@ -724,13 +583,11 @@ if (document.getElementById("damagesearchInput")) {
                 outlet: outletId,
               },
               success: function (response) {
-                // console.log(response);
                 var tablehaveItem = $("#show_Product table tbody");
                 var errorBox = $(".errorbox");
                 if (
                   $('#ds_itemTable tbody tr[data-id="' + id + '"]').length === 0
                 ) {
-                  // console.log("item does not exist");
                   // Item does not exist, add it to the table
                   $("#show_Product table tbody").append(response);
 
@@ -739,7 +596,6 @@ if (document.getElementById("damagesearchInput")) {
                     tablehaveItem.css("background-color", "");
                   }
                 } else {
-                  // console.log("item is exit");
                   if (tablehaveItem.css("background-color", "#fee7e1")) {
                     tablehaveItem.css("background-color", "");
                   }
@@ -808,7 +664,6 @@ function calculateTotal() {
 
 if (document.getElementById("searchInputPurchase")) {
   $.get("/get-product-lists-puchase", function (data, status) {
-    // console.log(data);
     if (status == "success") {
       let productArr = [];
       product = Object.keys(data).map((key) => {
@@ -818,9 +673,6 @@ if (document.getElementById("searchInputPurchase")) {
         });
       });
 
-      console.log('so',productArr);
-
-      // var distributedId = $("#distributedId").val();
       function resultGet(res, id) {
         $.ajax({
           url: "/search-purchase",
@@ -832,8 +684,7 @@ if (document.getElementById("searchInputPurchase")) {
            
             var errorBox = $(".errorbox");
             var tablehaveItem = $("#show_Product table tbody tr");
-            // var res = JSON.parse(response);
-            // console.log(tablehaveItem);
+            
             if (
               $('#ds_itemTable tbody tr[data-id="' + id + '"]').length === 0
             ) {
