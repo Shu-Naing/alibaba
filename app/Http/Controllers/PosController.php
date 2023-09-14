@@ -201,16 +201,16 @@ class PosController extends Controller
             $outletItemData->quantity = $outletItemData->quantity - $temp->quantity;
             $outletItemData->update();
 
-            //add to outlet stock history (store)
-            OutletlevelHistory::create([
-                'outlet_id' => $outlet_id,
-                'type' => ISSUE_TYPE,
-                'quantity' => $temp->quantity,
-                'item_code' => $item_code,
-                'branch' => 'POS',
-                'date' => $pos_item->created_at,
-                'created_by' => Auth::user()->id
-            ]);
+            // //add to outlet stock history (store)
+            // OutletlevelHistory::create([
+            //     'outlet_id' => $outlet_id,
+            //     'type' => ISSUE_TYPE,
+            //     'quantity' => $temp->quantity,
+            //     'item_code' => $item_code,
+            //     'branch' => 'POS',
+            //     'date' => $pos_item->created_at,
+            //     'created_by' => Auth::user()->id
+            // ]);
 
             $month = date('n',strtotime($pos_item->created_at));
             $year = date('Y',strtotime($pos_item->created_at));
