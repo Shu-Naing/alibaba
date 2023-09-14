@@ -1,5 +1,3 @@
-// const { start } = require("@popperjs/core");
-
 $.ajaxSetup({
   headers: {
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -54,11 +52,6 @@ $(document).ready(function () {
     console.log(outlet_id);
   });
 
-  // if ($(".counterMachine").find(":selected").val() == 1) {
-  //   $(".counter").attr("disabled", false);
-  // } else if ($(".counterMachine").find(":selected").val() == 2) {
-  //   $(".machine").attr("disabled", false);
-  // }
 });
 
 // product start
@@ -112,38 +105,6 @@ function removeField(group) {
   container.removeChild(group);
 }
 // product end
-
-// function increaseValue() {
-//   var value = parseInt(document.getElementById("number").value, 10);
-//   value = isNaN(value) ? 0 : value;
-//   value++;
-//   document.getElementById("number").value = value;
-// }
-
-// function decreaseValue() {
-//   var value = parseInt(document.getElementById("number").value, 10);
-//   value = isNaN(value) ? 0 : value;
-//   value < 1 ? (value = 1) : "";
-//   value--;
-//   document.getElementById("number").value = value;
-// }
-
-// function stepperDecrement(btn) {
-//   const inputEl = btn.nextElementSibling;
-//   const calcStep = inputEl.step * -1;
-//   const newValue = parseInt(inputEl.value) + calcStep;
-//   if (newValue >= inputEl.min && newValue <= inputEl.max) {
-//     inputEl.value = newValue;
-//   }
-// }
-// function stepperIncrement(btn) {
-//   const inputEl = btn.previousElementSibling;
-//   const calcStep = inputEl.step * 1;
-//   const newValue = parseInt(inputEl.value) + calcStep;
-//   if (newValue >= inputEl.min && newValue <= inputEl.max) {
-//     inputEl.value = newValue;
-//   }
-// }
 
 // start distribute product
 function increaseValue(button, purchasedPrice, variant_qty) {
@@ -219,8 +180,6 @@ function calculateTotal() {
   return total;
 }
 
-// console.log(tableValue.html());
-
 // distribute create submit button
 var dsButton = $("#dsbutton");
 
@@ -282,19 +241,13 @@ dsButton.on("click", function (event) {
     }
     $(window).scrollTop(0);
   }
-  // $(searchInput).focusout(function () {
-  //   searchInput.removeClass("is-invalid");
-  // });
+ 
 });
 
 // outletdistribute create submit button
 var outletdsButton = $("#outletDsbutton");
 
 outletdsButton.on("click", function (event) {
-  // event.preventDefault();
-  // console.log("hello");
-  // Reset previous validation feedback
-  // $(".is-invalid").removeClass("is-invalid");
   var dateInput = $("#date");
   var referenceInput = $("#reference");
   var fromOutletInput = $("#fromOutlet");
@@ -304,28 +257,6 @@ outletdsButton.on("click", function (event) {
   var tableValue = $("#show_Product .outdstable tbody tr");
   var searchInput = $("#searchInput");
   var errorBox = $(".errorbox");
-  // console.log(dateInput.val(), "date");
-  // console.log(referenceInput.val(), "ref");
-  // console.log(fromOutletInput.val(), "from");
-  // console.log(counterMachineInput.val(), "CM");
-  // console.log(counterInput.val(), "counter");
-  // console.log(machineInput.val(), "machine");
-  // console.log(tableValue.length, "table value");
-  // if (counterMachineInput.val() && (counterInput.val() || machineInput.val())) {
-  //   alert("containe cm and c or m");
-  // } else {
-  //   if (counterMachineInput.val() === "1") {
-  //     if (counterInput.val() === "") {
-  //       alert("c false");
-  //     }
-  //   } else if (counterMachineInput.val() === "2") {
-  //     if (machineInput.val() === "") {
-  //       alert("m false");
-  //     }
-  //   } else {
-  //     alert("cm false");
-  //   }
-  // }
 
   if (
     dateInput.val() &&
@@ -442,24 +373,14 @@ purchasebutton.on("click", function (event) {
 // issue create submit button
 var issueButton = $("#issuebutton");
 issueButton.on("click", function (event) {
-  // event.preventDefault();
-  // console.log("hello");
   var dateInput = $("#date");
   var referenceInput = $("#reference");
-  // var statusInput = $("#status");
   var fromOutletInput = $("#fromOutlet");
   var toMachineInput = $("#to_machine");
   var storeCustomer = $("#store_customer");
   var tableValue = $("#show_Product .issuetable tbody tr");
   var searchInput = $("#searchInput");
   var errorBox = $(".errorbox");
-  // console.log(dateInput.val(), "date");
-  // console.log(referenceInput.val(), "ref");
-  // console.log(statusInput.val(), "status");
-  // console.log(fromOutletInput.val(), "from");
-  // console.log(toMachineInput.val(), "tomachine");
-  // console.log(storeCustomer.val(), "store customer");
-  // console.log(tableValue.length, "table value");
 
   if (
     dateInput.val() &&
@@ -496,10 +417,6 @@ issueButton.on("click", function (event) {
     if (referenceInput.val() === "") {
       // referenceInput.addClass("is-invalid");
     }
-    // if (statusInput.val() === "") {
-    //   // statusInput.addClass("is-invalid");
-    //   errorBox.append("The status field is required.<br/>");
-    // }
     if (fromOutletInput.val() === "") {
       // fromOutletInput.addClass("is-invalid");
       errorBox.append("From outlet field is required.<br/>");
@@ -538,9 +455,7 @@ function increaseOutletdisValue(button, disPdID, variantID, variant_qty) {
       location.reload();
     },
   });
-  // console.log("incre", disPdID);
-
-  // console.log("input.value", input.value);
+  
 }
 
 function decreaseOutletdisValue(button, disPdID, variantID) {
@@ -572,15 +487,7 @@ function deleteDisValue(disPdID) {
     $("#total").html(total);
     $("#deleteModal").modal("hide");
   });
-  // var deletebutton = $(".deleteBox");
-  // alert(deletebutton);
-  // $.ajax({
-  //   url: "/delete-dis-product/" + disPdID,
-  //   type: "GET",
-  //   success: function (response) {
-  //     location.reload();
-  //   },
-  // });
+  
 }
 
 // for outletdistribute product
@@ -616,9 +523,7 @@ $(".hamburger").on("click", function () {
 $(".outletstockhistory-check").on("change", function () {
   var isChecked = $(this).is(":checked");
   var outletstockhistory_id = $(this).val();
-  // console.log("Checkbox value:", isChecked);
-  // console.log("Checkbox value:", outletstockhistory_id);
-
+  
   $.ajax({
     url: "/checkoutletstockhistory/",
     type: "GET",
@@ -627,29 +532,18 @@ $(".outletstockhistory-check").on("change", function () {
       id: outletstockhistory_id,
     },
     success: function (response) {
-      console.log(response);
       // location.reload();
     },
   });
 
-  // Perform additional actions based on the checkbox value
-  // if (isChecked) {
-  // Checkbox is checked
-  // Perform some action
-  // } else {
-  // Checkbox is unchecked
-  // Perform some other action
-  //   }
 });
 // outlet stock histories end
 
 // outlet level histories start
 $(".outletlevelhistory-check").on("change", function () {
-  // console.log("hello");
   var isChecked = $(this).is(":checked");
   var outletlevelhistory_id = $(this).val();
-  // console.log(isChecked, outletlevelhistory_id);
-
+  
   $.ajax({
     url: "/checkoutletlevelhistory/",
     type: "GET",
@@ -658,7 +552,6 @@ $(".outletlevelhistory-check").on("change", function () {
       id: outletlevelhistory_id,
     },
     success: function (response) {
-      // console.log(response);
       // location.reload();
     },
   });
@@ -669,8 +562,6 @@ $(".outletlevelhistory-check").on("change", function () {
 $(".outletstockoverview-check").on("change", function () {
   var isChecked = $(this).is(":checked");
   var outletstockoverview_id = $(this).val();
-  // console.log("Checkbox value:", isChecked);
-  // console.log("Checkbox value:", outletstockoverview_id);
 
   $.ajax({
     url: "/checkoutletstockoverview/",
@@ -680,7 +571,6 @@ $(".outletstockoverview-check").on("change", function () {
       id: outletstockoverview_id,
     },
     success: function (response) {
-      console.log(response);
       // location.reload();
     },
   });
@@ -700,7 +590,6 @@ $(".outletleveloverview-check").on("change", function () {
       id: outletleveloverview_id,
     },
     success: function (response) {
-      console.log(response);
       // location.reload();
     },
   });
@@ -711,11 +600,7 @@ $(".outletleveloverview-check").on("change", function () {
 $(".physical-qty").on("focusout", function () {
   var physical_qty = $(this).val();
   var balance_qty = $(this).parent().parent().find(".balance-qty").text();
-  // console.log(balance_qty);
-  var outletstockoverview_id = $(this).data("id");
-  // console.log("Checkbox value:", outletstockoverview_id);
-  // console.log("Checkbox value:", physical_qty);
-  // console.log("Checkbox value:", balance_qty);
+   var outletstockoverview_id = $(this).data("id");
 
   $.ajax({
     url: "/updatephysicalqty/",
@@ -726,7 +611,6 @@ $(".physical-qty").on("focusout", function () {
       balance_qty: balance_qty,
     },
     success: function (response) {
-      // console.log(response);
       location.reload();
     },
   });
@@ -750,7 +634,6 @@ $(".outlevel-physical-qty").on("focusout", function () {
       balance_qty: balance_qty,
     },
     success: function (response) {
-      // console.log(response);
       location.reload();
     },
   });
@@ -766,14 +649,12 @@ $.ajax({
     outlet_id,
   },
   success: function (response) {
-    // console.log(response);
     $("#odsopen_item_code").html('<option value="">Choose...</option>');
     $.each(response, function (key, value) {
       $("#odsopen_item_code").append(
         '<option value="' + key + '">' + value + "</option>"
       );
-    });
-    // location.reload();
+    });    
   },
 });
 
@@ -818,12 +699,6 @@ function deleteModalBox(deleteUrl, id) {
   });
 }
 
-// $(".productcreatebtn").on("keyup", function (event) {
-//   if (event.key === "Enter") {
-//     // console.log("hello");
-//     event.preventDefault();
-//   }
-// });
 
 document.addEventListener("DOMContentLoaded", function () {
   // Get the button element
@@ -836,9 +711,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // If the button was not clicked (e.g., triggered programmatically), do preventDefault()
       event.preventDefault();
     } else {
-      // If the button was clicked, do the submission or any other desired action
-      // For example, you can submit a form or call a function that handles the submission.
-      // Replace the following line with your desired action:
       event.submit();
     }
   });
@@ -846,8 +718,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 $("#outlet-dropdown").on("change", function () {
   var idOutlet = this.value;
-  // console.log(idOutlet);
-  // $("#machine-id").html("");
   $.ajax({
     url: "/get-machine/",
     type: "GET",
@@ -908,9 +778,6 @@ $("#purchase-detail-country").on("change", function () {
   var grn_no = $(this).data("id-grn");
   var received_date = $(this).data("id-received-date");
 
-  // alert(received_date);
-  // console.log(idOutlet);
-  // $("#machine-id").html("");
   $.ajax({
     url: "/purchasedetailcountry/",
     type: "GET",
@@ -934,22 +801,6 @@ $(document).on("focusout", ".purchasedPrice, .purchaseQuantity", function () {
   var calcuTotal = purchasedPrice * qty;
   total.html(calcuTotal);
 });
-
-// function generatedamagecode(outlet_id) {
-//   $.ajax({
-//     url: "/generatedamagecode",
-//     type: "GET",
-//     data: {
-//       outlet_id,
-//     },
-//     success: function (response) {
-//       $("#damage_no").val(response);
-//     },
-//     error: function () {
-//       console.log("you got error ");
-//     },
-//   });
-// }
 
 function generatedamagecode(outlet_id) {
   $.ajax({
@@ -1011,8 +862,6 @@ deButton.on("click", function (event) {
   var demageOutletId = $("#demage_outlet_id");
   var damageNo = $("#damage_no");
   var name = $("#name");
-  // var amount = $("#amount");
-  // var openAction = $("#open_action");
   var error = $("#error");
   var openDistination = $("#open_distination");
   var tableValue = $("#show_Product .detable tbody tr");
@@ -1022,8 +871,6 @@ deButton.on("click", function (event) {
     demageOutletId.val() &&
     damageNo.val() &&
     name.val() &&
-    // amount.val() &&
-    // openAction.val() &&
     error.val() &&
     openDistination.val() &&
     tableValue.length > 0
@@ -1061,14 +908,7 @@ deButton.on("click", function (event) {
       // toOutletInput.addClass("is-invalid");
       errorBox.append("Name field is required.<br/>");
     }
-    // if (amount.val() === "") {
-    //   // toOutletInput.addClass("is-invalid");
-    //   errorBox.append("Compensation Amount field is required.<br/>");
-    // }
-    // if (openAction.val() === "") {
-    //   // toOutletInput.addClass("is-invalid");
-    //   errorBox.append("Action field is required.<br/>");
-    // }
+    
     if (error.val() === "") {
       // toOutletInput.addClass("is-invalid");
       errorBox.append("Error field is required.<br/>");
